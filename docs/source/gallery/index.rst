@@ -42,14 +42,14 @@ resolution.
 .. grid:: 1 2 2 3
    :gutter: 3
 
-   .. grid-item-card:: Build a layered sample
+   .. grid-item-card:: Build a heterogeneous sample
       :link: finite_samples/structured_sample
       :link-type: doc
       :img-top: finite_samples/images/thumb/sphx_glr_structured_sample_thumb.png
-      :img-alt: Layered MomentRT sample with a spherical inclusion
+      :img-alt: Layered MomentRT sample with overlapping spherical and box regions
 
-      Add layers and an inclusion, inspect the construction, and sample a
-      material cross-section.
+      Combine three layers, two spheres, and a box, then inspect the resolved
+      cross-section and material replacement order.
 
    .. grid-item-card:: Circular surface illumination
       :link: finite_samples/surface_diffusion

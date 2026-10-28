@@ -277,7 +277,7 @@ def plot_field(*, field, view, scale, length_unit, opacity, isosurface_count, sh
                                     else ""
                                 ),
                                 "method": "restyle",
-                                "args": [{"opacity": value}],
+                                "args": [{"opacity": value}, [0]],
                             }
                             for value in opacity_values
                         ],

@@ -48,8 +48,8 @@ resolution.
       :img-top: finite_samples/images/thumb/sphx_glr_structured_sample_thumb.png
       :img-alt: Layered MomentRT sample with overlapping spherical and box regions
 
-      Combine three layers, two spheres, and a box, then inspect the resolved
-      cross-section and material replacement order.
+      Combine three layers, two spheres, and a box, solve the illuminated
+      sample, and explore its 3D fluence volume.
 
    .. grid-item-card:: Circular surface illumination
       :link: finite_samples/surface_diffusion

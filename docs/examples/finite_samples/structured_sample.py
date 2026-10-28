@@ -4,8 +4,8 @@ A heterogeneous layered sample
 
 Build a synthetic optical phantom with three layers, two spherical inclusions,
 and a box-shaped heterogeneity. Its materials are illustrative and assumed at
-one wavelength. Positive z points into the sample. This example explores
-geometry only; a boundary-aware transport solve is not performed here.
+one wavelength. Positive z points into the sample. Then illuminate the sample
+and inspect the finite-sample P1 fluence volume.
 """
 
 import os
@@ -13,7 +13,18 @@ import os
 import matplotlib.pyplot as plt
 import numpy as np
 
-from MomentRT import Box, Material, Sphere, StructuredMedium, ureg
+from MomentRT import (
+    Box,
+    CartesianMesh,
+    Diffusion,
+    Material,
+    RobinBoundary,
+    Simulation,
+    Sphere,
+    StructuredMedium,
+    UniformSurfaceSource,
+    ureg,
+)
 
 show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
@@ -31,7 +42,7 @@ background = Material(
 epidermal_material = Material(
     absorption=0.1 / ureg.millimeter,
     reduced_scattering=1.5 / ureg.millimeter,
-    refractive_index=1.42,
+    refractive_index=1.4,
 )
 
 papillary_material = Material(
@@ -142,6 +153,59 @@ sample.add_structures(
 # show primitive boundaries; the section below resolves overlaps.
 
 figure = sample.plot(
+    show=show_figures,
+)
+
+# %%
+# Configure a finite-sample solve
+# ---------------------------------
+# Use equal refractive indices across all regions because internal refraction
+# at refractive-index jumps is outside the current continuous-fluence FEM model.
+
+mesh = CartesianMesh.from_sample(
+    sample=sample,
+    shape=(21, 21, 21),
+)
+
+source = UniformSurfaceSource(
+    face="z_min",
+    wavelength=970 * ureg.nanometer,
+    optical_power=1 * ureg.milliwatt,
+)
+
+boundary = RobinBoundary(
+    effective_reflectance=0.5,
+)
+
+solver = Diffusion(
+    boundaries={
+        "x_min": boundary,
+        "x_max": boundary,
+        "y_min": boundary,
+        "y_max": boundary,
+        "z_min": boundary,
+        "z_max": boundary,
+    },
+)
+
+simulation = Simulation(
+    medium=sample,
+    source=source,
+    mesh=mesh,
+    solver=solver,
+)
+
+# %%
+# Solve and inspect fluence in 3D
+# ----------------------------------
+# The logarithmic volume displays the nodal fluence rate throughout the sample.
+# The mesh gives a useful visualization; refine it to assess interface accuracy.
+
+result = simulation.run()
+
+fluence_figure = result.fluence.plot(
+    view="volume",
+    scale="log",
     show=show_figures,
 )
 

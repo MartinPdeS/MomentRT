@@ -56,6 +56,23 @@ easy to inspect.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Assign tabulated spectra to two regions, keep source and detector geometry fixed, and compare collected power at five wavelengths. All coefficients are illustrative. The sweep runs independent monochromatic P1 solves; it is not a broadband source integration or a validated tissue spectrum.">
+
+.. only:: html
+
+  .. image:: /gallery/finite_samples/images/thumb/sphx_glr_spectral_detectors_thumb.png
+    :alt:
+
+  :doc:`/gallery/finite_samples/spectral_detectors`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sweep wavelengths with a fixed sensor geometry</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Build a synthetic optical phantom with three layers, two spherical inclusions, and a box-shaped heterogeneity. Its materials are illustrative and assumed at one wavelength. Positive z points into the sample. Then illuminate the sample and inspect the finite-sample P1 fluence volume.">
 
 .. only:: html
@@ -68,6 +85,23 @@ easy to inspect.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">A heterogeneous layered sample</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Place two circular contact detectors on a finite optical phantom. Each aperture samples escaping power over a disk and accepts outgoing rays within an explicit cone. Collection uses a Lambertian escape assumption; it does not model angle-dependent Fresnel transmission or detector back-action.">
+
+.. only:: html
+
+  .. image:: /gallery/finite_samples/images/thumb/sphx_glr_surface_detector_thumb.png
+    :alt:
+
+  :doc:`/gallery/finite_samples/surface_detector`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Collect light with finite apertures</div>
     </div>
 
 
@@ -117,7 +151,9 @@ easy to inspect.
 
    /gallery/finite_samples/mesh_refinement
    /gallery/finite_samples/reflectance_sweep
+   /gallery/finite_samples/spectral_detectors
    /gallery/finite_samples/structured_sample
+   /gallery/finite_samples/surface_detector
    /gallery/finite_samples/surface_diffusion
    /gallery/finite_samples/uniform_surface_source
 

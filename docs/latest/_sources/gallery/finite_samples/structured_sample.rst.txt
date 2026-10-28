@@ -26,14 +26,13 @@ and a box-shaped heterogeneity. Its materials are illustrative and assumed at
 one wavelength. Positive z points into the sample. Then illuminate the sample
 and inspect the finite-sample P1 fluence volume.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-31
+.. GENERATED FROM PYTHON SOURCE LINES 10-30
 
 .. code-block:: Python
 
 
     import os
 
-    import matplotlib.pyplot as plt
     import numpy as np
 
     from MomentRT import (
@@ -58,13 +57,13 @@ and inspect the finite-sample P1 fluence volume.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-35
+.. GENERATED FROM PYTHON SOURCE LINES 31-34
 
 Optical materials
 -----------------
 Use explicit unit-bearing optical coefficients. These values are illustrative.
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-78
+.. GENERATED FROM PYTHON SOURCE LINES 34-77
 
 .. code-block:: Python
 
@@ -118,13 +117,13 @@ Use explicit unit-bearing optical coefficients. These values are illustrative.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-82
+.. GENERATED FROM PYTHON SOURCE LINES 78-81
 
 Finite sample extent
 --------------------
 Set the lower corner and full dimensions. Positive z points into the sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-92
+.. GENERATED FROM PYTHON SOURCE LINES 81-91
 
 .. code-block:: Python
 
@@ -145,14 +144,14 @@ Set the lower corner and full dimensions. Positive z points into the sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-97
+.. GENERATED FROM PYTHON SOURCE LINES 92-96
 
 Stack background layers
 -----------------------
 Each layer starts below the preceding one. The remaining depth keeps the
 explicitly configured background material.
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-110
+.. GENERATED FROM PYTHON SOURCE LINES 96-109
 
 .. code-block:: Python
 
@@ -176,14 +175,14 @@ explicitly configured background material.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-115
+.. GENERATED FROM PYTHON SOURCE LINES 110-114
 
 Add a deeper layer and three localized regions
 ----------------------------------------------
 The two spheres overlap layer interfaces. The box intersects the y=0 section.
 Batch insertion makes the region replacement order explicit.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-149
+.. GENERATED FROM PYTHON SOURCE LINES 114-148
 
 .. code-block:: Python
 
@@ -228,14 +227,14 @@ Batch insertion makes the region replacement order explicit.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 150-154
+.. GENERATED FROM PYTHON SOURCE LINES 149-153
 
 Explore the sample in 3D
 ------------------------
 Rotate the geometry and toggle regions in the legend. Transparent surfaces
 show primitive boundaries; the section below resolves overlaps.
 
-.. GENERATED FROM PYTHON SOURCE LINES 154-159
+.. GENERATED FROM PYTHON SOURCE LINES 153-158
 
 .. code-block:: Python
 
@@ -255,14 +254,14 @@ show primitive boundaries; the section below resolves overlaps.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 160-164
+.. GENERATED FROM PYTHON SOURCE LINES 159-163
 
 Configure a finite-sample solve
 ---------------------------------
 Use equal refractive indices across all regions because internal refraction
 at refractive-index jumps is outside the current continuous-fluence FEM model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 164-198
+.. GENERATED FROM PYTHON SOURCE LINES 163-197
 
 .. code-block:: Python
 
@@ -307,14 +306,14 @@ at refractive-index jumps is outside the current continuous-fluence FEM model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 199-203
+.. GENERATED FROM PYTHON SOURCE LINES 198-202
 
 Solve and inspect fluence in 3D
 ----------------------------------
 The logarithmic volume displays the nodal fluence rate throughout the sample.
 The mesh gives a useful visualization; refine it to assess interface accuracy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 203-213
+.. GENERATED FROM PYTHON SOURCE LINES 202-212
 
 .. code-block:: Python
 
@@ -339,14 +338,14 @@ The mesh gives a useful visualization; refine it to assess interface accuracy.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 214-218
+.. GENERATED FROM PYTHON SOURCE LINES 213-217
 
 Inspect the resolved cross-section
 ----------------------------------
 Unlike transparent construction surfaces, this map resolves material
 replacement. The y=0 plane intersects both spheres and the box.
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-225
+.. GENERATED FROM PYTHON SOURCE LINES 217-223
 
 .. code-block:: Python
 
@@ -359,7 +358,6 @@ replacement. The y=0 plane intersects both spheres and the box.
 
 
 
-
 .. raw:: html
 
    <iframe src="../../_static/gallery/structured_sample-3.html" title="material — y = 0 mm" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
@@ -368,66 +366,10 @@ replacement. The y=0 plane intersects both spheres and the box.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-230
-
-Show a compact resolved-material overview
------------------------------------------
-The static section highlights insertion precedence. The interactive sample
-and section views above remain available for geometry and property queries.
-
-.. GENERATED FROM PYTHON SOURCE LINES 230-263
-
-.. code-block:: Python
-
-
-    section = sample.section(
-        normal="y",
-        position=0 * ureg.millimeter,
-        resolution=(160, 120),
-    )
-
-    extent = section.extent.to("millimeter").magnitude
-
-    figure_static, axes = plt.subplots(figsize=(7, 3.5))
-
-    image = axes.imshow(
-        section.labels,
-        origin="lower",
-        extent=(extent[0, 0], extent[0, 1], extent[1, 0], extent[1, 1]),
-        interpolation="nearest",
-        cmap=plt.get_cmap("Set2", len(section.names)),
-        vmin=-0.5,
-        vmax=len(section.names) - 0.5,
-        aspect="equal",
-    )
-
-    colorbar = figure_static.colorbar(image, ax=axes, ticks=range(len(section.names)))
-
-    colorbar.ax.set_yticklabels(section.names)
-
-    axes.set_xlabel("x (mm)")
-    axes.set_ylabel("z (mm)")
-    axes.set_title("Resolved materials on the y = 0 plane")
-    figure_static.tight_layout()
-
-    if show_figures:
-        plt.show()
-
-
-
-.. image-sg:: /gallery/finite_samples/images/sphx_glr_structured_sample_001.png
-   :alt: Resolved materials on the y = 0 plane
-   :srcset: /gallery/finite_samples/images/sphx_glr_structured_sample_001.png
-   :class: sphx-glr-single-img
-
-
-
-
-
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.762 seconds)
+   **Total running time of the script:** (0 minutes 0.749 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_structured_sample.py:

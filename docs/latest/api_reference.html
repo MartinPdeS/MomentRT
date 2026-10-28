@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Public API reference &#8212; MomentRT 0.1.6 documentation</title>
+    <title>Public API reference &#8212; MomentRT 0.2.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=79d558ae"></script>
+    <script src="_static/documentation_options.js?v=95e61db4"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.2.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -533,12 +533,22 @@ Dimensional values require quantities from <code class="docutils literal notrans
 <p><code class="docutils literal notranslate"><span class="pre">Material</span></code> requires <code class="docutils literal notranslate"><span class="pre">absorption</span></code>, <code class="docutils literal notranslate"><span class="pre">reduced_scattering</span></code>, and
 <code class="docutils literal notranslate"><span class="pre">refractive_index</span></code>. The first two are nonnegative/positive inverse-length
 quantities; refractive index is a positive plain number.</p>
+<p><code class="docutils literal notranslate"><span class="pre">SpectralMaterial</span></code> requires a strictly increasing <code class="docutils literal notranslate"><span class="pre">wavelengths</span></code> vector,
+same-length <code class="docutils literal notranslate"><span class="pre">absorption</span></code> and <code class="docutils literal notranslate"><span class="pre">reduced_scattering</span></code> quantities, and a
+scalar or same-length plain <code class="docutils literal notranslate"><span class="pre">refractive_index</span></code>. Its
+<code class="docutils literal notranslate"><span class="pre">at(wavelength=...)</span></code> method linearly interpolates a monochromatic
+<code class="docutils literal notranslate"><span class="pre">Material</span></code> and rejects extrapolation. Fixed <code class="docutils literal notranslate"><span class="pre">Material</span></code> objects also
+support <code class="docutils literal notranslate"><span class="pre">at(wavelength=...)</span></code> and retain their fixed coefficients.</p>
 <p><code class="docutils literal notranslate"><span class="pre">HomogeneousMedium</span></code> wraps one material for the infinite-medium model.
 <code class="docutils literal notranslate"><span class="pre">StructuredMedium</span></code> requires unit-bearing <code class="docutils literal notranslate"><span class="pre">origin</span></code> and positive <code class="docutils literal notranslate"><span class="pre">size</span></code>
 vectors. Set its background with <code class="docutils literal notranslate"><span class="pre">add_background(material=...)</span></code> and add
 ordered <code class="docutils literal notranslate"><span class="pre">Layer</span></code>, <code class="docutils literal notranslate"><span class="pre">Box</span></code>, or <code class="docutils literal notranslate"><span class="pre">Sphere</span></code> objects with
 <code class="docutils literal notranslate"><span class="pre">add_structures(*structures)</span></code>. <code class="docutils literal notranslate"><span class="pre">add_layer(...)</span></code> stacks below the deepest
 existing layer.</p>
+<p>Both media support <code class="docutils literal notranslate"><span class="pre">at(wavelength=...)</span></code>. Finite sample geometry and
+insertion order are preserved on the resolved copy. Property sampling and
+display methods accept an explicit <code class="docutils literal notranslate"><span class="pre">wavelength</span></code> for spectral samples.
+See <a class="reference internal" href="spectral.html"><span class="doc">Wavelength-dependent materials and sweeps</span></a>.</p>
 </section>
 <section id="sources">
 <h2>Sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h2>
@@ -550,6 +560,19 @@ circular top-hat and must fit fully on the face. <code class="docutils literal n
 requires a face, wavelength, and optical power, and illuminates the complete
 face. Both finite-source classes specify power already coupled into the
 sample.</p>
+</section>
+<section id="detectors">
+<h2>Detectors<a class="headerlink" href="#detectors" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">SurfaceDetector</span></code> requires a sample boundary <code class="docutils literal notranslate"><span class="pre">face</span></code>, unit-bearing
+<code class="docutils literal notranslate"><span class="pre">position</span></code> and positive <code class="docutils literal notranslate"><span class="pre">radius</span></code>, a nonzero plain <code class="docutils literal notranslate"><span class="pre">collection_axis</span></code>
+pointing outward, and a unit-bearing <code class="docutils literal notranslate"><span class="pre">acceptance_angle</span></code> from zero to
+90 degrees. The circular contact aperture lies in the sample face. The angle
+is a cone half-angle around the collection axis.</p>
+<p><code class="docutils literal notranslate"><span class="pre">measure(result=...)</span></code> returns a <code class="docutils literal notranslate"><span class="pre">DetectorResult</span></code> with
+<code class="docutils literal notranslate"><span class="pre">collected_power</span></code>, <code class="docutils literal notranslate"><span class="pre">sampled_area</span></code>, <code class="docutils literal notranslate"><span class="pre">geometric_area</span></code>,
+<code class="docutils literal notranslate"><span class="pre">angular_fraction</span></code>, <code class="docutils literal notranslate"><span class="pre">minimum_escaping_irradiance</span></code>, wavelength,
+and a snapshot of the detector configuration. This uses a Lambertian escape
+assumption. See <a class="reference internal" href="detectors.html"><span class="doc">Finite-aperture surface detectors</span></a> for the integral, conventions, and limits.</p>
 </section>
 <section id="meshes-and-solvers">
 <h2>Meshes and solvers<a class="headerlink" href="#meshes-and-solvers" title="Link to this heading">#</a></h2>
@@ -567,10 +590,25 @@ illumination.</p>
 </section>
 <section id="simulation-and-results">
 <h2>Simulation and results<a class="headerlink" href="#simulation-and-results" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">Simulation</span></code> composes <code class="docutils literal notranslate"><span class="pre">medium</span></code>, <code class="docutils literal notranslate"><span class="pre">source</span></code>, <code class="docutils literal notranslate"><span class="pre">mesh</span></code>, and <code class="docutils literal notranslate"><span class="pre">solver</span></code>.
+<p><code class="docutils literal notranslate"><span class="pre">Simulation</span></code> composes <code class="docutils literal notranslate"><span class="pre">medium</span></code>, <code class="docutils literal notranslate"><span class="pre">source</span></code>, <code class="docutils literal notranslate"><span class="pre">mesh</span></code>, and <code class="docutils literal notranslate"><span class="pre">solver</span></code>,
+plus an optional <code class="docutils literal notranslate"><span class="pre">detectors</span></code> mapping from names to <code class="docutils literal notranslate"><span class="pre">SurfaceDetector</span></code>
+objects.
 Call <code class="docutils literal notranslate"><span class="pre">simulation.run()</span></code> to receive a <code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code> containing
 <code class="docutils literal notranslate"><span class="pre">fluence</span></code> and, for the finite solver, <code class="docutils literal notranslate"><span class="pre">flux</span></code>, <code class="docutils literal notranslate"><span class="pre">energy_balance</span></code>,
-<code class="docutils literal notranslate"><span class="pre">outgoing_power_by_face</span></code>, and <code class="docutils literal notranslate"><span class="pre">diagnostics</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">outgoing_power_by_face</span></code>, <code class="docutils literal notranslate"><span class="pre">boundary_fields</span></code>, and <code class="docutils literal notranslate"><span class="pre">diagnostics</span></code>.
+Configured measurements are in <code class="docutils literal notranslate"><span class="pre">result.detectors</span></code>; the
+<code class="docutils literal notranslate"><span class="pre">result.detector_power</span></code> property maps their names to collected powers.
+Boundary fields are <code class="docutils literal notranslate"><span class="pre">BoundaryField</span></code> snapshots of triangle-quadrature
+positions, area weights, escaping irradiance, geometry, and wavelength.</p>
+<p><code class="docutils literal notranslate"><span class="pre">simulation.sweep(wavelengths=...,</span> <span class="pre">optical_power=...)</span></code> returns a
+<code class="docutils literal notranslate"><span class="pre">SpectralSimulationResult</span></code> with ordered <code class="docutils literal notranslate"><span class="pre">wavelengths</span></code>, per-wavelength
+<code class="docutils literal notranslate"><span class="pre">results</span></code>, and detector-power vectors in <code class="docutils literal notranslate"><span class="pre">detector_power</span></code>.
+Optional optical power is a scalar or a vector matching the wavelength
+shape; omitting it retains the configured source power.
+Its <code class="docutils literal notranslate"><span class="pre">plot(wavelength_unit=...,</span> <span class="pre">power_unit=...,</span> <span class="pre">show=...)</span></code> method plots
+collected power for configured detectors. Each solve evaluates material
+tables at the current wavelength without mutating the original
+configuration.</p>
 <p><code class="docutils literal notranslate"><span class="pre">ScalarField.plot(...)</span></code> returns a Plotly figure when Plotly is installed.
 Its <code class="docutils literal notranslate"><span class="pre">view</span></code> may be <code class="docutils literal notranslate"><span class="pre">volume</span></code> (default), <code class="docutils literal notranslate"><span class="pre">slices</span></code>, or <code class="docutils literal notranslate"><span class="pre">isosurfaces</span></code>;
 <code class="docutils literal notranslate"><span class="pre">scale</span></code> may be <code class="docutils literal notranslate"><span class="pre">linear</span></code> or <code class="docutils literal notranslate"><span class="pre">log</span></code>; <code class="docutils literal notranslate"><span class="pre">length_unit</span></code> controls displayed
@@ -635,6 +673,7 @@ are loaded only when a plotting method is called.</p>
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#materials-and-media">Materials and media</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sources">Sources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detectors">Detectors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meshes-and-solvers">Meshes and solvers</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#simulation-and-results">Simulation and results</a></li>
 </ul>
@@ -644,7 +683,7 @@ are loaded only when a plotting method is called.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.6/docs/source/api_reference.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.0/docs/source/api_reference.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

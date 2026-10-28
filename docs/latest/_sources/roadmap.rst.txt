@@ -10,8 +10,9 @@ Development roadmap
    Layered materials and box/sphere construction are implemented for geometry
    and nodal optical-property sampling. Layer stacking and resolved planar
    material/property sections, surface-source geometry, and element-centered
-   vector flux are also implemented. Next: detector collection, configurable
-   field slices and shared color scales.
+   vector flux are also implemented. Circular contact detector collection
+   includes explicit angular acceptance under a Lambertian escape assumption.
+   Next: configurable field slices, shared color scales, and external optics.
 
 3. Boundary-aware transport
    Linear tetrahedral FEM diffusion, explicit Robin/reflecting face conditions,
@@ -22,8 +23,11 @@ Development roadmap
    Do not substitute infinite-medium fields for surface reflectance.
 
 4. Spectral sensor model
-   Provenance-tracked chromophore data, measured LED spectra, detector response,
-   spectral integration, calibration and acquisition noise.
+   Tabulated wavelength-dependent materials and independent monochromatic
+   sweeps with fixed source and detector geometry are implemented.
+   Next: provenance-tracked chromophore data, measured LED spectra, detector
+   responsivity, broadband spectral integration, calibration and acquisition
+   noise.
 
 5. Inference
    Explicit parameter references, unit-aware sensitivities, nuisance parameters,

@@ -249,9 +249,9 @@ show this observable's sensitivity to mesh resolution.
 
  .. code-block:: none
 
-    Grid (7, 7, 5): linear residual = 9.648e-16, energy residual = -2.168e-19 watt
-    Grid (11, 11, 9): linear residual = 2.904e-15, energy residual = -2.277e-18 watt
-    Grid (15, 15, 13): linear residual = 6.161e-15, energy residual = -3.686e-18 watt
+    Grid (7, 7, 5): linear residual = 9.514e-16, energy residual = 0.000e+00 watt
+    Grid (11, 11, 9): linear residual = 2.889e-15, energy residual = -2.168e-18 watt
+    Grid (15, 15, 13): linear residual = 6.171e-15, energy residual = -3.361e-18 watt
 
 
 
@@ -259,7 +259,7 @@ show this observable's sensitivity to mesh resolution.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.362 seconds)
+   **Total running time of the script:** (0 minutes 0.393 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_mesh_refinement.py:

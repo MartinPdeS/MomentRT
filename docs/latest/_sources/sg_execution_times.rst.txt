@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:02.991** total execution time for 7 files **from all galleries**:
+**00:04.134** total execution time for 9 files **from all galleries**:
 
 .. container::
 
@@ -33,23 +33,29 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_finite_samples_surface_diffusion.py` (``../examples/finite_samples/surface_diffusion.py``)
-     - 00:00.793
+     - 00:00.919
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_structured_sample.py` (``../examples/finite_samples/structured_sample.py``)
-     - 00:00.762
+     - 00:00.749
      - 0.0
-   * - :ref:`sphx_glr_gallery_fundamentals_absorption_sweep.py` (``../examples/fundamentals/absorption_sweep.py``)
-     - 00:00.376
-     - 0.0
-   * - :ref:`sphx_glr_gallery_finite_samples_mesh_refinement.py` (``../examples/finite_samples/mesh_refinement.py``)
-     - 00:00.362
+   * - :ref:`sphx_glr_gallery_finite_samples_spectral_detectors.py` (``../examples/finite_samples/spectral_detectors.py``)
+     - 00:00.681
      - 0.0
    * - :ref:`sphx_glr_gallery_fundamentals_infinite_diffusion.py` (``../examples/fundamentals/infinite_diffusion.py``)
-     - 00:00.294
+     - 00:00.442
+     - 0.0
+   * - :ref:`sphx_glr_gallery_finite_samples_mesh_refinement.py` (``../examples/finite_samples/mesh_refinement.py``)
+     - 00:00.393
+     - 0.0
+   * - :ref:`sphx_glr_gallery_fundamentals_absorption_sweep.py` (``../examples/fundamentals/absorption_sweep.py``)
+     - 00:00.385
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_reflectance_sweep.py` (``../examples/finite_samples/reflectance_sweep.py``)
-     - 00:00.241
+     - 00:00.257
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_uniform_surface_source.py` (``../examples/finite_samples/uniform_surface_source.py``)
-     - 00:00.164
+     - 00:00.169
+     - 0.0
+   * - :ref:`sphx_glr_gallery_finite_samples_surface_detector.py` (``../examples/finite_samples/surface_detector.py``)
+     - 00:00.138
      - 0.0

@@ -12,8 +12,8 @@ finite-sample weak form and numerical discretization.
       :link: ../theory
       :link-type: doc
 
-      Angular moments, diffusion closure, infinite-medium Green function, and
-      approximation limits.
+      Radiance and units, angular moments, the P1 closure, conservation,
+      infinite-medium Green function, and approximation limits.
 
    .. grid-item-card:: Finite-sample FEM
       :link: ../finite_element
@@ -21,9 +21,17 @@ finite-sample weak form and numerical discretization.
 
       Robin boundaries, weak form, tetrahedral assembly, and source loading.
 
+   .. grid-item-card:: P1 and the telegrapher equation
+      :link: ../time_dependent
+      :link-type: doc
+
+      Current relaxation, transient diffusion, finite propagation speed,
+      initial conditions, and the steady-state limit.
+
 .. toctree::
    :maxdepth: 1
    :hidden:
 
    P1 transport model <../theory>
    Finite-sample FEM <../finite_element>
+   Time-dependent P1 and telegrapher equation <../time_dependent>

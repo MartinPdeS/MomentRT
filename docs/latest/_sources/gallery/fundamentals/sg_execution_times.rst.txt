@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.670** total execution time for 2 files **from gallery/fundamentals**:
+**00:00.828** total execution time for 2 files **from gallery/fundamentals**:
 
 .. container::
 
@@ -32,9 +32,9 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_fundamentals_absorption_sweep.py` (``absorption_sweep.py``)
-     - 00:00.376
-     - 0.0
    * - :ref:`sphx_glr_gallery_fundamentals_infinite_diffusion.py` (``infinite_diffusion.py``)
-     - 00:00.294
+     - 00:00.442
+     - 0.0
+   * - :ref:`sphx_glr_gallery_fundamentals_absorption_sweep.py` (``absorption_sweep.py``)
+     - 00:00.385
      - 0.0

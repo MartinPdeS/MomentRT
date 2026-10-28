@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 390" role="img" aria-labelledby="title description">
+  <title id="title">Diffuse partial currents at a Robin boundary</title>
+  <desc id="description">Inside a sample, outward diffuse partial current reaches a face and a fraction returns inward. Incoming diffuse illumination crosses the face into the sample.</desc>
+  <defs>
+    <linearGradient id="sample" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#174a70"/>
+      <stop offset="1" stop-color="#0d2942"/>
+    </linearGradient>
+    <linearGradient id="fluence" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#80eee0"/>
+      <stop offset="1" stop-color="#39a9ee"/>
+    </linearGradient>
+    <linearGradient id="warm" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#ffcc78"/>
+      <stop offset="1" stop-color="#ef9b4c"/>
+    </linearGradient>
+    <marker id="arrow-out" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M1 1 11 6 1 11Z" fill="#54cbd7"/>
+    </marker>
+    <marker id="arrow-in" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto-start-reverse">
+      <path d="M1 1 11 6 1 11Z" fill="#edaa60"/>
+    </marker>
+    <marker id="arrow-normal" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M1 1 11 6 1 11Z" fill="#738295"/>
+    </marker>
+    <filter id="soft-glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="9"/>
+    </filter>
+  </defs>
+  <rect width="960" height="390" rx="24" fill="#f4f7fa"/>
+  <path d="M24 24h610v342H24Q24 366 24 342Z" fill="url(#sample)"/>
+  <path d="M634 24v342" stroke="#f1a956" stroke-width="5"/>
+  <text x="58" y="64" fill="#d8e8f4" font-family="Arial,sans-serif" font-size="20" font-weight="600" letter-spacing="1.4">SAMPLE INTERIOR</text>
+  <text x="661" y="64" fill="#345168" font-family="Arial,sans-serif" font-size="20" font-weight="600" letter-spacing="1.4">OUTSIDE</text>
+
+  <ellipse cx="277" cy="214" rx="145" ry="113" fill="none" stroke="url(#fluence)" stroke-width="3" opacity=".3"/>
+  <ellipse cx="277" cy="214" rx="108" ry="84" fill="none" stroke="url(#fluence)" stroke-width="4" opacity=".58"/>
+  <ellipse cx="277" cy="214" rx="69" ry="54" fill="none" stroke="url(#fluence)" stroke-width="5" opacity=".82"/>
+  <circle cx="277" cy="214" r="28" fill="#f2ab5f" opacity=".22" filter="url(#soft-glow)"/>
+  <circle cx="277" cy="214" r="12" fill="url(#warm)"/>
+  <text x="241" y="269" fill="#f4d6ae" font-family="Arial,sans-serif" font-size="18">source</text>
+  <text x="176" y="111" fill="#dffcf9" font-family="Arial,sans-serif" font-size="23" font-style="italic">fluence Φ</text>
+
+  <path d="M324 137C408 112 483 114 665 137" fill="none" stroke="#54cbd7" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow-out)"/>
+  <text x="401" y="103" fill="#e3f6fa" font-family="Arial,sans-serif" font-size="21" font-style="italic">J<tspan baseline-shift="sub" font-size="15">out</tspan></text>
+
+  <path d="M665 219C568 242 439 240 332 222" fill="none" stroke="#54cbd7" stroke-width="7" stroke-linecap="round" marker-end="url(#arrow-out)"/>
+  <text x="417" y="275" fill="#e3f6fa" font-family="Arial,sans-serif" font-size="21" font-style="italic">R J<tspan baseline-shift="sub" font-size="15">out</tspan> returned inward</text>
+
+  <path d="M890 315C819 316 751 314 617 305" fill="none" stroke="#eda95f" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow-in)"/>
+  <text x="754" y="280" fill="#75512d" font-family="Arial,sans-serif" font-size="21" font-style="italic">I<tspan baseline-shift="sub" font-size="15">in</tspan> illumination</text>
+
+  <path d="M644 157h103" fill="none" stroke="#738295" stroke-width="3" stroke-dasharray="6 7" marker-end="url(#arrow-normal)"/>
+  <text x="682" y="143" fill="#586a7b" font-family="Arial,sans-serif" font-size="21" font-style="italic">n</text>
+  <text x="520" y="350" fill="#f4dfc4" font-family="Arial,sans-serif" font-size="19">face</text>
+</svg>

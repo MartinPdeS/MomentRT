@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Transport theory and approximations &#8212; MomentRT 0.1.6 documentation</title>
+    <title>Transport theory and approximations &#8212; MomentRT 0.2.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=79d558ae"></script>
+    <script src="_static/documentation_options.js?v=95e61db4"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.2.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -461,6 +461,7 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">P1 transport model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="finite_element.html">Finite-sample FEM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time_dependent.html">Time-dependent P1 and telegrapher equation</a></li>
 </ul>
 </div>
 </nav></div>
@@ -529,6 +530,91 @@ or an <span class="math notranslate nohighlight">\(SP_N\)</span> approximation. 
 closures and capabilities. The two implemented solvers use the same diffusion
 physics in different geometries: an analytical Green function for an infinite
 homogeneous medium and a finite-domain FEM solve.</p>
+<section id="how-to-read-this-theory">
+<h2>How to read this theory<a class="headerlink" href="#how-to-read-this-theory" title="Link to this heading">#</a></h2>
+<p>The derivation follows a sequence of modeling choices:</p>
+<ol class="arabic simple">
+<li><p>Describe incoherent radiant power by a directional radiance.</p></li>
+<li><p>Integrate over directions to obtain balance equations for angular moments.</p></li>
+<li><p>Close those equations with the first-order spherical-harmonic expansion.</p></li>
+<li><p>In steady state, eliminate current to obtain a scalar diffusion equation.</p></li>
+<li><p>Select boundary conditions and discretize the spatial equation.</p></li>
+</ol>
+<p>The angular closure determines which directional information the model
+retains. Boundary conditions determine how light enters and leaves a finite
+sample. The finite element method determines how the chosen continuous
+equation is approximated on a mesh. Refining the mesh improves the spatial
+approximation; it does not restore angular information discarded by P1.</p>
+<p>For the boundary and spatial discretization, continue with
+<a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a>. For time dependence and the telegrapher equation,
+continue with <a class="reference internal" href="time_dependent.html"><span class="doc">Time-dependent P1 and the telegrapher equation</span></a>. The time-dependent equations are
+background theory, not implemented solver options.</p>
+</section>
+<section id="quantities-and-units">
+<h2>Quantities and units<a class="headerlink" href="#quantities-and-units" title="Link to this heading">#</a></h2>
+<p>The discussion is monochromatic: optical coefficients describe one specified
+wavelength. MomentRT does not calculate a material spectrum from a wavelength.
+The caller supplies appropriate coefficients for the chosen wavelength.</p>
+<div class="pst-scrollable-table-container"><table class="table" id="id1">
+<caption><span class="caption-text">Symbols used in the derivation</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
+<colgroup>
+<col style="width: 18.0%" />
+<col style="width: 52.0%" />
+<col style="width: 30.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Symbol</p></th>
+<th class="head"><p>Meaning</p></th>
+<th class="head"><p>Units</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mathbf r\)</span>, <span class="math notranslate nohighlight">\(\mathbf s\)</span></p></td>
+<td><p>Position and unit travel direction</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathrm m\)</span>, dimensionless</p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(L\)</span></p></td>
+<td><p>Radiance per unit solid angle</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathrm{W\,m^{-2}\,sr^{-1}}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\Phi\)</span></p></td>
+<td><p>Fluence rate: radiance integrated over all directions</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathrm{W\,m^{-2}}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(\mathbf J\)</span></p></td>
+<td><p>Net radiant current per unit area</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathrm{W\,m^{-2}}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(\mu_a\)</span>, <span class="math notranslate nohighlight">\(\mu_s\)</span>, <span class="math notranslate nohighlight">\(\mu_s'\)</span></p></td>
+<td><p>Absorption, scattering, and reduced scattering coefficients</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathrm{m^{-1}}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(g\)</span></p></td>
+<td><p>Mean cosine of the scattering angle</p></td>
+<td><p>Dimensionless</p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(D\)</span></p></td>
+<td><p>Diffusion coefficient in MomentRT’s steady transport convention</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathrm m\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><span class="math notranslate nohighlight">\(Q\)</span>, <span class="math notranslate nohighlight">\(q_0\)</span></p></td>
+<td><p>Directional volume source and its angular integral</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathrm{W\,m^{-3}\,sr^{-1}}\)</span>, <span class="math notranslate nohighlight">\(\mathrm{W\,m^{-3}}\)</span></p></td>
+</tr>
+<tr class="row-even"><td><p><span class="math notranslate nohighlight">\(I_{\mathrm{in}}\)</span></p></td>
+<td><p>Prescribed incoming diffuse partial-current irradiance at a face</p></td>
+<td><p><span class="math notranslate nohighlight">\(\mathrm{W\,m^{-2}}\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Fluence rate is not the flux through a particular plane. For perfectly
+isotropic radiance <span class="math notranslate nohighlight">\(L=L_0\)</span>, one has <span class="math notranslate nohighlight">\(\Phi=4\pi L_0\)</span> but
+<span class="math notranslate nohighlight">\(\mathbf J=\mathbf 0\)</span>: light crosses a plane equally in both
+directions. A high fluence therefore need not imply a large net current.
+Absorbed power density is <span class="math notranslate nohighlight">\(\mu_a\Phi\)</span>, and integrating it over a
+volume gives absorbed power in watts.</p>
+</section>
 <section id="radiative-transfer-and-angular-moments">
 <h2>Radiative transfer and angular moments<a class="headerlink" href="#radiative-transfer-and-angular-moments" title="Link to this heading">#</a></h2>
 <p>Let <span class="math notranslate nohighlight">\(L(\mathbf r,\mathbf s)\)</span> denote radiance at position
@@ -547,6 +633,15 @@ moment is the fluence rate and the first moment is the vector current:</p>
 \[\Phi(\mathbf r)=\int_{4\pi}L(\mathbf r,\mathbf s)\,d\Omega,
 \qquad
 \mathbf J(\mathbf r)=\int_{4\pi}\mathbf sL(\mathbf r,\mathbf s)\,d\Omega.\]</div>
+<p>The streaming term <span class="math notranslate nohighlight">\(\mathbf s\cdot\nabla L\)</span> describes propagation along
+a ray. Absorption removes radiant power. Scattering removes radiance from
+one direction and adds it to other directions through the integral term.
+The source <span class="math notranslate nohighlight">\(Q\)</span> adds radiance inside the volume.</p>
+<p>This transport model describes incoherent intensity. It does not evolve the
+electromagnetic field phase, interference, or polarization. A telegrapher
+equation derived from these moments remains an intensity-transport
+approximation; its wave-like mathematical form does not turn it into
+Maxwell’s equations.</p>
 <p>The phase function is normalized over outgoing directions, so scattering
 redistributes radiance without creating or destroying radiant power. Its
 first angular moment is summarized by the anisotropy <span class="math notranslate nohighlight">\(g\)</span>, the mean
@@ -583,6 +678,12 @@ moments above, this approximation is</p>
 <div class="math notranslate nohighlight">
 \[L(\mathbf r,\mathbf s)\approx
 \frac{1}{4\pi}\left[\Phi(\mathbf r)+3\,\mathbf s\cdot\mathbf J(\mathbf r)\right].\]</div>
+<p>In a full expansion, the angular basis is <span class="math notranslate nohighlight">\(Y_{\ell m}(\mathbf s)\)</span>,
+with degree <span class="math notranslate nohighlight">\(\ell\)</span> and azimuthal index <span class="math notranslate nohighlight">\(m\)</span>. P1 keeps
+<span class="math notranslate nohighlight">\(\ell=0,1\)</span>, so there are <span class="math notranslate nohighlight">\(1+3=4\)</span> real angular coefficients in
+three dimensions. These can be represented by one scalar <span class="math notranslate nohighlight">\(\Phi\)</span>
+and the three components of <span class="math notranslate nohighlight">\(\mathbf J\)</span>. The name P1 refers to angular
+order; it does not mean that only one unknown is retained.</p>
 <p>The factor <span class="math notranslate nohighlight">\(1/(4\pi)\)</span> normalizes the isotropic part: integrating that
 term over the sphere returns <span class="math notranslate nohighlight">\(\Phi\)</span>. The factor 3 normalizes the first
 order term, since
@@ -599,6 +700,26 @@ first two equations. It says that, to leading order, radiation is spread
 equally over directions. The first-order correction allows a modest net flow,
 but P1 cannot preserve a narrow beam, a sharply directional source, or strong
 angular anisotropy.</p>
+<p>The closure can also be checked component by component. The necessary
+angular integrals are</p>
+<div class="math notranslate nohighlight">
+\[\int_{4\pi}s_i\,d\Omega=0,\qquad
+\int_{4\pi}s_i s_j\,d\Omega=\frac{4\pi}{3}\delta_{ij},\qquad
+\int_{4\pi}s_i s_j s_k\,d\Omega=0.\]</div>
+<p>The first and third integrals vanish by symmetry under
+<span class="math notranslate nohighlight">\(\mathbf s\mapsto-\mathbf s\)</span>. The second is isotropic and has trace
+<span class="math notranslate nohighlight">\(\int|\mathbf s|^2d\Omega=4\pi\)</span>, which fixes the factor <span class="math notranslate nohighlight">\(1/3\)</span>.
+Consequently <span class="math notranslate nohighlight">\(P_{ij}=\Phi\delta_{ij}/3\)</span>.</p>
+<p>P1 does not automatically preserve nonnegative radiance. Its reconstructed
+minimum over directions is</p>
+<div class="math notranslate nohighlight">
+\[L_{\min}=\frac{\Phi-3|\mathbf J|}{4\pi}.\]</div>
+<p>A nonnegative P1 angular reconstruction requires
+<span class="math notranslate nohighlight">\(|\mathbf J|\le\Phi/3\)</span>. General nonnegative radiance only requires
+<span class="math notranslate nohighlight">\(|\mathbf J|\le\Phi\)</span>, so a physically possible strongly directional
+field may already be outside the useful range of the linear P1 ansatz.
+MomentRT solves for fluence and current rather than reconstructing a
+guaranteed nonnegative angular distribution.</p>
 </section>
 <section id="diffusion-equation">
 <h2>Diffusion equation<a class="headerlink" href="#diffusion-equation" title="Link to this heading">#</a></h2>
@@ -619,6 +740,17 @@ these balances are</p>
 \[\nabla\cdot\mathbf J+\mu_a\Phi=q_0,
 \qquad
 \nabla\cdot\mathbf P+(\mu_a+\mu_s')\mathbf J=\mathbf q_1.\]</div>
+<p>The cancellation in the zeroth balance follows explicitly from phase
+normalization:</p>
+<div class="math notranslate nohighlight">
+\[\mu_s\int_{4\pi}\int_{4\pi}
+p(\mathbf s,\mathbf s')L(\mathbf s')\,d\Omega'\,d\Omega
+=\mu_s\Phi.\]</div>
+<p>That gain cancels the scattering loss <span class="math notranslate nohighlight">\(\mu_s\Phi\)</span>. The first moment
+instead retains directional memory <span class="math notranslate nohighlight">\(g\)</span>, so its gain is
+<span class="math notranslate nohighlight">\(\mu_s g\mathbf J\)</span>; subtracting it from
+<span class="math notranslate nohighlight">\((\mu_a+\mu_s)\mathbf J\)</span> leaves
+<span class="math notranslate nohighlight">\([\mu_a+\mu_s(1-g)]\mathbf J\)</span>.</p>
 <p>Now substitute <span class="math notranslate nohighlight">\(\mathbf P\approx\Phi\mathbf I/3\)</span> from the P1
 approximation above. An isotropic volume source, including the point source
 used by <code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code>, has no preferred direction and therefore
@@ -656,6 +788,29 @@ operator; replacing <span class="math notranslate nohighlight">\(\nabla\cdot(D\n
 first angular moment loses its direction. The diffusion approximation is
 most useful when fluence changes over distances long compared with this
 scale, so that local angular distributions are close to the P1 form.</p>
+<p>For example, illustrative coefficients
+<span class="math notranslate nohighlight">\(\mu_a=0.02\,\mathrm{mm^{-1}}\)</span> and
+<span class="math notranslate nohighlight">\(\mu_s'=1.0\,\mathrm{mm^{-1}}\)</span> give
+<span class="math notranslate nohighlight">\(D\approx0.327\,\mathrm{mm}\)</span> and
+<span class="math notranslate nohighlight">\(\ell_{\mathrm{tr}}\approx0.980\,\mathrm{mm}\)</span>. These numbers describe
+the chosen model. They do not establish that P1 is accurate at a particular
+distance from a source or interface.</p>
+</section>
+<section id="conservation-over-a-sample">
+<h2>Conservation over a sample<a class="headerlink" href="#conservation-over-a-sample" title="Link to this heading">#</a></h2>
+<p>Integrating the zeroth moment over a volume and using the divergence theorem
+gives</p>
+<div class="math notranslate nohighlight">
+\[\int_{\partial\Omega}\mathbf J\cdot\mathbf n\,dA
++\int_\Omega\mu_a\Phi\,dV
+=\int_\Omega q_0\,dV.\]</div>
+<p>For the finite solver, <span class="math notranslate nohighlight">\(q_0=0\)</span> inside the sample. Incoming illumination
+makes the net outward current negative on the illuminated part of the
+boundary; absorption and escape balance that incoming power. A source-free
+interior therefore does not imply a dark sample.</p>
+<p>The local equation and the global power balance are two forms of the same
+conservation law. This is why a numerical solution can conserve total power
+very accurately while retaining a mesh error or a transport-model error.</p>
 </section>
 <section id="infinite-homogeneous-point-source">
 <h2>Infinite homogeneous point source<a class="headerlink" href="#infinite-homogeneous-point-source" title="Link to this heading">#</a></h2>
@@ -695,13 +850,13 @@ source is singular; the model does not silently soften or spread the source.</p>
 directional randomization through <span class="math notranslate nohighlight">\(\ell_{\mathrm{tr}}\)</span> and absorption
 through <span class="math notranslate nohighlight">\(1/\kappa\)</span>. The <a class="reference internal" href="gallery/fundamentals/absorption_sweep.html"><span class="doc">absorption sweep example</span></a> compares the resulting radial profiles
 while holding reduced scattering and source power fixed.</p>
-<figure class="align-center" id="id1">
+<figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="_images/infinite-fluence-volume.png"><img alt="MomentRT logarithmic volume rendering of fluence from an embedded point source." src="_images/infinite-fluence-volume.png" style="width: 85%;" />
 </a>
 <figcaption>
 <p><span class="caption-text">An infinite-medium P1 field evaluated on a finite observation grid. The
 observation-window box is not a physical boundary, and the near-source
-values remain subject to the diffusion approximation.</span><a class="headerlink" href="#id1" title="Link to this image">#</a></p>
+values remain subject to the diffusion approximation.</span><a class="headerlink" href="#id2" title="Link to this image">#</a></p>
 </figcaption>
 </figure>
 </section>
@@ -716,8 +871,10 @@ in weakly scattering or optically thin regions, around sharp optical
 transitions, and when source-detector separation is short. The diffusion law
 replaces angular detail by a local gradient relation; a smooth-looking field
 does not establish that the physical field is accurate.</p>
-<p>MomentRT does not currently provide a finite-aperture detector model,
-collimated-source propagation, time dependence, spectral integration,
+<p>MomentRT provides passive contact <a class="reference internal" href="detectors.html"><span class="doc">Finite-aperture surface detectors</span></a> with an additional
+Lambertian escape assumption and independent monochromatic <a class="reference internal" href="spectral.html"><span class="doc">Wavelength-dependent materials and sweeps</span></a>
+sweeps. It does not provide collimated-source propagation, time dependence,
+broadband spectral integration,
 chromophore fitting, or inverse estimation. Refractive index is stored with
 materials, but no automatic Fresnel rule is derived from it. In the finite
 solver all internal refractive indices must be equal; an external diffuse
@@ -728,11 +885,57 @@ boundary coefficient must be supplied explicitly.</p>
 <p><span class="math notranslate nohighlight">\(P_1\)</span> is the first-order spherical-harmonic angular expansion used to
 derive diffusion. <span class="math notranslate nohighlight">\(P_N\)</span> denotes a general finite spherical-harmonic
 expansion through order <span class="math notranslate nohighlight">\(N\)</span>; it contains multiple coupled angular
-moments. <span class="math notranslate nohighlight">\(SP_N\)</span> is a different, simplified system derived from selected
-even-order transport equations, often arranged as coupled diffusion-like
-equations. Neither label means that a P1 solve secretly contains P2 or P3.
+moments. <span class="math notranslate nohighlight">\(SP_N\)</span> is a simplified transport approximation, often arranged
+as coupled diffusion-like equations for scalar combinations of moments.
+Asymptotic derivations treat it as a correction to diffusion under specified
+transport scalings. In multiple dimensions it does not retain the complete
+angular information of full <span class="math notranslate nohighlight">\(P_N\)</span>.</p>
+<p>In three dimensions, a full P3 expansion retains every angular degree
+<span class="math notranslate nohighlight">\(\ell=0,1,2,3\)</span>, giving <span class="math notranslate nohighlight">\((3+1)^2=16\)</span> angular coefficients.
+It does not run separate P1, P2, and P3 solves. P2 also exists: even angular
+orders are legitimate truncations. The common sequence P1, P3, P5 reflects
+practical parity and boundary-condition choices in many formulations; it is
+not a rule forbidding P2.</p>
+<p>For the same reason, SP3 and P3 are not interchangeable names. A common
+steady SP3 formulation has two coupled scalar equations after eliminating
+auxiliary moments, but it uses its own closure and boundary conditions.
+Replacing a diffusion coefficient or increasing the number of iso-surfaces
+in a plot cannot turn the present solver into SP3.</p>
+<p>For the asymptotic basis of simplified moment systems, see the original
+<a class="reference external" href="https://www.osti.gov/servlets/purl/6808825">SPN derivation</a> and
+<a class="reference external" href="https://doi.org/10.1016/j.jcp.2007.07.009">the work on time-dependent SPN equations</a>.
+Neither label means that a P1 solve secretly contains P2 or P3.
 MomentRT currently solves the P1 diffusion equation above, not a P3 or SP3
 system.</p>
+</section>
+<section id="angular-order-and-finite-element-order">
+<h2>Angular order and finite element order<a class="headerlink" href="#angular-order-and-finite-element-order" title="Link to this heading">#</a></h2>
+<p>The transport closure and spatial approximation can both carry a P1 label:</p>
+<ul class="simple">
+<li><p>Transport P1 truncates the angular spherical-harmonic expansion.</p></li>
+<li><p>Linear tetrahedral finite elements use polynomials of degree one in
+position inside each tetrahedron.</p></li>
+</ul>
+<p>MomentRT currently uses both. Raising the spatial polynomial degree would
+improve how the diffusion field is represented within an element, while
+raising the transport angular order would change the physical equations and
+their unknowns. They are independent changes.</p>
+</section>
+<section id="from-theory-to-the-public-api">
+<h2>From theory to the public API<a class="headerlink" href="#from-theory-to-the-public-api" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Material.absorption</span></code> supplies <span class="math notranslate nohighlight">\(\mu_a\)</span>, and
+<code class="docutils literal notranslate"><span class="pre">Material.reduced_scattering</span></code> supplies <span class="math notranslate nohighlight">\(\mu_s'\)</span>. The material’s
+<code class="docutils literal notranslate"><span class="pre">refractive_index</span></code> does not enter the implemented bulk steady diffusion
+coefficient. Internal index changes are rejected by the finite solver, and
+external diffuse reflectance is configured separately.</p>
+<p><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> evaluates the Green function in this chapter.
+<code class="docutils literal notranslate"><span class="pre">Diffusion</span></code> assembles the finite weak problem in <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a>.
+<code class="docutils literal notranslate"><span class="pre">RobinBoundary</span></code> selects a diffuse partial-current boundary law.
+<code class="docutils literal notranslate"><span class="pre">result.fluence</span></code> stores nodal <span class="math notranslate nohighlight">\(\Phi\)</span>, while the finite solver’s
+<code class="docutils literal notranslate"><span class="pre">result.flux</span></code> stores element-centered <span class="math notranslate nohighlight">\(\mathbf J\)</span>. The source
+wavelength selects coefficients from a supplied <code class="docutils literal notranslate"><span class="pre">SpectralMaterial</span></code> table.
+A fixed <code class="docutils literal notranslate"><span class="pre">Material</span></code> retains its configured coefficients. Neither choice
+infers an optical spectrum from the wavelength label.</p>
 </section>
 </section>
 
@@ -783,12 +986,17 @@ system.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-to-read-this-theory">How to read this theory</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quantities-and-units">Quantities and units</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#radiative-transfer-and-angular-moments">Radiative transfer and angular moments</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-p1-closes-the-moment-equations">How P1 closes the moment equations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusion-equation">Diffusion equation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#conservation-over-a-sample">Conservation over a sample</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#infinite-homogeneous-point-source">Infinite homogeneous point source</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusion-is-an-approximation">Diffusion is an approximation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-order-labels-mean">What the order labels mean</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#angular-order-and-finite-element-order">Angular order and finite element order</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#from-theory-to-the-public-api">From theory to the public API</a></li>
 </ul>
   </nav></div>
 
@@ -796,7 +1004,7 @@ system.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.6/docs/source/theory.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.0/docs/source/theory.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

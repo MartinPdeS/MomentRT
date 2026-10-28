@@ -90,6 +90,23 @@ gives
    \qquad
    J_{\mathrm{in}}=\frac{\Phi}{4}-\frac{J_n}{2}.
 
+The numerical factors come from hemisphere integration, not fitted leakage
+parameters. Choose the polar axis along :math:`\mathbf n` and write
+:math:`\xi=\mathbf s\cdot\mathbf n`. Azimuthal integration cancels the
+tangential components of current. The outward integral becomes
+
+.. math::
+
+   J_{\mathrm{out}}
+   =\frac{2\pi}{4\pi}\int_0^1
+     \xi(\Phi+3\xi J_n)\,d\xi
+   =\frac{\Phi}{4}+\frac{J_n}{2}.
+
+Integrating :math:`-\xi L` over :math:`-1<\xi<0` gives the inward
+expression. Matching these integrated partial currents is a P1 boundary
+closure: it does not impose the exact incoming radiance separately in every
+direction.
+
 Equivalently, the P1 half-range relation is
 
 .. math::
@@ -193,6 +210,63 @@ diffuse partial current returns to the sample, and
 to zero. Use ``ReflectingBoundary`` for the separate zero-normal-current
 condition :math:`\mathbf J\cdot\mathbf n=0`; it is not illuminated and adds
 no boundary leakage or source terms to the solve.
+
+Why this is called a Robin condition
+-------------------------------------
+
+Inserting :math:`\mathbf J=-D\nabla\Phi` into the current law gives
+
+.. math::
+
+   D\frac{\partial\Phi}{\partial n}+\beta\Phi
+   =c_R I_{\mathrm{in}}.
+
+The name describes a mixture of a boundary value and a normal derivative.
+It is useful to distinguish three mathematical boundary choices:
+
+.. list-table:: Boundary conditions for a diffusion field
+   :header-rows: 1
+   :widths: 18 36 46
+
+   * - Type
+     - Mathematical prescription
+     - Interpretation
+   * - Dirichlet
+     - :math:`\Phi=\Phi_b`
+     - Prescribes the fluence itself.
+   * - Neumann
+     - :math:`-D\partial_n\Phi=j_b`
+     - Prescribes net outward current. A reflecting face has :math:`j_b=0`.
+   * - Robin
+     - :math:`D\partial_n\Phi+\beta\Phi=c_RI_{\mathrm{in}}`
+     - Relates leakage to local fluence and imposed incoming light.
+
+MomentRT exposes the reflecting and diffuse Robin choices. It does not
+provide a general prescribed-fluence boundary through this API.
+An unilluminated open Robin face can have nonzero fluence at the actual
+sample surface; setting fluence to zero there would impose a different
+boundary model.
+
+On an unilluminated planar face, division by :math:`\beta>0` gives
+
+.. math::
+
+   \Phi+z_b\partial_n\Phi=0,\qquad
+   z_b=\frac{D}{\beta}=\frac{2D(1+R)}{1-R}.
+
+Locally extrapolating the fluence linearly along the outward normal would
+make it vanish a distance :math:`z_b` outside the sample. This is the origin
+of the extrapolated-boundary interpretation. The relation is a local linear
+extrapolation, not a statement that the physical field actually exists in
+an added slab of material. MomentRT imposes the Robin term on the real face;
+it does not enlarge the mesh by :math:`z_b`.
+
+For example, at :math:`R=0.5` one has :math:`\beta=1/6` and
+:math:`z_b=6D`. The boundary becomes less leaky as :math:`R` increases.
+For the illuminated top face :math:`z=z_{\min}`, the outward normal is
+:math:`-\mathbf e_z` even though positive z points into the sample. The
+same outward-normal law is used on every face, so the incident source
+always enters with the correct inward sign.
 
 What the illumination input means
 ---------------------------------
@@ -332,6 +406,37 @@ load. MomentRT solves the sparse system with SciPy and checks the relative
 residual :math:`\lVert\mathbf A\boldsymbol\Phi-\mathbf b\rVert/
 \lVert\mathbf b\rVert` before returning the field.
 
+For uniform illumination, :math:`I_{\mathrm{in}}` is constant over each
+triangle. Since :math:`\int_fN_i\,dA=A_f/3`, its local load is exactly
+:math:`b_i^{(f)}=c_R I_{\mathrm{in}}A_f/3`.
+
+For a disk, let :math:`\chi_{fq}` be one when quadrature point :math:`q` on
+face triangle :math:`f` lies inside the disk and zero otherwise. The three
+quadrature points have barycentric coordinates given by the permutations of
+:math:`(2/3,1/6,1/6)` and equal weights :math:`1/3`. The sampled illuminated
+area and incoming irradiance are
+
+.. math::
+
+   A_{\mathrm{sampled}}=\sum_f\frac{A_f}{3}\sum_{q=1}^3\chi_{fq},
+   \qquad
+   I_h=\frac{P_{\mathrm{in}}}{A_{\mathrm{sampled}}}.
+
+The load at local node :math:`i` is then
+
+.. math::
+
+   b_i^{(f)}=c_R I_h\frac{A_f}{3}
+   \sum_{q=1}^3\chi_{fq}N_i(\mathbf r_{fq}).
+
+Because :math:`\sum_iN_i=1`, the sum of the source load entries is
+:math:`c_RP_{\mathrm{in}}`. Normalization preserves the specified incoming
+power even when the sampled disk differs from its geometric area
+:math:`\pi r_s^2`. Compare the reported sampled area with that geometric
+area and refine the footprint: conservation by normalization does not prove
+that the spatial distribution of illumination is resolved. If no quadrature
+point lands in the disk, the solver rejects the unresolved source.
+
 After solving this sparse linear system, the fluence values are put back on
 the three-dimensional mesh. Within each tetrahedron, its constant gradient
 gives the element-centered current
@@ -342,6 +447,36 @@ gives the element-centered current
    =-D_e\sum_{i=1}^{4}\Phi_i\nabla N_i.
 
 The field is not smoothed across element faces or optical interfaces.
+
+What makes the linear system well posed?
+-----------------------------------------
+
+For a real test field :math:`w`, the quadratic form of the continuous
+operator is
+
+.. math::
+
+   a(w,w)=\int_\Omega D|\nabla w|^2\,dV
+   +\int_\Omega\mu_a w^2\,dV
+   +\int_{\partial\Omega_R}\beta w^2\,dA.
+
+All three terms are nonnegative for the package's material and boundary
+coefficients. For a connected sample, absorption on a region of positive
+volume or Robin leakage on a face of positive area controls the otherwise
+undetermined constant mode. This explains the positive diffusion,
+absorption, and boundary contributions in the assembled matrix.
+
+A source-free, perfectly reflecting, nonabsorbing sample has a constant
+nullspace: any spatially constant fluence satisfies its steady equation.
+A nonzero net input in such a closed nonabsorbing system would accumulate
+energy rather than reach a steady state. The package's illuminated face must
+be Robin with :math:`R<1`, which supplies leakage and excludes this particular
+degeneracy for supported illumination configurations.
+
+Positive coefficients and a positive energy form do not by themselves
+guarantee nonnegative nodal values on every discretization. A discrete
+maximum principle also depends on the mesh and matrix structure.
+MomentRT reports the minimum fluence rather than clipping a negative value.
 
 .. figure:: _static/images/finite-fluence-slices.png
    :align: center
@@ -457,6 +592,27 @@ refractive-index jumps because it does not model refraction or the associated
 interface jump conditions. Absorption and reduced scattering may still vary
 between structures.
 
+For a perfectly contacted internal interface with equal refractive indices
+and no surface source, the continuous diffusion model uses
+
+.. math::
+
+   \Phi_1=\Phi_2,\qquad
+   \mathbf J_1\cdot\mathbf n=\mathbf J_2\cdot\mathbf n,
+
+where the same oriented normal is used on both sides. The second condition
+comes from integrating conservation over a thin pillbox around the
+interface: no finite surface absorption or source remains as the pillbox
+thickness tends to zero. With unequal diffusion coefficients, normal
+gradients can jump while normal current remains continuous.
+
+The shared nodal basis enforces continuous fluence, and the weak equation
+enforces current transmission in an integral sense. The computed
+piecewise-constant element currents need not match pointwise on individual
+faces of a finite mesh. Refinement is required to assess that approximation.
+Index mismatch requires a different interface law and is outside this
+continuous-fluence model.
+
 Power accounting and verification
 ---------------------------------
 
@@ -476,6 +632,36 @@ whole face; it is not the same as the net current through that face or a
 detector reading. ``result.outgoing_power_by_face`` separates the integrated
 escape by face.
 
+The balance follows directly by choosing the constant test function
+:math:`v=1`. The gradient term vanishes, leaving
+
+.. math::
+
+   P_{\mathrm{abs}}
+   +\int_{\partial\Omega_R}\beta\Phi\,dA
+   =c_RP_{\mathrm{in}},
+
+where :math:`c_R` is the coefficient on the single illuminated face.
+The integral is gross Robin leakage; on the source face it includes an
+incident-field contribution. Subtracting that contribution gives
+
+.. math::
+
+   P_{\mathrm{escape}}
+   =\int_{\partial\Omega_R}\beta\Phi\,dA
+   -2\beta_sP_{\mathrm{in}}.
+
+The subscript :math:`s` denotes the illuminated face, whose reflectance may
+differ from other faces. Since :math:`c_R-2\beta_s=1` on that face,
+these equations imply
+:math:`P_{\mathrm{abs}}+P_{\mathrm{escape}}=P_{\mathrm{in}}`.
+The factor :math:`c_R` in the FEM load is therefore not extra optical power.
+It arises from the chosen partial-current closure.
+
+The nodal basis contains the constant function through its partition of
+unity. The same identity consequently holds in the assembled discrete
+equations, up to solver and numerical integration errors.
+
 ``result.diagnostics`` reports the sparse-system relative residual, minimum
 fluence, tetrahedron count, and sampled source area. A small algebraic
 residual shows that the linear equations were solved accurately. A small
@@ -485,12 +671,50 @@ interface automatically, or proves that the source disk is adequately
 sampled. Compare independent references and refine the mesh to assess those
 errors.
 
+Interpreting convergence
+------------------------
+
+There are several independent errors to investigate:
+
+.. list-table:: What a refinement or diagnostic can establish
+   :header-rows: 1
+   :widths: 24 38 38
+
+   * - Error source
+     - Useful check
+     - What it does not establish
+   * - Linear solve
+     - Relative residual of :math:`\mathbf A\boldsymbol\Phi=\mathbf b`
+     - Accuracy of the continuous diffusion solution
+   * - Spatial approximation
+     - Refine the mesh and compare specified observables
+     - Accuracy of the P1 closure
+   * - Material geometry
+     - Align planar interfaces and refine curved structures
+     - Correct optical coefficients for a real sample
+   * - Source footprint
+     - Compare sampled and geometric areas and refine the spot
+     - Correct coupling from an external collimated source
+   * - Transport approximation
+     - Compare with RTE, Monte Carlo, or suitable measurements
+     - Removal of numerical errors in either reference
+
+Use an observable meaningful for the intended experiment, such as fluence at
+a fixed location or integrated escaping power on a specified face. Compare
+it across successively refined meshes with the same physical configuration.
+A converged total power can coexist with an unconverged local field.
+The :doc:`mesh-refinement example
+<gallery/finite_samples/mesh_refinement>` demonstrates this workflow for a
+finite diffusion problem.
+
 Limits of this boundary and transport model
 -------------------------------------------
 
-The solver is steady-state and monochromatic. It does not model Fresnel
-reflection from refractive indices, collimated illumination, detector
-apertures, time response, spectral integration, or inverse estimation. P1
+Each solve is steady-state and monochromatic. Passive aperture
+:doc:`detectors` and :doc:`spectral` sweeps operate on this model.
+It does not model Fresnel reflection from refractive indices, collimated
+illumination, free-space detector optics, time response, broadband spectral
+integration, or inverse estimation. P1
 diffusion becomes least reliable near the source footprint and sample
 boundaries, in weakly scattering regions, around unresolved interfaces, and
 at short source-to-detector distances. Plotting or a small algebraic residual

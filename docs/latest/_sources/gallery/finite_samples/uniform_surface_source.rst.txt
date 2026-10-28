@@ -234,8 +234,8 @@ A static section makes the penetration profile visible in the gallery card.
  .. code-block:: none
 
     Incoming power: 1 milliwatt
-    Absorbed power: 0.00020454076689281953 watt
-    Escaping power: 0.0007954592331071771 watt
+    Absorbed power: 0.0002045407668928195 watt
+    Escaping power: 0.000795459233107177 watt
 
 
 
@@ -243,7 +243,7 @@ A static section makes the penetration profile visible in the gallery card.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.164 seconds)
+   **Total running time of the script:** (0 minutes 0.169 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_uniform_surface_source.py:

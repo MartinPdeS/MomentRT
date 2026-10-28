@@ -134,6 +134,24 @@ quantities. ``result.outgoing_power_by_face`` separates escaping power by
 sample face. This is total face-integrated power, not a detector collection
 efficiency.
 
+Configured :doc:`detectors` have a separate output:
+``result.detectors[name]`` is a ``DetectorResult``, and
+``result.detector_power[name]`` is its collected power.
+The result includes sampled and geometric aperture areas and the angular
+acceptance fraction. These are passive readouts of the escaping field;
+they are not subtracted again from the energy balance.
+
+``result.boundary_fields[face]`` contains the boundary quadrature positions,
+area weights, and escaping irradiance used for collection. Its
+``escaping_power`` integrates the full face. Boundary arrays are snapshots,
+so later edits to source or material configurations do not change them.
+
+For a :doc:`wavelength sweep <spectral>`, the returned spectral result keeps
+one ordinary result per wavelength in ``results`` and stacked detector
+powers in ``detector_power``. The wavelength vector preserves the requested
+ordering; the sweep does not integrate these independent powers into a
+broadband signal.
+
 ``result.diagnostics`` includes:
 
 * ``linear_relative_residual``: relative residual of the sparse algebraic

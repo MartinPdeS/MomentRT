@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Check finite-element mesh refinement &#8212; MomentRT 0.1.6 documentation</title>
+    <title>Check finite-element mesh refinement &#8212; MomentRT 0.2.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=79d558ae"></script>
+    <script src="../../_static/documentation_options.js?v=95e61db4"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.2.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -466,7 +466,9 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Finite samples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active"><a aria-current="page" class="current reference internal" href="#">Check finite-element mesh refinement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectral_detectors.html">Sweep wavelengths with a fixed sensor geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structured_sample.html">A heterogeneous layered sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="surface_detector.html">Collect light with finite apertures</a></li>
 <li class="toctree-l2"><a class="reference internal" href="surface_diffusion.html">Surface illumination and FEM diffusion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uniform_surface_source.html">Uniform illumination on a sample face</a></li>
 </ul>
@@ -694,12 +696,12 @@ show this observable’s sensitivity to mesh resolution.</p>
 </span><span class="k">if</span> <span class="n">show_figures</span><span class="p">:</span><span class="w">
 </span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Grid (7, 7, 5): linear residual = 9.648e-16, energy residual = -2.168e-19 watt
-Grid (11, 11, 9): linear residual = 2.904e-15, energy residual = -2.277e-18 watt
-Grid (15, 15, 13): linear residual = 6.161e-15, energy residual = -3.686e-18 watt
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Grid (7, 7, 5): linear residual = 9.514e-16, energy residual = 0.000e+00 watt
+Grid (11, 11, 9): linear residual = 2.889e-15, energy residual = -2.168e-18 watt
+Grid (15, 15, 13): linear residual = 6.171e-15, energy residual = -3.361e-18 watt
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.362 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.393 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-finite-samples-mesh-refinement-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/ae4df34bc20425f80c541a20328ff990/mesh_refinement.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">mesh_refinement.ipynb</span></code></a></p>
@@ -773,7 +775,7 @@ Grid (15, 15, 13): linear residual = 6.161e-15, energy residual = -3.686e-18 wat
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.6/docs/source/gallery/finite_samples/mesh_refinement.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.0/docs/source/gallery/finite_samples/mesh_refinement.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

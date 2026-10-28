@@ -64,8 +64,9 @@ index is a plain dimensionless number.
 
 MomentRT converts quantities at numerical boundaries as required and keeps
 units attached to returned fields and power values. Material values are
-assumed to apply at the source wavelength. No wavelength-dependent material
-law or chromophore model is inferred.
+assumed to apply at the source wavelength. For tabulated wavelength-dependent
+properties, use ``SpectralMaterial`` and the :doc:`spectral` workflow.
+No tissue spectrum or chromophore model is inferred from a wavelength alone.
 
 Infinite-medium workflow
 ------------------------

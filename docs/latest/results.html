@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Results and visualization &#8212; MomentRT 0.1.6 documentation</title>
+    <title>Results and visualization &#8212; MomentRT 0.2.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=79d558ae"></script>
+    <script src="_static/documentation_options.js?v=95e61db4"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.6" />
+  <meta name="docsearch:version" content="0.2.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -640,6 +640,21 @@ it does not add detector optics or measurement apertures.</span><a class="header
 quantities. <code class="docutils literal notranslate"><span class="pre">result.outgoing_power_by_face</span></code> separates escaping power by
 sample face. This is total face-integrated power, not a detector collection
 efficiency.</p>
+<p>Configured <a class="reference internal" href="detectors.html"><span class="doc">Finite-aperture surface detectors</span></a> have a separate output:
+<code class="docutils literal notranslate"><span class="pre">result.detectors[name]</span></code> is a <code class="docutils literal notranslate"><span class="pre">DetectorResult</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">result.detector_power[name]</span></code> is its collected power.
+The result includes sampled and geometric aperture areas and the angular
+acceptance fraction. These are passive readouts of the escaping field;
+they are not subtracted again from the energy balance.</p>
+<p><code class="docutils literal notranslate"><span class="pre">result.boundary_fields[face]</span></code> contains the boundary quadrature positions,
+area weights, and escaping irradiance used for collection. Its
+<code class="docutils literal notranslate"><span class="pre">escaping_power</span></code> integrates the full face. Boundary arrays are snapshots,
+so later edits to source or material configurations do not change them.</p>
+<p>For a <a class="reference internal" href="spectral.html"><span class="doc">wavelength sweep</span></a>, the returned spectral result keeps
+one ordinary result per wavelength in <code class="docutils literal notranslate"><span class="pre">results</span></code> and stacked detector
+powers in <code class="docutils literal notranslate"><span class="pre">detector_power</span></code>. The wavelength vector preserves the requested
+ordering; the sweep does not integrate these independent powers into a
+broadband signal.</p>
 <p><code class="docutils literal notranslate"><span class="pre">result.diagnostics</span></code> includes:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">linear_relative_residual</span></code>: relative residual of the sparse algebraic
@@ -723,7 +738,7 @@ require PyVista.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.6/docs/source/results.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.0/docs/source/results.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

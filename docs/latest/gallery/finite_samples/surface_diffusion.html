@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Surface illumination and FEM diffusion &#8212; MomentRT 0.1.4 documentation</title>
+    <title>Surface illumination and FEM diffusion &#8212; MomentRT 0.1.6 documentation</title>
   
   
   
@@ -37,7 +37,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="../../_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/martinpdes_layout.css?v=a8cc01cd" />
-    <link rel="stylesheet" type="text/css" href="../../_static/layout.css?v=ff7c2d1f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/layout.css?v=1307682e" />
   
   <!-- So that users can add custom icons -->
   <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=f024b623"></script>
+    <script src="../../_static/documentation_options.js?v=79d558ae"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.6';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -63,11 +63,11 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Uniform illumination on a sample face" href="uniform_surface_source.html" />
-    <link rel="prev" title="A layered sample with an inclusion" href="structured_sample.html" />
+    <link rel="prev" title="A heterogeneous layered sample" href="structured_sample.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.4" />
+  <meta name="docsearch:version" content="0.1.6" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -466,7 +466,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Finite samples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="mesh_refinement.html">Check finite-element mesh refinement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="structured_sample.html">A layered sample with an inclusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structured_sample.html">A heterogeneous layered sample</a></li>
 <li class="toctree-l2 current active"><a aria-current="page" class="current reference internal" href="#">Surface illumination and FEM diffusion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="uniform_surface_source.html">Uniform illumination on a sample face</a></li>
 </ul>
@@ -676,8 +676,8 @@ numerical accounting, not the accuracy of diffusion against radiative transfer.<
 </span></pre></div></div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Incoming power: 1 milliwatt
 Absorbed power: 0.2423444860639823 milliwatt
-Escaping power: 0.7576555139360164 milliwatt
-Energy residual: 1.4094628242311558e-18 watt
+Escaping power: 0.7576555139360165 milliwatt
+Energy residual: 1.3010426069826053e-18 watt
 </pre></div>
 </div>
 </section>
@@ -700,13 +700,17 @@ Plotly views to rotate the sample and inspect physical hover values.</p>
 </span><span class="w">
 </span><span class="n">center_y</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span><span class="o">/</span> <span class="mi">2</span><span class="w">
 </span><span class="w">
-</span><span class="n">x_axis</span> <span class="o">=</span> <span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">spacing</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="w">
-</span>    <span class="s2">&quot;</span><span class="s2">millimeter</span><span class="s2">&quot;</span><span class="w">
-</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="w">
+</span><span class="n">x_axis</span> <span class="o">=</span> <span class="p">(</span><span class="w">
+</span>    <span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">spacing</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span><span class="w">
+</span>    <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">millimeter</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span>    <span class="o">.</span><span class="n">magnitude</span><span class="w">
+</span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="n">z_axis</span> <span class="o">=</span> <span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">spacing</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="w">
-</span>    <span class="s2">&quot;</span><span class="s2">millimeter</span><span class="s2">&quot;</span><span class="w">
-</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="w">
+</span><span class="n">z_axis</span> <span class="o">=</span> <span class="p">(</span><span class="w">
+</span>    <span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">spacing</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="p">)</span><span class="w">
+</span>    <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">millimeter</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span>    <span class="o">.</span><span class="n">magnitude</span><span class="w">
+</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="n">figure_static</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span><span class="p">)</span><span class="w">
 </span><span class="w">
@@ -736,7 +740,7 @@ Plotly views to rotate the sample and inspect physical hover values.</p>
 </span><span class="k">if</span> <span class="n">show_figures</span><span class="p">:</span><span class="w">
 </span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<iframe src="../../_static/gallery/surface_diffusion-3.html" title="Diffusive flux (element centers; relative arrow lengths)" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.155 seconds)</p>
+<iframe src="../../_static/gallery/surface_diffusion-3.html" title="Diffusive flux (element centers; relative arrow lengths)" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.793 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-finite-samples-surface-diffusion-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/22ce9b7a701d6677edbceaf8e8257b56/surface_diffusion.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">surface_diffusion.ipynb</span></code></a></p>
@@ -768,7 +772,7 @@ Plotly views to rotate the sample and inspect physical hover values.</p>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">A layered sample with an inclusion</p>
+        <p class="prev-next-title">A heterogeneous layered sample</p>
       </div>
     </a>
     <a class="right-next"
@@ -817,7 +821,7 @@ Plotly views to rotate the sample and inspect physical hover values.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.4/docs/source/gallery/finite_samples/surface_diffusion.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.6/docs/source/gallery/finite_samples/surface_diffusion.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

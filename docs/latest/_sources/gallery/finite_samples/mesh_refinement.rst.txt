@@ -118,7 +118,7 @@ Solve on coarse, medium, and fine grids
 Each grid has nodes at the centerline and at one-millimeter depth, so those
 physical points can be compared directly.
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-119
+.. GENERATED FROM PYTHON SOURCE LINES 76-120
 
 .. code-block:: Python
 
@@ -157,9 +157,10 @@ physical points can be compared directly.
         centerline = fluence[shape[0] // 2, shape[1] // 2, :]
 
         depth = (
-            mesh.origin[2]
-            + np.arange(shape[2]) * mesh.spacing[2]
-        ).to("millimeter").magnitude
+            (mesh.origin[2] + np.arange(shape[2]) * mesh.spacing[2])
+            .to("millimeter")
+            .magnitude
+        )
 
         depth_profiles.append(centerline)
 
@@ -172,14 +173,14 @@ physical points can be compared directly.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-124
+.. GENERATED FROM PYTHON SOURCE LINES 121-125
 
 Compare interpolated centerline profiles
 ----------------------------------------
 Interpolation puts the plotted lines on the same depth coordinates; it does
 not change the finite-element solution or create additional mesh resolution.
 
-.. GENERATED FROM PYTHON SOURCE LINES 124-144
+.. GENERATED FROM PYTHON SOURCE LINES 125-145
 
 .. code-block:: Python
 
@@ -215,14 +216,14 @@ not change the finite-element solution or create additional mesh resolution.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 145-149
+.. GENERATED FROM PYTHON SOURCE LINES 146-150
 
 Report solver residuals and energy residuals
 --------------------------------------------
 Algebraic and energy residuals diagnose the solve, while profile changes
 show this observable's sensitivity to mesh resolution.
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-163
+.. GENERATED FROM PYTHON SOURCE LINES 150-164
 
 .. code-block:: Python
 
@@ -248,9 +249,9 @@ show this observable's sensitivity to mesh resolution.
 
  .. code-block:: none
 
-    Grid (7, 7, 5): linear residual = 9.246e-16, energy residual = -2.168e-19 watt
-    Grid (11, 11, 9): linear residual = 2.835e-15, energy residual = -2.060e-18 watt
-    Grid (15, 15, 13): linear residual = 6.093e-15, energy residual = -3.686e-18 watt
+    Grid (7, 7, 5): linear residual = 9.648e-16, energy residual = -2.168e-19 watt
+    Grid (11, 11, 9): linear residual = 2.904e-15, energy residual = -2.277e-18 watt
+    Grid (15, 15, 13): linear residual = 6.161e-15, energy residual = -3.686e-18 watt
 
 
 
@@ -258,7 +259,7 @@ show this observable's sensitivity to mesh resolution.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.485 seconds)
+   **Total running time of the script:** (0 minutes 0.362 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_mesh_refinement.py:

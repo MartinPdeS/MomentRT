@@ -257,7 +257,7 @@ Make a static central-plane overview
 The gallery uses this Matplotlib image as a compact thumbnail. The live
 three-dimensional Plotly volume remains available in the example above.
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-148
+.. GENERATED FROM PYTHON SOURCE LINES 116-152
 
 .. code-block:: Python
 
@@ -266,13 +266,17 @@ three-dimensional Plotly volume remains available in the example above.
 
     plane_index = mesh.shape[2] // 2
 
-    x_axis = (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0]).to(
-        "millimeter"
-    ).magnitude
+    x_axis = (
+        (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0])
+        .to("millimeter")
+        .magnitude
+    )
 
-    y_axis = (mesh.origin[1] + np.arange(mesh.shape[1]) * mesh.spacing[1]).to(
-        "millimeter"
-    ).magnitude
+    y_axis = (
+        (mesh.origin[1] + np.arange(mesh.shape[1]) * mesh.spacing[1])
+        .to("millimeter")
+        .magnitude
+    )
 
     figure_static, axes = plt.subplots(figsize=(6, 5))
 
@@ -308,7 +312,7 @@ three-dimensional Plotly volume remains available in the example above.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.373 seconds)
+   **Total running time of the script:** (0 minutes 0.294 seconds)
 
 
 .. _sphx_glr_download_gallery_fundamentals_infinite_diffusion.py:

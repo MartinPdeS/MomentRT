@@ -110,7 +110,7 @@ Reuse the same inputs while varying R
 Compare a more open diffuse boundary with progressively stronger internal
 diffuse reflection.
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-115
+.. GENERATED FROM PYTHON SOURCE LINES 68-116
 
 .. code-block:: Python
 
@@ -122,9 +122,10 @@ diffuse reflection.
     center_index_y = mesh.shape[1] // 2
 
     depth = (
-        mesh.origin[2]
-        + np.arange(mesh.shape[2]) * mesh.spacing[2]
-    ).to("millimeter").magnitude
+        (mesh.origin[2] + np.arange(mesh.shape[2]) * mesh.spacing[2])
+        .to("millimeter")
+        .magnitude
+    )
 
     centerline_profiles = []
 
@@ -168,13 +169,13 @@ diffuse reflection.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-119
+.. GENERATED FROM PYTHON SOURCE LINES 117-120
 
 Plot fluence through the center of the sample
 ---------------------------------------------
 Each curve shares the same material, source power, spot, and mesh.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-138
+.. GENERATED FROM PYTHON SOURCE LINES 120-139
 
 .. code-block:: Python
 
@@ -209,13 +210,13 @@ Each curve shares the same material, source power, spot, and mesh.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-142
+.. GENERATED FROM PYTHON SOURCE LINES 140-143
 
 Check energy accounting for each case
 -------------------------------------
 The reported escape is transmitted power integrated over all sample faces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 142-156
+.. GENERATED FROM PYTHON SOURCE LINES 143-157
 
 .. code-block:: Python
 
@@ -251,7 +252,7 @@ The reported escape is transmitted power integrated over all sample faces.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.330 seconds)
+   **Total running time of the script:** (0 minutes 0.241 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_reflectance_sweep.py:

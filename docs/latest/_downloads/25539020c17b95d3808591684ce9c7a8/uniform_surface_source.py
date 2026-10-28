@@ -106,13 +106,17 @@ fluence_values = result.fluence.values.to("watt / meter**2").magnitude
 
 center_y = mesh.shape[1] // 2
 
-x_axis = (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0]).to(
-    "millimeter"
-).magnitude
+x_axis = (
+    (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0])
+    .to("millimeter")
+    .magnitude
+)
 
-z_axis = (mesh.origin[2] + np.arange(mesh.shape[2]) * mesh.spacing[2]).to(
-    "millimeter"
-).magnitude
+z_axis = (
+    (mesh.origin[2] + np.arange(mesh.shape[2]) * mesh.spacing[2])
+    .to("millimeter")
+    .magnitude
+)
 
 figure_static, axes = plt.subplots(figsize=(6, 4))
 

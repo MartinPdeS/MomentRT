@@ -18,14 +18,15 @@
 .. _sphx_glr_gallery_finite_samples_structured_sample.py:
 
 
-A layered sample with an inclusion
-==================================
+A heterogeneous layered sample
+==============================
 
-Illustrative properties only, assumed at a single wavelength. Positive z points
-into the sample. Geometry is ready to inspect and sample; a boundary-aware
-transport solver is still required to propagate light through this sample.
+Build a synthetic optical phantom with three layers, two spherical inclusions,
+and a box-shaped heterogeneity. Its materials are illustrative and assumed at
+one wavelength. Positive z points into the sample. Then illuminate the sample
+and inspect the finite-sample P1 fluence volume.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-19
+.. GENERATED FROM PYTHON SOURCE LINES 10-31
 
 .. code-block:: Python
 
@@ -35,7 +36,18 @@ transport solver is still required to propagate light through this sample.
     import matplotlib.pyplot as plt
     import numpy as np
 
-    from MomentRT import Material, Sphere, StructuredMedium, ureg
+    from MomentRT import (
+        Box,
+        CartesianMesh,
+        Diffusion,
+        Material,
+        RobinBoundary,
+        Simulation,
+        Sphere,
+        StructuredMedium,
+        UniformSurfaceSource,
+        ureg,
+    )
 
     show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
@@ -46,13 +58,13 @@ transport solver is still required to propagate light through this sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 20-23
+.. GENERATED FROM PYTHON SOURCE LINES 32-35
 
 Optical materials
 -----------------
 Use explicit unit-bearing optical coefficients. These values are illustrative.
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-48
+.. GENERATED FROM PYTHON SOURCE LINES 35-78
 
 .. code-block:: Python
 
@@ -66,18 +78,36 @@ Use explicit unit-bearing optical coefficients. These values are illustrative.
     epidermal_material = Material(
         absorption=0.1 / ureg.millimeter,
         reduced_scattering=1.5 / ureg.millimeter,
-        refractive_index=1.42,
+        refractive_index=1.4,
     )
 
-    dermal_material = Material(
-        absorption=0.03 / ureg.millimeter,
-        reduced_scattering=1.0 / ureg.millimeter,
+    papillary_material = Material(
+        absorption=0.04 / ureg.millimeter,
+        reduced_scattering=1.3 / ureg.millimeter,
+        refractive_index=1.4,
+    )
+
+    reticular_material = Material(
+        absorption=0.02 / ureg.millimeter,
+        reduced_scattering=0.9 / ureg.millimeter,
         refractive_index=1.4,
     )
 
     inclusion_material = Material(
-        absorption=0.2 / ureg.millimeter,
-        reduced_scattering=1.2 / ureg.millimeter,
+        absorption=0.18 / ureg.millimeter,
+        reduced_scattering=1.6 / ureg.millimeter,
+        refractive_index=1.4,
+    )
+
+    second_inclusion_material = Material(
+        absorption=0.08 / ureg.millimeter,
+        reduced_scattering=2.0 / ureg.millimeter,
+        refractive_index=1.4,
+    )
+
+    box_material = Material(
+        absorption=0.06 / ureg.millimeter,
+        reduced_scattering=0.6 / ureg.millimeter,
         refractive_index=1.4,
     )
 
@@ -88,20 +118,20 @@ Use explicit unit-bearing optical coefficients. These values are illustrative.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-52
+.. GENERATED FROM PYTHON SOURCE LINES 79-82
 
 Finite sample extent
 --------------------
 Set the lower corner and full dimensions. Positive z points into the sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-62
+.. GENERATED FROM PYTHON SOURCE LINES 82-92
 
 .. code-block:: Python
 
 
     sample = StructuredMedium(
         origin=np.array([-5, -5, 0]) * ureg.millimeter,
-        size=np.array([10, 10, 4]) * ureg.millimeter,
+        size=np.array([10, 10, 5]) * ureg.millimeter,
     )
 
     sample.add_background(
@@ -115,13 +145,14 @@ Set the lower corner and full dimensions. Positive z points into the sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-66
+.. GENERATED FROM PYTHON SOURCE LINES 93-97
 
-Stack tissue layers
--------------------
-Each layer starts below the preceding one, without manually calculating depth.
+Stack background layers
+-----------------------
+Each layer starts below the preceding one. The remaining depth keeps the
+explicitly configured background material.
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-79
+.. GENERATED FROM PYTHON SOURCE LINES 97-110
 
 .. code-block:: Python
 
@@ -133,9 +164,9 @@ Each layer starts below the preceding one, without manually calculating depth.
     )
 
     sample.add_layer(
-        name="Dermis",
-        thickness=1.8 * ureg.millimeter,
-        material=dermal_material,
+        name="Papillary layer",
+        thickness=0.8 * ureg.millimeter,
+        material=papillary_material,
     )
 
 
@@ -145,25 +176,50 @@ Each layer starts below the preceding one, without manually calculating depth.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-83
+.. GENERATED FROM PYTHON SOURCE LINES 111-115
 
-Add an inclusion
-----------------
-Add the inclusion after the layers so it replaces their material in overlaps.
+Add a deeper layer and three localized regions
+----------------------------------------------
+The two spheres overlap layer interfaces. The box intersects the y=0 section.
+Batch insertion makes the region replacement order explicit.
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-93
+.. GENERATED FROM PYTHON SOURCE LINES 115-149
 
 .. code-block:: Python
 
 
-    inclusion = Sphere(
+    sample.add_layer(
+        name="Reticular layer",
+        thickness=2.0 * ureg.millimeter,
+        material=reticular_material,
+    )
+
+    absorbing_inclusion = Sphere(
         name="Absorbing inclusion",
-        center=np.array([1, 0, 1.2]) * ureg.millimeter,
-        radius=0.5 * ureg.millimeter,
+        center=np.array([-1.3, 0, 1.8]) * ureg.millimeter,
+        radius=0.65 * ureg.millimeter,
         material=inclusion_material,
     )
 
-    sample.add_structures(inclusion)
+    scattering_inclusion = Sphere(
+        name="Scattering inclusion",
+        center=np.array([1.5, 0, 2.5]) * ureg.millimeter,
+        radius=0.5 * ureg.millimeter,
+        material=second_inclusion_material,
+    )
+
+    rectangular_region = Box(
+        name="Rectangular heterogeneity",
+        origin=np.array([-4, -1.25, 3.3]) * ureg.millimeter,
+        size=np.array([1.5, 2.5, 0.9]) * ureg.millimeter,
+        material=box_material,
+    )
+
+    sample.add_structures(
+        absorbing_inclusion,
+        scattering_inclusion,
+        rectangular_region,
+    )
 
 
 
@@ -172,14 +228,14 @@ Add the inclusion after the layers so it replaces their material in overlaps.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-98
+.. GENERATED FROM PYTHON SOURCE LINES 150-154
 
 Explore the sample in 3D
 ------------------------
 Rotate the geometry and toggle regions in the legend. Transparent surfaces
-show construction geometry; hover labels report the optical properties.
+show primitive boundaries; the section below resolves overlaps.
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-104
+.. GENERATED FROM PYTHON SOURCE LINES 154-159
 
 .. code-block:: Python
 
@@ -187,7 +243,6 @@ show construction geometry; hover labels report the optical properties.
     figure = sample.plot(
         show=show_figures,
     )
-
 
 
 
@@ -200,14 +255,98 @@ show construction geometry; hover labels report the optical properties.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-109
+.. GENERATED FROM PYTHON SOURCE LINES 160-164
+
+Configure a finite-sample solve
+---------------------------------
+Use equal refractive indices across all regions because internal refraction
+at refractive-index jumps is outside the current continuous-fluence FEM model.
+
+.. GENERATED FROM PYTHON SOURCE LINES 164-198
+
+.. code-block:: Python
+
+
+    mesh = CartesianMesh.from_sample(
+        sample=sample,
+        shape=(21, 21, 21),
+    )
+
+    source = UniformSurfaceSource(
+        face="z_min",
+        wavelength=970 * ureg.nanometer,
+        optical_power=1 * ureg.milliwatt,
+    )
+
+    boundary = RobinBoundary(
+        effective_reflectance=0.5,
+    )
+
+    solver = Diffusion(
+        boundaries={
+            "x_min": boundary,
+            "x_max": boundary,
+            "y_min": boundary,
+            "y_max": boundary,
+            "z_min": boundary,
+            "z_max": boundary,
+        },
+    )
+
+    simulation = Simulation(
+        medium=sample,
+        source=source,
+        mesh=mesh,
+        solver=solver,
+    )
+
+
+
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 199-203
+
+Solve and inspect fluence in 3D
+----------------------------------
+The logarithmic volume displays the nodal fluence rate throughout the sample.
+The mesh gives a useful visualization; refine it to assess interface accuracy.
+
+.. GENERATED FROM PYTHON SOURCE LINES 203-213
+
+.. code-block:: Python
+
+
+    result = simulation.run()
+
+    fluence_figure = result.fluence.plot(
+        view="volume",
+        scale="log",
+        show=show_figures,
+    )
+
+
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/structured_sample-2.html" title="Fluence rate — volume (log scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 214-218
 
 Inspect the resolved cross-section
 ----------------------------------
 Unlike transparent construction surfaces, this map resolves material
-replacement. The y=0 plane intersects the inclusion.
+replacement. The y=0 plane intersects both spheres and the box.
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-116
+.. GENERATED FROM PYTHON SOURCE LINES 218-225
 
 .. code-block:: Python
 
@@ -223,20 +362,20 @@ replacement. The y=0 plane intersects the inclusion.
 
 .. raw:: html
 
-   <iframe src="../../_static/gallery/structured_sample-2.html" title="material — y = 0 mm" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+   <iframe src="../../_static/gallery/structured_sample-3.html" title="material — y = 0 mm" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 117-121
+.. GENERATED FROM PYTHON SOURCE LINES 226-230
 
 Show a compact resolved-material overview
 -----------------------------------------
 The static section highlights insertion precedence. The interactive sample
 and section views above remain available for geometry and property queries.
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-154
+.. GENERATED FROM PYTHON SOURCE LINES 230-263
 
 .. code-block:: Python
 
@@ -288,7 +427,7 @@ and section views above remain available for geometry and property queries.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.186 seconds)
+   **Total running time of the script:** (0 minutes 0.762 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_structured_sample.py:

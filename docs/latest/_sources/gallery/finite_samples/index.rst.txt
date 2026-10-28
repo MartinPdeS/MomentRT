@@ -56,7 +56,7 @@ easy to inspect.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Illustrative properties only, assumed at a single wavelength. Positive z points into the sample. Geometry is ready to inspect and sample; a boundary-aware transport solver is still required to propagate light through this sample.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Build a synthetic optical phantom with three layers, two spherical inclusions, and a box-shaped heterogeneity. Its materials are illustrative and assumed at one wavelength. Positive z points into the sample. Then illuminate the sample and inspect the finite-sample P1 fluence volume.">
 
 .. only:: html
 
@@ -67,7 +67,7 @@ easy to inspect.
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">A layered sample with an inclusion</div>
+      <div class="sphx-glr-thumbnail-title">A heterogeneous layered sample</div>
     </div>
 
 

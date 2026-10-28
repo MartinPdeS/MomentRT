@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>MomentRT &#8212; MomentRT 0.1.0 documentation</title>
+    <title>MomentRT &#8212; MomentRT 0.1.1 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
     <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
@@ -13,13 +13,13 @@
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <script src="_static/documentation_options.js?v=01f34227"></script>
+    <script src="_static/documentation_options.js?v=a58bc63e"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples" href="auto_examples/index.html" />
+    <link rel="next" title="Getting started" href="getting_started.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -40,13 +40,62 @@
   <section id="momentrt">
 <h1>MomentRT<a class="headerlink" href="#momentrt" title="Link to this heading">¶</a></h1>
 <p>Deterministic light transport using angular-moment methods.</p>
+<p>MomentRT provides two steady-state P1 diffusion models: an analytical
+infinite-medium Green function and a finite-sample linear finite-element
+solver. This guide explains their equations, assumptions, workflow, and
+visualization tools. It also distinguishes implemented behavior from features
+that remain outside the package’s scope.</p>
 <div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Guide</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development roadmap</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="roadmap.html#api-principles">API principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#choose-the-physical-model-first">Choose the physical model first</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#units-and-optical-properties">Units and optical properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#infinite-medium-workflow">Infinite-medium workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#finite-sample-workflow">Finite-sample workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started.html#explore-fields-and-diagnostics">Explore fields and diagnostics</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Transport theory and approximations</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#radiative-transfer-and-angular-moments">Radiative transfer and angular moments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#diffusion-equation">Diffusion equation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#infinite-homogeneous-point-source">Infinite homogeneous point source</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#diffusion-is-an-approximation">Diffusion is an approximation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="theory.html#what-the-order-labels-mean">What the order labels mean</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="finite_element.html">Finite-sample P1 solver</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="finite_element.html#continuous-equation-and-face-conditions">Continuous equation and face conditions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite_element.html#finite-element-assembly">Finite-element assembly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite_element.html#material-map-and-interface-approximation">Material map and interface approximation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite_element.html#power-accounting-and-validation">Power accounting and validation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite_element.html#limitations-to-keep-visible">Limitations to keep visible</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">Results and visualization</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="results.html#fluence-rate">Fluence rate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results.html#diffusive-flux">Diffusive flux</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results.html#sample-geometry-and-sections">Sample geometry and sections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results.html#finite-field-view">Finite-field view</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results.html#energy-and-solver-diagnostics">Energy and solver diagnostics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="results.html#export">Export</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">Public API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#materials-and-media">Materials and media</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#sources">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#meshes-and-solvers">Meshes and solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api_reference.html#simulation-and-results">Simulation and results</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Examples and project status</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development roadmap</a></li>
 </ul>
 </div>
 </section>
@@ -77,6 +126,15 @@
     </div>
 </search>
 <script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Transport theory and approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="finite_element.html">Finite-sample P1 solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">Results and visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">Public API reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples and project status</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development roadmap</a></li>
@@ -86,7 +144,7 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="auto_examples/index.html" title="next chapter">Examples</a></li>
+      <li>Next: <a href="getting_started.html" title="next chapter">Getting started</a></li>
   </ul></li>
 </ul>
 </div>

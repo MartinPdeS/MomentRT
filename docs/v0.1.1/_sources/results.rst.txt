@@ -1,0 +1,138 @@
+Results and visualization
+==========================
+
+Simulation results keep fields, units, and provenance together. Plotting is a
+view of the computed arrays; it does not modify the numerical result.
+
+Fluence rate
+------------
+
+``result.fluence`` is a :class:`~MomentRT.ScalarField` of nodal fluence rate
+:math:`\Phi`, with units of watts per square metre. ``values`` is a Pint
+quantity shaped like its associated Cartesian mesh. Infinite and finite
+solutions also carry metadata describing the transport model, wavelength, and
+source configuration.
+
+The default Plotly view uses a volume trace. Its opacity slider changes the
+volume transparency in the browser; ``opacity=...`` chooses the starting
+value. ``scale="log"`` colors points by :math:`\log_{10}(\Phi)` while hover
+labels and stored values remain in physical units. Log rendering rejects
+nonpositive data instead of silently clipping it.
+
+.. figure:: _static/images/infinite-fluence-volume.png
+   :align: center
+   :alt: Interactive MomentRT volume rendering captured as a static image, showing point-source fluence decreasing radially.
+   :width: 85%
+
+   A screenshot of the Plotly volume generated from a MomentRT
+   ``ScalarField``. In a live figure the opacity control remains interactive.
+
+Other scalar-field views are:
+
+* ``view="slices"`` shows the actual central grid plane along each Cartesian
+  axis. Values are not interpolated onto arbitrary section locations.
+* ``view="isosurfaces"`` displays surfaces of constant field value. This can
+  expose spatial structure, though nested surfaces can occlude each other.
+* ``view="volume"`` integrates translucent samples through the volume. It
+  gives an overall spatial impression; crowded or dense grids can take longer
+  to redraw as opacity changes.
+
+For example:
+
+.. code-block:: python
+
+   figure = result.fluence.plot(
+       view="volume",
+       scale="log",
+       opacity=0.12,
+       show=False,
+   )
+
+   figure.write_html("fluence.html")
+
+The volume view is a rendering of sampled nodal values, not a geometric
+boundary or a claim that every displayed contour is resolved. Mesh refinement
+and model validation remain numerical tasks.
+
+Diffusive flux
+--------------
+
+For finite FEM simulations, ``result.flux`` is an element-centered
+:class:`~MomentRT.VectorField` with units of :math:`\mathrm{W\,m^{-2}}`:
+
+.. math::
+
+   \mathbf J_e=-D_e\nabla\Phi\vert_e.
+
+The gradient is constant inside each linear tetrahedron. Values are not
+averaged across element faces or optical interfaces. ``result.flux.plot()``
+shows a sampled set of 3D arrows; ``max_vectors`` controls how many arrows are
+drawn. Their lengths are scaled for visibility and should be read as direction
+and relative magnitude, not a calibrated length scale.
+
+Sample geometry and sections
+----------------------------
+
+``sample.plot()`` displays the rectangular extent and transparent construction
+surfaces for layers, boxes, and spheres. This is helpful for checking names,
+placement, and overlap order, but it is not the resolved Boolean material
+map. A cross-section is sampled at cell centers and resolves the same
+insertion-order precedence used by material lookup.
+
+.. figure:: _static/images/sample-geometry.png
+   :align: center
+   :alt: MomentRT 3D construction view of a layered rectangular sample with a spherical inclusion.
+   :width: 85%
+
+   Named geometry primitives are shown as transparent surfaces. Later regions
+   replace earlier materials in overlaps; the display is not Boolean
+   subtraction.
+
+Use ``sample.section(...)`` for numerical section data or
+``sample.plot_section(...)`` for an interactive Plotly view. ``normal``
+selects the plane normal and ``position`` is an absolute coordinate with
+length units. Resolution gives horizontal and vertical cell counts. Thin
+features may be missed unless the resolution is fine enough.
+
+Finite-field view
+-----------------
+
+.. figure:: _static/images/finite-fluence-slices.png
+   :align: center
+   :alt: Logarithmic fluence on three central planes in a finite sample under circular surface illumination.
+   :width: 85%
+
+   The planes show the same finite-element nodal field through a bounded
+   sample. This plot is useful for inspecting penetration with physical axes;
+   it does not add detector optics or measurement apertures.
+
+Energy and solver diagnostics
+-----------------------------
+
+For finite samples, ``result.energy_balance`` contains ``incoming_power``,
+``absorbed_power``, ``escaping_power``, and ``residual_power`` as unit-bearing
+quantities. ``result.outgoing_power_by_face`` separates escaping power by
+sample face. This is total face-integrated power, not a detector collection
+efficiency.
+
+``result.diagnostics`` includes:
+
+* ``linear_relative_residual``: relative residual of the sparse algebraic
+  system after solving.
+* ``minimum_fluence``: smallest nodal value; nonpositive values are reported,
+  not clipped.
+* ``tetrahedron_count``: number of linear tetrahedral elements.
+* ``source_quadrature_area``: disk area sampled by triangle quadrature, or the
+  entire face for uniform illumination.
+
+These diagnostics help identify algebraic errors and under-resolved
+discretization. Energy conservation is necessary for a consistent solve, but
+it does not establish agreement with radiative transfer or an experiment.
+
+Export
+------
+
+``ScalarField.export(path="fluence.vti")`` writes a VTK ImageData file using
+optional PyVista. The export stores the scalar values, field units, coordinate
+units, and field metadata. The numerical solve and Plotly figures do not
+require PyVista.

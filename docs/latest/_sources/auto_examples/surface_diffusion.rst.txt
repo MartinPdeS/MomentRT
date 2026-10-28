@@ -283,8 +283,8 @@ numerical accounting, not the accuracy of diffusion against radiative transfer.
 
     Incoming power: 1 milliwatt
     Absorbed power: 0.2423444860639823 milliwatt
-    Escaping power: 0.7576555139360164 milliwatt
-    Energy residual: 1.4094628242311558e-18 watt
+    Escaping power: 0.7576555139360165 milliwatt
+    Energy residual: 1.3010426069826053e-18 watt
 
 
 
@@ -347,7 +347,7 @@ Arrows show element-centered flux without smoothing across interfaces.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.174 seconds)
+   **Total running time of the script:** (0 minutes 1.125 seconds)
 
 
 .. _sphx_glr_download_auto_examples_surface_diffusion.py:

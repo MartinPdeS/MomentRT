@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Public API reference &#8212; MomentRT 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script src="_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="auto_examples/index.html" />
+    <link rel="prev" title="Results and visualization" href="results.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="public-api-reference">
+<h1>Public API reference<a class="headerlink" href="#public-api-reference" title="Link to this heading">¶</a></h1>
+<p>All public constructors and methods use keyword arguments, apart from
+<code class="docutils literal notranslate"><span class="pre">add_structures(*structures)</span></code> and Python’s implicit <code class="docutils literal notranslate"><span class="pre">self</span></code> and <code class="docutils literal notranslate"><span class="pre">cls</span></code>.
+Dimensional values require quantities from <code class="docutils literal notranslate"><span class="pre">MomentRT.ureg</span></code>. See
+<a class="reference internal" href="getting_started.html"><span class="doc">Getting started</span></a> for examples and <a class="reference internal" href="theory.html"><span class="doc">Transport theory and approximations</span></a> and
+<a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a> for their physical interpretation.</p>
+<section id="materials-and-media">
+<h2>Materials and media<a class="headerlink" href="#materials-and-media" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Material</span></code> requires <code class="docutils literal notranslate"><span class="pre">absorption</span></code>, <code class="docutils literal notranslate"><span class="pre">reduced_scattering</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">refractive_index</span></code>. The first two are nonnegative/positive inverse-length
+quantities; refractive index is a positive plain number.</p>
+<p><code class="docutils literal notranslate"><span class="pre">HomogeneousMedium</span></code> wraps one material for the infinite-medium model.
+<code class="docutils literal notranslate"><span class="pre">StructuredMedium</span></code> requires unit-bearing <code class="docutils literal notranslate"><span class="pre">origin</span></code> and positive <code class="docutils literal notranslate"><span class="pre">size</span></code>
+vectors. Set its background with <code class="docutils literal notranslate"><span class="pre">add_background(material=...)</span></code> and add
+ordered <code class="docutils literal notranslate"><span class="pre">Layer</span></code>, <code class="docutils literal notranslate"><span class="pre">Box</span></code>, or <code class="docutils literal notranslate"><span class="pre">Sphere</span></code> objects with
+<code class="docutils literal notranslate"><span class="pre">add_structures(*structures)</span></code>. <code class="docutils literal notranslate"><span class="pre">add_layer(...)</span></code> stacks below the deepest
+existing layer.</p>
+</section>
+<section id="sources">
+<h2>Sources<a class="headerlink" href="#sources" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">PointSource</span></code> requires <code class="docutils literal notranslate"><span class="pre">position</span></code>, <code class="docutils literal notranslate"><span class="pre">wavelength</span></code>, and positive
+<code class="docutils literal notranslate"><span class="pre">optical_power</span></code>. It is supported by <code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> only.</p>
+<p><code class="docutils literal notranslate"><span class="pre">SurfaceSource</span></code> requires a boundary <code class="docutils literal notranslate"><span class="pre">face</span></code>, absolute 3D <code class="docutils literal notranslate"><span class="pre">position</span></code>,
+positive <code class="docutils literal notranslate"><span class="pre">radius</span></code>, <code class="docutils literal notranslate"><span class="pre">wavelength</span></code>, and <code class="docutils literal notranslate"><span class="pre">optical_power</span></code>. The spot is a
+circular top-hat and must fit fully on the face. <code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code>
+requires a face, wavelength, and optical power, and illuminates the complete
+face. Both finite-source classes specify power already coupled into the
+sample.</p>
+</section>
+<section id="meshes-and-solvers">
+<h2>Meshes and solvers<a class="headerlink" href="#meshes-and-solvers" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">CartesianMesh</span></code> requires <code class="docutils literal notranslate"><span class="pre">shape</span></code>, unit-bearing vector <code class="docutils literal notranslate"><span class="pre">spacing</span></code>, and
+unit-bearing vector <code class="docutils literal notranslate"><span class="pre">origin</span></code>. <code class="docutils literal notranslate"><span class="pre">CartesianMesh.from_sample(sample=...,</span>
+<span class="pre">shape=...)</span></code> creates a grid spanning every sample face.</p>
+<p><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> evaluates the analytical P1 Green function for a
+<code class="docutils literal notranslate"><span class="pre">HomogeneousMedium</span></code> and <code class="docutils literal notranslate"><span class="pre">PointSource</span></code>. <code class="docutils literal notranslate"><span class="pre">Diffusion</span></code> requires a mapping
+that configures exactly six faces with <code class="docutils literal notranslate"><span class="pre">RobinBoundary</span></code> or
+<code class="docutils literal notranslate"><span class="pre">ReflectingBoundary</span></code> objects. The finite solver accepts <code class="docutils literal notranslate"><span class="pre">SurfaceSource</span></code> or
+<code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">RobinBoundary</span></code> requires a plain <code class="docutils literal notranslate"><span class="pre">effective_reflectance</span></code> in [0, 1).
+<code class="docutils literal notranslate"><span class="pre">ReflectingBoundary</span></code> imposes zero normal current and does not accept
+illumination.</p>
+</section>
+<section id="simulation-and-results">
+<h2>Simulation and results<a class="headerlink" href="#simulation-and-results" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Simulation</span></code> composes <code class="docutils literal notranslate"><span class="pre">medium</span></code>, <code class="docutils literal notranslate"><span class="pre">source</span></code>, <code class="docutils literal notranslate"><span class="pre">mesh</span></code>, and <code class="docutils literal notranslate"><span class="pre">solver</span></code>.
+Call <code class="docutils literal notranslate"><span class="pre">simulation.run()</span></code> to receive a <code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code> containing
+<code class="docutils literal notranslate"><span class="pre">fluence</span></code> and, for the finite solver, <code class="docutils literal notranslate"><span class="pre">flux</span></code>, <code class="docutils literal notranslate"><span class="pre">energy_balance</span></code>,
+<code class="docutils literal notranslate"><span class="pre">outgoing_power_by_face</span></code>, and <code class="docutils literal notranslate"><span class="pre">diagnostics</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">ScalarField.plot(...)</span></code> returns a Plotly figure when Plotly is installed.
+Its <code class="docutils literal notranslate"><span class="pre">view</span></code> may be <code class="docutils literal notranslate"><span class="pre">volume</span></code> (default), <code class="docutils literal notranslate"><span class="pre">slices</span></code>, or <code class="docutils literal notranslate"><span class="pre">isosurfaces</span></code>;
+<code class="docutils literal notranslate"><span class="pre">scale</span></code> may be <code class="docutils literal notranslate"><span class="pre">linear</span></code> or <code class="docutils literal notranslate"><span class="pre">log</span></code>; <code class="docutils literal notranslate"><span class="pre">length_unit</span></code> controls displayed
+coordinates; <code class="docutils literal notranslate"><span class="pre">opacity</span></code> chooses the initial opacity for volume and
+isosurface views; and <code class="docutils literal notranslate"><span class="pre">show</span></code> controls whether the figure is immediately
+opened. <code class="docutils literal notranslate"><span class="pre">VectorField.plot(...)</span></code> returns a Plotly cone plot and accepts
+<code class="docutils literal notranslate"><span class="pre">max_vectors</span></code>, <code class="docutils literal notranslate"><span class="pre">length_unit</span></code>, and <code class="docutils literal notranslate"><span class="pre">show</span></code>.</p>
+<p>The public classes are exported from <code class="xref py py-mod docutils literal notranslate"><span class="pre">MomentRT</span></code>; plotting dependencies
+are loaded only when a plotting method is called.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MomentRT</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Transport theory and approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="finite_element.html">Finite-sample P1 solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">Results and visualization</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Public API reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#materials-and-media">Materials and media</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#sources">Sources</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#meshes-and-solvers">Meshes and solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#simulation-and-results">Simulation and results</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples and project status</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development roadmap</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="results.html" title="previous chapter">Results and visualization</a></li>
+      <li>Next: <a href="auto_examples/index.html" title="next chapter">Examples</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.0.4</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/api_reference.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

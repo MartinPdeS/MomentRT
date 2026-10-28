@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Getting started &#8212; MomentRT 0.1.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script src="_static/documentation_options.js?v=a58bc63e"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Transport theory and approximations" href="theory.html" />
+    <link rel="prev" title="MomentRT" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="getting-started">
+<h1>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h1>
+<p>This page takes a calculation from optical properties to a plotted field.
+MomentRT separates the sample, source, observation mesh, and transport model,
+then combines them in a <code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code>.</p>
+<section id="install">
+<h2>Install<a class="headerlink" href="#install" title="Link to this heading">¶</a></h2>
+<p>For numerical calculations and interactive Plotly figures, install the
+editable project with its visualization extra:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m pip install -e '.[viz]'</span>
+</pre></div>
+</div>
+<p>For the executable documentation gallery, install the documentation extra and
+build the docs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">python -m pip install -e '.[documentation]'</span>
+<span class="go">make docs PYTHON=.venv/bin/python</span>
+</pre></div>
+</div>
+<p>The base package requires NumPy, SciPy, Pint, and Matplotlib. Plotly is an
+optional dependency for interactive figures. PyVista is an optional extra for
+VTK image export; it is not needed to solve transport problems.</p>
+</section>
+<section id="choose-the-physical-model-first">
+<h2>Choose the physical model first<a class="headerlink" href="#choose-the-physical-model-first" title="Link to this heading">¶</a></h2>
+<p>Use <code class="xref py py-class docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> for a homogeneous, unbounded medium
+with an embedded isotropic point source. Its Cartesian grid only selects where
+the analytical field is evaluated; the grid edges are not physical boundaries.</p>
+<p>Use <code class="xref py py-class docutils literal notranslate"><span class="pre">Diffusion</span></code> for a finite <code class="xref py py-class docutils literal notranslate"><span class="pre">StructuredMedium</span></code>
+illuminated on one of its faces. This model solves the steady P1 diffusion
+equation with linear tetrahedral finite elements and explicitly configured
+conditions on all six faces. It currently requires a common refractive index
+throughout the sample.</p>
+<p>Both models are diffusion approximations. See <a class="reference internal" href="theory.html"><span class="doc">Transport theory and approximations</span></a> for the moment
+equations and their validity limits, and <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a> for the
+finite-domain boundary model and its weak form.</p>
+</section>
+<section id="units-and-optical-properties">
+<h2>Units and optical properties<a class="headerlink" href="#units-and-optical-properties" title="Link to this heading">¶</a></h2>
+<p>Create dimensional values using <code class="xref py py-data docutils literal notranslate"><span class="pre">ureg</span></code>. Absorption and reduced
+scattering have units of inverse length; sample geometry, source positions,
+wavelengths, and optical power carry their corresponding units. Refractive
+index is a plain dimensionless number.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">MomentRT</span><span class="w"> </span><span class="kn">import</span> <span class="n">Material</span><span class="p">,</span> <span class="n">ureg</span>
+
+<span class="n">material</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span>
+    <span class="n">absorption</span><span class="o">=</span><span class="mf">0.02</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+    <span class="n">reduced_scattering</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>MomentRT converts quantities at numerical boundaries as required and keeps
+units attached to returned fields and power values. Material values are
+assumed to apply at the source wavelength. No wavelength-dependent material
+law or chromophore model is inferred.</p>
+</section>
+<section id="infinite-medium-workflow">
+<h2>Infinite-medium workflow<a class="headerlink" href="#infinite-medium-workflow" title="Link to this heading">¶</a></h2>
+<p>The compact example below evaluates the analytical point-source solution.
+Choose an even number of grid points along each axis if the source lies at the
+center, so that no mesh node coincides with the point-source singularity.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">MomentRT</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">CartesianMesh</span><span class="p">,</span>
+    <span class="n">HomogeneousMedium</span><span class="p">,</span>
+    <span class="n">InfiniteDiffusion</span><span class="p">,</span>
+    <span class="n">Material</span><span class="p">,</span>
+    <span class="n">PointSource</span><span class="p">,</span>
+    <span class="n">Simulation</span><span class="p">,</span>
+    <span class="n">ureg</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">material</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span>
+    <span class="n">absorption</span><span class="o">=</span><span class="mf">0.02</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+    <span class="n">reduced_scattering</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">medium</span> <span class="o">=</span> <span class="n">HomogeneousMedium</span><span class="p">(</span><span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">)</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">CartesianMesh</span><span class="p">(</span>
+    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+    <span class="n">origin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mf">7.8</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span>
+    <span class="n">position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="mi">970</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">milliwatt</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">InfiniteDiffusion</span><span class="p">()</span>
+
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
+    <span class="n">medium</span><span class="o">=</span><span class="n">medium</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+    <span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span>
+    <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="n">figure</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">scale</span><span class="o">=</span><span class="s2">"log"</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The example is also available as an executable gallery page:
+<a class="reference internal" href="auto_examples/infinite_diffusion.html"><span class="doc">Infinite-medium diffusion</span></a>.</p>
+</section>
+<section id="finite-sample-workflow">
+<h2>Finite-sample workflow<a class="headerlink" href="#finite-sample-workflow" title="Link to this heading">¶</a></h2>
+<p>For a bounded sample, first define its full extent and background, then add
+named structures in precedence order. The following outline shows the order
+of operations; the gallery example contains a complete runnable configuration.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sample</span> <span class="o">=</span> <span class="n">StructuredMedium</span><span class="p">(</span>
+    <span class="n">origin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+    <span class="n">size</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">sample</span><span class="o">.</span><span class="n">add_background</span><span class="p">(</span><span class="n">material</span><span class="o">=</span><span class="n">background</span><span class="p">)</span>
+
+<span class="n">sample</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"Upper layer"</span><span class="p">,</span>
+    <span class="n">thickness</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+    <span class="n">material</span><span class="o">=</span><span class="n">upper_material</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">mesh</span> <span class="o">=</span> <span class="n">CartesianMesh</span><span class="o">.</span><span class="n">from_sample</span><span class="p">(</span>
+    <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
+    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">17</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">source</span> <span class="o">=</span> <span class="n">SurfaceSource</span><span class="p">(</span>
+    <span class="n">face</span><span class="o">=</span><span class="s2">"z_min"</span><span class="p">,</span>
+    <span class="n">position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+    <span class="n">radius</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span>
+    <span class="n">wavelength</span><span class="o">=</span><span class="mi">970</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span>
+    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">milliwatt</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">boundary</span> <span class="o">=</span> <span class="n">RobinBoundary</span><span class="p">(</span><span class="n">effective_reflectance</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">Diffusion</span><span class="p">(</span>
+    <span class="n">boundaries</span><span class="o">=</span><span class="p">{</span>
+        <span class="s2">"x_min"</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span>
+        <span class="s2">"x_max"</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span>
+        <span class="s2">"y_min"</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span>
+        <span class="s2">"y_max"</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span>
+        <span class="s2">"z_min"</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span>
+        <span class="s2">"z_max"</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span>
+    <span class="p">},</span>
+<span class="p">)</span>
+
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
+    <span class="n">medium</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+    <span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span>
+    <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The finite sample, source footprint, mesh, and boundary coefficients must all
+be compatible. The source face must use a Robin boundary, the source disk must
+fit on the face, and the mesh must span the sample exactly. The accepted power
+is diffuse power already coupled into the sample; MomentRT does not model a
+collimated LED or its specular entry loss. Review <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a> before
+interpreting the predicted field.</p>
+<p>The full surface-source example is <a class="reference internal" href="auto_examples/surface_diffusion.html"><span class="doc">Surface illumination and FEM diffusion</span></a>.
+For geometry construction and resolved material cross-sections, see
+<a class="reference internal" href="auto_examples/structured_sample.html"><span class="doc">A layered sample with an inclusion</span></a>.</p>
+</section>
+<section id="explore-fields-and-diagnostics">
+<h2>Explore fields and diagnostics<a class="headerlink" href="#explore-fields-and-diagnostics" title="Link to this heading">¶</a></h2>
+<p>The returned <code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationResult</span></code> exposes the nodal fluence,
+optional element-centered diffusive flux, energy accounting, per-face escaping
+power, and solver diagnostics. For finite samples, inspect incoming,
+absorbed, and escaping power together. A small residual checks numerical
+accounting; it does not validate P1 against the radiative transfer equation.</p>
+<p>The fluence plot defaults to a Plotly volume rendering with an in-figure
+opacity slider. Use <code class="docutils literal notranslate"><span class="pre">view=&quot;slices&quot;</span></code> to inspect central grid planes or
+<code class="docutils literal notranslate"><span class="pre">view=&quot;isosurfaces&quot;</span></code> to show equal-fluence surfaces. See <a class="reference internal" href="results.html"><span class="doc">Results and visualization</span></a> for
+the meaning of each field and view.</p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">MomentRT</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Guide</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Getting started</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#install">Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#choose-the-physical-model-first">Choose the physical model first</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#units-and-optical-properties">Units and optical properties</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#infinite-medium-workflow">Infinite-medium workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#finite-sample-workflow">Finite-sample workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#explore-fields-and-diagnostics">Explore fields and diagnostics</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="theory.html">Transport theory and approximations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="finite_element.html">Finite-sample P1 solver</a></li>
+<li class="toctree-l1"><a class="reference internal" href="results.html">Results and visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api_reference.html">Public API reference</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Examples and project status</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="auto_examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">Development roadmap</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">MomentRT</a></li>
+      <li>Next: <a href="theory.html" title="next chapter">Transport theory and approximations</a></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.0.4</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="_sources/getting_started.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

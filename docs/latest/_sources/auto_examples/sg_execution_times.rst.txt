@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.537** total execution time for 3 files **from auto_examples**:
+**00:01.500** total execution time for 3 files **from auto_examples**:
 
 .. container::
 
@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_surface_diffusion.py` (``surface_diffusion.py``)
-     - 00:01.174
+     - 00:01.125
      - 0.0
    * - :ref:`sphx_glr_auto_examples_infinite_diffusion.py` (``infinite_diffusion.py``)
-     - 00:00.283
+     - 00:00.309
      - 0.0
    * - :ref:`sphx_glr_auto_examples_structured_sample.py` (``structured_sample.py``)
-     - 00:00.080
+     - 00:00.066
      - 0.0

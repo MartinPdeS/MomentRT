@@ -35,7 +35,14 @@ Other scalar-field views are:
   expose spatial structure, though nested surfaces can occlude each other.
 * ``view="volume"`` integrates translucent samples through the volume. It
   gives an overall spatial impression; crowded or dense grids can take longer
-  to redraw as opacity changes.
+  to redraw as opacity changes. ``isosurface_count`` controls the number of
+  iso levels used for this rendering.
+
+In isosurface mode, ``isosurface_count`` sets how many surface levels Plotly
+extracts between the minimum and maximum display values. A larger count shows
+more levels and can add detail, though nested surfaces may occlude each other
+and rendering can take longer. If omitted, MomentRT keeps six levels for
+``view="isosurfaces"`` and eight for ``view="volume"``.
 
 For example:
 
@@ -49,6 +56,18 @@ For example:
    )
 
    figure.write_html("fluence.html")
+
+For example, request more constant-fluence surfaces:
+
+.. code-block:: python
+
+   figure = result.fluence.plot(
+       view="isosurfaces",
+       scale="log",
+       opacity=0.28,
+       isosurface_count=12,
+       show=False,
+   )
 
 The volume view is a rendering of sampled nodal values, not a geometric
 boundary or a claim that every displayed contour is resolved. Mesh refinement

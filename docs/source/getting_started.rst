@@ -204,5 +204,6 @@ accounting; it does not validate P1 against the radiative transfer equation.
 
 The fluence plot defaults to a Plotly volume rendering with an in-figure
 opacity slider. Use ``view="slices"`` to inspect central grid planes or
-``view="isosurfaces"`` to show equal-fluence surfaces. See :doc:`results` for
-the meaning of each field and view.
+``view="isosurfaces"`` to show equal-fluence surfaces. Set
+``isosurface_count`` to control how many levels these 3D views render. See
+:doc:`results` for the meaning of each field and view.

@@ -1,6 +1,6 @@
 Fundamentals
 ============
 
-Begin with the infinite-medium analytical solution and the core MomentRT
-workflow: define properties, source and mesh, calculate fluence, and inspect a
-3D visualization.
+Start with the infinite-medium analytical solution and the core MomentRT
+workflow. Change absorption in the second example to see how the coefficient
+affects attenuation while other inputs remain fixed.

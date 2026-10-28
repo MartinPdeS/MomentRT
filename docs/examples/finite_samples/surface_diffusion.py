@@ -7,6 +7,9 @@ explicitly, not inferred from refractive index. All internal refractive indices
 are equal: refracting internal interfaces are outside this solver's scope.
 """
 
+import os
+
+import matplotlib.pyplot as plt
 import numpy as np
 
 from MomentRT import (
@@ -19,6 +22,8 @@ from MomentRT import (
     SurfaceSource,
     ureg,
 )
+
+show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 # %%
 # Single-wavelength materials
@@ -122,7 +127,7 @@ simulation = Simulation(
 # The red circle shows the illumination footprint on the sample surface.
 
 geometry = simulation.plot_system(
-    show=False,
+    show=show_figures,
 )
 
 
@@ -151,8 +156,43 @@ print(f"Energy residual: {result.energy_balance['residual_power'].to('watt')}")
 figure = result.fluence.plot(
     view="slices",
     scale="log",
-    show=False,
+    show=show_figures,
 )
+
+# %%
+# Save a representative cross-section
+# ------------------------------------
+# This static plane gives the gallery a compact preview; use the interactive
+# Plotly views to rotate the sample and inspect physical hover values.
+
+fluence_values = result.fluence.values.to("watt / meter**2").magnitude
+
+center_y = mesh.shape[1] // 2
+
+x_axis = (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0]).to(
+    "millimeter"
+).magnitude
+
+z_axis = (mesh.origin[2] + np.arange(mesh.shape[2]) * mesh.spacing[2]).to(
+    "millimeter"
+).magnitude
+
+figure_static, axes = plt.subplots(figsize=(6, 4))
+
+image = axes.pcolormesh(
+    x_axis,
+    z_axis,
+    np.log10(fluence_values[:, center_y, :].T),
+    shading="auto",
+    cmap="magma",
+)
+
+axes.set_aspect("equal")
+axes.set_xlabel("x (mm)")
+axes.set_ylabel("z (mm)")
+axes.set_title("log10 fluence through the illuminated source")
+figure_static.colorbar(image, ax=axes, label="log10 fluence rate (W m$^{-2}$)")
+figure_static.tight_layout()
 
 
 # %%
@@ -161,5 +201,8 @@ figure = result.fluence.plot(
 # Arrows show element-centered flux without smoothing across interfaces.
 
 flux_figure = result.flux.plot(
-    show=False,
+    show=show_figures,
 )
+
+if show_figures:
+    plt.show()

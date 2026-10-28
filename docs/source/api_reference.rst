@@ -63,8 +63,11 @@ Call ``simulation.run()`` to receive a ``SimulationResult`` containing
 Its ``view`` may be ``volume`` (default), ``slices``, or ``isosurfaces``;
 ``scale`` may be ``linear`` or ``log``; ``length_unit`` controls displayed
 coordinates; ``opacity`` chooses the initial opacity for volume and
-isosurface views; and ``show`` controls whether the figure is immediately
-opened. ``VectorField.plot(...)`` returns a Plotly cone plot and accepts
+isosurface views; ``isosurface_count`` sets the number of iso levels in volume
+and isosurface views while leaving their default counts intact when omitted
+(it only applies to those views); and ``show`` controls whether the figure is
+immediately opened.
+``VectorField.plot(...)`` returns a Plotly cone plot and accepts
 ``max_vectors``, ``length_unit``, and ``show``.
 
 The public classes are exported from :mod:`MomentRT`; plotting dependencies

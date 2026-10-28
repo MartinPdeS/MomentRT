@@ -6,6 +6,9 @@ All physical values are illustrative. The plotted box is an observation
 window, not a tissue boundary. Optical properties apply at 970 nm.
 """
 
+import os
+
+import matplotlib.pyplot as plt
 import numpy as np
 
 from MomentRT import (
@@ -17,6 +20,8 @@ from MomentRT import (
     Simulation,
     ureg,
 )
+
+show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 # %%
 # Optical properties
@@ -80,7 +85,9 @@ simulation = Simulation(
 # -------------------------
 # Rotate the three-dimensional observation window and locate the source.
 
-geometry = simulation.plot_system()
+geometry = simulation.plot_system(
+    show=show_figures,
+)
 
 # %%
 # Calculate fluence
@@ -98,4 +105,43 @@ result = simulation.run()
 figure = result.fluence.plot(
     view="volume",
     scale="log",
+    show=show_figures,
 )
+
+# %%
+# Make a static central-plane overview
+# -------------------------------------
+# The gallery uses this Matplotlib image as a compact thumbnail. The live
+# three-dimensional Plotly volume remains available in the example above.
+
+fluence_values = result.fluence.values.to("watt / meter**2").magnitude
+
+plane_index = mesh.shape[2] // 2
+
+x_axis = (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0]).to(
+    "millimeter"
+).magnitude
+
+y_axis = (mesh.origin[1] + np.arange(mesh.shape[1]) * mesh.spacing[1]).to(
+    "millimeter"
+).magnitude
+
+figure_static, axes = plt.subplots(figsize=(6, 5))
+
+image = axes.pcolormesh(
+    x_axis,
+    y_axis,
+    np.log10(fluence_values[:, :, plane_index].T),
+    shading="auto",
+    cmap="magma",
+)
+
+axes.set_aspect("equal")
+axes.set_xlabel("x (mm)")
+axes.set_ylabel("y (mm)")
+axes.set_title("log10 fluence on a central plane")
+figure_static.colorbar(image, ax=axes, label="log10 fluence rate (W m$^{-2}$)")
+figure_static.tight_layout()
+
+if show_figures:
+    plt.show()

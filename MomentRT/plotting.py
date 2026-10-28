@@ -124,7 +124,7 @@ def plot_medium(*, medium, mesh, length_unit, show):
     return figure
 
 
-def plot_field(*, field, view, scale, length_unit, opacity, show):
+def plot_field(*, field, view, scale, length_unit, opacity, isosurface_count, show):
     if view not in {"slices", "volume", "isosurfaces"}:
         raise ValueError("view must be slices, volume, or isosurfaces.")
 
@@ -135,6 +135,18 @@ def plot_field(*, field, view, scale, length_unit, opacity, show):
         not np.isscalar(opacity) or not np.isfinite(opacity) or not 0 <= opacity <= 1
     ):
         raise ValueError("opacity must be between zero and one.")
+
+    if isosurface_count is not None and (
+        isinstance(isosurface_count, (bool, np.bool_))
+        or not isinstance(isosurface_count, (int, np.integer))
+        or isosurface_count < 1
+    ):
+        raise ValueError("isosurface_count must be a positive integer.")
+
+    if view == "slices" and isosurface_count is not None:
+        raise ValueError(
+            "isosurface_count applies only to volume and isosurfaces views."
+        )
 
     raw = np.asarray(field.values.magnitude)
 
@@ -207,6 +219,12 @@ def plot_field(*, field, view, scale, length_unit, opacity, show):
 
         display_opacity = default_opacity if opacity is None else opacity
 
+        display_surface_count = (
+            (8 if view == "volume" else 6)
+            if isosurface_count is None
+            else isosurface_count
+        )
+
         figure.add_trace(
             trace(
                 x=points[..., 0].ravel(),
@@ -216,7 +234,7 @@ def plot_field(*, field, view, scale, length_unit, opacity, show):
                 isomin=minimum,
                 isomax=maximum,
                 opacity=display_opacity,
-                surface_count=8 if view == "volume" else 6,
+                surface_count=display_surface_count,
                 caps={"x_show": False, "y_show": False, "z_show": False},
                 **common,
             )

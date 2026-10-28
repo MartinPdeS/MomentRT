@@ -54,6 +54,7 @@ class ScalarField:
         scale="linear",
         length_unit="mm",
         opacity=None,
+        isosurface_count=None,
         show=True,
     ):
         from .plotting import plot_field
@@ -64,6 +65,7 @@ class ScalarField:
             scale=scale,
             length_unit=length_unit,
             opacity=opacity,
+            isosurface_count=isosurface_count,
             show=show,
         )
 

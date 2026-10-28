@@ -1,14 +1,15 @@
 """Sphinx configuration for MomentRT documentation."""
 
-from pathlib import Path
+import os
 import sys
+from pathlib import Path
 
 from martinpdes_docs import configure
-
 
 package_name = "MomentRT"
 docs_source = Path(__file__).resolve().parent
 sys.path.insert(0, str(docs_source))
+os.environ["MOMENTRT_SPHINX_GALLERY"] = "1"
 
 globals().update(
     configure(

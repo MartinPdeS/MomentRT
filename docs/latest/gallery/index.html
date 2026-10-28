@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Examples &#8212; MomentRT 0.1.3 documentation</title>
+    <title>Examples &#8212; MomentRT 0.1.4 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=1807f793"></script>
+    <script src="../_static/documentation_options.js?v=f024b623"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.3" />
+  <meta name="docsearch:version" content="0.1.4" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -459,14 +459,16 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="fundamentals/index.html">Fundamentals</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="fundamentals/absorption_sweep.html">How absorption changes fluence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fundamentals/infinite_diffusion.html">Infinite-medium diffusion</a></li>
 </ul>
 </details></li>
-</ul>
-<ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="finite_samples/index.html">Finite samples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="finite_samples/mesh_refinement.html">Check finite-element mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite_samples/reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="finite_samples/structured_sample.html">A layered sample with an inclusion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="finite_samples/surface_diffusion.html">Surface illumination and FEM diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite_samples/uniform_surface_source.html">Uniform illumination on a sample face</a></li>
 </ul>
 </details></li>
 </ul>
@@ -528,32 +530,108 @@
                   
   <section id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h1>
-<p>The examples use MomentRT to configure physical inputs, run supported P1
-calculations, and inspect the output. Input values are illustrative; the
-examples are executable documentation, not calibrated tissue measurements.</p>
+<p>Browse seven worked examples, from the analytical infinite-medium solution to
+finite-sample FEM. Each card opens an executable example with its complete
+configuration and generated plots. Input values are illustrative.</p>
 <section id="fundamentals">
 <h2>Fundamentals<a class="headerlink" href="#fundamentals" title="Link to this heading">#</a></h2>
-<p>Start with the analytical infinite-medium solution. It is the smallest
-complete solver workflow and introduces units, sources, meshes, results, and
-interactive 3D fluence plotting.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="fundamentals/index.html">Fundamentals</a></li>
-</ul>
+<p>Start with the infinite-medium solver, then change one optical property to see
+how it affects the predicted field.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Infinite-medium MomentRT fluence field" class="sd-card-img-top" src="../_images/sphx_glr_infinite_diffusion_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Infinite-medium diffusion</div>
+<p class="sd-card-text">Configure a point source and observation mesh, solve the analytical P1
+Green function, and explore its 3D fluence field.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="fundamentals/infinite_diffusion.html"><span class="doc">Infinite-medium diffusion</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Radial fluence profiles for three absorption values" class="sd-card-img-top" src="../_images/sphx_glr_absorption_sweep_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+How absorption changes fluence</div>
+<p class="sd-card-text">Compare fluence profiles while holding reduced scattering and the source
+fixed.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="fundamentals/absorption_sweep.html"><span class="doc">How absorption changes fluence</span></a></div>
+</div>
+</div>
 </div>
 </section>
 <section id="finite-samples">
 <h2>Finite samples<a class="headerlink" href="#finite-samples" title="Link to this heading">#</a></h2>
-<p>Build and inspect a structured sample before solving light transport through
-it. The surface illumination example then shows the finite element workflow,
-including boundary conditions and energy accounting.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="finite_samples/index.html">Finite samples</a></li>
-</ul>
+<p>Construct geometry, illuminate a finite sample, and use the examples to
+understand the influence of source profile, boundary reflectance, and mesh
+resolution.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-3 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Layered MomentRT sample with a spherical inclusion" class="sd-card-img-top" src="../_images/sphx_glr_structured_sample_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Build a layered sample</div>
+<p class="sd-card-text">Add layers and an inclusion, inspect the construction, and sample a
+material cross-section.</p>
 </div>
-<p>The Plotly figures embedded in these pages are interactive: rotate, zoom,
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="finite_samples/structured_sample.html"><span class="doc">A layered sample with an inclusion</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Fluence produced by a diffuse circular surface source" class="sd-card-img-top" src="../_images/sphx_glr_surface_diffusion_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Circular surface illumination</div>
+<p class="sd-card-text">Run the finite-element workflow with a disk source and inspect fluence,
+flux, and energy accounting.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="finite_samples/surface_diffusion.html"><span class="doc">Surface illumination and FEM diffusion</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Finite-sample fluence under uniform face illumination" class="sd-card-img-top" src="../_images/sphx_glr_uniform_surface_source_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Uniform face illumination</div>
+<p class="sd-card-text">Use <code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code> to illuminate an entire sample face and
+render the resulting field in 3D.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="finite_samples/uniform_surface_source.html"><span class="doc">Uniform illumination on a sample face</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Centerline fluence profiles under three effective reflectances" class="sd-card-img-top" src="../_images/sphx_glr_reflectance_sweep_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Change boundary reflectance</div>
+<p class="sd-card-text">Compare centerline fluence and escaping power as the effective diffuse
+reflectance changes.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="finite_samples/reflectance_sweep.html"><span class="doc">Changing the diffuse boundary reflectance</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Fluence profiles computed on coarse, medium, and fine meshes" class="sd-card-img-top" src="../_images/sphx_glr_mesh_refinement_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Check mesh refinement</div>
+<p class="sd-card-text">Compare a fixed sample and source over three grids to assess this
+observable’s sensitivity to discretization.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="finite_samples/mesh_refinement.html"><span class="doc">Check finite-element mesh refinement</span></a></div>
+</div>
+</div>
+</div>
+<p>Plotly figures embedded in the example pages are interactive: rotate, zoom,
 and hover to inspect the generated MomentRT data.</p>
+<div class="toctree-wrapper compound">
+</div>
 </section>
 </section>
 
@@ -613,7 +691,7 @@ and hover to inspect the generated MomentRT data.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.3/docs/source/gallery/index.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.4/docs/source/gallery/index.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

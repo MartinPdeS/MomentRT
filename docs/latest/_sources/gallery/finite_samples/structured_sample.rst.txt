@@ -25,15 +25,19 @@ Illustrative properties only, assumed at a single wavelength. Positive z points
 into the sample. Geometry is ready to inspect and sample; a boundary-aware
 transport solver is still required to propagate light through this sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-14
+.. GENERATED FROM PYTHON SOURCE LINES 9-19
 
 .. code-block:: Python
 
 
+    import os
+
+    import matplotlib.pyplot as plt
     import numpy as np
 
     from MomentRT import Material, Sphere, StructuredMedium, ureg
 
+    show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 
 
@@ -41,13 +45,14 @@ transport solver is still required to propagate light through this sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 15-18
+
+.. GENERATED FROM PYTHON SOURCE LINES 20-23
 
 Optical materials
 -----------------
 Use explicit unit-bearing optical coefficients. These values are illustrative.
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-43
+.. GENERATED FROM PYTHON SOURCE LINES 23-48
 
 .. code-block:: Python
 
@@ -83,13 +88,13 @@ Use explicit unit-bearing optical coefficients. These values are illustrative.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-47
+.. GENERATED FROM PYTHON SOURCE LINES 49-52
 
 Finite sample extent
 --------------------
 Set the lower corner and full dimensions. Positive z points into the sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-57
+.. GENERATED FROM PYTHON SOURCE LINES 52-62
 
 .. code-block:: Python
 
@@ -110,13 +115,13 @@ Set the lower corner and full dimensions. Positive z points into the sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-61
+.. GENERATED FROM PYTHON SOURCE LINES 63-66
 
 Stack tissue layers
 -------------------
 Each layer starts below the preceding one, without manually calculating depth.
 
-.. GENERATED FROM PYTHON SOURCE LINES 61-74
+.. GENERATED FROM PYTHON SOURCE LINES 66-79
 
 .. code-block:: Python
 
@@ -140,13 +145,13 @@ Each layer starts below the preceding one, without manually calculating depth.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-78
+.. GENERATED FROM PYTHON SOURCE LINES 80-83
 
 Add an inclusion
 ----------------
 Add the inclusion after the layers so it replaces their material in overlaps.
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-88
+.. GENERATED FROM PYTHON SOURCE LINES 83-93
 
 .. code-block:: Python
 
@@ -167,20 +172,20 @@ Add the inclusion after the layers so it replaces their material in overlaps.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-93
+.. GENERATED FROM PYTHON SOURCE LINES 94-98
 
 Explore the sample in 3D
 ------------------------
 Rotate the geometry and toggle regions in the legend. Transparent surfaces
 show construction geometry; hover labels report the optical properties.
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-99
+.. GENERATED FROM PYTHON SOURCE LINES 98-104
 
 .. code-block:: Python
 
 
     figure = sample.plot(
-        show=False,
+        show=show_figures,
     )
 
 
@@ -195,14 +200,14 @@ show construction geometry; hover labels report the optical properties.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-104
+.. GENERATED FROM PYTHON SOURCE LINES 105-109
 
 Inspect the resolved cross-section
 ----------------------------------
 Unlike transparent construction surfaces, this map resolves material
 replacement. The y=0 plane intersects the inclusion.
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-110
+.. GENERATED FROM PYTHON SOURCE LINES 109-116
 
 .. code-block:: Python
 
@@ -210,8 +215,9 @@ replacement. The y=0 plane intersects the inclusion.
     section_figure = sample.plot_section(
         normal="y",
         position=0 * ureg.millimeter,
-        show=False,
+        show=show_figures,
     )
+
 
 
 
@@ -223,10 +229,66 @@ replacement. The y=0 plane intersects the inclusion.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 117-121
+
+Show a compact resolved-material overview
+-----------------------------------------
+The static section highlights insertion precedence. The interactive sample
+and section views above remain available for geometry and property queries.
+
+.. GENERATED FROM PYTHON SOURCE LINES 121-154
+
+.. code-block:: Python
+
+
+    section = sample.section(
+        normal="y",
+        position=0 * ureg.millimeter,
+        resolution=(160, 120),
+    )
+
+    extent = section.extent.to("millimeter").magnitude
+
+    figure_static, axes = plt.subplots(figsize=(7, 3.5))
+
+    image = axes.imshow(
+        section.labels,
+        origin="lower",
+        extent=(extent[0, 0], extent[0, 1], extent[1, 0], extent[1, 1]),
+        interpolation="nearest",
+        cmap=plt.get_cmap("Set2", len(section.names)),
+        vmin=-0.5,
+        vmax=len(section.names) - 0.5,
+        aspect="equal",
+    )
+
+    colorbar = figure_static.colorbar(image, ax=axes, ticks=range(len(section.names)))
+
+    colorbar.ax.set_yticklabels(section.names)
+
+    axes.set_xlabel("x (mm)")
+    axes.set_ylabel("z (mm)")
+    axes.set_title("Resolved materials on the y = 0 plane")
+    figure_static.tight_layout()
+
+    if show_figures:
+        plt.show()
+
+
+
+.. image-sg:: /gallery/finite_samples/images/sphx_glr_structured_sample_001.png
+   :alt: Resolved materials on the y = 0 plane
+   :srcset: /gallery/finite_samples/images/sphx_glr_structured_sample_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.061 seconds)
+   **Total running time of the script:** (0 minutes 0.186 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_structured_sample.py:

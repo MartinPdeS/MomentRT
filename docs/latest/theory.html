@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Transport theory and approximations &#8212; MomentRT 0.1.3 documentation</title>
+    <title>Transport theory and approximations &#8212; MomentRT 0.1.4 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=1807f793"></script>
+    <script src="_static/documentation_options.js?v=f024b623"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.3" />
+  <meta name="docsearch:version" content="0.1.4" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -541,42 +541,121 @@ written</p>
   L(\mathbf r,\mathbf s')\,d\Omega' + Q(\mathbf r,\mathbf s).\]</div>
 <p>Here <span class="math notranslate nohighlight">\(\mu_a\)</span> is the absorption coefficient, <span class="math notranslate nohighlight">\(\mu_s\)</span> the scattering
 coefficient, and <span class="math notranslate nohighlight">\(p\)</span> a normalized phase function. The angular moments
-used in diffusion are the fluence rate and vector current:</p>
+describe how radiance is distributed in direction at each point. The zeroth
+moment is the fluence rate and the first moment is the vector current:</p>
 <div class="math notranslate nohighlight">
 \[\Phi(\mathbf r)=\int_{4\pi}L(\mathbf r,\mathbf s)\,d\Omega,
 \qquad
 \mathbf J(\mathbf r)=\int_{4\pi}\mathbf sL(\mathbf r,\mathbf s)\,d\Omega.\]</div>
-<p>The transport equation couples these moments to higher angular moments. The
-P1 closure truncates the angular expansion after the first moment. Equivalently,
-it approximates radiance by</p>
+<p>The phase function is normalized over outgoing directions, so scattering
+redistributes radiance without creating or destroying radiant power. Its
+first angular moment is summarized by the anisotropy <span class="math notranslate nohighlight">\(g\)</span>, the mean
+cosine of the scattering angle. Positive <span class="math notranslate nohighlight">\(g\)</span> describes predominantly
+forward scattering; <span class="math notranslate nohighlight">\(g=0\)</span> describes isotropic scattering. In the RTE
+above, the phase normalization is
+<span class="math notranslate nohighlight">\(\int_{4\pi}p(\mathbf s,\mathbf s')\,d\Omega=1\)</span> for each incoming
+direction <span class="math notranslate nohighlight">\(\mathbf s'\)</span>. For a rotationally symmetric scattering
+medium, its first directional moment is
+<span class="math notranslate nohighlight">\(\int_{4\pi}\mathbf s\,p(\mathbf s,\mathbf s')\,d\Omega
+=g\mathbf s'\)</span>. This identity is why the first moment of the scattering gain
+is <span class="math notranslate nohighlight">\(g\mathbf J\)</span>.</p>
+<p>The transport equation couples these moments to higher angular moments.
+<span class="math notranslate nohighlight">\(\Phi\)</span> is the radiance integrated over all directions, while
+<span class="math notranslate nohighlight">\(\mathbf J\)</span> weights each direction by its unit vector to record the
+local net flow. With the convention used here, both quantities have units of
+<span class="math notranslate nohighlight">\(\mathrm{W\,m^{-2}}\)</span>.</p>
+<p>Taking angular moments produces a hierarchy: the balance of <span class="math notranslate nohighlight">\(\Phi\)</span>
+depends on <span class="math notranslate nohighlight">\(\mathbf J\)</span>, and the balance of <span class="math notranslate nohighlight">\(\mathbf J\)</span> depends on
+the second moment tensor</p>
+<div class="math notranslate nohighlight">
+\[\mathbf P(\mathbf r)=\int_{4\pi}\mathbf s\mathbf s
+L(\mathbf r,\mathbf s)\,d\Omega.\]</div>
+<p>The dyadic <span class="math notranslate nohighlight">\(\mathbf s\mathbf s\)</span> records how strongly radiance points
+along each pair of axes. Equations for <span class="math notranslate nohighlight">\(\mathbf P\)</span> involve still higher
+moments, so the hierarchy does not close by itself. A finite model needs a
+rule that estimates the next moment from the moments it retains.</p>
+</section>
+<section id="how-p1-closes-the-moment-equations">
+<h2>How P1 closes the moment equations<a class="headerlink" href="#how-p1-closes-the-moment-equations" title="Link to this heading">#</a></h2>
+<p>P1 expands angular radiance in spherical harmonics and retains the isotropic
+term and the three first-order directional terms. Written in terms of the
+moments above, this approximation is</p>
 <div class="math notranslate nohighlight">
 \[L(\mathbf r,\mathbf s)\approx
 \frac{1}{4\pi}\left[\Phi(\mathbf r)+3\,\mathbf s\cdot\mathbf J(\mathbf r)\right].\]</div>
-<p>This closure treats the angular distribution as nearly isotropic, with a
-first-order directional correction. It does not retain a narrow beam or
-resolve strongly directional propagation.</p>
+<p>The factor <span class="math notranslate nohighlight">\(1/(4\pi)\)</span> normalizes the isotropic part: integrating that
+term over the sphere returns <span class="math notranslate nohighlight">\(\Phi\)</span>. The factor 3 normalizes the first
+order term, since
+<span class="math notranslate nohighlight">\(\int_{4\pi}\mathbf s\mathbf s\,d\Omega=(4\pi/3)\mathbf I\)</span>;
+integrating <span class="math notranslate nohighlight">\(\mathbf sL\)</span> therefore returns <span class="math notranslate nohighlight">\(\mathbf J\)</span>.</p>
+<p>Substitute this approximation into the second moment. The isotropic term
+contributes <span class="math notranslate nohighlight">\(\Phi\mathbf I/3\)</span>; the first-order term integrates to zero
+because every odd power of direction cancels between opposite directions.
+P1 therefore uses the closure</p>
+<div class="math notranslate nohighlight">
+\[\mathbf P\approx\frac{\Phi}{3}\mathbf I.\]</div>
+<p>This is the precise step that removes the unknown second moment and closes the
+first two equations. It says that, to leading order, radiation is spread
+equally over directions. The first-order correction allows a modest net flow,
+but P1 cannot preserve a narrow beam, a sharply directional source, or strong
+angular anisotropy.</p>
 </section>
 <section id="diffusion-equation">
 <h2>Diffusion equation<a class="headerlink" href="#diffusion-equation" title="Link to this heading">#</a></h2>
-<p>For a source whose first angular moment is zero, the first two moment
-equations under P1 closure are</p>
+<p>To derive the first two moment equations, define the zeroth and first moments
+of the source by</p>
+<div class="math notranslate nohighlight">
+\[q_0=\int_{4\pi}Q\,d\Omega,
+\qquad
+\mathbf q_1=\int_{4\pi}\mathbf sQ\,d\Omega.\]</div>
+<p>Integrating the transport equation over all angles gives the zeroth balance.
+Scattering gain and loss cancel because scattering conserves power. For the
+first balance, multiply the transport equation by <span class="math notranslate nohighlight">\(\mathbf s\)</span> before
+integrating. A fraction <span class="math notranslate nohighlight">\(g\)</span> of the directed scattering current remains
+in the same direction on average, leaving the net current loss
+<span class="math notranslate nohighlight">\(\mu_s(1-g)\mathbf J=\mu_s'\mathbf J\)</span>. Before making the P1 closure,
+these balances are</p>
+<div class="math notranslate nohighlight">
+\[\nabla\cdot\mathbf J+\mu_a\Phi=q_0,
+\qquad
+\nabla\cdot\mathbf P+(\mu_a+\mu_s')\mathbf J=\mathbf q_1.\]</div>
+<p>Now substitute <span class="math notranslate nohighlight">\(\mathbf P\approx\Phi\mathbf I/3\)</span> from the P1
+approximation above. An isotropic volume source, including the point source
+used by <code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code>, has no preferred direction and therefore
+<span class="math notranslate nohighlight">\(\mathbf q_1=\mathbf 0\)</span>. The resulting first two P1 equations are</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}\nabla\cdot\mathbf J + \mu_a\Phi = q_0,\\\frac{1}{3}\nabla\Phi + (\mu_a+\mu_s')\mathbf J = 0,\end{aligned}\end{align} \]</div>
-<p>where <span class="math notranslate nohighlight">\(q_0\)</span> is the isotropic source power per volume and
-<span class="math notranslate nohighlight">\(\mu_s'=\mu_s(1-g)\)</span> is reduced scattering, with <span class="math notranslate nohighlight">\(g\)</span> the mean
-cosine of the scattering angle. Eliminating <span class="math notranslate nohighlight">\(\mathbf J\)</span> gives Fick’s
-law and the scalar diffusion equation:</p>
+<p>Here <span class="math notranslate nohighlight">\(q_0\)</span> is source power per volume and
+<span class="math notranslate nohighlight">\(\mu_s'=\mu_s(1-g)\)</span> is reduced scattering. Absorption and effective
+scattering remove directed current, which is why they appear together in the
+current balance.</p>
+<p>The second equation can now be solved algebraically for <span class="math notranslate nohighlight">\(\mathbf J\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf J=-D\nabla\Phi,
 \qquad
 D=\frac{1}{3(\mu_a+\mu_s')},\]</div>
 <div class="math notranslate nohighlight">
 \[-\nabla\cdot(D\nabla\Phi)+\mu_a\Phi=q_0.\]</div>
+<p>This is the steady P1 diffusion equation used by MomentRT. It is a scalar
+conservation equation for fluence rate. In a source-free region,
+<span class="math notranslate nohighlight">\(q_0=0\)</span>; an isotropic volume source contributes its power density to
+<span class="math notranslate nohighlight">\(q_0\)</span>. MomentRT’s finite solver has no volume source term: it supplies
+illumination on a sample face, which enters through the boundary condition
+derived in <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a> rather than through <span class="math notranslate nohighlight">\(q_0\)</span> or
+<span class="math notranslate nohighlight">\(\mathbf q_1\)</span>.</p>
 <p>MomentRT asks for <span class="math notranslate nohighlight">\(\mu_a\)</span> and <span class="math notranslate nohighlight">\(\mu_s'\)</span> directly, both in inverse
 length units. It does not infer <span class="math notranslate nohighlight">\(\mu_s'\)</span> from <span class="math notranslate nohighlight">\(\mu_s\)</span> and <span class="math notranslate nohighlight">\(g\)</span>.
 In this convention <span class="math notranslate nohighlight">\(D\)</span> has units of length, <span class="math notranslate nohighlight">\(\Phi\)</span> and
 <span class="math notranslate nohighlight">\(\mathbf J\)</span> have units of <span class="math notranslate nohighlight">\(\mathrm{W\,m^{-2}}\)</span>, and integrated
-source and power terms have units of watts.</p>
+source and power terms have units of watts. With spatially varying material
+properties, <span class="math notranslate nohighlight">\(D\)</span> varies in space and remains inside the divergence
+operator; replacing <span class="math notranslate nohighlight">\(\nabla\cdot(D\nabla\Phi)\)</span> by
+<span class="math notranslate nohighlight">\(D\nabla^2\Phi\)</span> would incorrectly drop gradients of <span class="math notranslate nohighlight">\(D\)</span>.</p>
+<p>The transport mean free path
+<span class="math notranslate nohighlight">\(\ell_{\mathrm{tr}}=1/(\mu_a+\mu_s')\)</span> is the distance over which the
+first angular moment loses its direction. The diffusion approximation is
+most useful when fluence changes over distances long compared with this
+scale, so that local angular distributions are close to the P1 form.</p>
 </section>
 <section id="infinite-homogeneous-point-source">
 <h2>Infinite homogeneous point source<a class="headerlink" href="#infinite-homogeneous-point-source" title="Link to this heading">#</a></h2>
@@ -584,7 +663,21 @@ source and power terms have units of watts.</p>
 isotropic point source with power <span class="math notranslate nohighlight">\(P\)</span> gives</p>
 <div class="math notranslate nohighlight">
 \[-D\nabla^2\Phi+\mu_a\Phi=P\,\delta(\mathbf r-\mathbf r_s).\]</div>
-<p>The decaying Green function is</p>
+<p>Away from the point source, the radial field satisfies
+<span class="math notranslate nohighlight">\(D\nabla^2\Phi=\mu_a\Phi\)</span>. For a radial function,
+<span class="math notranslate nohighlight">\(\nabla^2\Phi=r^{-2}\partial_r(r^2\partial_r\Phi)\)</span>. Setting
+<span class="math notranslate nohighlight">\(u=r\Phi\)</span> reduces the equation to
+<span class="math notranslate nohighlight">\(u''=\kappa^2u\)</span>, where <span class="math notranslate nohighlight">\(\kappa=\sqrt{\mu_a/D}\)</span>. Only the decaying
+solution <span class="math notranslate nohighlight">\(u\propto e^{-\kappa r}\)</span> is finite at infinity. The point
+source fixes the amplitude by conserving power through a small sphere around
+it. If <span class="math notranslate nohighlight">\(\Phi=Ae^{-\kappa r}/r\)</span>, the outward radial current is
+<span class="math notranslate nohighlight">\(J_r=-D\partial_r\Phi\)</span>. Its integral over a sphere of radius <span class="math notranslate nohighlight">\(r\)</span>
+is</p>
+<div class="math notranslate nohighlight">
+\[4\pi r^2J_r=4\pi DA(1+\kappa r)e^{-\kappa r}
+\longrightarrow 4\pi DA\quad (r\to0).\]</div>
+<p>Setting that limit equal to the source power <span class="math notranslate nohighlight">\(P\)</span> gives
+<span class="math notranslate nohighlight">\(A=P/(4\pi D)\)</span>, and hence the Green function</p>
 <div class="math notranslate nohighlight">
 \[\Phi(r)=\frac{P}{4\pi D r}\exp(-\kappa r),
 \qquad
@@ -596,6 +689,12 @@ r=\lVert\mathbf r-\mathbf r_s\rVert.\]</div>
 is no finite-sample boundary condition, interface, or external reflectance in
 this result. A node exactly at <span class="math notranslate nohighlight">\(r=0\)</span> is rejected because the ideal point
 source is singular; the model does not silently soften or spread the source.</p>
+<p>The exponential sets the attenuation length <span class="math notranslate nohighlight">\(1/\kappa\)</span>; the factor
+<span class="math notranslate nohighlight">\(1/r\)</span> is the geometric spreading of power over a sphere of area
+<span class="math notranslate nohighlight">\(4\pi r^2\)</span>. Together they show the model’s two length scales:
+directional randomization through <span class="math notranslate nohighlight">\(\ell_{\mathrm{tr}}\)</span> and absorption
+through <span class="math notranslate nohighlight">\(1/\kappa\)</span>. The <a class="reference internal" href="gallery/fundamentals/absorption_sweep.html"><span class="doc">absorption sweep example</span></a> compares the resulting radial profiles
+while holding reduced scattering and source power fixed.</p>
 <figure class="align-center" id="id1">
 <a class="reference internal image-reference" href="_images/infinite-fluence-volume.png"><img alt="MomentRT logarithmic volume rendering of fluence from an embedded point source." src="_images/infinite-fluence-volume.png" style="width: 85%;" />
 </a>
@@ -685,6 +784,7 @@ system.</p>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#radiative-transfer-and-angular-moments">Radiative transfer and angular moments</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-p1-closes-the-moment-equations">How P1 closes the moment equations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusion-equation">Diffusion equation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#infinite-homogeneous-point-source">Infinite homogeneous point source</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#diffusion-is-an-approximation">Diffusion is an approximation</a></li>
@@ -696,7 +796,7 @@ system.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.3/docs/source/theory.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.4/docs/source/theory.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

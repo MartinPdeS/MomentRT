@@ -1,0 +1,49 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_finite_samples_sg_execution_times:
+
+
+Computation times
+=================
+**00:02.384** total execution time for 5 files **from gallery/finite_samples**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_gallery_finite_samples_surface_diffusion.py` (``surface_diffusion.py``)
+     - 00:01.155
+     - 0.0
+   * - :ref:`sphx_glr_gallery_finite_samples_mesh_refinement.py` (``mesh_refinement.py``)
+     - 00:00.485
+     - 0.0
+   * - :ref:`sphx_glr_gallery_finite_samples_reflectance_sweep.py` (``reflectance_sweep.py``)
+     - 00:00.330
+     - 0.0
+   * - :ref:`sphx_glr_gallery_finite_samples_uniform_surface_source.py` (``uniform_surface_source.py``)
+     - 00:00.228
+     - 0.0
+   * - :ref:`sphx_glr_gallery_finite_samples_structured_sample.py` (``structured_sample.py``)
+     - 00:00.186
+     - 0.0

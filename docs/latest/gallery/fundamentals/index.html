@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Fundamentals &#8212; MomentRT 0.1.3 documentation</title>
+    <title>Fundamentals &#8212; MomentRT 0.1.4 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=1807f793"></script>
+    <script src="../../_static/documentation_options.js?v=f024b623"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.1.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -62,12 +62,12 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Infinite-medium diffusion" href="infinite_diffusion.html" />
+    <link rel="next" title="How absorption changes fluence" href="absorption_sweep.html" />
     <link rel="prev" title="Examples" href="../index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.3" />
+  <meta name="docsearch:version" content="0.1.4" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -459,14 +459,16 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a aria-current="page" class="current reference internal" href="#">Fundamentals</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="absorption_sweep.html">How absorption changes fluence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="infinite_diffusion.html">Infinite-medium diffusion</a></li>
 </ul>
 </details></li>
-</ul>
-<ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="../finite_samples/index.html">Finite samples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../finite_samples/mesh_refinement.html">Check finite-element mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../finite_samples/reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../finite_samples/structured_sample.html">A layered sample with an inclusion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../finite_samples/surface_diffusion.html">Surface illumination and FEM diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../finite_samples/uniform_surface_source.html">Uniform illumination on a sample face</a></li>
 </ul>
 </details></li>
 </ul>
@@ -531,10 +533,13 @@
                   
   <section id="fundamentals">
 <h1>Fundamentals<a class="headerlink" href="#fundamentals" title="Link to this heading">#</a></h1>
-<p>Begin with the infinite-medium analytical solution and the core MomentRT
-workflow: define properties, source and mesh, calculate fluence, and inspect a
-3D visualization.</p>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="All physical values are illustrative. The plotted box is an observation window, not a tissue boundary. Optical properties apply at 970 nm."><img alt="" src="../../_images/sphx_glr_infinite_diffusion_thumb.png" />
+<p>Start with the infinite-medium analytical solution and the core MomentRT
+workflow. Change absorption in the second example to see how the coefficient
+affects attenuation while other inputs remain fixed.</p>
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Compare analytical P1 fields with the same source and scattering but three absorption coefficients. Higher absorption shortens the distance over which fluence reaches a given value. Inputs are illustrative."><img alt="" src="../../_images/sphx_glr_absorption_sweep_thumb.png" />
+<p><a class="reference internal" href="absorption_sweep.html"><span class="doc">How absorption changes fluence</span></a></p>
+  <div class="sphx-glr-thumbnail-title">How absorption changes fluence</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="All physical values are illustrative. The plotted box is an observation window, not a tissue boundary. Optical properties apply at 970 nm."><img alt="" src="../../_images/sphx_glr_infinite_diffusion_thumb.png" />
 <p><a class="reference internal" href="infinite_diffusion.html"><span class="doc">Infinite-medium diffusion</span></a></p>
   <div class="sphx-glr-thumbnail-title">Infinite-medium diffusion</div>
 </div></div><div class="toctree-wrapper compound">
@@ -562,11 +567,11 @@ workflow: define properties, source and mesh, calculate fluence, and inspect a
       </div>
     </a>
     <a class="right-next"
-       href="infinite_diffusion.html"
+       href="absorption_sweep.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Infinite-medium diffusion</p>
+        <p class="prev-next-title">How absorption changes fluence</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -585,7 +590,7 @@ workflow: define properties, source and mesh, calculate fluence, and inspect a
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.3/docs/source/gallery/fundamentals/index.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.1.4/docs/source/gallery/fundamentals/index.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

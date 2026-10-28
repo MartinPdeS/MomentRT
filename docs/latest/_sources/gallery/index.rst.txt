@@ -1,35 +1,99 @@
 Examples
 ========
 
-The examples use MomentRT to configure physical inputs, run supported P1
-calculations, and inspect the output. Input values are illustrative; the
-examples are executable documentation, not calibrated tissue measurements.
+Browse seven worked examples, from the analytical infinite-medium solution to
+finite-sample FEM. Each card opens an executable example with its complete
+configuration and generated plots. Input values are illustrative.
 
 Fundamentals
 ------------
 
-Start with the analytical infinite-medium solution. It is the smallest
-complete solver workflow and introduces units, sources, meshes, results, and
-interactive 3D fluence plotting.
+Start with the infinite-medium solver, then change one optical property to see
+how it affects the predicted field.
 
-.. toctree::
-   :maxdepth: 1
+.. grid:: 1 2 2 2
+   :gutter: 3
 
-   fundamentals/index
+   .. grid-item-card:: Infinite-medium diffusion
+      :link: fundamentals/infinite_diffusion
+      :link-type: doc
+      :img-top: fundamentals/images/thumb/sphx_glr_infinite_diffusion_thumb.png
+      :img-alt: Infinite-medium MomentRT fluence field
+
+      Configure a point source and observation mesh, solve the analytical P1
+      Green function, and explore its 3D fluence field.
+
+   .. grid-item-card:: How absorption changes fluence
+      :link: fundamentals/absorption_sweep
+      :link-type: doc
+      :img-top: fundamentals/images/thumb/sphx_glr_absorption_sweep_thumb.png
+      :img-alt: Radial fluence profiles for three absorption values
+
+      Compare fluence profiles while holding reduced scattering and the source
+      fixed.
 
 Finite samples
 --------------
 
-Build and inspect a structured sample before solving light transport through
-it. The surface illumination example then shows the finite element workflow,
-including boundary conditions and energy accounting.
+Construct geometry, illuminate a finite sample, and use the examples to
+understand the influence of source profile, boundary reflectance, and mesh
+resolution.
 
-.. toctree::
-   :maxdepth: 1
+.. grid:: 1 2 2 3
+   :gutter: 3
 
-   finite_samples/index
+   .. grid-item-card:: Build a layered sample
+      :link: finite_samples/structured_sample
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_structured_sample_thumb.png
+      :img-alt: Layered MomentRT sample with a spherical inclusion
+
+      Add layers and an inclusion, inspect the construction, and sample a
+      material cross-section.
+
+   .. grid-item-card:: Circular surface illumination
+      :link: finite_samples/surface_diffusion
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_surface_diffusion_thumb.png
+      :img-alt: Fluence produced by a diffuse circular surface source
+
+      Run the finite-element workflow with a disk source and inspect fluence,
+      flux, and energy accounting.
+
+   .. grid-item-card:: Uniform face illumination
+      :link: finite_samples/uniform_surface_source
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_uniform_surface_source_thumb.png
+      :img-alt: Finite-sample fluence under uniform face illumination
+
+      Use ``UniformSurfaceSource`` to illuminate an entire sample face and
+      render the resulting field in 3D.
+
+   .. grid-item-card:: Change boundary reflectance
+      :link: finite_samples/reflectance_sweep
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_reflectance_sweep_thumb.png
+      :img-alt: Centerline fluence profiles under three effective reflectances
+
+      Compare centerline fluence and escaping power as the effective diffuse
+      reflectance changes.
+
+   .. grid-item-card:: Check mesh refinement
+      :link: finite_samples/mesh_refinement
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_mesh_refinement_thumb.png
+      :img-alt: Fluence profiles computed on coarse, medium, and fine meshes
+
+      Compare a fixed sample and source over three grids to assess this
+      observable's sensitivity to discretization.
 
 .. only:: html
 
-   The Plotly figures embedded in these pages are interactive: rotate, zoom,
+   Plotly figures embedded in the example pages are interactive: rotate, zoom,
    and hover to inspect the generated MomentRT data.
+
+.. toctree::
+   :hidden:
+
+   fundamentals/index
+   finite_samples/index

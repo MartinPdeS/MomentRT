@@ -24,11 +24,14 @@ Infinite-medium diffusion
 All physical values are illustrative. The plotted box is an observation
 window, not a tissue boundary. Optical properties apply at 970 nm.
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-21
+.. GENERATED FROM PYTHON SOURCE LINES 8-26
 
 .. code-block:: Python
 
 
+    import os
+
+    import matplotlib.pyplot as plt
     import numpy as np
 
     from MomentRT import (
@@ -41,6 +44,7 @@ window, not a tissue boundary. Optical properties apply at 970 nm.
         ureg,
     )
 
+    show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 
 
@@ -48,13 +52,14 @@ window, not a tissue boundary. Optical properties apply at 970 nm.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-25
+
+.. GENERATED FROM PYTHON SOURCE LINES 27-30
 
 Optical properties
 ------------------
 Define illustrative absorption and reduced scattering at 970 nm.
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-36
+.. GENERATED FROM PYTHON SOURCE LINES 30-41
 
 .. code-block:: Python
 
@@ -76,14 +81,14 @@ Define illustrative absorption and reduced scattering at 970 nm.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-41
+.. GENERATED FROM PYTHON SOURCE LINES 42-46
 
 Observation window
 ------------------
 This grid samples an infinite medium; its edges are not physical boundaries.
 The even node counts avoid sampling the singular point source.
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-48
+.. GENERATED FROM PYTHON SOURCE LINES 46-53
 
 .. code-block:: Python
 
@@ -101,13 +106,13 @@ The even node counts avoid sampling the singular point source.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-52
+.. GENERATED FROM PYTHON SOURCE LINES 54-57
 
 Embedded illumination
 ---------------------
 Place an isotropic point source at the center of the observation window.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-59
+.. GENERATED FROM PYTHON SOURCE LINES 57-64
 
 .. code-block:: Python
 
@@ -125,13 +130,13 @@ Place an isotropic point source at the center of the observation window.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-63
+.. GENERATED FROM PYTHON SOURCE LINES 65-68
 
 Configure transport
 -------------------
 Keep the numerical model separate from the physical configuration.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-66
+.. GENERATED FROM PYTHON SOURCE LINES 68-71
 
 .. code-block:: Python
 
@@ -145,13 +150,13 @@ Keep the numerical model separate from the physical configuration.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-70
+.. GENERATED FROM PYTHON SOURCE LINES 72-75
 
 Compose the experiment
 ----------------------
 Combine the medium, illumination, observation mesh, and solver.
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-78
+.. GENERATED FROM PYTHON SOURCE LINES 75-83
 
 .. code-block:: Python
 
@@ -170,18 +175,20 @@ Combine the medium, illumination, observation mesh, and solver.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-82
+.. GENERATED FROM PYTHON SOURCE LINES 84-87
 
 Inspect the configuration
 -------------------------
 Rotate the three-dimensional observation window and locate the source.
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-85
+.. GENERATED FROM PYTHON SOURCE LINES 87-92
 
 .. code-block:: Python
 
 
-    geometry = simulation.plot_system()
+    geometry = simulation.plot_system(
+        show=show_figures,
+    )
 
 
 
@@ -194,13 +201,13 @@ Rotate the three-dimensional observation window and locate the source.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-89
+.. GENERATED FROM PYTHON SOURCE LINES 93-96
 
 Calculate fluence
 -----------------
 Solve the analytical infinite-medium diffusion model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-92
+.. GENERATED FROM PYTHON SOURCE LINES 96-99
 
 .. code-block:: Python
 
@@ -214,14 +221,14 @@ Solve the analytical infinite-medium diffusion model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-97
+.. GENERATED FROM PYTHON SOURCE LINES 100-104
 
 Inspect the fluence field
 -------------------------
 The volume uses a logarithmic color scale with physical values
 retained on hover. Values close to the source remain diffusion approximations.
 
-.. GENERATED FROM PYTHON SOURCE LINES 97-101
+.. GENERATED FROM PYTHON SOURCE LINES 104-111
 
 .. code-block:: Python
 
@@ -229,7 +236,10 @@ retained on hover. Values close to the source remain diffusion approximations.
     figure = result.fluence.plot(
         view="volume",
         scale="log",
+        show=show_figures,
     )
+
+
 
 
 .. raw:: html
@@ -240,10 +250,65 @@ retained on hover. Values close to the source remain diffusion approximations.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 112-116
+
+Make a static central-plane overview
+-------------------------------------
+The gallery uses this Matplotlib image as a compact thumbnail. The live
+three-dimensional Plotly volume remains available in the example above.
+
+.. GENERATED FROM PYTHON SOURCE LINES 116-148
+
+.. code-block:: Python
+
+
+    fluence_values = result.fluence.values.to("watt / meter**2").magnitude
+
+    plane_index = mesh.shape[2] // 2
+
+    x_axis = (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0]).to(
+        "millimeter"
+    ).magnitude
+
+    y_axis = (mesh.origin[1] + np.arange(mesh.shape[1]) * mesh.spacing[1]).to(
+        "millimeter"
+    ).magnitude
+
+    figure_static, axes = plt.subplots(figsize=(6, 5))
+
+    image = axes.pcolormesh(
+        x_axis,
+        y_axis,
+        np.log10(fluence_values[:, :, plane_index].T),
+        shading="auto",
+        cmap="magma",
+    )
+
+    axes.set_aspect("equal")
+    axes.set_xlabel("x (mm)")
+    axes.set_ylabel("y (mm)")
+    axes.set_title("log10 fluence on a central plane")
+    figure_static.colorbar(image, ax=axes, label="log10 fluence rate (W m$^{-2}$)")
+    figure_static.tight_layout()
+
+    if show_figures:
+        plt.show()
+
+
+
+.. image-sg:: /gallery/fundamentals/images/sphx_glr_infinite_diffusion_001.png
+   :alt: log10 fluence on a central plane
+   :srcset: /gallery/fundamentals/images/sphx_glr_infinite_diffusion_001.png
+   :class: sphx-glr-single-img
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.497 seconds)
+   **Total running time of the script:** (0 minutes 0.373 seconds)
 
 
 .. _sphx_glr_download_gallery_fundamentals_infinite_diffusion.py:

@@ -3,9 +3,9 @@
 Fundamentals
 ============
 
-Begin with the infinite-medium analytical solution and the core MomentRT
-workflow: define properties, source and mesh, calculate fluence, and inspect a
-3D visualization.
+Start with the infinite-medium analytical solution and the core MomentRT
+workflow. Change absorption in the second example to see how the coefficient
+affects attenuation while other inputs remain fixed.
 
 
 .. raw:: html
@@ -18,6 +18,23 @@ workflow: define properties, source and mesh, calculate fluence, and inspect a
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare analytical P1 fields with the same source and scattering but three absorption coefficients. Higher absorption shortens the distance over which fluence reaches a given value. Inputs are illustrative.">
+
+.. only:: html
+
+  .. image:: /gallery/fundamentals/images/thumb/sphx_glr_absorption_sweep_thumb.png
+    :alt:
+
+  :doc:`/gallery/fundamentals/absorption_sweep`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">How absorption changes fluence</div>
+    </div>
+
 
 .. raw:: html
 
@@ -46,6 +63,7 @@ workflow: define properties, source and mesh, calculate fluence, and inspect a
 .. toctree::
    :hidden:
 
+   /gallery/fundamentals/absorption_sweep
    /gallery/fundamentals/infinite_diffusion
 
 

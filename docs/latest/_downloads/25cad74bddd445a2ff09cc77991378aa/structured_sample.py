@@ -7,9 +7,14 @@ into the sample. Geometry is ready to inspect and sample; a boundary-aware
 transport solver is still required to propagate light through this sample.
 """
 
+import os
+
+import matplotlib.pyplot as plt
 import numpy as np
 
 from MomentRT import Material, Sphere, StructuredMedium, ureg
+
+show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 # %%
 # Optical materials
@@ -92,7 +97,7 @@ sample.add_structures(inclusion)
 # show construction geometry; hover labels report the optical properties.
 
 figure = sample.plot(
-    show=False,
+    show=show_figures,
 )
 
 
@@ -105,5 +110,44 @@ figure = sample.plot(
 section_figure = sample.plot_section(
     normal="y",
     position=0 * ureg.millimeter,
-    show=False,
+    show=show_figures,
 )
+
+# %%
+# Show a compact resolved-material overview
+# -----------------------------------------
+# The static section highlights insertion precedence. The interactive sample
+# and section views above remain available for geometry and property queries.
+
+section = sample.section(
+    normal="y",
+    position=0 * ureg.millimeter,
+    resolution=(160, 120),
+)
+
+extent = section.extent.to("millimeter").magnitude
+
+figure_static, axes = plt.subplots(figsize=(7, 3.5))
+
+image = axes.imshow(
+    section.labels,
+    origin="lower",
+    extent=(extent[0, 0], extent[0, 1], extent[1, 0], extent[1, 1]),
+    interpolation="nearest",
+    cmap=plt.get_cmap("Set2", len(section.names)),
+    vmin=-0.5,
+    vmax=len(section.names) - 0.5,
+    aspect="equal",
+)
+
+colorbar = figure_static.colorbar(image, ax=axes, ticks=range(len(section.names)))
+
+colorbar.ax.set_yticklabels(section.names)
+
+axes.set_xlabel("x (mm)")
+axes.set_ylabel("z (mm)")
+axes.set_title("Resolved materials on the y = 0 plane")
+figure_static.tight_layout()
+
+if show_figures:
+    plt.show()

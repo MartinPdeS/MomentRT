@@ -9,12 +9,13 @@
   "license": "mit",
   "upload_type": "software",
   "access_right": "open",
-  "version": "0.1.0.dev0",
+  "version": "0.1.0",
   "keywords": [
     "radiative transfer",
     "light transport",
     "diffusion",
     "finite element method",
     "tissue optics"
-  ]
+  ],
+  "publication_date": "2026-10-28"
 }

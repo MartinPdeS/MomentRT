@@ -1,6 +1,6 @@
 package:
   name: momentrt
-  version: "0.1.0.dev0"
+  version: "0.1.0"
 
 source:
   # Build the checked-out revision, including uncommitted local changes.

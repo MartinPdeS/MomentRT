@@ -35,8 +35,26 @@ with an explicitly modeled illuminated boundary.
 
       Explore fluence, flux, energy accounting, diagnostics, and 3D plotting.
 
+   .. grid-item-card:: Collect detector power
+      :link: detectors
+      :link-type: doc
+
+      Define contact apertures, collection axes, and angular acceptance.
+
+   .. grid-item-card:: Sweep wavelengths
+      :link: spectral
+      :link-type: doc
+
+      Interpolate optical tables and reuse a fixed instrument geometry.
+
 .. note::
 
    Both models use the P1 diffusion approximation. The finite solver is not a
    full radiative-transfer model and does not infer boundary parameters from
    refractive index.
+
+.. toctree::
+   :hidden:
+
+   Finite-aperture detectors <detectors>
+   Materials and wavelength sweeps <spectral>

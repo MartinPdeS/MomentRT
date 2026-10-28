@@ -26,6 +26,8 @@ class InfiniteDiffusion:
                 "InfiniteDiffusion requires an embedded PointSource, not surface illumination."
             )
 
+        medium = medium.at(wavelength=source.wavelength)
+
         absorption = medium.material.absorption.to("1/m").magnitude
 
         scattering = medium.material.reduced_scattering.to("1/m").magnitude
@@ -91,11 +93,13 @@ class Diffusion:
         from .fem import (
             boundary_triangles,
             element_geometry,
+            source_irradiance,
             source_load,
             tetrahedralize,
             triangle_areas,
+            triangle_quadrature,
         )
-        from .fields import VectorField
+        from .fields import BoundaryField, VectorField
         from .medium import StructuredMedium
         from .results import SimulationResult
         from .source import SurfaceSource, UniformSurfaceSource
@@ -105,6 +109,8 @@ class Diffusion:
 
         if not isinstance(source, UniformSurfaceSource):
             raise TypeError("Diffusion requires SurfaceSource or UniformSurfaceSource.")
+
+        medium = medium.at(wavelength=source.wavelength)
 
         if medium.background is None:
             raise ValueError("Configure the sample background before solving.")
@@ -283,6 +289,37 @@ class Diffusion:
         # This distinguishes outgoing transmitted partial current from net current.
         escaping[source.face] -= 2 * condition.leakage_coefficient * power
 
+        boundary_fields = {}
+
+        for face, triangles in faces.items():
+            quadrature, barycentric, weights = triangle_quadrature(
+                points=points, triangles=triangles
+            )
+
+            face_fluence = np.einsum("qa,ta->tq", barycentric, values[triangles])
+
+            incoming = np.zeros_like(face_fluence)
+
+            if face == source.face:
+                incoming, _ = source_irradiance(
+                    quadrature=quadrature, weights=weights, source=source
+                )
+
+            beta = self.boundaries[face].leakage_coefficient
+
+            boundary_fields[face] = BoundaryField(
+                face=face,
+                positions=quadrature * ureg.meter,
+                area_weights=weights * ureg.meter**2,
+                escaping_irradiance=beta
+                * (face_fluence - 2 * incoming)
+                * ureg.watt
+                / ureg.meter**2,
+                sample_origin=medium.origin,
+                sample_size=medium.size,
+                wavelength=source.wavelength,
+            )
+
         flux_values = -coefficient[:, None] * np.einsum(
             "ti,tij->tj", values[tetrahedra], gradients
         )
@@ -324,4 +361,5 @@ class Diffusion:
                 "tetrahedron_count": len(tetrahedra),
                 "minimum_fluence": values.min() * ureg.watt / ureg.meter**2,
             },
+            boundary_fields=boundary_fields,
         )

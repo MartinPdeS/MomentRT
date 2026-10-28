@@ -12,7 +12,9 @@ class SampleSection:
     optical-property arrays are stored in SI. No interpolation is applied.
     """
 
-    def __init__(self, *, sample, normal, position, resolution):
+    def __init__(self, *, sample, normal, position, resolution, wavelength=None):
+        sample = sample._at_for_display(wavelength=wavelength)
+
         if normal not in ("x", "y", "z"):
             raise ValueError("normal must be x, y, or z.")
 
@@ -60,6 +62,8 @@ class SampleSection:
         self.normal = normal
 
         self.position = position.copy()
+
+        self.wavelength = None if wavelength is None else wavelength.copy()
 
         self.axes = tuple("xyz"[axis] for axis in plane_axes)
 

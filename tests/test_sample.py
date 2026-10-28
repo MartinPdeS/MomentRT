@@ -170,13 +170,14 @@ def test_example_and_geometry_plot():
 
     figure = sample.plot(show=False, length_unit="um")
 
-    assert len(figure.data) == 4
-
     assert [trace.name for trace in figure.data] == [
         "Background / sample extent",
         "Epidermis",
-        "Dermis",
+        "Papillary layer",
+        "Reticular layer",
         "Absorbing inclusion",
+        "Scattering inclusion",
+        "Rectangular heterogeneity",
     ]
 
     assert max(figure.data[1].z) == pytest.approx(200)

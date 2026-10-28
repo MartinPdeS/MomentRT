@@ -70,6 +70,80 @@ class ScalarField:
         )
 
 
+class BoundaryField:
+    """Snapshot of escaping irradiance at boundary triangle quadrature points.
+
+    positions, area_weights, and escaping_irradiance share a leading shape.
+    Escaping irradiance includes the incident-field correction on a source face.
+    It is not an angle-resolved radiance.
+    """
+
+    def __init__(
+        self,
+        *,
+        face,
+        positions,
+        area_weights,
+        escaping_irradiance,
+        sample_origin,
+        sample_size,
+        wavelength,
+    ):
+        from .boundary import FACES
+        from .units import validate_units
+
+        if face not in FACES:
+            raise ValueError(f"face must be one of {FACES}.")
+
+        validate_units(value=positions, unit="m", name="positions")
+
+        if positions.ndim < 2 or positions.shape[-1] != 3:
+            raise ValueError("positions must have a trailing axis of length three.")
+
+        validate_units(
+            value=area_weights,
+            unit="m^2",
+            name="area_weights",
+            shape=positions.shape[:-1],
+            positive=True,
+        )
+
+        validate_units(
+            value=escaping_irradiance,
+            unit="W/m^2",
+            name="escaping_irradiance",
+            shape=positions.shape[:-1],
+        )
+
+        validate_units(value=sample_origin, unit="m", name="sample_origin", shape=(3,))
+
+        validate_units(
+            value=sample_size, unit="m", name="sample_size", shape=(3,), positive=True
+        )
+
+        validate_units(
+            value=wavelength, unit="m", name="wavelength", shape=(), positive=True
+        )
+
+        self.face = face
+
+        self.positions = positions.copy()
+
+        self.area_weights = area_weights.copy()
+
+        self.escaping_irradiance = escaping_irradiance.copy()
+
+        self.sample_origin = sample_origin.copy()
+
+        self.sample_size = sample_size.copy()
+
+        self.wavelength = wavelength.copy()
+
+    @property
+    def escaping_power(self):
+        return (self.escaping_irradiance * self.area_weights).sum()
+
+
 class VectorField:
     """Element-centered vectors, without smoothing across material interfaces."""
 

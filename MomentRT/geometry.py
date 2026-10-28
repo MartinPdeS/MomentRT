@@ -2,13 +2,13 @@
 
 import numpy as np
 
-from .material import Material
+from .material import Material, SpectralMaterial
 from .units import validate_units
 
 
 def _validate_region(*, material, name):
-    if not isinstance(material, Material):
-        raise TypeError("material must be a Material.")
+    if not isinstance(material, (Material, SpectralMaterial)):
+        raise TypeError("material must be a Material or SpectralMaterial.")
 
     if not isinstance(name, str) or not name.strip():
         raise ValueError("name must be a nonempty string.")

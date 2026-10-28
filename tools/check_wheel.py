@@ -14,6 +14,7 @@ REQUIRED_MODULES = (
     "MomentRT/__init__.py",
     "MomentRT/_version.py",
     "MomentRT/boundary.py",
+    "MomentRT/detector.py",
     "MomentRT/diffusion.py",
     "MomentRT/fem.py",
     "MomentRT/fields.py",
@@ -89,6 +90,8 @@ def check_install(*, wheel):
             "from pathlib import Path; import sys; import MomentRT; "
             "location = Path(MomentRT.__file__).resolve(); "
             "assert location.is_relative_to(Path(sys.prefix).resolve()), location; "
+            "assert all(hasattr(MomentRT, name) for name in "
+            "('SurfaceDetector', 'SpectralMaterial', 'SpectralSimulationResult')); "
             "print(f'Imported MomentRT {MomentRT.__version__} from {location}')"
         )
 

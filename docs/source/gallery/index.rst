@@ -1,7 +1,7 @@
 Examples
 ========
 
-Browse seven worked examples, from the analytical infinite-medium solution to
+Browse nine worked examples, from the analytical infinite-medium solution to
 finite-sample FEM. Each card opens an executable example with its complete
 configuration and generated plots. Input values are illustrative.
 
@@ -86,6 +86,24 @@ resolution.
 
       Compare a fixed sample and source over three grids to assess this
       observable's sensitivity to discretization.
+
+   .. grid-item-card:: Collect light with finite apertures
+      :link: finite_samples/surface_detector
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_surface_detector_thumb.png
+      :img-alt: Contact detector apertures and a diffuse source on a finite sample
+
+      Define detector positions and acceptance cones, inspect the 3D system,
+      and calculate reflection and transmission signals.
+
+   .. grid-item-card:: Sweep a spectral sensor
+      :link: finite_samples/spectral_detectors
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_spectral_detectors_thumb.png
+      :img-alt: Spectral phantom with fixed source and detector apertures
+
+      Interpolate two material spectra and plot collected power across five
+      wavelengths with a fixed geometry.
 
 .. only:: html
 

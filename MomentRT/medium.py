@@ -5,6 +5,9 @@ class HomogeneousMedium:
     def __init__(self, *, material):
         self.material = material
 
+    def at(self, *, wavelength):
+        return HomogeneousMedium(material=self.material.at(wavelength=wavelength))
+
     def plot(self, *, mesh, length_unit="mm", show=True):
         from .plotting import plot_medium
 
@@ -46,12 +49,55 @@ class StructuredMedium:
 
     def add_background(self, *, material):
         """Replace the background while retaining existing structures."""
-        from .material import Material
+        from .material import Material, SpectralMaterial
 
-        if not isinstance(material, Material):
-            raise TypeError("material must be a Material.")
+        if not isinstance(material, (Material, SpectralMaterial)):
+            raise TypeError("material must be a Material or SpectralMaterial.")
 
         self.background = material
+
+    def at(self, *, wavelength):
+        """Resolve all materials on a geometry-preserving monochromatic copy."""
+        from copy import copy
+
+        from .units import ureg
+
+        if self.background is None:
+            raise ValueError("Configure an explicit background with add_background().")
+
+        sample = StructuredMedium(origin=self.origin, size=self.size)
+
+        sample.add_background(material=self.background.at(wavelength=wavelength))
+
+        structures = []
+
+        for structure in self.structures:
+            resolved = copy(structure)
+
+            for name, value in vars(structure).items():
+                if isinstance(value, ureg.Quantity):
+                    setattr(resolved, name, value.copy())
+
+            resolved.material = structure.material.at(wavelength=wavelength)
+
+            structures.append(resolved)
+
+        sample.add_structures(*structures)
+
+        return sample
+
+    def _at_for_display(self, *, wavelength):
+        from .material import SpectralMaterial
+
+        if wavelength is not None:
+            return self.at(wavelength=wavelength)
+
+        materials = [self.background, *(shape.material for shape in self.structures)]
+
+        if any(isinstance(material, SpectralMaterial) for material in materials):
+            raise ValueError("Supply wavelength when displaying spectral properties.")
+
+        return self
 
     def add_structures(self, *structures):
         """Append named shapes in argument order; validate the whole batch first."""
@@ -138,16 +184,21 @@ class StructuredMedium:
 
         return labels
 
-    def optical_fields(self, *, mesh):
+    def optical_fields(self, *, mesh, wavelength=None):
         """Sample the material map onto mesh nodes, returning unit-bearing fields."""
         import numpy as np
 
         from .fields import ScalarField
         from .units import ureg
 
-        labels = self.material_labels(points=mesh.points)
+        sample = self._at_for_display(wavelength=wavelength)
 
-        materials = [self.background, *(shape.material for shape in self.structures)]
+        labels = sample.material_labels(points=mesh.points)
+
+        materials = [
+            sample.background,
+            *(shape.material for shape in sample.structures),
+        ]
 
         fields = {}
 
@@ -174,7 +225,9 @@ class StructuredMedium:
 
         return fields
 
-    def plot(self, *, mesh=None, length_unit="mm", opacity=0.45, show=True):
+    def plot(
+        self, *, mesh=None, wavelength=None, length_unit="mm", opacity=0.45, show=True
+    ):
         """Plot named region surfaces; mesh is optional and does not define geometry.
 
         Transparent primitive surfaces show the construction geometry; overlap
@@ -186,7 +239,10 @@ class StructuredMedium:
             raise ValueError("Configure an explicit background with add_background().")
 
         return plot_sample(
-            sample=self, length_unit=length_unit, opacity=opacity, show=show
+            sample=self._at_for_display(wavelength=wavelength),
+            length_unit=length_unit,
+            opacity=opacity,
+            show=show,
         )
 
     def add_layer(self, *, name, thickness, material):
@@ -213,7 +269,7 @@ class StructuredMedium:
 
         self.add_structures(layer)
 
-    def section(self, *, normal, position, resolution=(200, 200)):
+    def section(self, *, normal, position, resolution=(200, 200), wavelength=None):
         """Sample a plane at an absolute coordinate, resolving region overlaps.
 
         resolution gives (horizontal, vertical) cell counts. Cell-center
@@ -226,6 +282,7 @@ class StructuredMedium:
             normal=normal,
             position=position,
             resolution=resolution,
+            wavelength=wavelength,
         )
 
     def plot_section(
@@ -235,6 +292,7 @@ class StructuredMedium:
         position,
         quantity="material",
         resolution=(200, 200),
+        wavelength=None,
         length_unit="mm",
         value_unit=None,
         scale="linear",
@@ -245,6 +303,7 @@ class StructuredMedium:
             normal=normal,
             position=position,
             resolution=resolution,
+            wavelength=wavelength,
         )
 
         return section.plot(

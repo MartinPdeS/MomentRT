@@ -48,11 +48,15 @@ Features
 * Interactive Plotly views for sample geometry, fluence, sections, and
   element-centered flux. Volume plots include an opacity control.
 * Unit-bearing fields, per-face escaping power, and solver diagnostics.
+* Circular contact detector apertures with explicit angular acceptance under
+  a Lambertian escape model.
+* Tabulated wavelength-dependent materials and monochromatic sweeps on a
+  fixed source, sample, and detector geometry.
 
 MomentRT uses the P1 diffusion approximation. It does not currently solve the
 full radiative transfer equation or implement P3/SP3, collimated LED
-propagation, detector apertures, spectral integration, time dependence, or
-inverse estimation. Read the `scientific guide`_ for the equations,
+propagation, free-space detector optics, broadband spectral integration,
+time dependence, or inverse estimation. Read the `scientific guide`_ for the equations,
 approximations, validation limits, and complete workflow.
 
 Installation

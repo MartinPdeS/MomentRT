@@ -81,10 +81,8 @@ def triangle_areas(*, points, triangles):
     )
 
 
-def source_load(*, points, triangles, source):
-    """Three-point triangle quadrature for the disk footprint and nodal load."""
-    from .source import SurfaceSource
-
+def triangle_quadrature(*, points, triangles):
+    """Return positions, barycentric basis values, and area weights in SI."""
     barycentric = np.array(
         [[2 / 3, 1 / 6, 1 / 6], [1 / 6, 2 / 3, 1 / 6], [1 / 6, 1 / 6, 2 / 3]]
     )
@@ -92,6 +90,15 @@ def source_load(*, points, triangles, source):
     quadrature = np.einsum("qa,tad->tqd", barycentric, points[triangles])
 
     areas = triangle_areas(points=points, triangles=triangles)
+
+    weights = np.broadcast_to(areas[:, None] / 3, quadrature.shape[:2])
+
+    return quadrature, barycentric, weights
+
+
+def source_irradiance(*, quadrature, weights, source):
+    """Evaluate the incoming diffuse profile with its sampled-area normalization."""
+    from .source import SurfaceSource
 
     selected = np.ones(quadrature.shape[:2], dtype=bool)
 
@@ -108,15 +115,26 @@ def source_load(*, points, triangles, source):
             np.linalg.norm(displacement, axis=-1) <= source.radius.to("m").magnitude
         )
 
-    sampled_area = np.sum(areas[:, None] * selected / 3)
+    sampled_area = np.sum(weights * selected)
 
     if sampled_area == 0:
         raise ValueError("The mesh does not resolve the source footprint; refine it.")
 
-    irradiance = source.optical_power.to("W").magnitude / sampled_area
+    irradiance = (source.optical_power.to("W").magnitude / sampled_area) * selected
 
-    local_load = (
-        irradiance * areas[:, None] * np.einsum("tq,qa->ta", selected / 3, barycentric)
+    return irradiance, sampled_area
+
+
+def source_load(*, points, triangles, source):
+    """Three-point triangle quadrature for the disk footprint and nodal load."""
+    quadrature, barycentric, weights = triangle_quadrature(
+        points=points, triangles=triangles
     )
+
+    irradiance, sampled_area = source_irradiance(
+        quadrature=quadrature, weights=weights, source=source
+    )
+
+    local_load = np.einsum("tq,qa->ta", weights * irradiance, barycentric)
 
     return local_load, sampled_area

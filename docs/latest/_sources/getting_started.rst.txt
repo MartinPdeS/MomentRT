@@ -123,8 +123,8 @@ center, so that no mesh node coincides with the point-source singularity.
        scale="log",
    )
 
-The example is also available as an executable gallery page:
-:doc:`auto_examples/infinite_diffusion`.
+The complete executable example is in the :doc:`fundamentals gallery
+<gallery/index>`.
 
 Finite-sample workflow
 ----------------------
@@ -190,9 +190,8 @@ is diffuse power already coupled into the sample; MomentRT does not model a
 collimated LED or its specular entry loss. Review :doc:`finite_element` before
 interpreting the predicted field.
 
-The full surface-source example is :doc:`auto_examples/surface_diffusion`.
-For geometry construction and resolved material cross-sections, see
-:doc:`auto_examples/structured_sample`.
+The full surface-source example and the sample-construction example are in
+the :doc:`finite-sample gallery <gallery/index>`.
 
 Explore fields and diagnostics
 ------------------------------

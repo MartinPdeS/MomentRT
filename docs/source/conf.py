@@ -17,8 +17,14 @@ globals().update(
         version="auto",
         author="Martin Poinsinet de Sivry-Houle",
         repository=f"MartinPdeS/{package_name}",
-        logo="_static/momentrt-logo.svg",
-        favicon="_static/momentrt-favicon.svg",
+        logo="../images/logo-light.svg",
+        favicon="../images/favicon.ico",
+        html_theme_options={
+            "logo": {
+                "image_light": "../images/logo-light.svg",
+                "image_dark": "../images/logo-dark.svg",
+            },
+        },
         prefer_installed_package=True,
         gallery_sections=["fundamentals", "finite_samples"],
         gallery_default_thumb=str(

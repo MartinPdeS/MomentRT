@@ -31,23 +31,17 @@ fields so that numerical output can be interpreted in context.
 
       Run complete examples with interactive visualizations.
 
-   .. grid-item-card:: Understand the model
-      :link: theory
+   .. grid-item-card:: Theory and finite elements
+      :link: theory/index
       :link-type: doc
 
-      Read the P1 equations, approximations, and limits.
+      Read the P1 model, assumptions, and FEM formulation.
 
-   .. grid-item-card:: Finite element details
-      :link: finite_element
+   .. grid-item-card:: Results and API
+      :link: reference/index
       :link-type: doc
 
-      Follow the weak form, tetrahedral discretization, and boundaries.
-
-   .. grid-item-card:: API reference
-      :link: api_reference
-      :link-type: doc
-
-      Find the public objects and their responsibilities.
+      Interpret outputs and find the public objects.
 
 Before interpreting a field
 ---------------------------
@@ -65,8 +59,5 @@ near-source values, or boundary behavior.
    Start <getting_started>
    Guide <guide>
    Examples <gallery/index>
-   Theory <theory>
-   FEM <finite_element>
-   Results <results>
-   API <api_reference>
-   Roadmap <roadmap>
+   Theory <theory/index>
+   Reference <reference/index>

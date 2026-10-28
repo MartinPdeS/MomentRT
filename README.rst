@@ -1,3 +1,5 @@
+|logo|
+
 .. list-table::
    :widths: 35 65
    :header-rows: 1
@@ -353,6 +355,11 @@ see the `CITATION.cff file
 <https://github.com/MartinPdeS/MomentRT/blob/master/CITATION.cff>`_.
 
 .. _scientific guide: https://martinpdes.github.io/MomentRT/docs/latest/theory.html
+
+.. |logo| image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/images/logo.svg
+   :alt: MomentRT — light transport through a finite element volume.
+   :width: 800
+   :target: https://martinpdes.github.io/MomentRT/docs/latest/
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/MomentRT.svg
    :alt: Python versions

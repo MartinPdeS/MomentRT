@@ -1,0 +1,38 @@
+name: Publish release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  release:
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_release.yml@v2
+    with:
+      documentation: true
+      documentation_package_name: MomentRT
+      documentation_python_version: "3.11"
+      documentation_retain_versions: 5
+      pypi_package_type: pure
+      pypi_python_version: "3.11"
+      pypi_test_import: MomentRT
+      # A noarch recipe produces one filename on every OS and Python version.
+      # Publish one artifact; the CI matrix separately checks Python versions.
+      conda_python_versions: '["3.11"]'
+      conda_os_list: '["ubuntu-latest"]'
+      conda_package_name: momentrt
+      conda_recipe_path: conda.recipe
+      conda_test_import: MomentRT
+      conda_channels: conda-forge
+      release_validation_command: >-
+        python -m pip install "martinpdes-maintenance==0.2.2" &&
+        python -m martinpdes_maintenance.cli check --version "${GITHUB_REF_NAME#v}"
+    secrets:
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}

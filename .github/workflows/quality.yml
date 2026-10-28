@@ -1,0 +1,20 @@
+name: Quality
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    uses: MartinPdeS/MPSActions/.github/workflows/run_quality.yml@v2
+    with:
+      install-command: >-
+        python -m pip install --upgrade pip && python -m pip install "ruff>=0.6"
+      quality-command: |
+        python -m ruff check MomentRT tests docs/examples tools
+        python -m ruff format --check MomentRT tests docs/examples tools

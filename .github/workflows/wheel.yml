@@ -1,0 +1,34 @@
+name: Wheel smoke test
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+jobs:
+  wheel:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.11", "3.14"]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Set up Python and build tools
+        uses: MartinPdeS/MPSActions/actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+          install-command: python -m pip install --upgrade pip build
+
+      - name: Build the wheel
+        run: python -m build --wheel
+
+      - name: Verify and install the wheel outside the checkout
+        run: python tools/check_wheel.py dist/*.whl

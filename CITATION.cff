@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you use MomentRT in research, please cite the software version used."
+title: "MomentRT"
+type: software
+version: "0.1.0.dev0"
+authors:
+  - family-names: "Poinsinet de Sivry-Houle"
+    given-names: "Martin"
+abstract: >
+  MomentRT is a Python package for deterministic light transport using
+  angular-moment methods. It includes finite-element diffusion through
+  structured media and tools for visualizing optical fields.
+license: "MIT"
+keywords:
+  - radiative transfer
+  - light transport
+  - diffusion
+  - finite element method
+  - tissue optics

@@ -1,0 +1,55 @@
+package:
+  name: momentrt
+  version: "0.1.0.dev0"
+
+source:
+  # Build the checked-out revision, including uncommitted local changes.
+  path: ..
+
+build:
+  noarch: python
+  number: 0
+  script: '"{{ PYTHON }}" -m pip install . -vv --no-deps --no-build-isolation'
+
+requirements:
+  host:
+    - python 3.11.*
+    - pip
+    - setuptools >=77.0.3
+    - wheel
+  run:
+    - python >=3.11
+    - numpy >=1.26
+    - scipy >=1.12
+    - pint >=0.24
+    - matplotlib >=3.8
+
+test:
+  imports:
+    - MomentRT
+  requires:
+    - python {{ PY_VER }}.*
+    - pytest >=8
+    - plotly >=6,<7
+  source_files:
+    - tests
+    - docs/examples
+    - pyproject.toml
+    - CITATION.cff
+    - .zenodo.json
+    - LICENSE
+    - conda.recipe/meta.yaml
+  commands:
+    - python -m pytest -q tests
+
+about:
+  license: MIT
+  license_file: LICENSE
+  summary: "Deterministic light transport using angular-moment methods."
+  description: >-
+    MomentRT models light transport using angular-moment methods, including
+    finite-element diffusion through structured media.
+
+extra:
+  recipe-maintainers:
+    - MartinPdeS

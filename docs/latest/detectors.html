@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Finite-aperture surface detectors &#8212; MomentRT 0.2.0 documentation</title>
+    <title>Finite-aperture surface detectors &#8212; MomentRT 0.2.1 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=95e61db4"></script>
+    <script src="_static/documentation_options.js?v=3ca669d2"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2.0" />
+  <meta name="docsearch:version" content="0.2.1" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -461,6 +461,7 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Finite-aperture detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="spectral.html">Materials and wavelength sweeps</a></li>
+<li class="toctree-l1"><a class="reference internal" href="convergence.html">Detector mesh convergence</a></li>
 </ul>
 </div>
 </nav></div>
@@ -578,6 +579,18 @@ quantity. A detector can also read an existing finite solution with
 changing a source object afterwards does not change the solved outgoing
 field. <code class="docutils literal notranslate"><span class="pre">simulation.plot_system()</span></code> draws the aperture and collection axis
 alongside the source and sample.</p>
+<p>The same detector can be drawn over a solved field without constructing a
+separate system figure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">figure</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">overlays</span><span class="o">=</span><span class="p">[</span><span class="n">source</span><span class="p">,</span> <span class="n">detector</span><span class="p">],</span>
+    <span class="n">scale</span><span class="o">=</span><span class="s2">"log"</span><span class="p">,</span>
+    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Use a mapping such as <code class="docutils literal notranslate"><span class="pre">overlays={&quot;Reflection</span> <span class="pre">aperture&quot;:</span> <span class="pre">detector}</span></code> to
+choose legend labels. Adding an overlay is visual composition and does not
+attach a new detector measurement to the result.</p>
 </section>
 <section id="escaping-flux-and-angular-acceptance">
 <h2>Escaping flux and angular acceptance<a class="headerlink" href="#escaping-flux-and-angular-acceptance" title="Link to this heading">#</a></h2>
@@ -648,6 +661,10 @@ Such a value requires investigation before physical interpretation.</p>
 </section>
 <section id="scope-of-the-measurement">
 <h2>Scope of the measurement<a class="headerlink" href="#scope-of-the-measurement" title="Link to this heading">#</a></h2>
+<p>Use <a class="reference internal" href="convergence.html"><span class="doc">Choosing a mesh for detector collection</span></a> to compare collected power and sampled source and
+detector areas on explicit successively refined meshes. The study retains
+unresolved levels and reports a recommendation only when the stated
+criteria hold at the fine end of the sequence.</p>
 <p>This detector model applies to finite <code class="docutils literal notranslate"><span class="pre">Diffusion</span></code> results. An observation
 window from <code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> is not a sample surface and cannot supply
 these measurements. Reflecting faces have zero modeled escape.</p>
@@ -721,7 +738,7 @@ model of competing absorbers on the boundary.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.0/docs/source/detectors.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.1/docs/source/detectors.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

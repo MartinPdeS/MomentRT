@@ -73,6 +73,61 @@ The volume view is a rendering of sampled nodal values, not a geometric
 boundary or a claim that every displayed contour is resolved. Mesh refinement
 and model validation remain numerical tasks.
 
+Source and detector overlays
+-----------------------------
+
+Use ``overlays`` to place instrument geometry on the same 3D axes as a
+scalar field. Sources draw their illumination marker, disk, or full-face
+patch. Contact detectors draw an aperture and an outward collection axis.
+For example:
+
+.. code-block:: python
+
+   figure = result.fluence.plot(
+       view="volume",
+       scale="log",
+       overlays=[source, reflection_detector, transmission_detector],
+       show=False,
+   )
+
+The sequence order determines drawing and legend order. To choose labels,
+supply a mapping instead:
+
+.. code-block:: python
+
+   figure = result.fluence.plot(
+       overlays={
+           "Illumination": source,
+           "Reflection aperture": reflection_detector,
+       },
+       length_unit="mm",
+       show=False,
+   )
+
+All overlays use the displayed coordinate unit. Each object's related
+traces share a legend group: hiding a detector hides both its aperture and
+collection axis. The volume opacity slider changes only the fluence trace.
+Overlays do not change the field, detector power, source configuration, or
+energy accounting.
+
+Full-face illumination needs physical sample bounds. The finite solver
+records those bounds in the fluence metadata, so its fields can place a
+``UniformSurfaceSource`` on the correct face. The observation window of an
+infinite-medium field is not a sample boundary and is not used as one.
+Explicit point, disk, and aperture coordinates can be drawn without those
+physical bounds.
+
+``simulation.plot_system()`` uses the same object-owned
+``_add_to_figure(figure=..., context=...)`` hooks, keeping source and
+detector styling consistent across views. These hooks are internal; the
+public entry point for composing field figures is ``overlays``.
+
+Collected-power spectra use wavelength and power axes, so geometric
+overlays belong on a constituent spatial field:
+``spectrum.results[2].fluence.plot(overlays=[source, detector])``.
+See the :doc:`spectral detector example
+<gallery/finite_samples/spectral_detectors>` for both figures.
+
 Diffusive flux
 --------------
 
@@ -161,10 +216,18 @@ broadband signal.
 * ``tetrahedron_count``: number of linear tetrahedral elements.
 * ``source_quadrature_area``: disk area sampled by triangle quadrature, or the
   entire face for uniform illumination.
+* ``source_geometric_area``: the configured disk or face area.
+* ``preparation_reused``: whether this solve reused the prepared geometry
+  from an earlier wavelength in the same sweep.
 
 These diagnostics help identify algebraic errors and under-resolved
 discretization. Energy conservation is necessary for a consistent solve, but
 it does not establish agreement with radiative transfer or an experiment.
+
+The :doc:`detector convergence study <convergence>` organizes these area
+diagnostics and collected-power comparisons across explicit mesh levels.
+It preserves failed resolution checks and returns no recommended mesh when
+the supplied fine levels do not satisfy the requested criteria.
 
 Export
 ------

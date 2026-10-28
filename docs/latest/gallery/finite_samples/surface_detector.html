@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Collect light with finite apertures &#8212; MomentRT 0.2.0 documentation</title>
+    <title>Collect light with finite apertures &#8212; MomentRT 0.2.1 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=95e61db4"></script>
+    <script src="../../_static/documentation_options.js?v=3ca669d2"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2.0" />
+  <meta name="docsearch:version" content="0.2.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -464,6 +464,7 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Finite samples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="detector_convergence.html">Choose a mesh for detector collection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mesh_refinement.html">Check finite-element mesh refinement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spectral_detectors.html">Sweep wavelengths with a fixed sensor geometry</a></li>
@@ -647,7 +648,9 @@ of Lambertian escaping power from its sampled aperture.</p>
 <h2>Solve, inspect power, and check aperture sampling<a class="headerlink" href="#solve-inspect-power-and-check-aperture-sampling" title="Link to this heading">#</a></h2>
 <p>Detector power is a passive readout of the solved boundary field. It does
 not reduce the escaping power in the energy balance. The sampled aperture
-area should approach the geometric area under mesh refinement.</p>
+area should approach the geometric area under mesh refinement.
+The volume plot reuses the same source and detector geometry through overlays.
+Legend entries toggle each object; the opacity slider controls only fluence.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">result</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="p">)</span><span class="p">:</span><span class="w">
@@ -660,18 +663,23 @@ area should approach the geometric area under mesh refinement.</p>
 </span><span class="n">fluence_figure</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
 </span>    <span class="n">view</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">volume</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">log</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="n">overlays</span><span class="o">=</span><span class="p">{</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">Illumination</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">source</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">Reflection detector</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">reflection_detector</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">Transmission detector</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">transmission_detector</span><span class="p">,</span><span class="w">
+</span>    <span class="p">}</span><span class="p">,</span><span class="w">
 </span>    <span class="n">show</span><span class="o">=</span><span class="n">show_figures</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<iframe src="../../_static/gallery/surface_detector-2.html" title="Fluence rate — volume (log scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>reflection collected power: 0.002326651033778884 mW
+<iframe src="../../_static/gallery/surface_detector-2.html" title="Fluence rate — volume (log scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>reflection collected power: 0.0023266510337788663 mW
 reflection sampled area: 1.8333333333333337 mm²
 reflection geometric area: 1.7671458676442586 mm²
-transmission collected power: 0.006764921136876892 mW
+transmission collected power: 0.006764921136876683 mW
 transmission sampled area: 2.416666666666667 mm²
 transmission geometric area: 2.5446900494077327 mm²
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.138 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.137 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-finite-samples-surface-detector-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/ef3849aa93f234724c1c1f6cfd737630/surface_detector.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">surface_detector.ipynb</span></code></a></p>
@@ -744,7 +752,7 @@ transmission geometric area: 2.5446900494077327 mm²
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.0/docs/source/gallery/finite_samples/surface_detector.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.1/docs/source/gallery/finite_samples/surface_detector.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

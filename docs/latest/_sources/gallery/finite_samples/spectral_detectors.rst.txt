@@ -189,7 +189,7 @@ Run the ordered wavelength sweep
 Each result keeps its own fields, wavelength, and detector measurements.
 The original sample, source wavelength, and detector geometry are retained.
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-146
+.. GENERATED FROM PYTHON SOURCE LINES 130-152
 
 .. code-block:: Python
 
@@ -199,6 +199,12 @@ The original sample, source wavelength, and detector geometry are retained.
     spectrum = simulation.sweep(
         wavelengths=wavelengths,
     )
+
+    print(f"Geometry preparations: {spectrum.diagnostics['geometry_preparations']}")
+
+    print(f"Preparation time: {spectrum.diagnostics['preparation_time'].to('s'):~P}")
+
+    print(f"Per-wavelength run times: {spectrum.diagnostics['solve_times'].to('s'):~P}")
 
     spectral_figure = spectrum.plot(
         wavelength_unit="nm",
@@ -221,23 +227,29 @@ The original sample, source wavelength, and detector geometry are retained.
 
  .. code-block:: none
 
-    Reflection at 700 nm: 0.0019590985219869366 mW
-    Reflection at 750 nm: 0.002272609112024007 mW
-    Reflection at 800 nm: 0.0023677074555548436 mW
-    Reflection at 850 nm: 0.002464391101847658 mW
-    Reflection at 900 nm: 0.002317102091676833 mW
+    Geometry preparations: 1
+    Preparation time: 0.05993215099999816 s
+    Per-wavelength run times: [0.03354876500000614 0.03340263499998741 0.0329577949999873 0.03368439900000908 0.033116594000006216] s
+    Reflection at 700 nm: 0.0019590985219869353 mW
+    Reflection at 750 nm: 0.0022726091120240026 mW
+    Reflection at 800 nm: 0.0023677074555548284 mW
+    Reflection at 850 nm: 0.002464391101847651 mW
+    Reflection at 900 nm: 0.0023171020916768017 mW
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-151
+.. GENERATED FROM PYTHON SOURCE LINES 153-160
 
 Inspect one monochromatic fluence volume
 -----------------------------------------
 The third solve corresponds to 800 nm. Its geometry is the same as in the
 other solves; its optical coefficients are interpolated at this wavelength.
+Overlays place the instrument on the spatial field; the spectrum above keeps
+its wavelength and power axes.
+Named overlays give the two apertures distinct legend entries.
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-157
+.. GENERATED FROM PYTHON SOURCE LINES 160-171
 
 .. code-block:: Python
 
@@ -245,6 +257,11 @@ other solves; its optical coefficients are interpolated at this wavelength.
     fluence_figure = spectrum.results[2].fluence.plot(
         view="volume",
         scale="log",
+        overlays={
+            "Illumination": source,
+            "Reflection detector": reflection_detector,
+            "Transmission detector": transmission_detector,
+        },
         show=show_figures,
     )
 
@@ -261,7 +278,7 @@ other solves; its optical coefficients are interpolated at this wavelength.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.681 seconds)
+   **Total running time of the script:** (0 minutes 0.290 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_spectral_detectors.py:

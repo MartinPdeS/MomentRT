@@ -47,6 +47,12 @@ with an explicitly modeled illuminated boundary.
 
       Interpolate optical tables and reuse a fixed instrument geometry.
 
+   .. grid-item-card:: Choose a detector mesh
+      :link: convergence
+      :link-type: doc
+
+      Compare collected power, aperture sampling, and source area under refinement.
+
 .. note::
 
    Both models use the P1 diffusion approximation. The finite solver is not a
@@ -58,3 +64,4 @@ with an explicitly modeled illuminated boundary.
 
    Finite-aperture detectors <detectors>
    Materials and wavelength sweeps <spectral>
+   Detector mesh convergence <convergence>

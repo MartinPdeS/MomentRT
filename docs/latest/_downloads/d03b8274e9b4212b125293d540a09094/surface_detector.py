@@ -112,6 +112,8 @@ system_figure = simulation.plot_system(
 # Detector power is a passive readout of the solved boundary field. It does
 # not reduce the escaping power in the energy balance. The sampled aperture
 # area should approach the geometric area under mesh refinement.
+# The volume plot reuses the same source and detector geometry through overlays.
+# Legend entries toggle each object; the opacity slider controls only fluence.
 
 result = simulation.run()
 
@@ -125,5 +127,10 @@ for name, measurement in result.detectors.items():
 fluence_figure = result.fluence.plot(
     view="volume",
     scale="log",
+    overlays={
+        "Illumination": source,
+        "Reflection detector": reflection_detector,
+        "Transmission detector": transmission_detector,
+    },
     show=show_figures,
 )

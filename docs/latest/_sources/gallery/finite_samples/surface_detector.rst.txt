@@ -166,15 +166,17 @@ of Lambertian escaping power from its sampled aperture.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-115
+.. GENERATED FROM PYTHON SOURCE LINES 110-117
 
 Solve, inspect power, and check aperture sampling
 -------------------------------------------------
 Detector power is a passive readout of the solved boundary field. It does
 not reduce the escaping power in the energy balance. The sampled aperture
 area should approach the geometric area under mesh refinement.
+The volume plot reuses the same source and detector geometry through overlays.
+Legend entries toggle each object; the opacity slider controls only fluence.
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-130
+.. GENERATED FROM PYTHON SOURCE LINES 117-137
 
 .. code-block:: Python
 
@@ -191,6 +193,11 @@ area should approach the geometric area under mesh refinement.
     fluence_figure = result.fluence.plot(
         view="volume",
         scale="log",
+        overlays={
+            "Illumination": source,
+            "Reflection detector": reflection_detector,
+            "Transmission detector": transmission_detector,
+        },
         show=show_figures,
     )
 
@@ -205,10 +212,10 @@ area should approach the geometric area under mesh refinement.
 
  .. code-block:: none
 
-    reflection collected power: 0.002326651033778884 mW
+    reflection collected power: 0.0023266510337788663 mW
     reflection sampled area: 1.8333333333333337 mm²
     reflection geometric area: 1.7671458676442586 mm²
-    transmission collected power: 0.006764921136876892 mW
+    transmission collected power: 0.006764921136876683 mW
     transmission sampled area: 2.416666666666667 mm²
     transmission geometric area: 2.5446900494077327 mm²
 
@@ -218,7 +225,7 @@ area should approach the geometric area under mesh refinement.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.138 seconds)
+   **Total running time of the script:** (0 minutes 0.137 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_surface_detector.py:

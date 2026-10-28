@@ -22,6 +22,23 @@ easy to inspect.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare collected power, sampled detector area, and sampled illumination area over four explicit meshes. The study preserves the physical sample and instrument geometry. Its recommendation is a numerical resolution check for these observables, not validation of P1 against radiative transfer.">
+
+.. only:: html
+
+  .. image:: /gallery/finite_samples/images/thumb/sphx_glr_detector_convergence_thumb.png
+    :alt:
+
+  :doc:`/gallery/finite_samples/detector_convergence`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Choose a mesh for detector collection</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Repeat one finite-sample solve on three meshes and compare the centerline fluence profiles. A stable curve is evidence about discretization for this setup; it does not validate the P1 approximation against radiative transfer. All inputs are illustrative.">
 
 .. only:: html
@@ -149,6 +166,7 @@ easy to inspect.
 .. toctree::
    :hidden:
 
+   /gallery/finite_samples/detector_convergence
    /gallery/finite_samples/mesh_refinement
    /gallery/finite_samples/reflectance_sweep
    /gallery/finite_samples/spectral_detectors

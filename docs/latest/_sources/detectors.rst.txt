@@ -65,6 +65,21 @@ changing a source object afterwards does not change the solved outgoing
 field. ``simulation.plot_system()`` draws the aperture and collection axis
 alongside the source and sample.
 
+The same detector can be drawn over a solved field without constructing a
+separate system figure:
+
+.. code-block:: python
+
+   figure = result.fluence.plot(
+       overlays=[source, detector],
+       scale="log",
+       show=False,
+   )
+
+Use a mapping such as ``overlays={"Reflection aperture": detector}`` to
+choose legend labels. Adding an overlay is visual composition and does not
+attach a new detector measurement to the result.
+
 Escaping flux and angular acceptance
 -------------------------------------
 
@@ -156,6 +171,11 @@ Such a value requires investigation before physical interpretation.
 
 Scope of the measurement
 -------------------------
+
+Use :doc:`convergence` to compare collected power and sampled source and
+detector areas on explicit successively refined meshes. The study retains
+unresolved levels and reports a recommendation only when the stated
+criteria hold at the fine end of the sequence.
 
 This detector model applies to finite ``Diffusion`` results. An observation
 window from ``InfiniteDiffusion`` is not a sample surface and cannot supply

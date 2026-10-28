@@ -1,272 +1,383 @@
+.. list-table::
+   :widths: 35 65
+   :header-rows: 1
+
+   * - Badge
+     - Status
+   * - Python versions
+     - |python|
+   * - Documentation
+     - |docs|
+   * - Tests
+     - |tests|
+   * - Coverage workflow
+     - |coverage|
+   * - PyPI package
+     - |pypi|
+   * - PyPI downloads
+     - |pypi_downloads|
+   * - Anaconda package
+     - |anaconda|
+   * - Anaconda downloads
+     - |anaconda_downloads|
+   * - Latest Anaconda release
+     - |anaconda_date|
+
 MomentRT
 ========
 
-Deterministic light transport using angular-moment methods.
+**MomentRT** is an open-source Python package for deterministic light
+transport using angular-moment methods. It models steady-state P1 diffusion
+in homogeneous infinite media and finite structured samples. Its API keeps the
+sample, illumination, mesh, and solver explicit, and its results include
+unit-bearing optical fields and power diagnostics.
 
-Early development
------------------
+Features
+--------
 
-The analytical baseline is steady-state P1 diffusion from an
-isotropic point source in an infinite homogeneous medium. It produces a
-unit-bearing nodal fluence-rate field and interactive 3D visualization.
-The Cartesian grid is an observation window, not a physical sample boundary.
-The source singularity is rejected rather than regularized silently.
-Diffusion is an approximation; near-source fields are not reliable transport
-predictions. Refractive index is recorded but has no effect without interfaces.
+* Analytical P1 diffusion from an isotropic point source in an infinite,
+  homogeneous medium.
+* Boundary-aware P1 diffusion for finite samples, solved with linear
+  tetrahedral finite elements.
+* Layered samples with box and sphere structures, plus resolved material
+  cross-sections.
+* Explicit diffuse surface illumination and Robin or reflecting conditions
+  on all six sample faces.
+* Interactive Plotly views for sample geometry, fluence, sections, and
+  element-centered flux. Volume plots include an opacity control.
+* Unit-bearing fields, per-face escaping power, and solver diagnostics.
 
-Finite sample construction and visualization support layers, boxes, and spheres.
-Boundary-aware tetrahedral FEM diffusion supports finite structured samples
-and diffuse surface illumination. SP3, detectors, spectral integration, and
-inverse estimation are planned and are not implemented yet.
+MomentRT uses the P1 diffusion approximation. It does not currently solve the
+full radiative transfer equation or implement P3/SP3, collimated LED
+propagation, detector apertures, spectral integration, time dependence, or
+inverse estimation. Read the `scientific guide`_ for the equations,
+approximations, validation limits, and complete workflow.
 
 Installation
 ------------
 
-.. code-block:: console
-
-   python -m pip install -e ".[viz,dev]"
-   python docs/examples/infinite_diffusion.py
-
-The full guide in ``docs/source`` derives the P1 equations, explains the finite
-element and boundary approximations, and walks through the complete modeling
-workflow, results, visualization, and public API.
-
-Conda package from a local checkout
------------------------------------
-
-The conda recipe builds the checked-out source as a pure-Python package.
-With ``conda-build`` installed, build and install it locally with:
+Install the released Python package with Plotly visualization support:
 
 .. code-block:: console
 
-   conda build -c conda-forge conda.recipe
-   conda install --use-local -c conda-forge momentrt
+   python -m pip install "MomentRT[viz]"
 
-The base conda package contains the numerical dependencies. Install Plotly
-from conda-forge to use interactive plots; PyVista is needed only for VTK
-export. The recipe does not publish a package.
+Or install the conda package and its dependencies:
+
+.. code-block:: console
+
+   conda install -c martinpdes -c conda-forge momentrt
+
+Verify the installation with the same Python interpreter you will use for your
+calculations:
+
+.. code-block:: console
+
+   python -c "import MomentRT; print(MomentRT.__version__)"
+
+The base package includes the numerical dependencies. Plotly is optional for
+interactive plots; PyVista is optional for VTK export. Install both plotting
+extras with ``python -m pip install "MomentRT[viz,vtk]"``.
+
+First simulation
+----------------
+
+The infinite-medium solver is a quick way to calculate and inspect a fluence
+field. This example uses explicit units and places the source between grid
+nodes, avoiding the singular point-source location.
+
+.. code-block:: python
+
+   import numpy as np
+
+   from MomentRT import (
+       CartesianMesh,
+       HomogeneousMedium,
+       InfiniteDiffusion,
+       Material,
+       PointSource,
+       Simulation,
+       ureg,
+   )
+
+   material = Material(
+       absorption=0.02 / ureg.millimeter,
+       reduced_scattering=1.0 / ureg.millimeter,
+       refractive_index=1.4,
+   )
+
+   medium = HomogeneousMedium(material=material)
+
+   mesh = CartesianMesh(
+       shape=(40, 40, 40),
+       spacing=np.full(3, 0.4) * ureg.millimeter,
+       origin=np.full(3, -7.8) * ureg.millimeter,
+   )
+
+   source = PointSource(
+       position=np.zeros(3) * ureg.millimeter,
+       wavelength=970 * ureg.nanometer,
+       optical_power=1 * ureg.milliwatt,
+   )
+
+   solver = InfiniteDiffusion()
+
+   simulation = Simulation(
+       medium=medium,
+       source=source,
+       mesh=mesh,
+       solver=solver,
+   )
+
+   result = simulation.run()
+
+   figure = result.fluence.plot(
+       scale="log",
+   )
+
+``result.fluence`` is a nodal fluence-rate field with units of W/m². The
+infinite solver evaluates an analytical Green function; the observation grid
+does not create physical sample boundaries.
+
+Finite-sample FEM workflow
+--------------------------
+
+For a finite sample, define its geometry and materials, create a mesh, specify
+surface illumination and all six boundary faces, then run ``Diffusion``. This
+example uses the same explicit effective reflectance on each face and a
+circular diffuse source on the upper face.
+
+.. code-block:: python
+
+   import numpy as np
+
+   from MomentRT import (
+       CartesianMesh,
+       Diffusion,
+       Material,
+       RobinBoundary,
+       Simulation,
+       StructuredMedium,
+       SurfaceSource,
+       ureg,
+   )
+
+   background = Material(
+       absorption=0.02 / ureg.millimeter,
+       reduced_scattering=1.0 / ureg.millimeter,
+       refractive_index=1.4,
+   )
+
+   upper_material = Material(
+       absorption=0.04 / ureg.millimeter,
+       reduced_scattering=1.5 / ureg.millimeter,
+       refractive_index=1.4,
+   )
+
+   sample = StructuredMedium(
+       origin=np.array([-4, -4, 0]) * ureg.millimeter,
+       size=np.array([8, 8, 4]) * ureg.millimeter,
+   )
+
+   sample.add_background(material=background)
+
+   sample.add_layer(
+       name="Upper layer",
+       thickness=1 * ureg.millimeter,
+       material=upper_material,
+   )
+
+   mesh = CartesianMesh.from_sample(
+       sample=sample,
+       shape=(25, 25, 17),
+   )
+
+   source = SurfaceSource(
+       face="z_min",
+       position=np.array([0, 0, 0]) * ureg.millimeter,
+       radius=1 * ureg.millimeter,
+       wavelength=970 * ureg.nanometer,
+       optical_power=1 * ureg.milliwatt,
+   )
+
+   boundary = RobinBoundary(effective_reflectance=0.5)
+
+   solver = Diffusion(
+       boundaries={
+           "x_min": boundary,
+           "x_max": boundary,
+           "y_min": boundary,
+           "y_max": boundary,
+           "z_min": boundary,
+           "z_max": boundary,
+       },
+   )
+
+   simulation = Simulation(
+       medium=sample,
+       source=source,
+       mesh=mesh,
+       solver=solver,
+   )
+
+   geometry = simulation.plot_system(
+       show=False,
+   )
+
+   result = simulation.run()
+
+   figure = result.fluence.plot(
+       view="volume",
+       scale="log",
+   )
+
+   print(f"Incoming power: {result.energy_balance['incoming_power']}")
+   print(f"Absorbed power: {result.energy_balance['absorbed_power']}")
+   print(f"Escaping power: {result.energy_balance['escaping_power']}")
+
+The finite ``Diffusion`` solver uses P1 diffusion with linear tetrahedral FEM.
+Its sample mesh must span the sample exactly. Internal refractive indices
+must be equal because the solver models continuous fluence and does not
+resolve refracting interfaces. ``SurfaceSource.optical_power`` is diffuse
+power already coupled into the sample; incident beam propagation and
+specular entry losses are not included. The supplied effective reflectance
+is a diffuse partial-current coefficient, not a Fresnel value inferred from
+refractive index.
 
 Visualization
 -------------
 
-``simulation.plot_system()`` displays the observation window and source.
-``result.fluence.plot(scale="log")`` displays a translucent volume.
-Its browser slider adjusts opacity from 0 to 1; pass ``opacity=0.12`` to choose
-the starting value. Other views are ``slices`` and ``isosurfaces``. Plots
-return a Plotly figure;
-use ``show=False`` to compose a scene and ``figure.write_html("fluence.html")``
-to save a standalone interactive document.
-Field export uses ``result.fluence.export(path="fluence.vti")`` and records
-value units, coordinate units, and transport metadata for ParaView.
-Plotly is optional and imported only when plotting. Install ``MomentRT[vtk]``
-for optional PyVista-based VTK export. Plotting does not require VTK.
-Log color scales transform display values only; hover labels retain physical
-values. Slices select the central grid plane on each axis.
-
-Development
------------
-
-.. code-block:: console
-
-   make check PYTHON=.venv/bin/python
-   make package-check PYTHON=.venv/bin/python
-
-The package is flat. Python type annotations are intentionally omitted.
-
-Reference
----------
-
-The implemented infinite-medium Green function is
-``Phi(r) = P exp(-sqrt(mu_a / D) r) / (4 pi D r)``, with
-``D = 1 / (3 (mu_a + mu_s_prime))``. It solves
-``-D Laplacian(Phi) + mu_a Phi = P delta(r)``.
-
-Plotly volume rendering:
-https://plotly.com/python/3d-volume-plots/
-
-Defining a sample
------------------
-
-Build a finite ``StructuredMedium`` with explicit ``origin`` and ``size``
-quantities (three Cartesian components). Configure its background with
-``sample.add_background(material=material)``. Add named ``Layer``, ``Box``,
-and ``Sphere`` objects using ``sample.add_structures(epidermis, dermis, inclusion)``.
-These calls mutate the builder in place and return None.
-
-A ``Layer`` uses an absolute z ``depth`` and positive ``thickness`` and spans
-the sample's full lateral extent. A ``Box`` uses its lower-corner ``origin``
-and full ``size``; a ``Sphere`` uses ``center`` and ``radius``. Positive z
-points into the sample. Dimensional inputs require explicit units.
-All structures must fit inside the sample; duplicate names are rejected.
-Later structures replace earlier materials, including at shared interfaces.
-Replacing the background preserves structures. Uncovered regions use the
-background; the exterior is intentionally unspecified.
-
-Run the complete layered-sample example:
-
-.. code-block:: console
-
-   python docs/examples/structured_sample.py
-
-``figure = sample.plot(show=False)`` creates a Plotly figure without a mesh.
-Rotate the sample, toggle regions through the legend, and hover over regions
-to inspect their optical properties. Use ``opacity`` to expose internal shapes
-and ``length_unit`` to change displayed coordinates. Save standalone HTML with
-``figure.write_html("sample.html")``.
-
-The plot shows transparent construction surfaces, not Boolean-subtracted
-interfaces: insertion order defines the actual sampled material map, not
-visual blending. ``sample.material_labels(points=points)`` returns 0 for the
-background and 1..N for structures in insertion order. Query points must lie
-inside the sample. ``sample.optical_fields(mesh=mesh)`` returns nodal
-absorption, reduced-scattering, and refractive-index ``ScalarField`` objects.
-Generated fields are independent snapshots.
-
-Use ``Diffusion`` for finite-sample FEM transport. ``InfiniteDiffusion`` accepts
-only ``HomogeneousMedium`` and does not simulate finite boundaries.
-
-Stacking layers and inspecting cross-sections
----------------------------------------------
-
-``sample.add_layer(name="Epidermis", thickness=200 * ureg.micrometer,
-material=epidermal_material)`` appends a layer without a manually calculated
-depth. The first starts at ``sample.origin[2]``; later layers start at the
-deepest existing layer's lower interface. Explicit ``Layer`` regions also
-participate; spheres and boxes do not change the stack depth. Overflow and
-duplicate names are rejected before changing the sample. Layers added after
-inclusions follow ordinary insertion precedence and can replace them.
-Add the layer stack before inclusions when inclusions should take precedence.
+The default fluence plot is a Plotly volume view. Adjust opacity from 0 to 1
+using its browser slider, or choose a starting value with ``opacity``:
 
 .. code-block:: python
 
-   figure = sample.plot_section(
-       normal="y",
-       position=0 * ureg.millimeter,
-       quantity="material",
-       resolution=(300, 150),
+   figure = result.fluence.plot(
+       view="volume",
+       scale="log",
+       opacity=0.12,
        show=False,
    )
 
-   figure.write_html("sample_section.html")
+   figure.write_html("fluence.html")
 
-``normal`` selects the plane normal; ``position`` is an absolute coordinate
-with length units. The remaining axes occur in Cartesian order, with depth
-increasing downward when the vertical axis is z. The plot has equal physical
-axis scales. ``quantity`` may be ``material``, ``absorption``,
-``reduced_scattering``, or ``refractive_index``. Optical properties support
-``value_unit`` conversions and ``scale="log"`` for strictly positive values.
-Material maps use discrete colors; no smoothing is applied.
+Other scalar-field views include central mesh ``slices`` and
+``isosurfaces``. ``result.flux.plot()`` displays element-centered diffusive
+flux vectors. ``sample.plot()`` shows the transparent construction surfaces;
+``sample.plot_section(...)`` displays a sampled material or optical-property
+map. Log color scales change the displayed colors only; hover values retain
+their physical units.
 
-For numerical access, use ``section = sample.section(...)``. It retains
-``labels``, region ``names``, physical ``horizontal`` and ``vertical``
-coordinates, and unit-bearing optical-property ``fields``. Arrays have
-(vertical, horizontal) order. Resolution specifies (horizontal, vertical)
-cell counts; fields are evaluated at cell centers and remain snapshots if
-the sample changes. Thin structures require sufficient resolution. The
-cross-section resolves replacement precedence, unlike the transparent
-construction surfaces in the 3D view.
+The following figures were generated from MomentRT examples and results.
+The live documentation contains interactive Plotly versions.
 
-Boundary-aware diffusion
-------------------------
+.. image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/source/_static/images/sample-geometry.png
+   :width: 900
+   :align: center
+   :alt: MomentRT view of a layered sample with a spherical inclusion.
 
-Run a finite, layered-sample calculation with a surface spot:
+.. image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/source/_static/images/infinite-fluence-volume.png
+   :width: 900
+   :align: center
+   :alt: Logarithmic volume rendering of fluence around an isotropic point source.
 
-.. code-block:: console
+.. image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/source/_static/images/finite-fluence-slices.png
+   :width: 900
+   :align: center
+   :alt: Logarithmic fluence on three central planes in a finite sample.
 
-   python docs/examples/surface_diffusion.py
+Documentation
+-------------
 
-``CartesianMesh.from_sample(sample=sample, shape=(25, 25, 17))`` spans the finite
-sample. Each Cartesian cell is split into six conforming tetrahedra; fluence
-uses continuous piecewise-linear basis functions. The solver assembles
-consistent volume and Robin surface mass matrices and solves the sparse system
-with SciPy. Material coefficients are sampled at element centroids. Layer
-interfaces should align with mesh planes; curved and unaligned boundaries are
-approximated and require geometry and mesh-convergence checks. This is not an
-interface-conforming automatic mesher.
+The `online documentation <https://martinpdes.github.io/MomentRT/>`_ includes:
 
-Configure ``Diffusion(boundaries=...)`` with all six faces: ``x_min``,
-``x_max``, ``y_min``, ``y_max``, ``z_min``, ``z_max``. Each requires either
-``ReflectingBoundary()`` (zero normal current) or
-``RobinBoundary(effective_reflectance=...)``. Effective reflectance is the
-specified diffuse partial-current reflection coefficient, in [0, 1), not the
-normal-incidence Fresnel reflectance. No exterior refractive index or Fresnel
-approximation is silently assumed.
+* The P1 moment equations, infinite-medium Green function, and approximation
+  limits.
+* The finite-sample Robin boundary condition, weak form, and FEM assembly.
+* Complete workflows, visualization guidance, results, and API reference.
+* An executable `example gallery
+  <https://martinpdes.github.io/MomentRT/docs/latest/auto_examples/index.html>`_.
 
-``SurfaceSource`` specifies ``face``, absolute ``position``, disk ``radius``,
-``wavelength``, and ``optical_power``. ``UniformSurfaceSource`` illuminates a
-whole face and requires ``face``, ``wavelength``, and ``optical_power``.
-Source power is incoming diffuse partial-current power already transmitted
-into the sample; incident LED power and specular entry losses are not modeled.
-Illumination requires a Robin face. A disk must fit fully on that face.
-Three-point triangle quadrature samples the top-hat spot and is normalized to
-the requested power. Inspect ``result.diagnostics['source_quadrature_area']``
-and refine the mesh to resolve the footprint; power normalization alone does
-not establish spatial accuracy.
-
-With outward current J.n, effective reflectance R, incoming partial current
-I_in, and beta = (1-R)/(2(1+R)), the boundary convention is
-``J.n = beta Phi - 2 I_in/(1+R)``. The weak equation therefore has Robin
-term ``integral(beta v Phi)`` and illumination load
-``integral(2 v I_in/(1+R))``. Escaping transmitted partial current is
-``beta Phi - 2 beta I_in``. It is distinct from the gross Robin term and
-from the net outward current. ``result.outgoing_power_by_face`` integrates
-this escaping quantity; it is not a finite-aperture detector measurement.
-
-``result.energy_balance`` contains incoming, absorbed, escaping, and residual
-power. ``result.flux`` contains unsmoothed element-centered values of
-``J = -D grad(Phi)`` in W/m^2, and ``result.flux.plot()`` displays relative-length
-arrows. Fluence retains the standard 3D slice, volume, and isosurface views.
-Numerical positivity is not enforced by clipping; minimum fluence and linear
-relative residual are reported in ``result.diagnostics``. Log plots reject
-nonpositive values.
-
-The solver currently requires equal internal refractive indices. Its continuous
-fluence treatment is not a model of refracting internal index jumps, which are
-rejected explicitly. Optical coefficients apply at the source wavelength;
-spectral models are not implemented. Diffusion is approximate near boundaries,
-strong absorbers, and short source-detector separations. Energy conservation
-and agreement with diffusion references do not establish agreement with RTE
-or measured tissue data.
-
-Boundary-condition and FEM reference:
-https://pmc.ncbi.nlm.nih.gov/articles/PMC3195519/
-
-
-Building the example gallery
-----------------------------
-
-Examples in ``docs/examples`` are executable Sphinx-Gallery scripts with an
-RST introduction and explanatory ``# %%`` cells. They construct figures at
-top level without opening browsers or writing export files. The documentation
-scraper embeds each figure immediately after its corresponding code cell.
+Build the docs and run the examples locally with:
 
 .. code-block:: console
 
-   python -m pip install -e ".[documentation]"
+   python -m pip install -e ".[documentation,viz]"
    make docs PYTHON=.venv/bin/python
 
-Open ``docs/_build/html/auto_examples/index.html`` to browse the interactive
-examples. A saved figure can still be exported explicitly using its
-``write_html`` method in your own scripts.
+Common issues
+-------------
+
+* **Point-source singularity:** do not place an observation node exactly at
+  the point source. MomentRT reports this instead of silently regularizing it.
+* **No visible internal interface:** construction plots use transparent
+  geometry surfaces. Use a sampled section to inspect the resolved material
+  precedence.
+* **Finite solver rejects refractive indices:** the current FEM formulation
+  requires equal internal refractive indices; it does not model internal
+  refraction.
+* **Unexpected surface-source power:** source power is already coupled diffuse
+  power in the sample. Collimated illumination and specular entry losses are
+  outside the model.
+* **Slow or changing fields under refinement:** element-centroid materials,
+  source quadrature, interface alignment, and P1 validity can all affect the
+  result. Refine meshes and compare independent references; energy balance
+  alone does not validate the physical approximation.
+* **Log plot rejects values:** logarithmic rendering requires strictly
+  positive values and does not clip zeros or negative values.
+
+Developer setup
+---------------
+
+Clone the repository, install the development extras, and build the docs with
+the same Python interpreter used for development:
+
+.. code-block:: console
+
+   git clone https://github.com/MartinPdeS/MomentRT.git
+   cd MomentRT
+   python3 -m venv .venv
+   .venv/bin/python -m pip install -e ".[testing,documentation,dev,viz]"
+   make check PYTHON=.venv/bin/python
+   make docs PYTHON=.venv/bin/python
+
+``make check`` runs quality checks and tests. The codebase intentionally keeps
+the package flat and does not use Python type annotations.
 
 Citation and license
 --------------------
 
-MomentRT is distributed under the MIT license; see ``LICENSE``. If you use
-MomentRT in research, please cite the software version using the metadata in
-``CITATION.cff``. The ``.zenodo.json`` file provides metadata for a future
-Zenodo archive. No DOI has been assigned.
+MomentRT is distributed under the MIT license. If you use it in research,
+cite the version recorded in ``CITATION.cff``. For bibliographic metadata,
+see the `CITATION.cff file
+<https://github.com/MartinPdeS/MomentRT/blob/master/CITATION.cff>`_.
 
-GitHub workflows
-----------------
+.. _scientific guide: https://martinpdes.github.io/MomentRT/docs/latest/theory.html
 
-The workflows follow PyMieSim's reusable MPSActions setup. Changes to ``master``
-and pull requests run tests and quality checks; documentation and coverage are
-also built for branch pushes. A wheel smoke-test matrix verifies installation
-outside the checkout on Linux, macOS, and Windows.
-
-A pushed ``v*`` tag triggers the release workflow, which validates version
-metadata and publishes a pure Python distribution, a single noarch conda
-package, and versioned documentation. The repository needs ``PYPI_API_TOKEN``
-and ``ANACONDA_API_TOKEN`` secrets and GitHub Pages configured for publication.
-No tag or publication is created by the local workflow files themselves.
+.. |python| image:: https://img.shields.io/pypi/pyversions/MomentRT.svg
+   :alt: Python versions
+   :target: https://pypi.org/project/MomentRT/
+.. |docs| image:: https://github.com/MartinPdeS/MomentRT/actions/workflows/deploy_documentation.yml/badge.svg?branch=master
+   :alt: Documentation build status
+   :target: https://martinpdes.github.io/MomentRT/
+.. |tests| image:: https://github.com/MartinPdeS/MomentRT/actions/workflows/tests.yml/badge.svg?branch=master
+   :alt: Test workflow status
+   :target: https://github.com/MartinPdeS/MomentRT/actions/workflows/tests.yml
+.. |coverage| image:: https://github.com/MartinPdeS/MomentRT/actions/workflows/deploy_coverage.yml/badge.svg?branch=master
+   :alt: Coverage workflow status
+   :target: https://github.com/MartinPdeS/MomentRT/actions/workflows/deploy_coverage.yml
+.. |pypi| image:: https://img.shields.io/pypi/v/MomentRT.svg
+   :alt: PyPI version
+   :target: https://pypi.org/project/MomentRT/
+.. |pypi_downloads| image:: https://img.shields.io/pypi/dm/MomentRT.svg
+   :alt: Monthly PyPI downloads
+   :target: https://pypi.org/project/MomentRT/
+.. |anaconda| image:: https://anaconda.org/martinpdes/momentrt/badges/version.svg
+   :alt: Anaconda version
+   :target: https://anaconda.org/martinpdes/momentrt
+.. |anaconda_downloads| image:: https://anaconda.org/martinpdes/momentrt/badges/downloads.svg
+   :alt: Anaconda downloads
+   :target: https://anaconda.org/martinpdes/momentrt
+.. |anaconda_date| image:: https://anaconda.org/martinpdes/momentrt/badges/latest_release_relative_date.svg
+   :alt: Latest Anaconda release date
+   :target: https://anaconda.org/martinpdes/momentrt

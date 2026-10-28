@@ -73,9 +73,10 @@ center_index_x = mesh.shape[0] // 2
 center_index_y = mesh.shape[1] // 2
 
 depth = (
-    mesh.origin[2]
-    + np.arange(mesh.shape[2]) * mesh.spacing[2]
-).to("millimeter").magnitude
+    (mesh.origin[2] + np.arange(mesh.shape[2]) * mesh.spacing[2])
+    .to("millimeter")
+    .magnitude
+)
 
 centerline_profiles = []
 

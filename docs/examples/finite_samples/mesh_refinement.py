@@ -108,9 +108,10 @@ for shape in mesh_shapes:
     centerline = fluence[shape[0] // 2, shape[1] // 2, :]
 
     depth = (
-        mesh.origin[2]
-        + np.arange(shape[2]) * mesh.spacing[2]
-    ).to("millimeter").magnitude
+        (mesh.origin[2] + np.arange(shape[2]) * mesh.spacing[2])
+        .to("millimeter")
+        .magnitude
+    )
 
     depth_profiles.append(centerline)
 

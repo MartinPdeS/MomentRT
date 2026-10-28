@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.860** total execution time for 2 files **from gallery/finite_samples**:
+**00:00.953** total execution time for 2 files **from gallery/finite_samples**:
 
 .. container::
 
@@ -33,8 +33,8 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_finite_samples_surface_diffusion.py` (``surface_diffusion.py``)
-     - 00:00.807
+     - 00:00.892
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_structured_sample.py` (``structured_sample.py``)
-     - 00:00.053
+     - 00:00.061
      - 0.0

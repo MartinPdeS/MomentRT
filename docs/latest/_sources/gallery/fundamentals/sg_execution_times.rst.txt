@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.417** total execution time for 1 file **from gallery/fundamentals**:
+**00:00.497** total execution time for 1 file **from gallery/fundamentals**:
 
 .. container::
 
@@ -33,5 +33,5 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_fundamentals_infinite_diffusion.py` (``infinite_diffusion.py``)
-     - 00:00.417
+     - 00:00.497
      - 0.0

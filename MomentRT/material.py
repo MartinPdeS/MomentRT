@@ -2,16 +2,16 @@
 
 import numpy as np
 
-from .units import ureg, validate_units
+import MomentRT
 
 
 class Material:
     def __init__(self, *, absorption, reduced_scattering, refractive_index):
-        validate_units(
+        MomentRT.units.validate_units(
             value=absorption, unit="1/m", name="absorption", shape=(), nonnegative=True
         )
 
-        validate_units(
+        MomentRT.units.validate_units(
             value=reduced_scattering,
             unit="1/m",
             name="reduced_scattering",
@@ -20,7 +20,7 @@ class Material:
         )
 
         if (
-            isinstance(refractive_index, ureg.Quantity)
+            isinstance(refractive_index, MomentRT.units.ureg.Quantity)
             or not np.isscalar(refractive_index)
             or not np.isfinite(refractive_index)
             or refractive_index <= 0
@@ -35,7 +35,7 @@ class Material:
 
     def at(self, *, wavelength):
         """Return this wavelength-independent material at a positive wavelength."""
-        validate_units(
+        MomentRT.units.validate_units(
             value=wavelength, unit="m", name="wavelength", shape=(), positive=True
         )
 
@@ -52,7 +52,9 @@ class SpectralMaterial:
     def __init__(
         self, *, wavelengths, absorption, reduced_scattering, refractive_index
     ):
-        validate_units(value=wavelengths, unit="m", name="wavelengths", positive=True)
+        MomentRT.units.validate_units(
+            value=wavelengths, unit="m", name="wavelengths", positive=True
+        )
 
         if wavelengths.ndim != 1 or len(wavelengths) < 2:
             raise ValueError("wavelengths must be a vector with at least two entries.")
@@ -60,7 +62,7 @@ class SpectralMaterial:
         if np.any(np.diff(wavelengths.to("m").magnitude) <= 0):
             raise ValueError("wavelengths must increase strictly.")
 
-        validate_units(
+        MomentRT.units.validate_units(
             value=absorption,
             unit="1/m",
             name="absorption",
@@ -68,7 +70,7 @@ class SpectralMaterial:
             nonnegative=True,
         )
 
-        validate_units(
+        MomentRT.units.validate_units(
             value=reduced_scattering,
             unit="1/m",
             name="reduced_scattering",
@@ -76,7 +78,7 @@ class SpectralMaterial:
             positive=True,
         )
 
-        if isinstance(refractive_index, (ureg.Quantity, bool)):
+        if isinstance(refractive_index, (MomentRT.units.ureg.Quantity, bool)):
             raise ValueError("refractive_index must contain positive plain numbers.")
 
         indices = np.asarray(refractive_index)
@@ -101,7 +103,7 @@ class SpectralMaterial:
 
     def at(self, *, wavelength):
         """Evaluate a monochromatic Material without modifying the table."""
-        validate_units(
+        MomentRT.units.validate_units(
             value=wavelength, unit="m", name="wavelength", shape=(), positive=True
         )
 

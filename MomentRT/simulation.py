@@ -1,16 +1,16 @@
 """Composition of medium, illumination, and transport."""
 
+import copy
+import time
+from collections.abc import Mapping
+
 import numpy as np
 
-from .results import SimulationResult, SpectralSimulationResult
+import MomentRT
 
 
 class Simulation:
     def __init__(self, *, medium, source, mesh, solver, detectors=None):
-        from collections.abc import Mapping
-
-        from .detector import SurfaceDetector
-
         if detectors is not None and not isinstance(detectors, Mapping):
             raise TypeError("detectors must map names to SurfaceDetector objects.")
 
@@ -19,7 +19,7 @@ class Simulation:
         if any(
             not isinstance(name, str)
             or not name.strip()
-            or not isinstance(detector, SurfaceDetector)
+            or not isinstance(detector, MomentRT.detector.SurfaceDetector)
             for name, detector in detectors.items()
         ):
             raise ValueError(
@@ -41,8 +41,8 @@ class Simulation:
             medium=self.medium, source=self.source, mesh=self.mesh
         )
 
-        if not isinstance(solution, SimulationResult):
-            solution = SimulationResult(fluence=solution)
+        if not isinstance(solution, MomentRT.results.SimulationResult):
+            solution = MomentRT.results.SimulationResult(fluence=solution)
 
         measurements = {
             name: detector.measure(result=solution)
@@ -60,17 +60,18 @@ class Simulation:
         omitted, every solve uses the configured source's optical_power.
         This is a set of monochromatic solves, not broadband spectral integration.
         """
-        from copy import copy
 
-        from .units import validate_units
+        started = time.perf_counter()
 
-        validate_units(value=wavelengths, unit="m", name="wavelengths", positive=True)
+        MomentRT.units.validate_units(
+            value=wavelengths, unit="m", name="wavelengths", positive=True
+        )
 
         if wavelengths.ndim != 1 or not len(wavelengths):
             raise ValueError("wavelengths must be a nonempty vector.")
 
         if optical_power is not None:
-            validate_units(
+            MomentRT.units.validate_units(
                 value=optical_power, unit="W", name="optical_power", positive=True
             )
 
@@ -83,10 +84,24 @@ class Simulation:
         for wavelength in wavelengths:
             self.medium.at(wavelength=wavelength)
 
+        prepare = getattr(self.solver, "_prepare", None)
+
+        preparation_started = time.perf_counter()
+
+        solver = (
+            self.solver
+            if prepare is None
+            else prepare(medium=self.medium, source=self.source, mesh=self.mesh)
+        )
+
+        preparation_time = time.perf_counter() - preparation_started
+
         results = []
 
+        solve_times = []
+
         for index, wavelength in enumerate(wavelengths):
-            source = copy(self.source)
+            source = copy.copy(self.source)
 
             source.wavelength = wavelength.copy()
 
@@ -99,152 +114,73 @@ class Simulation:
                 medium=self.medium,
                 source=source,
                 mesh=self.mesh,
-                solver=self.solver,
+                solver=solver,
                 detectors=self.detectors,
             )
 
+            solve_started = time.perf_counter()
+
             results.append(simulation.run())
 
-        return SpectralSimulationResult(wavelengths=wavelengths, results=results)
+            solve_times.append(time.perf_counter() - solve_started)
+
+        return MomentRT.results.SpectralSimulationResult(
+            wavelengths=wavelengths,
+            results=results,
+            diagnostics={
+                "geometry_preparations": int(prepare is not None),
+                "preparation_time": preparation_time * MomentRT.units.ureg.second,
+                "solve_times": np.array(solve_times) * MomentRT.units.ureg.second,
+                "total_time": (time.perf_counter() - started)
+                * MomentRT.units.ureg.second,
+            },
+        )
+
+    def convergence_study(
+        self,
+        *,
+        mesh_shapes,
+        power_rtol=0.01,
+        area_rtol=0.02,
+        power_atol=None,
+        required_consecutive=2,
+    ):
+        """Compare detector signals and footprint sampling across explicit meshes."""
+
+        return MomentRT.convergence._run_study(
+            simulation=self,
+            mesh_shapes=mesh_shapes,
+            power_rtol=power_rtol,
+            area_rtol=area_rtol,
+            power_atol=power_atol,
+            required_consecutive=required_consecutive,
+        )
 
     def plot_system(self, *, length_unit="mm", show=True):
         medium = self.medium.at(wavelength=self.source.wavelength)
 
         figure = medium.plot(mesh=self.mesh, length_unit=length_unit, show=False)
 
-        from .plotting import require_plotly
+        context = {
+            "length_unit": length_unit,
+            "sample_origin": getattr(medium, "origin", None),
+            "sample_size": getattr(medium, "size", None),
+        }
 
-        go = require_plotly()
-
-        if hasattr(self.source, "position"):
-            position = self.source.position.to(length_unit).magnitude
-        else:
-            position = (
-                (self.medium.origin + self.medium.size / 2).to(length_unit).magnitude
-            )
-
-            axis = "xyz".index(self.source.face[0])
-
-            position[axis] = self.medium.origin.to(length_unit).magnitude[axis]
-
-            if self.source.face.endswith("max"):
-                position[axis] += self.medium.size.to(length_unit).magnitude[axis]
-
-        if hasattr(self.source, "radius"):
-            angle = np.linspace(0, 2 * np.pi, 65)
-
-            ring = np.repeat(position[None, :], len(angle), axis=0).astype(float)
-
-            axes = [
-                axis for axis in range(3) if axis != "xyz".index(self.source.face[0])
-            ]
-
-            ring[:, axes[0]] += self.source.radius.to(length_unit).magnitude * np.cos(
-                angle
-            )
-
-            ring[:, axes[1]] += self.source.radius.to(length_unit).magnitude * np.sin(
-                angle
-            )
-
-            figure.add_trace(
-                go.Scatter3d(
-                    x=ring[:, 0],
-                    y=ring[:, 1],
-                    z=ring[:, 2],
-                    mode="lines",
-                    line={"color": "crimson", "width": 5},
-                    name="Illumination spot",
-                )
-            )
-
-        if hasattr(self.source, "face") and not hasattr(self.source, "radius"):
-            axes = [
-                axis for axis in range(3) if axis != "xyz".index(self.source.face[0])
-            ]
-
-            lower = self.medium.origin.to(length_unit).magnitude
-
-            upper = (self.medium.origin + self.medium.size).to(length_unit).magnitude
-
-            horizontal, vertical = np.meshgrid(
-                [lower[axes[0]], upper[axes[0]]],
-                [lower[axes[1]], upper[axes[1]]],
-            )
-
-            surface = np.broadcast_to(position, (2, 2, 3)).copy()
-
-            surface[..., axes[0]] = horizontal
-
-            surface[..., axes[1]] = vertical
-
-            figure.add_trace(
-                go.Surface(
-                    x=surface[..., 0],
-                    y=surface[..., 1],
-                    z=surface[..., 2],
-                    surfacecolor=np.zeros((2, 2)),
-                    colorscale=[[0, "crimson"], [1, "crimson"]],
-                    opacity=0.4,
-                    showscale=False,
-                    showlegend=True,
-                    name="Full-face illumination",
-                )
-            )
-
-        figure.add_trace(
-            go.Scatter3d(
-                x=[position[0]],
-                y=[position[1]],
-                z=[position[2]],
-                mode="markers",
-                marker={"color": "crimson", "size": 7},
-                name="Point source"
-                if not hasattr(self.source, "face")
-                else "Surface source",
-            )
+        MomentRT.plotting._add_overlays(
+            figure=figure,
+            overlays=[self.source],
+            context=context,
         )
 
-        for name, detector in self.detectors.items():
-            position = detector.position.to(length_unit).magnitude
-
-            angle = np.linspace(0, 2 * np.pi, 65)
-
-            ring = np.repeat(position[None, :], len(angle), axis=0).astype(float)
-
-            axes = [axis for axis in range(3) if axis != "xyz".index(detector.face[0])]
-
-            radius = detector.radius.to(length_unit).magnitude
-
-            ring[:, axes[0]] += radius * np.cos(angle)
-
-            ring[:, axes[1]] += radius * np.sin(angle)
-
-            figure.add_trace(
-                go.Scatter3d(
-                    x=ring[:, 0],
-                    y=ring[:, 1],
-                    z=ring[:, 2],
-                    mode="lines",
-                    line={"color": "royalblue", "width": 5},
-                    name=f"Detector: {name}",
-                )
-            )
-
-            tip = position + 2 * radius * detector.collection_axis
-
-            figure.add_trace(
-                go.Scatter3d(
-                    x=[position[0], tip[0]],
-                    y=[position[1], tip[1]],
-                    z=[position[2], tip[2]],
-                    mode="lines+markers",
-                    line={"color": "royalblue", "width": 3},
-                    marker={"size": 3},
-                    showlegend=False,
-                    hovertemplate=f"Collection axis: {name}<extra></extra>",
-                )
-            )
+        MomentRT.plotting._add_overlays(
+            figure=figure,
+            overlays={
+                f"Detector: {name}": detector
+                for name, detector in self.detectors.items()
+            },
+            context=context,
+        )
 
         if show:
             figure.show()

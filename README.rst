@@ -52,6 +52,8 @@ Features
   a Lambertian escape model.
 * Tabulated wavelength-dependent materials and monochromatic sweeps on a
   fixed source, sample, and detector geometry.
+* Detector mesh-refinement studies and reusable finite-element preparation
+  across wavelengths.
 
 MomentRT uses the P1 diffusion approximation. It does not currently solve the
 full radiative transfer equation or implement P3/SP3, collimated LED

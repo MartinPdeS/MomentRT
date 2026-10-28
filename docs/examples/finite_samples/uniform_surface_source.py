@@ -91,9 +91,11 @@ simulation = Simulation(
 
 result = simulation.run()
 
+# The illumination patch is independent of the fluence opacity control.
 figure = result.fluence.plot(
     view="volume",
     scale="log",
+    overlays=[source],
     show=show_figures,
 )
 

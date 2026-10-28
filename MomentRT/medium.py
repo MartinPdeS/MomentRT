@@ -1,5 +1,11 @@
 """Homogeneous material viewed through a finite observation window."""
 
+import copy
+
+import numpy as np
+
+import MomentRT
+
 
 class HomogeneousMedium:
     def __init__(self, *, material):
@@ -9,9 +15,7 @@ class HomogeneousMedium:
         return HomogeneousMedium(material=self.material.at(wavelength=wavelength))
 
     def plot(self, *, mesh, length_unit="mm", show=True):
-        from .plotting import plot_medium
-
-        return plot_medium(
+        return MomentRT.plotting.plot_medium(
             medium=self,
             mesh=mesh,
             length_unit=length_unit,
@@ -29,11 +33,11 @@ class StructuredMedium:
     """
 
     def __init__(self, *, origin, size):
-        from .units import validate_units
+        MomentRT.units.validate_units(value=origin, unit="m", name="origin", shape=(3,))
 
-        validate_units(value=origin, unit="m", name="origin", shape=(3,))
-
-        validate_units(value=size, unit="m", name="size", shape=(3,), positive=True)
+        MomentRT.units.validate_units(
+            value=size, unit="m", name="size", shape=(3,), positive=True
+        )
 
         self.origin = origin.copy()
 
@@ -49,18 +53,16 @@ class StructuredMedium:
 
     def add_background(self, *, material):
         """Replace the background while retaining existing structures."""
-        from .material import Material, SpectralMaterial
 
-        if not isinstance(material, (Material, SpectralMaterial)):
+        if not isinstance(
+            material, (MomentRT.material.Material, MomentRT.material.SpectralMaterial)
+        ):
             raise TypeError("material must be a Material or SpectralMaterial.")
 
         self.background = material
 
     def at(self, *, wavelength):
         """Resolve all materials on a geometry-preserving monochromatic copy."""
-        from copy import copy
-
-        from .units import ureg
 
         if self.background is None:
             raise ValueError("Configure an explicit background with add_background().")
@@ -72,10 +74,10 @@ class StructuredMedium:
         structures = []
 
         for structure in self.structures:
-            resolved = copy(structure)
+            resolved = copy.copy(structure)
 
             for name, value in vars(structure).items():
-                if isinstance(value, ureg.Quantity):
+                if isinstance(value, MomentRT.units.ureg.Quantity):
                     setattr(resolved, name, value.copy())
 
             resolved.material = structure.material.at(wavelength=wavelength)
@@ -87,23 +89,21 @@ class StructuredMedium:
         return sample
 
     def _at_for_display(self, *, wavelength):
-        from .material import SpectralMaterial
-
         if wavelength is not None:
             return self.at(wavelength=wavelength)
 
         materials = [self.background, *(shape.material for shape in self.structures)]
 
-        if any(isinstance(material, SpectralMaterial) for material in materials):
+        if any(
+            isinstance(material, MomentRT.material.SpectralMaterial)
+            for material in materials
+        ):
             raise ValueError("Supply wavelength when displaying spectral properties.")
 
         return self
 
     def add_structures(self, *structures):
         """Append named shapes in argument order; validate the whole batch first."""
-        import numpy as np
-
-        from .geometry import Box, Layer, Sphere
 
         lower = self.origin.to("m").magnitude
 
@@ -112,7 +112,14 @@ class StructuredMedium:
         names = {shape.name for shape in self.structures}
 
         for shape in structures:
-            if not isinstance(shape, (Box, Sphere, Layer)):
+            if not isinstance(
+                shape,
+                (
+                    MomentRT.geometry.Box,
+                    MomentRT.geometry.Sphere,
+                    MomentRT.geometry.Layer,
+                ),
+            ):
                 raise TypeError("structures must be Box, Sphere, or Layer objects.")
 
             if shape.name in names:
@@ -120,11 +127,11 @@ class StructuredMedium:
 
             names.add(shape.name)
 
-            if isinstance(shape, Box):
+            if isinstance(shape, MomentRT.geometry.Box):
                 shape_lower = shape.origin.to("m").magnitude
 
                 shape_upper = (shape.origin + shape.size).to("m").magnitude
-            elif isinstance(shape, Sphere):
+            elif isinstance(shape, MomentRT.geometry.Sphere):
                 shape_lower = (shape.center - shape.radius).to("m").magnitude
 
                 shape_upper = (shape.center + shape.radius).to("m").magnitude
@@ -156,11 +163,8 @@ class StructuredMedium:
 
         Points must lie inside the finite sample. The trailing axis is x/y/z.
         """
-        import numpy as np
 
-        from .units import validate_units
-
-        validate_units(value=points, unit="m", name="points")
+        MomentRT.units.validate_units(value=points, unit="m", name="points")
 
         if points.ndim < 1 or points.shape[-1] != 3:
             raise ValueError("points must have a trailing axis of length three.")
@@ -186,10 +190,6 @@ class StructuredMedium:
 
     def optical_fields(self, *, mesh, wavelength=None):
         """Sample the material map onto mesh nodes, returning unit-bearing fields."""
-        import numpy as np
-
-        from .fields import ScalarField
-        from .units import ureg
 
         sample = self._at_for_display(wavelength=wavelength)
 
@@ -216,9 +216,9 @@ class StructuredMedium:
                 ]
             )
 
-            fields[name] = ScalarField(
+            fields[name] = MomentRT.fields.ScalarField(
                 mesh=mesh,
-                values=values[labels] * ureg(unit),
+                values=values[labels] * MomentRT.units.ureg(unit),
                 name=name,
                 metadata={"association": "node", "overlap": "last structure wins"},
             )
@@ -233,12 +233,11 @@ class StructuredMedium:
         Transparent primitive surfaces show the construction geometry; overlap
         precedence follows insertion order, not optical mixing or CSG subtraction.
         """
-        from .plotting import plot_sample
 
         if self.background is None:
             raise ValueError("Configure an explicit background with add_background().")
 
-        return plot_sample(
+        return MomentRT.plotting.plot_sample(
             sample=self._at_for_display(wavelength=wavelength),
             length_unit=length_unit,
             opacity=opacity,
@@ -252,15 +251,14 @@ class StructuredMedium:
         stacking depth. Explicit Layer objects added through add_structures
         also participate. New layers follow the usual insertion precedence.
         """
-        from .geometry import Layer
 
         depth = self.origin[2]
 
         for structure in self.structures:
-            if isinstance(structure, Layer):
+            if isinstance(structure, MomentRT.geometry.Layer):
                 depth = max(depth, structure.depth + structure.thickness)
 
-        layer = Layer(
+        layer = MomentRT.geometry.Layer(
             name=name,
             depth=depth,
             thickness=thickness,
@@ -275,9 +273,8 @@ class StructuredMedium:
         resolution gives (horizontal, vertical) cell counts. Cell-center
         samples represent a discrete map, not an exact geometric intersection.
         """
-        from .sections import SampleSection
 
-        return SampleSection(
+        return MomentRT.sections.SampleSection(
             sample=self,
             normal=normal,
             position=position,

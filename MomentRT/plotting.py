@@ -1,28 +1,41 @@
 """Optional interactive Plotly figures for geometry and physical fields."""
 
+from collections.abc import Mapping
+from html import escape
+
 import numpy as np
+
+import MomentRT
+
+try:
+    import plotly.graph_objects as go
+    from plotly.colors import qualitative
+    from plotly.subplots import make_subplots
+except ImportError:
+    go = None
+    qualitative = None
+    make_subplots = None
+
+try:
+    import pyvista as pv
+except ImportError:
+    pv = None
 
 
 def require_plotly():
-    try:
-        import plotly.graph_objects as go
-    except ImportError as error:
-        raise ImportError(
-            'Install 3D support with: pip install "MomentRT[viz]"'
-        ) from error
+    if go is None:
+        raise ImportError('Install 3D support with: pip install "MomentRT[viz]"')
 
     return go
 
 
 def require_pyvista():
-    try:
-        import pyvista
-    except ImportError as error:
+    if pv is None:
         raise ImportError(
             'Install VTK export support with: pip install "MomentRT[vtk]"'
-        ) from error
+        )
 
-    return pyvista
+    return pv
 
 
 def make_figure(*, length_unit):
@@ -124,7 +137,65 @@ def plot_medium(*, medium, mesh, length_unit, show):
     return figure
 
 
-def plot_field(*, field, view, scale, length_unit, opacity, isosurface_count, show):
+def _add_overlays(*, figure, overlays, context):
+    """Add each object's spatial traces using a shared plotting context."""
+
+    if overlays is None:
+        return
+
+    if isinstance(overlays, Mapping):
+        entries = tuple(overlays.items())
+
+        if any(not isinstance(name, str) or not name.strip() for name, _ in entries):
+            raise ValueError("Overlay labels must be nonempty strings.")
+    else:
+        if isinstance(overlays, (str, bytes)):
+            raise TypeError("overlays must be an iterable of drawable objects.")
+
+        try:
+            entries = tuple((None, item) for item in overlays)
+        except TypeError as error:
+            raise TypeError(
+                "overlays must be an iterable of drawable objects."
+            ) from error
+
+    for _, item in entries:
+        if not callable(getattr(item, "_add_to_figure", None)):
+            raise TypeError(
+                "Each overlay must implement _add_to_figure(figure=..., context=...)."
+            )
+
+    group_offset = len(figure.data)
+
+    for number, (name, item) in enumerate(entries):
+        item._add_to_figure(
+            figure=figure,
+            context={
+                **context,
+                "name": None if name is None else escape(name),
+                "legendgroup": f"momentrt-overlay-{group_offset}-{number}",
+            },
+        )
+
+
+def _circle_points(*, position, radius, face):
+    """Build a display-coordinate circle in an axis-aligned face plane."""
+    angle = np.linspace(0, 2 * np.pi, 65)
+
+    ring = np.repeat(position[None, :], len(angle), axis=0).astype(float)
+
+    axes = [axis for axis in range(3) if axis != "xyz".index(face[0])]
+
+    ring[:, axes[0]] += radius * np.cos(angle)
+
+    ring[:, axes[1]] += radius * np.sin(angle)
+
+    return ring
+
+
+def plot_field(
+    *, field, view, scale, length_unit, opacity, isosurface_count, show, overlays=None
+):
     if view not in {"slices", "volume", "isosurfaces"}:
         raise ValueError("view must be slices, volume, or isosurfaces.")
 
@@ -285,6 +356,30 @@ def plot_field(*, field, view, scale, length_unit, opacity, isosurface_count, sh
                 ]
             )
 
+    field_trace_count = len(figure.data)
+
+    _add_overlays(
+        figure=figure,
+        overlays=overlays,
+        context={
+            "length_unit": length_unit,
+            "sample_origin": field.metadata.get("sample_origin"),
+            "sample_size": field.metadata.get("sample_size"),
+        },
+    )
+
+    if len(figure.data) > field_trace_count:
+        figure.update_layout(
+            legend={
+                "orientation": "h",
+                "x": 0.02,
+                "xanchor": "left",
+                "y": 0.98,
+                "yanchor": "top",
+                "groupclick": "togglegroup",
+            }
+        )
+
     if show:
         figure.show()
 
@@ -337,9 +432,6 @@ def _box_surface(*, origin, size, name, color, opacity, hover):
 
 def plot_sample(*, sample, length_unit, opacity, show):
     """Render construction surfaces with stable colors and material hover labels."""
-    from html import escape
-
-    from .geometry import Box, Layer
 
     if not np.isscalar(opacity) or not np.isfinite(opacity) or not 0 <= opacity <= 1:
         raise ValueError("opacity must be between zero and one.")
@@ -371,16 +463,18 @@ def plot_sample(*, sample, length_unit, opacity, show):
             "#A7B5C8" if region is None else colors[(region_number - 1) % len(colors)]
         )
 
-        if region is None or isinstance(region, (Box, Layer)):
+        if region is None or isinstance(
+            region, (MomentRT.geometry.Box, MomentRT.geometry.Layer)
+        ):
             region_origin = origin.copy()
 
             region_size = size.copy()
 
-            if isinstance(region, Box):
+            if isinstance(region, MomentRT.geometry.Box):
                 region_origin = region.origin.to(length_unit).magnitude
 
                 region_size = region.size.to(length_unit).magnitude
-            elif isinstance(region, Layer):
+            elif isinstance(region, MomentRT.geometry.Layer):
                 region_origin[2] = region.depth.to(length_unit).magnitude
 
                 region_size[2] = region.thickness.to(length_unit).magnitude
@@ -433,7 +527,6 @@ def plot_sample(*, sample, length_unit, opacity, show):
 
 def plot_section(*, section, quantity, length_unit, value_unit, scale, show):
     """Plot resolved material or property samples with physical hover values."""
-    from html import escape
 
     if quantity not in ("material", *section.fields):
         raise ValueError(

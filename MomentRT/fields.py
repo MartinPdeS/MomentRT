@@ -1,13 +1,15 @@
 """Unit-bearing nodal scalar fields with mesh-aware visualization."""
 
+from pathlib import Path
+
 import numpy as np
 
-from .units import ureg
+import MomentRT
 
 
 class ScalarField:
     def __init__(self, *, mesh, values, name, metadata=None):
-        if not isinstance(values, ureg.Quantity):
+        if not isinstance(values, MomentRT.units.ureg.Quantity):
             raise TypeError("values must carry units.")
 
         if values.shape != mesh.shape or not np.all(np.isfinite(values.magnitude)):
@@ -38,8 +40,6 @@ class ScalarField:
         return grid
 
     def export(self, *, path, length_unit="mm"):
-        from pathlib import Path
-
         if Path(path).suffix != ".vti":
             raise ValueError("Cartesian fields must be exported with a .vti extension.")
 
@@ -55,17 +55,24 @@ class ScalarField:
         length_unit="mm",
         opacity=None,
         isosurface_count=None,
+        overlays=None,
         show=True,
     ):
-        from .plotting import plot_field
+        """Plot the scalar field with optional source and detector geometry.
 
-        return plot_field(
+        overlays accepts an iterable of drawable objects or a mapping from
+        legend labels to objects. Full-face sources require the physical
+        sample bounds recorded by the finite solver.
+        """
+
+        return MomentRT.plotting.plot_field(
             field=self,
             view=view,
             scale=scale,
             length_unit=length_unit,
             opacity=opacity,
             isosurface_count=isosurface_count,
+            overlays=overlays,
             show=show,
         )
 
@@ -89,18 +96,15 @@ class BoundaryField:
         sample_size,
         wavelength,
     ):
-        from .boundary import FACES
-        from .units import validate_units
+        if face not in MomentRT.boundary.FACES:
+            raise ValueError(f"face must be one of {MomentRT.boundary.FACES}.")
 
-        if face not in FACES:
-            raise ValueError(f"face must be one of {FACES}.")
-
-        validate_units(value=positions, unit="m", name="positions")
+        MomentRT.units.validate_units(value=positions, unit="m", name="positions")
 
         if positions.ndim < 2 or positions.shape[-1] != 3:
             raise ValueError("positions must have a trailing axis of length three.")
 
-        validate_units(
+        MomentRT.units.validate_units(
             value=area_weights,
             unit="m^2",
             name="area_weights",
@@ -108,20 +112,22 @@ class BoundaryField:
             positive=True,
         )
 
-        validate_units(
+        MomentRT.units.validate_units(
             value=escaping_irradiance,
             unit="W/m^2",
             name="escaping_irradiance",
             shape=positions.shape[:-1],
         )
 
-        validate_units(value=sample_origin, unit="m", name="sample_origin", shape=(3,))
+        MomentRT.units.validate_units(
+            value=sample_origin, unit="m", name="sample_origin", shape=(3,)
+        )
 
-        validate_units(
+        MomentRT.units.validate_units(
             value=sample_size, unit="m", name="sample_size", shape=(3,), positive=True
         )
 
-        validate_units(
+        MomentRT.units.validate_units(
             value=wavelength, unit="m", name="wavelength", shape=(), positive=True
         )
 
@@ -148,15 +154,13 @@ class VectorField:
     """Element-centered vectors, without smoothing across material interfaces."""
 
     def __init__(self, *, positions, values, name):
-        from .units import validate_units
-
-        validate_units(value=positions, unit="m", name="positions")
+        MomentRT.units.validate_units(value=positions, unit="m", name="positions")
 
         if positions.ndim != 2 or positions.shape[1] != 3 or len(positions) == 0:
             raise ValueError("positions must have shape (N, 3).")
 
         if (
-            not isinstance(values, ureg.Quantity)
+            not isinstance(values, MomentRT.units.ureg.Quantity)
             or values.shape != positions.shape
             or not np.all(np.isfinite(values.magnitude))
         ):
@@ -171,8 +175,6 @@ class VectorField:
         self.name = name
 
     def plot(self, *, max_vectors=500, length_unit="mm", show=True):
-        from .plotting import make_figure, require_plotly
-
         if (
             isinstance(max_vectors, bool)
             or not isinstance(max_vectors, (int, np.integer))
@@ -180,7 +182,7 @@ class VectorField:
         ):
             raise ValueError("max_vectors must be a positive integer.")
 
-        go = require_plotly()
+        go = MomentRT.plotting.require_plotly()
 
         selection = np.linspace(
             0, len(self.values) - 1, min(max_vectors, len(self.values)), dtype=int
@@ -190,7 +192,7 @@ class VectorField:
 
         vectors = self.values.magnitude[selection]
 
-        figure = make_figure(length_unit=length_unit)
+        figure = MomentRT.plotting.make_figure(length_unit=length_unit)
 
         figure.add_trace(
             go.Cone(

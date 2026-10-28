@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from .units import ureg, validate_units
+import MomentRT
 
 
 class SampleSection:
@@ -18,7 +18,9 @@ class SampleSection:
         if normal not in ("x", "y", "z"):
             raise ValueError("normal must be x, y, or z.")
 
-        validate_units(value=position, unit="m", name="position", shape=())
+        MomentRT.units.validate_units(
+            value=position, unit="m", name="position", shape=()
+        )
 
         if len(resolution) != 2 or any(
             isinstance(n, bool) or not isinstance(n, (int, np.integer)) or n < 2
@@ -57,7 +59,7 @@ class SampleSection:
 
         points[..., plane_axes[1]] = vertical
 
-        self.labels = sample.material_labels(points=points * ureg.meter)
+        self.labels = sample.material_labels(points=points * MomentRT.units.ureg.meter)
 
         self.normal = normal
 
@@ -67,13 +69,13 @@ class SampleSection:
 
         self.axes = tuple("xyz"[axis] for axis in plane_axes)
 
-        self.horizontal = coordinates[0] * ureg.meter
+        self.horizontal = coordinates[0] * MomentRT.units.ureg.meter
 
-        self.vertical = coordinates[1] * ureg.meter
+        self.vertical = coordinates[1] * MomentRT.units.ureg.meter
 
         self.extent = (
             np.array([[lower[axis], lower[axis] + size[axis]] for axis in plane_axes])
-            * ureg.meter
+            * MomentRT.units.ureg.meter
         )
 
         self.names = ("Background", *(shape.name for shape in sample.structures))
@@ -99,7 +101,7 @@ class SampleSection:
                 ]
             )
 
-            self.fields[name] = values[self.labels] * ureg(unit)
+            self.fields[name] = values[self.labels] * MomentRT.units.ureg(unit)
 
     def plot(
         self,
@@ -110,9 +112,7 @@ class SampleSection:
         scale="linear",
         show=True,
     ):
-        from .plotting import plot_section
-
-        return plot_section(
+        return MomentRT.plotting.plot_section(
             section=self,
             quantity=quantity,
             length_unit=length_unit,

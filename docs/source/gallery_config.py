@@ -4,10 +4,10 @@ import html
 import os
 from pathlib import Path
 
+from plotly import graph_objects as go
+
 
 def plotly_scraper(block, block_vars, gallery_conf):
-    from plotly.graph_objects import Figure
-
     rendered = block_vars.setdefault("momentrt_figures", [])
 
     output = Path(gallery_conf["src_dir"]) / "_static" / "gallery"
@@ -19,7 +19,7 @@ def plotly_scraper(block, block_vars, gallery_conf):
     markup = []
 
     for figure in block_vars["example_globals"].values():
-        if not isinstance(figure, Figure) or any(
+        if not isinstance(figure, go.Figure) or any(
             figure is previous for previous in rendered
         ):
             continue

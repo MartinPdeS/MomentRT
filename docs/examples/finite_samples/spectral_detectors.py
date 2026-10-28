@@ -134,6 +134,12 @@ spectrum = simulation.sweep(
     wavelengths=wavelengths,
 )
 
+print(f"Geometry preparations: {spectrum.diagnostics['geometry_preparations']}")
+
+print(f"Preparation time: {spectrum.diagnostics['preparation_time'].to('s'):~P}")
+
+print(f"Per-wavelength run times: {spectrum.diagnostics['solve_times'].to('s'):~P}")
+
 spectral_figure = spectrum.plot(
     wavelength_unit="nm",
     power_unit="mW",
@@ -148,9 +154,17 @@ for wavelength, power in zip(wavelengths, spectrum.detector_power["reflection"])
 # -----------------------------------------
 # The third solve corresponds to 800 nm. Its geometry is the same as in the
 # other solves; its optical coefficients are interpolated at this wavelength.
+# Overlays place the instrument on the spatial field; the spectrum above keeps
+# its wavelength and power axes.
+# Named overlays give the two apertures distinct legend entries.
 
 fluence_figure = spectrum.results[2].fluence.plot(
     view="volume",
     scale="log",
+    overlays={
+        "Illumination": source,
+        "Reflection detector": reflection_detector,
+        "Transmission detector": transmission_detector,
+    },
     show=show_figures,
 )

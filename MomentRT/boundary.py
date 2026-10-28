@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from .units import ureg
+import MomentRT
 
 FACES = ("x_min", "x_max", "y_min", "y_max", "z_min", "z_max")
 
@@ -21,7 +21,7 @@ class RobinBoundary:
         value = effective_reflectance
 
         if (
-            isinstance(value, (ureg.Quantity, bool))
+            isinstance(value, (MomentRT.units.ureg.Quantity, bool))
             or not np.isscalar(value)
             or not np.isfinite(value)
             or not 0 <= value < 1

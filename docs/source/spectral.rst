@@ -176,3 +176,56 @@ It does not integrate an LED emission spectrum, interpolate detector
 responsivity, calculate an electrical current, fit chromophore
 concentrations, or simulate fluorescence that couples wavelengths.
 Those operations require additional physical data and normalization.
+
+Reusing finite-element preparation
+-----------------------------------
+
+For finite ``Diffusion`` sweeps, the package prepares mesh geometry,
+tetrahedra, element volumes and gradients, centroid material labels, boundary
+triangles, and boundary quadrature once per sweep. It also prepares the
+fixed boundary matrix, source footprint, and normalized source load.
+
+Centroid labels partition the elements into material regions. Unit
+diffusion and absorption matrices are assembled once per occupied region:
+
+.. math::
+
+   K^{(m)}_{ij}=\int_{\Omega_m}\nabla N_i\cdot\nabla N_j\,dV,
+   \qquad
+   M^{(m)}_{ij}=\int_{\Omega_m}N_iN_j\,dV.
+
+At a wavelength, the global matrix is formed as
+
+.. math::
+
+   A(\lambda)=B+
+   \sum_m\left[D_m(\lambda)K^{(m)}+
+   \mu_{a,m}(\lambda)M^{(m)}\right],
+   \qquad
+   b(\lambda)=P_{\mathrm{in}}(\lambda)b_{\mathrm{unit}}.
+
+Here :math:`B` contains the fixed Robin boundary terms, and
+:math:`b_{\mathrm{unit}}` includes the boundary source factor.
+Source normalization is preserved when optical power varies with wavelength.
+
+Material interpolation, internal-index checks, matrix combination, sparse
+factorization, and field evaluation still occur at each wavelength.
+Factorization is not reused for a changed matrix. Boundary snapshots remain
+independent outputs, and detector readouts use the same quadrature as
+standalone solves.
+
+Preparation is scoped to the current call; there is no persistent cache
+requiring manual invalidation. Changing mesh, structures, source footprint,
+material tables, or boundaries before another call creates fresh
+preparation. Infinite-medium sweeps retain their analytical path.
+
+``spectrum.diagnostics`` reports ``geometry_preparations``, unit-bearing
+``preparation_time``, per-wavelength ``solve_times``, and ``total_time``.
+Per-wavelength times include field and detector evaluation. Total time
+also includes validation and preparation. Individual finite results record
+``diagnostics["preparation_reused"]``: False for the first solve and True
+for later wavelengths in the same prepared sweep.
+
+Time saved depends on geometry size, material regions, wavelength count,
+and sparse solve cost. Use these timings for the actual configuration
+rather than assuming a fixed speedup.

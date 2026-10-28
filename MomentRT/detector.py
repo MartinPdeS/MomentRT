@@ -1,9 +1,13 @@
 """Contact-aperture detection with an explicit Lambertian escape assumption."""
 
 import numpy as np
+from scipy import integrate
 
-from .boundary import FACES
-from .units import ureg, validate_units
+import MomentRT
+
+
+class DetectorResolutionError(ValueError):
+    """No boundary quadrature point samples the detector aperture."""
 
 
 class SurfaceDetector:
@@ -17,14 +21,18 @@ class SurfaceDetector:
     """
 
     def __init__(self, *, face, position, radius, collection_axis, acceptance_angle):
-        if face not in FACES:
-            raise ValueError(f"face must be one of {FACES}.")
+        if face not in MomentRT.boundary.FACES:
+            raise ValueError(f"face must be one of {MomentRT.boundary.FACES}.")
 
-        validate_units(value=position, unit="m", name="position", shape=(3,))
+        MomentRT.units.validate_units(
+            value=position, unit="m", name="position", shape=(3,)
+        )
 
-        validate_units(value=radius, unit="m", name="radius", shape=(), positive=True)
+        MomentRT.units.validate_units(
+            value=radius, unit="m", name="radius", shape=(), positive=True
+        )
 
-        validate_units(
+        MomentRT.units.validate_units(
             value=acceptance_angle,
             unit="radian",
             name="acceptance_angle",
@@ -35,7 +43,7 @@ class SurfaceDetector:
         if acceptance_angle.to("radian").magnitude > np.pi / 2:
             raise ValueError("acceptance_angle must be at most 90 degrees.")
 
-        if isinstance(collection_axis, ureg.Quantity):
+        if isinstance(collection_axis, MomentRT.units.ureg.Quantity):
             raise TypeError("collection_axis must be a plain dimensionless vector.")
 
         direction = np.asarray(collection_axis)
@@ -74,7 +82,6 @@ class SurfaceDetector:
     @property
     def angular_fraction(self):
         """Fraction of Lambertian escaping irradiance inside the acceptance cone."""
-        from scipy.integrate import quad
 
         axis = "xyz".index(self.face[0])
 
@@ -113,30 +120,61 @@ class SurfaceDetector:
 
         transitions = sorted({value for value in transitions if 0 < value < 1})
 
-        fraction, _ = quad(
+        fraction, _ = integrate.quad(
             integrand, 0, 1, points=transitions, epsabs=1e-10, epsrel=1e-10
         )
 
         return float(fraction)
 
-    def measure(self, *, result):
-        """Integrate the solved escaping field over the sampled disk aperture."""
-        from .results import DetectorResult
+    def _add_to_figure(self, *, figure, context):
+        go = MomentRT.plotting.require_plotly()
 
-        if self.face not in result.boundary_fields:
-            raise ValueError(
-                "SurfaceDetector requires finite-sample boundary fields from Diffusion."
+        position = self.position.to(context["length_unit"]).magnitude
+
+        radius = self.radius.to(context["length_unit"]).magnitude
+
+        ring = MomentRT.plotting._circle_points(
+            position=position, radius=radius, face=self.face
+        )
+
+        name = context.get("name") or "Surface detector"
+
+        figure.add_trace(
+            go.Scatter3d(
+                x=ring[:, 0],
+                y=ring[:, 1],
+                z=ring[:, 2],
+                mode="lines",
+                line={"color": "royalblue", "width": 5},
+                name=name,
+                legendgroup=context.get("legendgroup"),
             )
+        )
 
-        field = result.boundary_fields[self.face]
+        tip = position + 2 * radius * self.collection_axis
 
+        figure.add_trace(
+            go.Scatter3d(
+                x=[position[0], tip[0]],
+                y=[position[1], tip[1]],
+                z=[position[2], tip[2]],
+                mode="lines+markers",
+                line={"color": "royalblue", "width": 3},
+                marker={"size": 3},
+                showlegend=False,
+                hovertemplate=f"Collection axis: {name}<extra></extra>",
+                legendgroup=context.get("legendgroup"),
+            )
+        )
+
+    def _validate_sample(self, *, sample_origin, sample_size):
         axis = "xyz".index(self.face[0])
 
         in_plane = [coordinate for coordinate in range(3) if coordinate != axis]
 
-        lower = field.sample_origin.to("m").magnitude
+        lower = sample_origin.to("m").magnitude
 
-        upper = lower + field.sample_size.to("m").magnitude
+        upper = lower + sample_size.to("m").magnitude
 
         position = self.position.to("m").magnitude
 
@@ -160,6 +198,29 @@ class SurfaceDetector:
                 "The entire detector aperture must fit on its sample face."
             )
 
+    def measure(self, *, result):
+        """Integrate the solved escaping field over the sampled disk aperture."""
+
+        if self.face not in result.boundary_fields:
+            raise ValueError(
+                "SurfaceDetector requires finite-sample boundary fields from Diffusion."
+            )
+
+        field = result.boundary_fields[self.face]
+
+        self._validate_sample(
+            sample_origin=field.sample_origin,
+            sample_size=field.sample_size,
+        )
+
+        axis = "xyz".index(self.face[0])
+
+        in_plane = [coordinate for coordinate in range(3) if coordinate != axis]
+
+        position = self.position.to("m").magnitude
+
+        radius = self.radius.to("m").magnitude
+
         displacement = (
             field.positions.to("m").magnitude[..., in_plane] - position[in_plane]
         )
@@ -169,7 +230,7 @@ class SurfaceDetector:
         sampled_area = field.area_weights[selected].sum()
 
         if sampled_area.to("m^2").magnitude == 0:
-            raise ValueError(
+            raise DetectorResolutionError(
                 "The mesh does not resolve the detector aperture; refine it."
             )
 
@@ -179,7 +240,7 @@ class SurfaceDetector:
             field.escaping_irradiance[selected] * field.area_weights[selected]
         ).sum() * fraction
 
-        return DetectorResult(
+        return MomentRT.results.DetectorResult(
             collected_power=power,
             sampled_area=sampled_area,
             geometric_area=np.pi * self.radius**2,

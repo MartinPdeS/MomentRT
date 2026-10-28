@@ -2,7 +2,7 @@
 
 import numpy as np
 
-from .units import ureg, validate_units
+import MomentRT
 
 
 class CartesianMesh:
@@ -13,11 +13,11 @@ class CartesianMesh:
         ):
             raise ValueError("shape must contain three integers of at least two.")
 
-        validate_units(
+        MomentRT.units.validate_units(
             value=spacing, unit="m", name="spacing", shape=(3,), positive=True
         )
 
-        validate_units(value=origin, unit="m", name="origin", shape=(3,))
+        MomentRT.units.validate_units(value=origin, unit="m", name="origin", shape=(3,))
 
         self.shape = tuple(shape)
 
@@ -33,12 +33,13 @@ class CartesianMesh:
             for i, n in enumerate(self.shape)
         ]
 
-        return np.stack(np.meshgrid(*axes, indexing="ij"), axis=-1) * ureg.meter
+        return (
+            np.stack(np.meshgrid(*axes, indexing="ij"), axis=-1)
+            * MomentRT.units.ureg.meter
+        )
 
     def to_pyvista(self, *, length_unit="mm"):
-        from .plotting import require_pyvista
-
-        pv = require_pyvista()
+        pv = MomentRT.plotting.require_pyvista()
 
         return pv.ImageData(
             dimensions=self.shape,

@@ -1,5 +1,6 @@
 import ast
 import builtins
+import importlib
 from pathlib import Path
 
 import numpy as np
@@ -161,20 +162,29 @@ def test_plotly_system():
 def test_optional_visualization(monkeypatch):
     original = builtins.__import__
 
-    def without_plotly(name, *args, **kwargs):
-        if name.startswith("plotly"):
+    def without_visualization(name, *args, **kwargs):
+        if name.startswith(("plotly", "pyvista")):
             raise ImportError("blocked for test")
 
         return original(name, *args, **kwargs)
 
-    monkeypatch.setattr(builtins, "__import__", without_plotly)
+    try:
+        with monkeypatch.context() as patch:
+            patch.setattr(builtins, "__import__", without_visualization)
 
-    simulation = configuration()
+            importlib.reload(MomentRT.plotting)
 
-    assert simulation.run().fluence.values.shape == (20, 20, 20)
+            simulation = configuration()
 
-    with pytest.raises(ImportError, match="viz"):
-        simulation.plot_system(show=False)
+            assert simulation.run().fluence.values.shape == (20, 20, 20)
+
+            with pytest.raises(ImportError, match="viz"):
+                simulation.plot_system(show=False)
+
+            with pytest.raises(ImportError, match="vtk"):
+                simulation.mesh.to_pyvista()
+    finally:
+        importlib.reload(MomentRT.plotting)
 
 
 def test_no_python_annotations():

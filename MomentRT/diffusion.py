@@ -1,11 +1,12 @@
 """Analytical steady-state diffusion Green function in an infinite medium."""
 
-import numpy as np
+import copy
 
-from .fields import ScalarField
-from .medium import HomogeneousMedium
-from .source import PointSource
-from .units import ureg
+import numpy as np
+from scipy import sparse
+from scipy.sparse import linalg as sparse_linalg
+
+import MomentRT
 
 
 class InfiniteDiffusion:
@@ -16,12 +17,12 @@ class InfiniteDiffusion:
     """
 
     def solve(self, *, medium, source, mesh):
-        if not isinstance(medium, HomogeneousMedium):
+        if not isinstance(medium, MomentRT.medium.HomogeneousMedium):
             raise TypeError(
                 "InfiniteDiffusion supports only HomogeneousMedium; finite structured samples require a boundary-aware solver."
             )
 
-        if not isinstance(source, PointSource):
+        if not isinstance(source, MomentRT.source.PointSource):
             raise TypeError(
                 "InfiniteDiffusion requires an embedded PointSource, not surface illumination."
             )
@@ -49,9 +50,9 @@ class InfiniteDiffusion:
             / (4 * np.pi * diffusion_length * distance)
         )
 
-        return ScalarField(
+        return MomentRT.fields.ScalarField(
             mesh=mesh,
-            values=values * ureg.watt / ureg.meter**2,
+            values=values * MomentRT.units.ureg.watt / MomentRT.units.ureg.meter**2,
             name="Fluence rate",
             metadata={
                 "transport": "infinite-medium steady-state P1 diffusion",
@@ -61,81 +62,107 @@ class InfiniteDiffusion:
         )
 
 
+def _finite_materials_at(*, medium, wavelength):
+    """Resolve finite material coefficients and the supported interface convention."""
+    if medium.background is None:
+        raise ValueError("Configure the sample background before solving.")
+
+    materials = [
+        medium.background.at(wavelength=wavelength),
+        *(shape.material.at(wavelength=wavelength) for shape in medium.structures),
+    ]
+
+    if any(
+        material.refractive_index != materials[0].refractive_index
+        for material in materials
+    ):
+        raise ValueError(
+            "Internal refractive-index jumps are not supported by this continuous-fluence FEM solver."
+        )
+
+    return materials
+
+
 class Diffusion:
     """Steady-state P1 diffusion with linear tetrahedral finite elements.
 
-    All six boundary faces must be configured explicitly. Material properties
-    are constant per element, sampled at its centroid. Interfaces not aligned
-    to element faces are approximated and require mesh refinement. Continuous
-    fluence assumes equal refractive indices across all internal regions;
-    internal index jumps are rejected rather than silently ignored.
+    Geometry preparation is scoped to a solve or wavelength sweep. No persistent
+    cache survives changes to a sample, source, mesh, or boundary configuration.
     """
 
     def __init__(self, *, boundaries):
-        from .boundary import FACES, ReflectingBoundary, RobinBoundary
-
-        if set(boundaries) != set(FACES):
-            raise ValueError(f"Configure exactly these boundary faces: {FACES}.")
+        if set(boundaries) != set(MomentRT.boundary.FACES):
+            raise ValueError(
+                f"Configure exactly these boundary faces: {MomentRT.boundary.FACES}."
+            )
 
         if any(
-            not isinstance(condition, (RobinBoundary, ReflectingBoundary))
+            not isinstance(
+                condition,
+                (MomentRT.boundary.RobinBoundary, MomentRT.boundary.ReflectingBoundary),
+            )
             for condition in boundaries.values()
         ):
             raise TypeError("Each face requires RobinBoundary or ReflectingBoundary.")
 
         self.boundaries = dict(boundaries)
 
-    def solve(self, *, medium, source, mesh):
-        from scipy.sparse import coo_matrix
-        from scipy.sparse.linalg import spsolve
-
-        from .boundary import RobinBoundary
-        from .fem import (
-            boundary_triangles,
-            element_geometry,
-            source_irradiance,
-            source_load,
-            tetrahedralize,
-            triangle_areas,
-            triangle_quadrature,
+    def _prepare(self, *, medium, source, mesh):
+        return _PreparedDiffusion(
+            medium=medium,
+            source=source,
+            mesh=mesh,
+            boundaries=self.boundaries,
         )
-        from .fields import BoundaryField, VectorField
-        from .medium import StructuredMedium
-        from .results import SimulationResult
-        from .source import SurfaceSource, UniformSurfaceSource
 
-        if not isinstance(medium, StructuredMedium):
+    def solve(self, *, medium, source, mesh):
+        problem = self._prepare(medium=medium, source=source, mesh=mesh)
+
+        return problem.solve(medium=medium, source=source, mesh=mesh)
+
+
+class _PreparedDiffusion:
+    """One frozen instrument geometry with wavelength-dependent bulk operators."""
+
+    def __init__(self, *, medium, source, mesh, boundaries):
+        if not isinstance(medium, MomentRT.medium.StructuredMedium):
             raise TypeError("Diffusion requires a finite StructuredMedium.")
 
-        if not isinstance(source, UniformSurfaceSource):
+        if not isinstance(source, MomentRT.source.UniformSurfaceSource):
             raise TypeError("Diffusion requires SurfaceSource or UniformSurfaceSource.")
-
-        medium = medium.at(wavelength=source.wavelength)
 
         if medium.background is None:
             raise ValueError("Configure the sample background before solving.")
 
-        materials = [
-            medium.background,
-            *(shape.material for shape in medium.structures),
-        ]
+        MomentRT.units.validate_units(
+            value=source.optical_power,
+            unit="W",
+            name="optical_power",
+            shape=(),
+            positive=True,
+        )
 
-        if any(
-            material.refractive_index != medium.background.refractive_index
-            for material in materials
-        ):
-            raise ValueError(
-                "Internal refractive-index jumps are not supported by this continuous-fluence FEM solver."
-            )
+        self.medium = copy.deepcopy(medium)
 
-        lower = medium.origin.to("m").magnitude
+        self.source = copy.deepcopy(source)
 
-        upper = (medium.origin + medium.size).to("m").magnitude
+        self.boundaries = copy.deepcopy(boundaries)
 
-        mesh_lower = mesh.origin.to("m").magnitude
+        self.mesh = MomentRT.mesh.CartesianMesh(
+            shape=mesh.shape,
+            spacing=mesh.spacing.copy(),
+            origin=mesh.origin.copy(),
+        )
+
+        lower = self.medium.origin.to("m").magnitude
+
+        upper = (self.medium.origin + self.medium.size).to("m").magnitude
+
+        mesh_lower = self.mesh.origin.to("m").magnitude
 
         mesh_upper = (
-            mesh_lower + (np.asarray(mesh.shape) - 1) * mesh.spacing.to("m").magnitude
+            mesh_lower
+            + (np.asarray(self.mesh.shape) - 1) * self.mesh.spacing.to("m").magnitude
         )
 
         if not np.allclose(
@@ -145,81 +172,60 @@ class Diffusion:
                 "The mesh must span exactly the finite sample; use CartesianMesh.from_sample()."
             )
 
-        condition = self.boundaries[source.face]
+        condition = self.boundaries[self.source.face]
 
-        if not isinstance(condition, RobinBoundary):
+        if not isinstance(condition, MomentRT.boundary.RobinBoundary):
             raise ValueError("The illuminated face requires a RobinBoundary.")
 
-        if isinstance(source, SurfaceSource):
-            axis = "xyz".index(source.face[0])
+        axis = "xyz".index(self.source.face[0])
 
-            position = source.position.to("m").magnitude
+        in_plane = [index for index in range(3) if index != axis]
+
+        if isinstance(self.source, MomentRT.source.SurfaceSource):
+            position = self.source.position.to("m").magnitude
 
             face_coordinate = (
-                lower[axis] if source.face.endswith("min") else upper[axis]
+                lower[axis] if self.source.face.endswith("min") else upper[axis]
             )
 
             if not np.isclose(position[axis], face_coordinate, rtol=1e-12, atol=1e-15):
                 raise ValueError("Source position must lie on its configured face.")
 
-            in_plane = [i for i in range(3) if i != axis]
-
-            radius = source.radius.to("m").magnitude
+            radius = self.source.radius.to("m").magnitude
 
             if np.any(position[in_plane] - radius < lower[in_plane]) or np.any(
                 position[in_plane] + radius > upper[in_plane]
             ):
                 raise ValueError("The entire illumination disk must fit on its face.")
 
-        points = mesh.points.to("m").magnitude.reshape(-1, 3)
+            self.source_geometric_area = np.pi * radius**2
+        else:
+            self.source_geometric_area = float(np.prod((upper - lower)[in_plane]))
 
-        tetrahedra = tetrahedralize(mesh=mesh)
+        self.geometry = MomentRT.fem._MeshGeometry(mesh=self.mesh)
 
-        volumes, gradients = element_geometry(points=points, tetrahedra=tetrahedra)
-
-        centers = points[tetrahedra].mean(axis=1)
-
-        labels = medium.material_labels(points=centers * ureg.meter)
-
-        absorption = np.array(
-            [material.absorption.to("1/m").magnitude for material in materials]
-        )[labels]
-
-        scattering = np.array(
-            [material.reduced_scattering.to("1/m").magnitude for material in materials]
-        )[labels]
-
-        coefficient = 1 / (3 * (absorption + scattering))
-
-        stiffness = (
-            volumes[:, None, None]
-            * coefficient[:, None, None]
-            * np.einsum("tik,tjk->tij", gradients, gradients)
+        self.labels = self.medium.material_labels(
+            points=self.geometry.centers * MomentRT.units.ureg.meter
         )
 
-        mass = (
-            volumes[:, None, None]
-            * absorption[:, None, None]
-            * (np.ones((4, 4)) + np.eye(4))
-            / 20
+        self.region_matrices = MomentRT.fem._region_matrices(
+            geometry=self.geometry, labels=self.labels
         )
 
-        rows = np.broadcast_to(tetrahedra[:, :, None], stiffness.shape).ravel()
+        node_count = len(self.geometry.points)
 
-        columns = np.broadcast_to(tetrahedra[:, None, :], stiffness.shape).ravel()
+        rows = []
 
-        row_blocks = [rows]
+        columns = []
 
-        column_blocks = [columns]
+        data = []
 
-        data_blocks = [(stiffness + mass).ravel()]
+        self.nodal_leakage = {}
 
-        faces = boundary_triangles(tetrahedra=tetrahedra, shape=mesh.shape)
+        for face, triangles in self.geometry.faces.items():
+            _, _, weights = self.geometry.quadrature[face]
 
-        nodal_leakage = {}
-
-        for face, triangles in faces.items():
-            areas = triangle_areas(points=points, triangles=triangles)
+            areas = weights.sum(axis=1)
 
             beta = self.boundaries[face].leakage_coefficient
 
@@ -227,43 +233,85 @@ class Diffusion:
                 beta * areas[:, None, None] * (np.ones((3, 3)) + np.eye(3)) / 12
             )
 
-            row_blocks.append(
+            rows.append(
                 np.broadcast_to(triangles[:, :, None], boundary_mass.shape).ravel()
             )
 
-            column_blocks.append(
+            columns.append(
                 np.broadcast_to(triangles[:, None, :], boundary_mass.shape).ravel()
             )
 
-            data_blocks.append(boundary_mass.ravel())
+            data.append(boundary_mass.ravel())
 
-            weights = np.zeros(len(points))
+            leakage = np.zeros(node_count)
 
-            np.add.at(weights, triangles.ravel(), np.repeat(beta * areas / 3, 3))
+            np.add.at(leakage, triangles.ravel(), np.repeat(beta * areas / 3, 3))
 
-            nodal_leakage[face] = weights
+            self.nodal_leakage[face] = leakage
 
-        matrix = coo_matrix(
-            (
-                np.concatenate(data_blocks),
-                (np.concatenate(row_blocks), np.concatenate(column_blocks)),
-            ),
-            shape=(len(points), len(points)),
+        self.boundary_matrix = sparse.coo_matrix(
+            (np.concatenate(data), (np.concatenate(rows), np.concatenate(columns))),
+            shape=(node_count, node_count),
         ).tocsr()
 
-        local_load, sampled_area = source_load(
-            points=points, triangles=faces[source.face], source=source
+        quadrature, barycentric, weights = self.geometry.quadrature[self.source.face]
+
+        incoming, self.source_sampled_area = MomentRT.fem.source_irradiance(
+            quadrature=quadrature,
+            weights=weights,
+            source=self.source,
         )
 
-        load = np.zeros(len(points))
+        self.unit_irradiance = incoming / self.source.optical_power.to("W").magnitude
+
+        local_load = np.einsum("tq,qa->ta", weights * self.unit_irradiance, barycentric)
+
+        self.unit_load = np.zeros(node_count)
 
         np.add.at(
-            load,
-            faces[source.face].ravel(),
+            self.unit_load,
+            self.geometry.faces[self.source.face].ravel(),
             local_load.ravel() * condition.source_factor,
         )
 
-        values = spsolve(matrix, load)
+        self.solve_count = 0
+
+    def solve(self, *, medium, source, mesh):
+        MomentRT.units.validate_units(
+            value=source.optical_power,
+            unit="W",
+            name="optical_power",
+            shape=(),
+            positive=True,
+        )
+
+        materials = _finite_materials_at(
+            medium=self.medium, wavelength=source.wavelength
+        )
+
+        absorption_by_region = np.array(
+            [material.absorption.to("1/m").magnitude for material in materials]
+        )
+
+        scattering_by_region = np.array(
+            [material.reduced_scattering.to("1/m").magnitude for material in materials]
+        )
+
+        diffusion_by_region = 1 / (3 * (absorption_by_region + scattering_by_region))
+
+        matrix = self.boundary_matrix.copy()
+
+        for label, (stiffness, mass) in self.region_matrices.items():
+            matrix += (
+                diffusion_by_region[label] * stiffness
+                + absorption_by_region[label] * mass
+            )
+
+        power = source.optical_power.to("W").magnitude
+
+        load = self.unit_load * power
+
+        values = sparse_linalg.spsolve(matrix, load)
 
         if not np.all(np.isfinite(values)):
             raise RuntimeError("The diffusion solve returned nonfinite fluence.")
@@ -277,89 +325,110 @@ class Diffusion:
                 f"Diffusion linear residual is too large: {relative_residual:g}."
             )
 
-        absorbed = np.sum(absorption * volumes * values[tetrahedra].mean(axis=1))
+        geometry = self.geometry
 
-        power = source.optical_power.to("W").magnitude
+        absorption = absorption_by_region[self.labels]
+
+        coefficient = diffusion_by_region[self.labels]
+
+        absorbed = np.sum(
+            absorption * geometry.volumes * values[geometry.tetrahedra].mean(axis=1)
+        )
 
         escaping = {
-            face: float(weights @ values) for face, weights in nodal_leakage.items()
+            face: float(weights @ values)
+            for face, weights in self.nodal_leakage.items()
         }
 
-        # Remove the incident-field contribution to the gross Robin leakage.
-        # This distinguishes outgoing transmitted partial current from net current.
-        escaping[source.face] -= 2 * condition.leakage_coefficient * power
+        escaping[self.source.face] -= (
+            2 * self.boundaries[self.source.face].leakage_coefficient * power
+        )
 
         boundary_fields = {}
 
-        for face, triangles in faces.items():
-            quadrature, barycentric, weights = triangle_quadrature(
-                points=points, triangles=triangles
-            )
+        for face, triangles in geometry.faces.items():
+            quadrature, barycentric, weights = geometry.quadrature[face]
 
             face_fluence = np.einsum("qa,ta->tq", barycentric, values[triangles])
 
-            incoming = np.zeros_like(face_fluence)
-
-            if face == source.face:
-                incoming, _ = source_irradiance(
-                    quadrature=quadrature, weights=weights, source=source
-                )
+            incoming = self.unit_irradiance * power if face == self.source.face else 0
 
             beta = self.boundaries[face].leakage_coefficient
 
-            boundary_fields[face] = BoundaryField(
+            boundary_fields[face] = MomentRT.fields.BoundaryField(
                 face=face,
-                positions=quadrature * ureg.meter,
-                area_weights=weights * ureg.meter**2,
+                positions=quadrature * MomentRT.units.ureg.meter,
+                area_weights=weights * MomentRT.units.ureg.meter**2,
                 escaping_irradiance=beta
                 * (face_fluence - 2 * incoming)
-                * ureg.watt
-                / ureg.meter**2,
-                sample_origin=medium.origin,
-                sample_size=medium.size,
+                * MomentRT.units.ureg.watt
+                / MomentRT.units.ureg.meter**2,
+                sample_origin=self.medium.origin,
+                sample_size=self.medium.size,
                 wavelength=source.wavelength,
             )
 
         flux_values = -coefficient[:, None] * np.einsum(
-            "ti,tij->tj", values[tetrahedra], gradients
+            "ti,tij->tj", values[geometry.tetrahedra], geometry.gradients
         )
 
-        fluence = ScalarField(
-            mesh=mesh,
-            values=values.reshape(mesh.shape) * ureg.watt / ureg.meter**2,
+        fluence = MomentRT.fields.ScalarField(
+            mesh=MomentRT.mesh.CartesianMesh(
+                shape=self.mesh.shape,
+                spacing=self.mesh.spacing.copy(),
+                origin=self.mesh.origin.copy(),
+            ),
+            values=values.reshape(self.mesh.shape)
+            * MomentRT.units.ureg.watt
+            / MomentRT.units.ureg.meter**2,
             name="Fluence rate",
             metadata={
                 "transport": "steady-state tetrahedral P1 FEM diffusion",
-                "wavelength": source.wavelength,
+                "wavelength": source.wavelength.copy(),
                 "coefficient_sampling": "element centroid",
-                "source_face": source.face,
+                "source_face": self.source.face,
+                "sample_origin": self.medium.origin.copy(),
+                "sample_size": self.medium.size.copy(),
             },
         )
 
-        flux = VectorField(
-            positions=centers * ureg.meter,
-            values=flux_values * ureg.watt / ureg.meter**2,
+        flux = MomentRT.fields.VectorField(
+            positions=geometry.centers * MomentRT.units.ureg.meter,
+            values=flux_values
+            * MomentRT.units.ureg.watt
+            / MomentRT.units.ureg.meter**2,
             name="Diffusive flux",
         )
 
-        return SimulationResult(
+        reused = self.solve_count > 0
+
+        self.solve_count += 1
+
+        return MomentRT.results.SimulationResult(
             fluence=fluence,
             flux=flux,
             energy_balance={
-                "incoming_power": source.optical_power,
-                "absorbed_power": absorbed * ureg.watt,
-                "escaping_power": sum(escaping.values()) * ureg.watt,
+                "incoming_power": source.optical_power.copy(),
+                "absorbed_power": absorbed * MomentRT.units.ureg.watt,
+                "escaping_power": sum(escaping.values()) * MomentRT.units.ureg.watt,
                 "residual_power": (power - absorbed - sum(escaping.values()))
-                * ureg.watt,
+                * MomentRT.units.ureg.watt,
             },
             outgoing_power_by_face={
-                face: value * ureg.watt for face, value in escaping.items()
+                face: value * MomentRT.units.ureg.watt
+                for face, value in escaping.items()
             },
             diagnostics={
                 "linear_relative_residual": relative_residual,
-                "source_quadrature_area": sampled_area * ureg.meter**2,
-                "tetrahedron_count": len(tetrahedra),
-                "minimum_fluence": values.min() * ureg.watt / ureg.meter**2,
+                "source_quadrature_area": self.source_sampled_area
+                * MomentRT.units.ureg.meter**2,
+                "source_geometric_area": self.source_geometric_area
+                * MomentRT.units.ureg.meter**2,
+                "tetrahedron_count": len(geometry.tetrahedra),
+                "minimum_fluence": values.min()
+                * MomentRT.units.ureg.watt
+                / MomentRT.units.ureg.meter**2,
+                "preparation_reused": reused,
             },
             boundary_fields=boundary_fields,
         )

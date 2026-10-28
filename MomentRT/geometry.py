@@ -2,12 +2,13 @@
 
 import numpy as np
 
-from .material import Material, SpectralMaterial
-from .units import validate_units
+import MomentRT
 
 
 def _validate_region(*, material, name):
-    if not isinstance(material, (Material, SpectralMaterial)):
+    if not isinstance(
+        material, (MomentRT.material.Material, MomentRT.material.SpectralMaterial)
+    ):
         raise TypeError("material must be a Material or SpectralMaterial.")
 
     if not isinstance(name, str) or not name.strip():
@@ -18,9 +19,11 @@ class Box:
     """Axis-aligned box, specified by its lower corner and full size."""
 
     def __init__(self, *, origin, size, material, name):
-        validate_units(value=origin, unit="m", name="origin", shape=(3,))
+        MomentRT.units.validate_units(value=origin, unit="m", name="origin", shape=(3,))
 
-        validate_units(value=size, unit="m", name="size", shape=(3,), positive=True)
+        MomentRT.units.validate_units(
+            value=size, unit="m", name="size", shape=(3,), positive=True
+        )
 
         _validate_region(material=material, name=name)
 
@@ -46,9 +49,11 @@ class Sphere:
     """Sphere specified by center and radius."""
 
     def __init__(self, *, center, radius, material, name):
-        validate_units(value=center, unit="m", name="center", shape=(3,))
+        MomentRT.units.validate_units(value=center, unit="m", name="center", shape=(3,))
 
-        validate_units(value=radius, unit="m", name="radius", shape=(), positive=True)
+        MomentRT.units.validate_units(
+            value=radius, unit="m", name="radius", shape=(), positive=True
+        )
 
         _validate_region(material=material, name=name)
 
@@ -74,9 +79,9 @@ class Layer:
     """
 
     def __init__(self, *, depth, thickness, material, name):
-        validate_units(value=depth, unit="m", name="depth", shape=())
+        MomentRT.units.validate_units(value=depth, unit="m", name="depth", shape=())
 
-        validate_units(
+        MomentRT.units.validate_units(
             value=thickness, unit="m", name="thickness", shape=(), positive=True
         )
 

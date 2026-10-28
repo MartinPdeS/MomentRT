@@ -3,6 +3,9 @@
 from itertools import permutations
 
 import numpy as np
+from scipy import sparse
+
+import MomentRT
 
 
 def tetrahedralize(*, mesh):
@@ -98,11 +101,10 @@ def triangle_quadrature(*, points, triangles):
 
 def source_irradiance(*, quadrature, weights, source):
     """Evaluate the incoming diffuse profile with its sampled-area normalization."""
-    from .source import SurfaceSource
 
     selected = np.ones(quadrature.shape[:2], dtype=bool)
 
-    if isinstance(source, SurfaceSource):
+    if isinstance(source, MomentRT.source.SurfaceSource):
         axis = "xyz".index(source.face[0])
 
         in_plane = [i for i in range(3) if i != axis]
@@ -118,7 +120,9 @@ def source_irradiance(*, quadrature, weights, source):
     sampled_area = np.sum(weights * selected)
 
     if sampled_area == 0:
-        raise ValueError("The mesh does not resolve the source footprint; refine it.")
+        raise MomentRT.source.SourceResolutionError(
+            "The mesh does not resolve the source footprint; refine it."
+        )
 
     irradiance = (source.optical_power.to("W").magnitude / sampled_area) * selected
 
@@ -138,3 +142,65 @@ def source_load(*, points, triangles, source):
     local_load = np.einsum("tq,qa->ta", weights * irradiance, barycentric)
 
     return local_load, sampled_area
+
+
+class _MeshGeometry:
+    """Numerical geometry prepared once for a fixed finite Cartesian mesh."""
+
+    def __init__(self, *, mesh):
+        self.points = mesh.points.to("m").magnitude.reshape(-1, 3)
+
+        self.tetrahedra = tetrahedralize(mesh=mesh)
+
+        self.volumes, self.gradients = element_geometry(
+            points=self.points,
+            tetrahedra=self.tetrahedra,
+        )
+
+        self.centers = self.points[self.tetrahedra].mean(axis=1)
+
+        self.faces = boundary_triangles(
+            tetrahedra=self.tetrahedra,
+            shape=mesh.shape,
+        )
+
+        self.quadrature = {
+            face: triangle_quadrature(points=self.points, triangles=triangles)
+            for face, triangles in self.faces.items()
+        }
+
+
+def _region_matrices(*, geometry, labels):
+    """Assemble unit diffusion and absorption matrices for each occupied region."""
+
+    stiffness = geometry.volumes[:, None, None] * np.einsum(
+        "tik,tjk->tij", geometry.gradients, geometry.gradients
+    )
+
+    mass = geometry.volumes[:, None, None] * (np.ones((4, 4)) + np.eye(4)) / 20
+
+    shape = (len(geometry.points), len(geometry.points))
+
+    matrices = {}
+
+    for label in np.unique(labels):
+        selected = labels == label
+
+        tetrahedra = geometry.tetrahedra[selected]
+
+        local_shape = (len(tetrahedra), 4, 4)
+
+        rows = np.broadcast_to(tetrahedra[:, :, None], local_shape).ravel()
+
+        columns = np.broadcast_to(tetrahedra[:, None, :], local_shape).ravel()
+
+        matrices[int(label)] = (
+            sparse.coo_matrix(
+                (stiffness[selected].ravel(), (rows, columns)), shape=shape
+            ).tocsr(),
+            sparse.coo_matrix(
+                (mass[selected].ravel(), (rows, columns)), shape=shape
+            ).tocsr(),
+        )
+
+    return matrices

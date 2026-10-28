@@ -102,6 +102,19 @@ collected power for configured detectors. Each solve evaluates material
 tables at the current wavelength without mutating the original
 configuration.
 
+Finite sweeps prepare geometry, material labels, region matrices, and
+boundary quadrature once per call. Spectral ``diagnostics`` include
+preparation and per-wavelength timing quantities. See :doc:`spectral`.
+
+``simulation.convergence_study(mesh_shapes=..., power_rtol=...,
+area_rtol=..., power_atol=..., required_consecutive=...)`` returns a
+``DetectorConvergenceResult`` for configured finite detectors. It retains
+per-level powers, footprint areas, errors, fields, and convergence flags.
+The ``recommended_mesh`` and ``recommended_shape`` are None when no
+supported recommendation can be made. Its ``plot(power_unit=...,
+area_unit=..., show=...)`` method compares powers and areas.
+See :doc:`convergence` for the criteria and unresolved levels.
+
 ``ScalarField.plot(...)`` returns a Plotly figure when Plotly is installed.
 Its ``view`` may be ``volume`` (default), ``slices``, or ``isosurfaces``;
 ``scale`` may be ``linear`` or ``log``; ``length_unit`` controls displayed
@@ -110,6 +123,11 @@ isosurface views; ``isosurface_count`` sets the number of iso levels in volume
 and isosurface views while leaving their default counts intact when omitted
 (it only applies to those views); and ``show`` controls whether the figure is
 immediately opened.
+The optional ``overlays`` argument adds sources and detectors to any scalar
+field's 3D view. Supply a sequence of objects or a mapping from legend labels
+to objects. Their spatial coordinates are converted to ``length_unit``.
+Full-face sources require the physical sample bounds saved by the finite
+solver. See :doc:`results` for examples.
 ``VectorField.plot(...)`` returns a Plotly cone plot and accepts
 ``max_vectors``, ``length_unit``, and ``show``.
 

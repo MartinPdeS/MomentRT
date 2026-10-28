@@ -1,7 +1,7 @@
 Examples
 ========
 
-Browse nine worked examples, from the analytical infinite-medium solution to
+Browse ten worked examples, from the analytical infinite-medium solution to
 finite-sample FEM. Each card opens an executable example with its complete
 configuration and generated plots. Input values are illustrative.
 
@@ -104,6 +104,15 @@ resolution.
 
       Interpolate two material spectra and plot collected power across five
       wavelengths with a fixed geometry.
+
+   .. grid-item-card:: Choose a detector mesh
+      :link: finite_samples/detector_convergence
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_detector_convergence_thumb.png
+      :img-alt: Detector power and footprint areas across four meshes
+
+      Compare detector signals and sampled source and aperture areas, then
+      inspect the finest fluence volume with instrument overlays.
 
 .. only:: html
 

@@ -19,3 +19,6 @@ docs/source/sg_execution_times.rst
 .coverage.*
 coverage.xml
 htmlcov/
+
+docs/source/gallery/fundamentals/
+docs/source/gallery/finite_samples/

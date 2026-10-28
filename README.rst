@@ -296,7 +296,7 @@ The `online documentation <https://martinpdes.github.io/MomentRT/>`_ includes:
 * The finite-sample Robin boundary condition, weak form, and FEM assembly.
 * Complete workflows, visualization guidance, results, and API reference.
 * An executable `example gallery
-  <https://martinpdes.github.io/MomentRT/docs/latest/auto_examples/index.html>`_.
+  <https://martinpdes.github.io/MomentRT/docs/latest/gallery/index.html>`_.
 
 Build the docs and run the examples locally with:
 

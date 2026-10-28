@@ -137,7 +137,7 @@ def test_configuration_validation():
 def test_surface_example_and_flux_figures():
     pytest.importorskip("plotly")
 
-    example = runpy.run_path("docs/examples/surface_diffusion.py")
+    example = runpy.run_path("docs/examples/finite_samples/surface_diffusion.py")
 
     simulation = example["simulation"]
 

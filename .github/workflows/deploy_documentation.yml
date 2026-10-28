@@ -15,4 +15,6 @@ jobs:
     with:
       python-version: "3.11"
       package-name: MomentRT
+      apt-package: xvfb jq
+      debug: true
       fail-on-sphinx-warning: true

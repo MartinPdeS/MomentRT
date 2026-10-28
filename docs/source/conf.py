@@ -1,31 +1,40 @@
-"""Sphinx configuration with executable Plotly gallery examples."""
+"""Sphinx configuration for MomentRT documentation."""
 
-import sys
 from pathlib import Path
+import sys
 
-sys.path.insert(0, str(Path(__file__).parent))
+from martinpdes_docs import configure
 
-from MomentRT import __version__
 
-project = "MomentRT"
+package_name = "MomentRT"
+docs_source = Path(__file__).resolve().parent
+sys.path.insert(0, str(docs_source))
 
-release = __version__
-
-extensions = ["sphinx.ext.mathjax", "sphinx_gallery.gen_gallery"]
-
-html_theme = "alabaster"
-
-html_static_path = ["_static"]
-
-exclude_patterns = ["_build"]
-
-sphinx_gallery_conf = {
-    "examples_dirs": "../examples",
-    "gallery_dirs": "auto_examples",
-    "filename_pattern": r"\.py$",
-    "image_scrapers": ("gallery_config.plotly_scraper",),
-    "capture_repr": (),
-    "abort_on_example_error": True,
-    "download_all_examples": False,
-    "backreferences_dir": None,
-}
+globals().update(
+    configure(
+        project=package_name,
+        package=package_name,
+        version="auto",
+        author="Martin Poinsinet de Sivry-Houle",
+        repository=f"MartinPdeS/{package_name}",
+        logo="_static/momentrt-logo.svg",
+        favicon="_static/momentrt-favicon.svg",
+        prefer_installed_package=True,
+        gallery_sections=["fundamentals", "finite_samples"],
+        gallery_default_thumb=str(
+            docs_source / "_static" / "images" / "sample-geometry.png"
+        ),
+        gallery_options={
+            "image_scrapers": ("matplotlib", "gallery_config.plotly_scraper"),
+            "abort_on_example_error": True,
+            "capture_repr": (),
+        },
+        logo_text="",
+        logo_alt_text="MomentRT deterministic light transport",
+        html_css_files=["layout.css"],
+        autodoc_default_options={
+            "members": True,
+            "member-order": "bysource",
+        },
+    )
+)

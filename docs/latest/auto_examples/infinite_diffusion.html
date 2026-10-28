@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Infinite-medium diffusion &#8212; MomentRT 0.1.0 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <script src="../_static/documentation_options.js?v=01f34227"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="A layered sample with an inclusion" href="structured_sample.html" />
+    <link rel="prev" title="Examples" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-infinite-diffusion-py"><span class="std std-ref">Go to the end</span></a>
+to download the full example code.</p>
+</div>
+<section class="sphx-glr-example-title" id="infinite-medium-diffusion">
+<span id="sphx-glr-auto-examples-infinite-diffusion-py"></span><h1>Infinite-medium diffusion<a class="headerlink" href="#infinite-medium-diffusion" title="Link to this heading">¶</a></h1>
+<p>All physical values are illustrative. The plotted box is an observation
+window, not a tissue boundary. Optical properties apply at 970 nm.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="w">
+</span><span class="w">
+</span><span class="kn">from</span><span class="w"> </span><span class="nn">MomentRT</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
+</span>    <span class="n">CartesianMesh</span><span class="p">,</span><span class="w">
+</span>    <span class="n">HomogeneousMedium</span><span class="p">,</span><span class="w">
+</span>    <span class="n">InfiniteDiffusion</span><span class="p">,</span><span class="w">
+</span>    <span class="n">Material</span><span class="p">,</span><span class="w">
+</span>    <span class="n">PointSource</span><span class="p">,</span><span class="w">
+</span>    <span class="n">Simulation</span><span class="p">,</span><span class="w">
+</span>    <span class="n">ureg</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<section id="optical-properties">
+<h2>Optical properties<a class="headerlink" href="#optical-properties" title="Link to this heading">¶</a></h2>
+<p>Define illustrative absorption and reduced scattering at 970 nm.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">material</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="w">
+</span>    <span class="n">absorption</span><span class="o">=</span><span class="mf">0.02</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
+</span>    <span class="n">reduced_scattering</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
+</span>    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span><span class="w">
+</span><span class="n">medium</span> <span class="o">=</span> <span class="n">HomogeneousMedium</span><span class="p">(</span><span class="w">
+</span>    <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="observation-window">
+<h2>Observation window<a class="headerlink" href="#observation-window" title="Link to this heading">¶</a></h2>
+<p>This grid samples an infinite medium; its edges are not physical boundaries.
+The even node counts avoid sampling the singular point source.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">mesh</span> <span class="o">=</span> <span class="n">CartesianMesh</span><span class="p">(</span><span class="w">
+</span>    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <span class="n">spacing</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="p">[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
+</span>    <span class="n">origin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="p">[</span><span class="o">-</span><span class="mf">9.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.8</span><span class="p">,</span> <span class="o">-</span><span class="mf">9.8</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="embedded-illumination">
+<h2>Embedded illumination<a class="headerlink" href="#embedded-illumination" title="Link to this heading">¶</a></h2>
+<p>Place an isotropic point source at the center of the observation window.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">source</span> <span class="o">=</span> <span class="n">PointSource</span><span class="p">(</span><span class="w">
+</span>    <span class="n">position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
+</span>    <span class="n">wavelength</span><span class="o">=</span><span class="mi">970</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
+</span>    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">milliwatt</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="configure-transport">
+<h2>Configure transport<a class="headerlink" href="#configure-transport" title="Link to this heading">¶</a></h2>
+<p>Keep the numerical model separate from the physical configuration.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">solver</span> <span class="o">=</span> <span class="n">InfiniteDiffusion</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="compose-the-experiment">
+<h2>Compose the experiment<a class="headerlink" href="#compose-the-experiment" title="Link to this heading">¶</a></h2>
+<p>Combine the medium, illumination, observation mesh, and solver.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="w">
+</span>    <span class="n">medium</span><span class="o">=</span><span class="n">medium</span><span class="p">,</span><span class="w">
+</span>    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span><span class="w">
+</span>    <span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span><span class="w">
+</span>    <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="inspect-the-configuration">
+<h2>Inspect the configuration<a class="headerlink" href="#inspect-the-configuration" title="Link to this heading">¶</a></h2>
+<p>Rotate the three-dimensional observation window and locate the source.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">geometry</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">plot_system</span><span class="p">(</span><span class="w">
+</span>    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<iframe src="../_static/gallery/infinite_diffusion-1.html" title="Interactive view" width="100%" height="600" loading="lazy" style="border:0;"></iframe></section>
+<section id="calculate-fluence">
+<h2>Calculate fluence<a class="headerlink" href="#calculate-fluence" title="Link to this heading">¶</a></h2>
+<p>Solve the analytical infinite-medium diffusion model.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">result</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+</section>
+<section id="inspect-the-fluence-field">
+<h2>Inspect the fluence field<a class="headerlink" href="#inspect-the-fluence-field" title="Link to this heading">¶</a></h2>
+<p>The orthogonal slices use a logarithmic color scale with physical values
+retained on hover. Values close to the source remain diffusion approximations.</p>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">figure</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
+</span>    <span class="n">view</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">slices</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">log</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
+</span>    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="w">
+</span><span class="p">)</span><span class="w">
+</span></pre></div></div>
+<iframe src="../_static/gallery/infinite_diffusion-2.html" title="Fluence rate — slices (log scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.283 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-infinite-diffusion-py">
+<div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/967eef43ef0b205284a83533de1716e9/infinite_diffusion.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">infinite_diffusion.ipynb</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-python docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/14a8638c1db09150db4facfc24d6dd0b/infinite_diffusion.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">infinite_diffusion.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download sphx-glr-download-zip docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/39b064dc529a27540273dab75c150b39/infinite_diffusion.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">infinite_diffusion.zip</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">MomentRT</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Infinite-medium diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="structured_sample.html">A layered sample with an inclusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="surface_diffusion.html">Surface illumination and FEM diffusion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">Development roadmap</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Examples</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Examples</a></li>
+      <li>Next: <a href="structured_sample.html" title="next chapter">A layered sample with an inclusion</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 9.0.4</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+      |
+      <a href="../_sources/auto_examples/infinite_diffusion.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

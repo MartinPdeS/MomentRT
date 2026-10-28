@@ -80,9 +80,7 @@ simulation = Simulation(
 # -------------------------
 # Rotate the three-dimensional observation window and locate the source.
 
-geometry = simulation.plot_system(
-    show=False,
-)
+geometry = simulation.plot_system()
 
 # %%
 # Calculate fluence
@@ -94,11 +92,10 @@ result = simulation.run()
 # %%
 # Inspect the fluence field
 # -------------------------
-# The orthogonal slices use a logarithmic color scale with physical values
+# The volume uses a logarithmic color scale with physical values
 # retained on hover. Values close to the source remain diffusion approximations.
 
 figure = result.fluence.plot(
-    view="slices",
+    view="volume",
     scale="log",
-    show=False,
 )

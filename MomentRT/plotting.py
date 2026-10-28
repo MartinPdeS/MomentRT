@@ -124,12 +124,17 @@ def plot_medium(*, medium, mesh, length_unit, show):
     return figure
 
 
-def plot_field(*, field, view, scale, length_unit, show):
+def plot_field(*, field, view, scale, length_unit, opacity, show):
     if view not in {"slices", "volume", "isosurfaces"}:
         raise ValueError("view must be slices, volume, or isosurfaces.")
 
     if scale not in {"linear", "log"}:
         raise ValueError("scale must be linear or log.")
+
+    if opacity is not None and (
+        not np.isscalar(opacity) or not np.isfinite(opacity) or not 0 <= opacity <= 1
+    ):
+        raise ValueError("opacity must be between zero and one.")
 
     raw = np.asarray(field.values.magnitude)
 
@@ -198,6 +203,10 @@ def plot_field(*, field, view, scale, length_unit, show):
     else:
         trace = go.Volume if view == "volume" else go.Isosurface
 
+        default_opacity = 0.12 if view == "volume" else 0.5
+
+        display_opacity = default_opacity if opacity is None else opacity
+
         figure.add_trace(
             trace(
                 x=points[..., 0].ravel(),
@@ -206,12 +215,57 @@ def plot_field(*, field, view, scale, length_unit, show):
                 value=displayed.ravel(),
                 isomin=minimum,
                 isomax=maximum,
-                opacity=0.12 if view == "volume" else 0.5,
-                surface_count=15 if view == "volume" else 6,
+                opacity=display_opacity,
+                surface_count=8 if view == "volume" else 6,
                 caps={"x_show": False, "y_show": False, "z_show": False},
                 **common,
             )
         )
+
+        if view == "volume":
+            opacity_values = [step / 20 for step in range(21)]
+
+            if not any(np.isclose(display_opacity, value) for value in opacity_values):
+                opacity_values.append(display_opacity)
+
+            opacity_values.sort()
+
+            active_index = next(
+                index
+                for index, value in enumerate(opacity_values)
+                if np.isclose(value, display_opacity)
+            )
+
+            figure.update_layout(
+                sliders=[
+                    {
+                        "active": active_index,
+                        "currentvalue": {
+                            "font": {"size": 12},
+                            "prefix": "Opacity: ",
+                        },
+                        "font": {"size": 9},
+                        "len": 0.55,
+                        "minorticklen": 0,
+                        "pad": {"t": 12},
+                        "ticklen": 2,
+                        "x": 0.225,
+                        "steps": [
+                            {
+                                "label": (
+                                    f"{value:.2f}"
+                                    if np.isclose(value, display_opacity)
+                                    or np.isclose(value * 4, round(value * 4))
+                                    else ""
+                                ),
+                                "method": "restyle",
+                                "args": [{"opacity": value}],
+                            }
+                            for value in opacity_values
+                        ],
+                    }
+                ]
+            )
 
     if show:
         figure.show()

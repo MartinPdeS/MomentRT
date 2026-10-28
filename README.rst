@@ -27,6 +27,10 @@ Installation
    python -m pip install -e ".[viz,dev]"
    python docs/examples/infinite_diffusion.py
 
+The full guide in ``docs/source`` derives the P1 equations, explains the finite
+element and boundary approximations, and walks through the complete modeling
+workflow, results, visualization, and public API.
+
 Conda package from a local checkout
 -----------------------------------
 
@@ -46,8 +50,10 @@ Visualization
 -------------
 
 ``simulation.plot_system()`` displays the observation window and source.
-``result.fluence.plot(view="slices", scale="log")`` displays orthogonal slices.
-Other views are ``volume`` and ``isosurfaces``. Plots return a Plotly figure;
+``result.fluence.plot(scale="log")`` displays a translucent volume.
+Its browser slider adjusts opacity from 0 to 1; pass ``opacity=0.12`` to choose
+the starting value. Other views are ``slices`` and ``isosurfaces``. Plots
+return a Plotly figure;
 use ``show=False`` to compose a scene and ``figure.write_html("fluence.html")``
 to save a standalone interactive document.
 Field export uses ``result.fluence.export(path="fluence.vti")`` and records
@@ -249,7 +255,7 @@ Citation and license
 MomentRT is distributed under the MIT license; see ``LICENSE``. If you use
 MomentRT in research, please cite the software version using the metadata in
 ``CITATION.cff``. The ``.zenodo.json`` file provides metadata for a future
-Zenodo archive. No DOI or publication date has been assigned yet.
+Zenodo archive. No DOI has been assigned.
 
 GitHub workflows
 ----------------

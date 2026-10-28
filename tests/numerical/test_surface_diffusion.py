@@ -156,7 +156,7 @@ def test_surface_example_and_flux_figures():
 
     flux = result.flux.plot(show=False, max_vectors=40)
 
-    assert fluence.data[0].type == "surface"
+    assert fluence.data[0].type == "volume"
 
     assert flux.data[0].type == "cone"
 

@@ -50,9 +50,10 @@ class ScalarField:
     def plot(
         self,
         *,
-        view="slices",
+        view="volume",
         scale="linear",
         length_unit="mm",
+        opacity=None,
         show=True,
     ):
         from .plotting import plot_field
@@ -62,6 +63,7 @@ class ScalarField:
             view=view,
             scale=scale,
             length_unit=length_unit,
+            opacity=opacity,
             show=show,
         )
 

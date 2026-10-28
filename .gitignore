@@ -6,6 +6,7 @@ __pycache__/
 build/
 dist/
 *.png
+!docs/source/_static/images/*.png
 *.vti
 *.html
 

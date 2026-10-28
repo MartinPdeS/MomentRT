@@ -11,7 +11,7 @@ project = "MomentRT"
 
 release = __version__
 
-extensions = ["sphinx_gallery.gen_gallery"]
+extensions = ["sphinx.ext.mathjax", "sphinx_gallery.gen_gallery"]
 
 html_theme = "alabaster"
 

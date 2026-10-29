@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Results and visualization &#8212; MomentRT 0.2.1 documentation</title>
+    <title>Results and visualization &#8212; MomentRT 0.3.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=3ca669d2"></script>
+    <script src="_static/documentation_options.js?v=f129cdf0"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.3.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2.1" />
+  <meta name="docsearch:version" content="0.3.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -460,7 +460,10 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Results and visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API reference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api_reference.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="python_api.html">Python class reference</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1"><a class="reference internal" href="roadmap.html">Roadmap</a></li>
 </ul>
 </div>
@@ -528,7 +531,7 @@
 view of the computed arrays; it does not modify the numerical result.</p>
 <section id="fluence-rate">
 <h2>Fluence rate<a class="headerlink" href="#fluence-rate" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">result.fluence</span></code> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarField</span></code> of nodal fluence rate
+<p><code class="docutils literal notranslate"><span class="pre">result.fluence</span></code> is a <a class="reference internal" href="python_api.html#MomentRT.ScalarField" title="MomentRT.ScalarField"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarField</span></code></a> of nodal fluence rate
 <span class="math notranslate nohighlight">\(\Phi\)</span>, with units of watts per square metre. <code class="docutils literal notranslate"><span class="pre">values</span></code> is a Pint
 quantity shaped like its associated Cartesian mesh. Infinite and finite
 solutions also carry metadata describing the transport model, wavelength, and
@@ -636,7 +639,7 @@ See the <a class="reference internal" href="gallery/finite_samples/spectral_dete
 <section id="diffusive-flux">
 <h2>Diffusive flux<a class="headerlink" href="#diffusive-flux" title="Link to this heading">#</a></h2>
 <p>For finite FEM simulations, <code class="docutils literal notranslate"><span class="pre">result.flux</span></code> is an element-centered
-<code class="xref py py-class docutils literal notranslate"><span class="pre">VectorField</span></code> with units of <span class="math notranslate nohighlight">\(\mathrm{W\,m^{-2}}\)</span>:</p>
+<a class="reference internal" href="python_api.html#MomentRT.VectorField" title="MomentRT.VectorField"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorField</span></code></a> with units of <span class="math notranslate nohighlight">\(\mathrm{W\,m^{-2}}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf J_e=-D_e\nabla\Phi\vert_e.\]</div>
 <p>The gradient is constant inside each linear tetrahedron. Values are not
@@ -792,7 +795,7 @@ require PyVista.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.1/docs/source/results.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.3.0/docs/source/results.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

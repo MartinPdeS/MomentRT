@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Uniform illumination on a sample face &#8212; MomentRT 0.2.1 documentation</title>
+    <title>Uniform illumination on a sample face &#8212; MomentRT 0.3.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=3ca669d2"></script>
+    <script src="../../_static/documentation_options.js?v=f129cdf0"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.3.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2.1" />
+  <meta name="docsearch:version" content="0.3.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -464,9 +464,12 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Finite samples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="compare_sp3.html">Compare P1 and SP3 transport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="detector_convergence.html">Choose a mesh for detector collection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mesh_refinement.html">Check finite-element mesh refinement</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sp3_layered_anisotropy.html">Use different anisotropies in a layered sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sp3_spectral_anisotropy.html">Sweep wavelength-dependent scattering anisotropy</a></li>
 <li class="toctree-l2"><a class="reference internal" href="spectral_detectors.html">Sweep wavelengths with a fixed sensor geometry</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structured_sample.html">A heterogeneous layered sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="surface_detector.html">Collect light with finite apertures</a></li>
@@ -554,12 +557,12 @@ fluence field. The input power is already coupled into the sample.</p>
 </span><span class="w">
 </span><span class="kn">from</span><span class="w"> </span><span class="nn">MomentRT</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
 </span>    <span class="n">CartesianMesh</span><span class="p">,</span><span class="w">
-</span>    <span class="n">Diffusion</span><span class="p">,</span><span class="w">
-</span>    <span class="n">Material</span><span class="p">,</span><span class="w">
-</span>    <span class="n">RobinBoundary</span><span class="p">,</span><span class="w">
-</span>    <span class="n">Simulation</span><span class="p">,</span><span class="w">
-</span>    <span class="n">StructuredMedium</span><span class="p">,</span><span class="w">
-</span>    <span class="n">UniformSurfaceSource</span><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Diffusion" title="MomentRT.Diffusion"><span class="n">Diffusion</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">Material</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">RobinBoundary</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">Simulation</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">StructuredMedium</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><span class="n">UniformSurfaceSource</span></a><span class="p">,</span><span class="w">
 </span>    <span class="n">ureg</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
@@ -568,19 +571,19 @@ fluence field. The input power is already coupled into the sample.</p>
 <section id="create-the-homogeneous-slab">
 <h2>Create the homogeneous slab<a class="headerlink" href="#create-the-homogeneous-slab" title="Link to this heading">#</a></h2>
 <p>Set all optical properties and dimensions explicitly for this wavelength.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">material</span> <span class="o">=</span> <span class="n">Material</span><span class="p">(</span><span class="w">
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">material</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">Material</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">absorption</span><span class="o">=</span><span class="mf">0.03</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
 </span>    <span class="n">reduced_scattering</span><span class="o">=</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
 </span>    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="n">sample</span> <span class="o">=</span> <span class="n">StructuredMedium</span><span class="p">(</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">sample</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">StructuredMedium</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">origin</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
 </span>    <span class="n">size</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="n">sample</span><span class="o">.</span><span class="n">add_background</span><span class="p">(</span><span class="w">
-</span>    <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">,</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.StructuredMedium.add_background" title="MomentRT.StructuredMedium.add_background"><span class="n">sample</span><span class="o">.</span><span class="n">add_background</span></a><span class="p">(</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">material</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">material</span></a><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 </section>
@@ -588,29 +591,29 @@ fluence field. The input power is already coupled into the sample.</p>
 <h2>Configure the mesh, source, and six faces<a class="headerlink" href="#configure-the-mesh-source-and-six-faces" title="Link to this heading">#</a></h2>
 <p>The incoming diffuse power is spread uniformly across the complete z_min
 face. All faces use the same explicit effective diffuse reflectance.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">mesh</span> <span class="o">=</span> <span class="n">CartesianMesh</span><span class="o">.</span><span class="n">from_sample</span><span class="p">(</span><span class="w">
-</span>    <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span><span class="w">
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.CartesianMesh.from_sample" title="MomentRT.CartesianMesh.from_sample"><span class="n">CartesianMesh</span><span class="o">.</span><span class="n">from_sample</span></a><span class="p">(</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">sample</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">sample</span></a><span class="p">,</span><span class="w">
 </span>    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="n">source</span> <span class="o">=</span> <span class="n">UniformSurfaceSource</span><span class="p">(</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><span class="n">source</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><span class="n">UniformSurfaceSource</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">face</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">z_min</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">wavelength</span><span class="o">=</span><span class="mi">970</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nanometer</span><span class="p">,</span><span class="w">
 </span>    <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">milliwatt</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="n">boundary</span> <span class="o">=</span> <span class="n">RobinBoundary</span><span class="p">(</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">RobinBoundary</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">effective_reflectance</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="n">solver</span> <span class="o">=</span> <span class="n">Diffusion</span><span class="p">(</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Diffusion" title="MomentRT.Diffusion"><span class="n">solver</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Diffusion" title="MomentRT.Diffusion"><span class="n">Diffusion</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">boundaries</span><span class="o">=</span><span class="p">{</span><span class="w">
-</span>        <span class="s2">&quot;</span><span class="s2">x_min</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span><span class="w">
-</span>        <span class="s2">&quot;</span><span class="s2">x_max</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span><span class="w">
-</span>        <span class="s2">&quot;</span><span class="s2">y_min</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span><span class="w">
-</span>        <span class="s2">&quot;</span><span class="s2">y_max</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span><span class="w">
-</span>        <span class="s2">&quot;</span><span class="s2">z_min</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span><span class="w">
-</span>        <span class="s2">&quot;</span><span class="s2">z_max</span><span class="s2">&quot;</span><span class="p">:</span> <span class="n">boundary</span><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">x_min</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">x_max</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">y_min</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">y_max</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">z_min</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a><span class="p">,</span><span class="w">
+</span>        <span class="s2">&quot;</span><span class="s2">z_max</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a><span class="p">,</span><span class="w">
 </span>    <span class="p">}</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
@@ -618,20 +621,20 @@ face. All faces use the same explicit effective diffuse reflectance.</p>
 <section id="solve-and-view-the-field">
 <h2>Solve and view the field<a class="headerlink" href="#solve-and-view-the-field" title="Link to this heading">#</a></h2>
 <p>The 3D plot is made from the nodal finite-element fluence values.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span><span class="w">
-</span>    <span class="n">medium</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span><span class="w">
-</span>    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span><span class="w">
-</span>    <span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span><span class="w">
-</span>    <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span><span class="w">
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">simulation</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">Simulation</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">medium</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">sample</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><span class="n">source</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><span class="n">source</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Diffusion" title="MomentRT.Diffusion"><span class="n">solver</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Diffusion" title="MomentRT.Diffusion"><span class="n">solver</span></a><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="n">result</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SimulationResult" title="MomentRT.SimulationResult"><span class="n">result</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.Simulation.run" title="MomentRT.Simulation.run"><span class="n">simulation</span><span class="o">.</span><span class="n">run</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="c1"># The illumination patch is independent of the fluence opacity control.</span><span class="w">
-</span><span class="n">figure</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
+</span><span class="n">figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.ScalarField.plot" title="MomentRT.ScalarField.plot"><span class="n">result</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">view</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">volume</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">log</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
-</span>    <span class="n">overlays</span><span class="o">=</span><span class="p">[</span><span class="n">source</span><span class="p">]</span><span class="p">,</span><span class="w">
+</span>    <span class="n">overlays</span><span class="o">=</span><span class="p">[</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><span class="n">source</span></a><span class="p">]</span><span class="p">,</span><span class="w">
 </span>    <span class="n">show</span><span class="o">=</span><span class="n">show_figures</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
@@ -639,18 +642,18 @@ face. All faces use the same explicit effective diffuse reflectance.</p>
 <section id="preview-a-central-plane">
 <h2>Preview a central plane<a class="headerlink" href="#preview-a-central-plane" title="Link to this heading">#</a></h2>
 <p>A static section makes the penetration profile visible in the gallery card.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">fluence_values</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">watt / meter**2</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="w">
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">fluence_values</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SimulationResult" title="MomentRT.SimulationResult"><span class="n">result</span></a><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">watt / meter**2</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="w">
 </span><span class="w">
-</span><span class="n">center_y</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span><span class="o">/</span> <span class="mi">2</span><span class="w">
+</span><span class="n">center_y</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span><span class="o">/</span> <span class="mi">2</span><span class="w">
 </span><span class="w">
 </span><span class="n">x_axis</span> <span class="o">=</span> <span class="p">(</span><span class="w">
-</span>    <span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">spacing</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span><span class="w">
+</span>    <span class="p">(</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="o">.</span><span class="n">spacing</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">)</span><span class="w">
 </span>    <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">millimeter</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span>    <span class="o">.</span><span class="n">magnitude</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="n">z_axis</span> <span class="o">=</span> <span class="p">(</span><span class="w">
-</span>    <span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">spacing</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="p">)</span><span class="w">
+</span>    <span class="p">(</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="o">.</span><span class="n">spacing</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="p">)</span><span class="w">
 </span>    <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">millimeter</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span>    <span class="o">.</span><span class="n">magnitude</span><span class="w">
 </span><span class="p">)</span><span class="w">
@@ -675,16 +678,16 @@ face. All faces use the same explicit effective diffuse reflectance.</p>
 </span><span class="k">if</span> <span class="n">show_figures</span><span class="p">:</span><span class="w">
 </span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Incoming power: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">[</span><span class="s1">'</span><span class="s1">incoming_power</span><span class="s1">'</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
-</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Absorbed power: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">[</span><span class="s1">'</span><span class="s1">absorbed_power</span><span class="s1">'</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
-</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Escaping power: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">energy_balance</span><span class="p">[</span><span class="s1">'</span><span class="s1">escaping_power</span><span class="s1">'</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Incoming power: </span><span class="si">{</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SimulationResult" title="MomentRT.SimulationResult"><span class="n">result</span></a><span class="o">.</span><span class="n">energy_balance</span><span class="p">[</span><span class="s1">'</span><span class="s1">incoming_power</span><span class="s1">'</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Absorbed power: </span><span class="si">{</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SimulationResult" title="MomentRT.SimulationResult"><span class="n">result</span></a><span class="o">.</span><span class="n">energy_balance</span><span class="p">[</span><span class="s1">'</span><span class="s1">absorbed_power</span><span class="s1">'</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Escaping power: </span><span class="si">{</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SimulationResult" title="MomentRT.SimulationResult"><span class="n">result</span></a><span class="o">.</span><span class="n">energy_balance</span><span class="p">[</span><span class="s1">'</span><span class="s1">escaping_power</span><span class="s1">'</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 <img src="../../_images/sphx_glr_uniform_surface_source_001.png" srcset="../../_images/sphx_glr_uniform_surface_source_001.png" alt="log10 fluence from uniform face illumination" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Incoming power: 1 milliwatt
 Absorbed power: 0.00020454076689282105 watt
 Escaping power: 0.0007954592331071827 watt
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.168 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.174 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-finite-samples-uniform-surface-source-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/d03ad44eaf9ab138ae1ba0dc1b95262d/uniform_surface_source.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">uniform_surface_source.ipynb</span></code></a></p>
@@ -758,7 +761,7 @@ Escaping power: 0.0007954592331071827 watt
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.1/docs/source/gallery/finite_samples/uniform_surface_source.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.3.0/docs/source/gallery/finite_samples/uniform_surface_source.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

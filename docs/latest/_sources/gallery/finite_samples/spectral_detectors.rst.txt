@@ -228,8 +228,8 @@ The original sample, source wavelength, and detector geometry are retained.
  .. code-block:: none
 
     Geometry preparations: 1
-    Preparation time: 0.05993215099999816 s
-    Per-wavelength run times: [0.03354876500000614 0.03340263499998741 0.0329577949999873 0.03368439900000908 0.033116594000006216] s
+    Preparation time: 0.061380241000001945 s
+    Per-wavelength run times: [0.037715060000003575 0.03424901399999669 0.03468729500000478 0.03450004699999454 0.034215985000003] s
     Reflection at 700 nm: 0.0019590985219869353 mW
     Reflection at 750 nm: 0.0022726091120240026 mW
     Reflection at 800 nm: 0.0023677074555548284 mW
@@ -278,7 +278,7 @@ Named overlays give the two apertures distinct legend entries.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.290 seconds)
+   **Total running time of the script:** (0 minutes 0.301 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_spectral_detectors.py:

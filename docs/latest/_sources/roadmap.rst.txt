@@ -18,7 +18,8 @@ Development roadmap
    Linear tetrahedral FEM diffusion, explicit Robin/reflecting face conditions,
    and diffuse disk/full-face sources are implemented. Independent analytical
    slab comparisons cover homogeneous and equal-index layered media.
-   Next: SP3, refracting internal interfaces, and comparisons against independent
+   SP3 provides coupled moments with Henyey–Greenstein scattering and matched-index
+   boundaries. Next: refracting interfaces and comparisons against independent
    Monte Carlo results across sensor wavelengths and source-detector distances.
    Do not substitute infinite-medium fields for surface reflectance.
 
@@ -38,5 +39,5 @@ API principles
 
 Keep the package flat, use keyword-only calls and explicit quantities, and
 return structured results. Keep numerical models separate from experimental
-configuration. No Python type annotations. Transport fields retain physical
+configuration. Use type hints and NumPy-style API docstrings. Transport fields retain physical
 units and mesh association; rendering is optional and must not change values.

@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Development roadmap &#8212; MomentRT 0.2.1 documentation</title>
+    <title>Development roadmap &#8212; MomentRT 0.3.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=3ca669d2"></script>
+    <script src="_static/documentation_options.js?v=f129cdf0"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.2.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.3.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -62,11 +62,11 @@
     <link rel="icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Public API reference" href="api_reference.html" />
+    <link rel="prev" title="Python class reference" href="python_api.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.2.1" />
+  <meta name="docsearch:version" content="0.3.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -458,7 +458,10 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="results.html">Results and visualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api_reference.html">API reference</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api_reference.html">API reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="python_api.html">Python class reference</a></li>
+</ul>
+</details></li>
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Roadmap</a></li>
 </ul>
 </div>
@@ -538,7 +541,8 @@ Next: configurable field slices, shared color scales, and external optics.</p></
 Linear tetrahedral FEM diffusion, explicit Robin/reflecting face conditions,
 and diffuse disk/full-face sources are implemented. Independent analytical
 slab comparisons cover homogeneous and equal-index layered media.
-Next: SP3, refracting internal interfaces, and comparisons against independent
+SP3 provides coupled moments with Henyey–Greenstein scattering and matched-index
+boundaries. Next: refracting interfaces and comparisons against independent
 Monte Carlo results across sensor wavelengths and source-detector distances.
 Do not substitute infinite-medium fields for surface reflectance.</p></li>
 <li><p>Spectral sensor model
@@ -555,7 +559,7 @@ whitened Jacobian analysis and independent synthetic recovery studies.</p></li>
 <h2>API principles<a class="headerlink" href="#api-principles" title="Link to this heading">#</a></h2>
 <p>Keep the package flat, use keyword-only calls and explicit quantities, and
 return structured results. Keep numerical models separate from experimental
-configuration. No Python type annotations. Transport fields retain physical
+configuration. Use type hints and NumPy-style API docstrings. Transport fields retain physical
 units and mesh association; rendering is optional and must not change values.</p>
 </section>
 </section>
@@ -571,12 +575,12 @@ units and mesh association; rendering is optional and must not change values.</p
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="api_reference.html"
+       href="python_api.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Public API reference</p>
+        <p class="prev-next-title">Python class reference</p>
       </div>
     </a>
 </div>
@@ -606,7 +610,7 @@ units and mesh association; rendering is optional and must not change values.</p
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.2.1/docs/source/roadmap.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.3.0/docs/source/roadmap.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

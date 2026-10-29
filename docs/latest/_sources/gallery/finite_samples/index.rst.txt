@@ -22,6 +22,23 @@ easy to inspect.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare the coupled SP3 moment model and P1 diffusion in the same finite sample with matched-index boundary conditions and incoming diffuse light. This comparison illustrates model differences; it does not establish which model matches radiative transfer for a particular sensor.">
+
+.. only:: html
+
+  .. image:: /gallery/finite_samples/images/thumb/sphx_glr_compare_sp3_thumb.png
+    :alt:
+
+  :doc:`/gallery/finite_samples/compare_sp3`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compare P1 and SP3 transport</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Compare collected power, sampled detector area, and sampled illumination area over four explicit meshes. The study preserves the physical sample and instrument geometry. Its recommendation is a numerical resolution check for these observables, not validation of P1 against radiative transfer.">
 
 .. only:: html
@@ -68,6 +85,40 @@ easy to inspect.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Changing the diffuse boundary reflectance</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Assign a scattering anisotropy to each material and solve a layered sample with SP3. The values are illustrative, not measured skin properties. SP3 uses the Henyey–Greenstein phase function for each material.">
+
+.. only:: html
+
+  .. image:: /gallery/finite_samples/images/thumb/sphx_glr_sp3_layered_anisotropy_thumb.png
+    :alt:
+
+  :doc:`/gallery/finite_samples/sp3_layered_anisotropy`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Use different anisotropies in a layered sample</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Specify different spectral anisotropy tables for two layers and evaluate an SP3 sensor at several wavelengths. The numbers are illustrative. Each result is monochromatic; the sweep is not a broadband integration.">
+
+.. only:: html
+
+  .. image:: /gallery/finite_samples/images/thumb/sphx_glr_sp3_spectral_anisotropy_thumb.png
+    :alt:
+
+  :doc:`/gallery/finite_samples/sp3_spectral_anisotropy`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Sweep wavelength-dependent scattering anisotropy</div>
     </div>
 
 
@@ -166,9 +217,12 @@ easy to inspect.
 .. toctree::
    :hidden:
 
+   /gallery/finite_samples/compare_sp3
    /gallery/finite_samples/detector_convergence
    /gallery/finite_samples/mesh_refinement
    /gallery/finite_samples/reflectance_sweep
+   /gallery/finite_samples/sp3_layered_anisotropy
+   /gallery/finite_samples/sp3_spectral_anisotropy
    /gallery/finite_samples/spectral_detectors
    /gallery/finite_samples/structured_sample
    /gallery/finite_samples/surface_detector

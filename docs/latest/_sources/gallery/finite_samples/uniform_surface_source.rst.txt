@@ -245,7 +245,7 @@ A static section makes the penetration profile visible in the gallery card.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.168 seconds)
+   **Total running time of the script:** (0 minutes 0.174 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_uniform_surface_source.py:

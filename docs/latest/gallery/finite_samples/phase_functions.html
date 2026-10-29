@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Compare scattering phase functions &#8212; MomentRT 0.5.2 documentation</title>
+    <title>Compare scattering phase functions &#8212; MomentRT 0.6.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=f909c4a4"></script>
+    <script src="../../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.2" />
+  <meta name="docsearch:version" content="0.6.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -676,12 +676,12 @@ intended application; the contact detector assumes Lambertian escape.</p>
 <h2>Preview the sample and instrument geometry<a class="headerlink" href="#preview-the-sample-and-instrument-geometry" title="Link to this heading">#</a></h2>
 <p>Keep the physical geometry as the final figure so the gallery thumbnail
 shows the sample, source, and detector rather than the phase-function result.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">sample_figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.StructuredMedium.plot" title="MomentRT.StructuredMedium.plot"><span class="n">sample</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="w">
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">gallery_system_figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.StructuredMedium.plot" title="MomentRT.StructuredMedium.plot"><span class="n">sample</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">overlays</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;</span><span class="s2">Source</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">source</span></a><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">Detector</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SurfaceDetector" title="MomentRT.SurfaceDetector"><span class="n">detector</span></a><span class="p">}</span><span class="p">,</span><span class="w">
 </span>    <span class="n">show</span><span class="o">=</span><span class="n">show_figures</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<iframe src="../../_static/gallery/phase_functions-2.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.141 seconds)</p>
+<iframe src="../../_static/gallery/phase_functions-2.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.184 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-finite-samples-phase-functions-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/fb79b9b8a21fc7d4d11073cddf6047bc/phase_functions.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">phase_functions.ipynb</span></code></a></p>
@@ -755,7 +755,7 @@ shows the sample, source, and detector rather than the phase-function result.</p
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.5.2/docs/source/gallery/finite_samples/phase_functions.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.6.0/docs/source/gallery/finite_samples/phase_functions.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

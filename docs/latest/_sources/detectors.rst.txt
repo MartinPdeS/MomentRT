@@ -38,6 +38,21 @@ This models an angular acceptance cone attached to a surface patch, not an
 arbitrary tilted photodiode in free space. The acceptance half-angle must be
 an explicit quantity from zero to 90 degrees. Zero accepts no power.
 
+For an ideal detector that collects all escaping light through the aperture,
+use the full outward hemisphere:
+
+.. code-block:: python
+
+   detector = SurfaceDetector.full_hemisphere_on_face(
+       sample=sample,
+       face="z_min",
+       coordinates=np.array([1.5, 0]) * ureg.mm,
+       radius=0.75 * ureg.mm,
+   )
+
+This sets the axis to the outward normal and the acceptance half-angle to
+90 degrees; it does not model external detector optics.
+
 Attach named detectors to the configuration:
 
 .. code-block:: python
@@ -191,3 +206,13 @@ Several detectors read the same undisturbed field independently. Summing
 overlapping apertures can count the same escaping power more than once;
 these results are separate passive instrument configurations rather than a
 model of competing absorbers on the boundary.
+
+Spectral measurements
+---------------------
+
+For a spectral sweep, ``spectrum.detectors["reflection"]`` returns the
+individual :class:`~MomentRT.DetectorResult` measurements in the order of
+``spectrum.wavelengths``. Each provides collected power and both sampled and
+geometric aperture areas. These are independent monochromatic measurements,
+not a broadband integral. ``spectrum.detector_power["reflection"]`` remains
+available as a unit-bearing power array.

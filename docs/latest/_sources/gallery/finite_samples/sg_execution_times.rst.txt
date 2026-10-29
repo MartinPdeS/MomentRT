@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:10.290** total execution time for 14 files **from gallery/finite_samples**:
+**00:13.401** total execution time for 14 files **from gallery/finite_samples**:
 
 .. container::
 
@@ -33,44 +33,44 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_finite_samples_seven_fiber_skin.py` (``seven_fiber_skin.py``)
-     - 00:03.681
+     - 00:04.756
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_compare_p3.py` (``compare_p3.py``)
-     - 00:01.670
+     - 00:02.209
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_surface_diffusion.py` (``surface_diffusion.py``)
-     - 00:00.880
+     - 00:01.144
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_detector_convergence.py` (``detector_convergence.py``)
-     - 00:00.785
+     - 00:01.005
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_sp3_spectral_anisotropy.py` (``sp3_spectral_anisotropy.py``)
-     - 00:00.730
+     - 00:00.925
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_structured_sample.py` (``structured_sample.py``)
-     - 00:00.697
+     - 00:00.912
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_spectral_detectors.py` (``spectral_detectors.py``)
-     - 00:00.329
+     - 00:00.429
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_reflectance_sweep.py` (``reflectance_sweep.py``)
-     - 00:00.289
+     - 00:00.393
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_mesh_refinement.py` (``mesh_refinement.py``)
-     - 00:00.286
+     - 00:00.386
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_sp3_layered_anisotropy.py` (``sp3_layered_anisotropy.py``)
-     - 00:00.281
+     - 00:00.368
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_uniform_surface_source.py` (``uniform_surface_source.py``)
-     - 00:00.186
+     - 00:00.252
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_surface_detector.py` (``surface_detector.py``)
-     - 00:00.169
+     - 00:00.225
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_compare_sp3.py` (``compare_sp3.py``)
-     - 00:00.165
+     - 00:00.215
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_phase_functions.py` (``phase_functions.py``)
-     - 00:00.141
+     - 00:00.184
      - 0.0

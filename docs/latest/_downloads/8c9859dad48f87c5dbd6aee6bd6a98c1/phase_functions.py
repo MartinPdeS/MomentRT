@@ -129,7 +129,7 @@ fluence_figure = results["Rayleigh"].fluence.plot(
 # Keep the physical geometry as the final figure so the gallery thumbnail
 # shows the sample, source, and detector rather than the phase-function result.
 
-sample_figure = sample.plot(
+gallery_system_figure = sample.plot(
     overlays={"Source": source, "Detector": detector},
     show=show_figures,
 )

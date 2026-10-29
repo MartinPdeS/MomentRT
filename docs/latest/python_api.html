@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Python class reference &#8212; MomentRT 0.5.2 documentation</title>
+    <title>Python class reference &#8212; MomentRT 0.6.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=f909c4a4"></script>
+    <script src="_static/documentation_options.js?v=dda85ae5"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.2" />
+  <meta name="docsearch:version" content="0.6.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -1438,6 +1438,32 @@ Use the main constructor for a tilted collection axis.</p></li>
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.SurfaceDetector.full_hemisphere_on_face">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">full_hemisphere_on_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/detector.html#SurfaceDetector.full_hemisphere_on_face"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceDetector.full_hemisphere_on_face" title="Link to this definition">#</a></dt>
+<dd><p>Collect all escaping irradiance across a circular contact aperture.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sample</strong> (<a class="reference internal" href="#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><em>StructuredMedium</em></a>) – Physical sample used to determine and validate the face position.</p></li>
+<li><p><strong>face</strong> (<em>{'x_min'</em><em>, </em><em>'x_max'</em><em>, </em><em>'y_min'</em><em>, </em><em>'y_max'</em><em>, </em><em>'z_min'</em><em>, </em><em>'z_max'}</em>) – Axis-aligned sample face.</p></li>
+<li><p><strong>coordinates</strong> (<em>pint.Quantity</em>) – Absolute in-plane coordinates, shape (2,), with length units, ordered
+by Cartesian axis.</p></li>
+<li><p><strong>radius</strong> (<em>pint.Quantity</em>) – Positive aperture radius with length units.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A detector with outward-normal axis and 90-degree acceptance half-angle.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#MomentRT.SurfaceDetector" title="MomentRT.SurfaceDetector">SurfaceDetector</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>This ideal contact measurement accepts the entire outward hemisphere.
+It does not model external optics or change the transport boundary.</p>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="MomentRT.SurfaceDetector.angular_fraction">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">angular_fraction</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><a class="headerlink" href="#MomentRT.SurfaceDetector.angular_fraction" title="Link to this definition">#</a></dt>
@@ -2331,14 +2357,19 @@ Default is None.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.SimulationResult.summary">
-<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SimulationResult.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SimulationResult.summary" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">convergence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SimulationResult.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SimulationResult.summary" title="Link to this definition">#</a></dt>
 <dd><p>Format detector powers, sampling, energy balance, and diagnostics.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Human-readable result summary with the stored physical units.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>convergence</strong> (<a class="reference internal" href="#MomentRT.DetectorConvergenceResult" title="MomentRT.DetectorConvergenceResult"><em>DetectorConvergenceResult</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Separately supplied convergence study to summarize. The caller must
+verify it applies to this result; None means none was supplied.
+Default is None.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Human-readable result summary with the stored physical units.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2537,6 +2568,22 @@ timings when created by Simulation.sweep.</p></li>
 </dd>
 </dl>
 <dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.SpectralSimulationResult.detectors">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">detectors</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#MomentRT.DetectorResult" title="MomentRT.results.DetectorResult"><span class="pre">DetectorResult</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#MomentRT.SpectralSimulationResult.detectors" title="Link to this definition">#</a></dt>
+<dd><p>Return each detector’s measurements in supplied wavelength order.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Detector names mapped to monochromatic measurements, including
+collected power and sampled and geometric aperture areas. These
+are independent solves, not a broadband integral.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of str to tuple of <a class="reference internal" href="#MomentRT.DetectorResult" title="MomentRT.DetectorResult">DetectorResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="MomentRT.SpectralSimulationResult.detector_power">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">detector_power</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#MomentRT.SpectralSimulationResult.detector_power" title="Link to this definition">#</a></dt>
 <dd><p>Return collected powers keyed by detector name.</p>
@@ -2701,6 +2748,7 @@ Default is True.</p></li>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SurfaceDetector"><code class="docutils literal notranslate"><span class="pre">SurfaceDetector</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SurfaceDetector.on_face"><code class="docutils literal notranslate"><span class="pre">SurfaceDetector.on_face()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SurfaceDetector.full_hemisphere_on_face"><code class="docutils literal notranslate"><span class="pre">SurfaceDetector.full_hemisphere_on_face()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SurfaceDetector.angular_fraction"><code class="docutils literal notranslate"><span class="pre">SurfaceDetector.angular_fraction</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SurfaceDetector.measure"><code class="docutils literal notranslate"><span class="pre">SurfaceDetector.measure()</span></code></a></li>
 </ul>
@@ -2797,6 +2845,7 @@ Default is True.</p></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralSimulationResult"><code class="docutils literal notranslate"><span class="pre">SpectralSimulationResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralSimulationResult.detectors"><code class="docutils literal notranslate"><span class="pre">SpectralSimulationResult.detectors</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralSimulationResult.detector_power"><code class="docutils literal notranslate"><span class="pre">SpectralSimulationResult.detector_power</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralSimulationResult.plot"><code class="docutils literal notranslate"><span class="pre">SpectralSimulationResult.plot()</span></code></a></li>
 </ul>
@@ -2810,7 +2859,7 @@ Default is True.</p></li>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.5.2/docs/source/python_api.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.6.0/docs/source/python_api.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

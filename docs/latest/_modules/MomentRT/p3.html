@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.p3 &#8212; MomentRT 0.5.2 documentation</title>
+    <title>MomentRT.p3 &#8212; MomentRT 0.6.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=f909c4a4"></script>
+    <script src="../../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.2" />
+  <meta name="docsearch:version" content="0.6.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -657,13 +657,17 @@
 <span class="sd">        """</span>
         <span class="n">validated</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">boundaries</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
-            <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">condition</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">RobinBoundary</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="n">condition</span><span class="o">.</span><span class="n">effective_reflectance</span> <span class="o">!=</span> <span class="mi">0</span>
-            <span class="k">for</span> <span class="n">condition</span> <span class="ow">in</span> <span class="n">validated</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
-        <span class="p">):</span>
+        <span class="n">unsupported</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">face</span>
+            <span class="k">for</span> <span class="n">face</span><span class="p">,</span> <span class="n">boundary</span> <span class="ow">in</span> <span class="n">validated</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">boundary</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">RobinBoundary</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">boundary</span><span class="o">.</span><span class="n">effective_reflectance</span> <span class="o">!=</span> <span class="mi">0</span>
+        <span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">unsupported</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="s2">"P3 supports only zero-reflectance Robin boundaries on all faces."</span>
+                <span class="s2">"P3 supports only zero-reflectance Robin boundaries on all faces. "</span>
+                <span class="sa">f</span><span class="s2">"Unsupported faces: </span><span class="si">{</span><span class="s1">', '</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">unsupported</span><span class="p">)</span><span class="si">}</span><span class="s2">."</span>
             <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span> <span class="o">=</span> <span class="n">validated</span><span class="o">.</span><span class="n">boundaries</span>
@@ -941,6 +945,12 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">solve_count</span> <span class="o">+=</span> <span class="mi">1</span>
 
+        <span class="n">energy_balance</span><span class="p">,</span> <span class="n">outgoing_power_by_face</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">_energy_accounting</span><span class="p">(</span>
+            <span class="n">incoming_power</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">optical_power</span><span class="p">,</span>
+            <span class="n">absorbed_watts</span><span class="o">=</span><span class="n">absorbed</span><span class="p">,</span>
+            <span class="n">escaping_watts</span><span class="o">=</span><span class="n">escaping</span><span class="p">,</span>
+        <span class="p">)</span>
+
         <span class="k">return</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span><span class="p">(</span>
             <span class="n">fluence</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">ScalarField</span><span class="p">(</span>
                 <span class="n">mesh</span><span class="o">=</span><span class="n">result_mesh</span><span class="p">,</span>
@@ -954,17 +964,8 @@
                 <span class="n">name</span><span class="o">=</span><span class="s2">"P3 flux"</span><span class="p">,</span>
             <span class="p">),</span>
             <span class="n">moments</span><span class="o">=</span><span class="n">moments</span><span class="p">,</span>
-            <span class="n">energy_balance</span><span class="o">=</span><span class="p">{</span>
-                <span class="s2">"incoming_power"</span><span class="p">:</span> <span class="n">source</span><span class="o">.</span><span class="n">optical_power</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
-                <span class="s2">"absorbed_power"</span><span class="p">:</span> <span class="n">absorbed</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-                <span class="s2">"escaping_power"</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">escaping</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-                <span class="s2">"residual_power"</span><span class="p">:</span> <span class="p">(</span><span class="n">power</span> <span class="o">-</span> <span class="n">absorbed</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">escaping</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-                <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
-            <span class="p">},</span>
-            <span class="n">outgoing_power_by_face</span><span class="o">=</span><span class="p">{</span>
-                <span class="n">face</span><span class="p">:</span> <span class="n">value</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>
-                <span class="k">for</span> <span class="n">face</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">escaping</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="p">},</span>
+            <span class="n">energy_balance</span><span class="o">=</span><span class="n">energy_balance</span><span class="p">,</span>
+            <span class="n">outgoing_power_by_face</span><span class="o">=</span><span class="n">outgoing_power_by_face</span><span class="p">,</span>
             <span class="n">diagnostics</span><span class="o">=</span><span class="p">{</span>
                 <span class="s2">"linear_relative_residual"</span><span class="p">:</span> <span class="n">residual</span><span class="p">,</span>
                 <span class="s2">"source_quadrature_area"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_sampled_area</span>

@@ -304,7 +304,7 @@ model of guided fiber modes, numerical aperture coupling, or Fresnel loss.
  .. code-block:: none
 
     Total coupled illumination power: 1 mW
-    Central fiber collected power: 0.0048925418963712015 mW
+    Central fiber collected power: 0.0048925418963712 mW
     Collection sampled area: 0.5866666666666666 mm²
     Collection geometric area: 0.6361725123519332 mm²
 
@@ -379,7 +379,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.681 seconds)
+   **Total running time of the script:** (0 minutes 4.756 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_seven_fiber_skin.py:

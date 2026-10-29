@@ -236,3 +236,13 @@ Export
 optional PyVista. The export stores the scalar values, field units, coordinate
 units, and field metadata. The numerical solve and Plotly figures do not
 require PyVista.
+
+Interpreting a result summary
+-----------------------------
+
+``result.summary()`` includes available model provenance, wavelength, mesh,
+energy balance, footprint areas, and negative-value warnings. It says when no
+convergence study is supplied. Pass a separately computed detector study using
+``result.summary(convergence=study)`` to include its outcome; the caller must
+check that the study applies to that result. Area agreement and a converged
+mesh do not establish transport-model accuracy.

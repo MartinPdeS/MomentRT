@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.boundary &#8212; MomentRT 0.5.2 documentation</title>
+    <title>MomentRT.boundary &#8212; MomentRT 0.6.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=f909c4a4"></script>
+    <script src="../../_static/documentation_options.js?v=dda85ae5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.2';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.5.2" />
+  <meta name="docsearch:version" content="0.6.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -730,7 +730,42 @@
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span>
         <span class="n">center</span><span class="p">[</span><span class="n">in_plane</span><span class="p">]</span> <span class="o">-</span> <span class="n">distance</span> <span class="o">&lt;</span> <span class="n">lower</span><span class="p">[</span><span class="n">in_plane</span><span class="p">]</span> <span class="o">-</span> <span class="n">tolerance</span><span class="p">[</span><span class="n">in_plane</span><span class="p">]</span>
     <span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="n">in_plane</span><span class="p">]</span> <span class="o">+</span> <span class="n">distance</span> <span class="o">&gt;</span> <span class="n">upper</span><span class="p">[</span><span class="n">in_plane</span><span class="p">]</span> <span class="o">+</span> <span class="n">tolerance</span><span class="p">[</span><span class="n">in_plane</span><span class="p">]):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The entire circular footprint must fit on its sample face."</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="n">_disk_bounds_message</span><span class="p">(</span>
+                <span class="n">face</span><span class="o">=</span><span class="n">face</span><span class="p">,</span>
+                <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
+                <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
+                <span class="n">lower</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span>
+                <span class="n">upper</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">origin</span> <span class="o">+</span> <span class="n">sample</span><span class="o">.</span><span class="n">size</span><span class="p">,</span>
+                <span class="n">label</span><span class="o">=</span><span class="s2">"circular footprint"</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_disk_bounds_message</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">face</span><span class="p">:</span> <span class="n">Face</span><span class="p">,</span>
+    <span class="n">position</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+    <span class="n">radius</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+    <span class="n">lower</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+    <span class="n">upper</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+    <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Describe a footprint and the in-plane bounds it must fit within."""</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="s2">"xyz"</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+
+    <span class="n">unit</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">units</span>
+
+    <span class="n">bounds</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="s1">'xyz'</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="si">}</span><span class="s2">=[</span><span class="si">{</span><span class="n">lower</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">upper</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">]"</span>
+        <span class="k">for</span> <span class="n">axis</span> <span class="ow">in</span> <span class="n">axes</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">"The entire </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s2"> must fit on its sample face </span><span class="si">{</span><span class="n">face</span><span class="si">}</span><span class="s2">: "</span>
+        <span class="sa">f</span><span class="s2">"center=</span><span class="si">{</span><span class="n">position</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">, radius=</span><span class="si">{</span><span class="n">radius</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">; "</span>
+        <span class="sa">f</span><span class="s2">"in-plane bounds: </span><span class="si">{</span><span class="n">bounds</span><span class="si">}</span><span class="s2">."</span>
+    <span class="p">)</span>
 </pre></div>
 
                 </article>

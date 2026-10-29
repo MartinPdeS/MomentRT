@@ -25,9 +25,10 @@ Compare analytical P1 fields with the same source and scattering but three
 absorption coefficients. Higher absorption shortens the distance over which
 fluence reaches a given value. Inputs are illustrative.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-27
+.. GENERATED FROM PYTHON SOURCE LINES 9-28
 
 .. code-block:: Python
+
 
 
     import os
@@ -54,14 +55,14 @@ fluence reaches a given value. Inputs are illustrative.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-32
+.. GENERATED FROM PYTHON SOURCE LINES 30-34
 
 Set up the common source and observation window
 -----------------------------------------------
 Use an even node count so that no mesh node lands on the point-source
 singularity at the origin.
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-47
+.. GENERATED FROM PYTHON SOURCE LINES 34-49
 
 .. code-block:: Python
 
@@ -87,14 +88,14 @@ singularity at the origin.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-52
+.. GENERATED FROM PYTHON SOURCE LINES 50-54
 
 Solve at several absorption levels
 ----------------------------------
 Keep reduced scattering fixed so that the change between curves is due to
 absorption. Sample an off-axis line so it does not pass through the source.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-89
+.. GENERATED FROM PYTHON SOURCE LINES 54-91
 
 .. code-block:: Python
 
@@ -142,13 +143,13 @@ absorption. Sample an off-axis line so it does not pass through the source.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-93
+.. GENERATED FROM PYTHON SOURCE LINES 92-95
 
 Compare the radial profiles
 ---------------------------
 The nearest plotted sample remains offset from the ideal point source.
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-115
+.. GENERATED FROM PYTHON SOURCE LINES 95-118
 
 .. code-block:: Python
 
@@ -177,6 +178,7 @@ The nearest plotted sample remains offset from the ideal point source.
 
 
 
+
 .. image-sg:: /gallery/fundamentals/images/sphx_glr_absorption_sweep_001.png
    :alt: Absorption controls attenuation in infinite-medium P1
    :srcset: /gallery/fundamentals/images/sphx_glr_absorption_sweep_001.png
@@ -186,10 +188,39 @@ The nearest plotted sample remains offset from the ideal point source.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 119-123
+
+Explore a three-dimensional fluence volume
+------------------------------------------
+This is the highest-absorption solution above. The mesh is an observation
+window within the infinite medium, not the boundary of a physical sample.
+
+.. GENERATED FROM PYTHON SOURCE LINES 123-130
+
+.. code-block:: Python
+
+
+    volume_figure = result.fluence.plot(
+        view="volume",
+        scale="log",
+        overlays=[source],
+        show=show_figures,
+    )
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/absorption_sweep-1.html" title="Fluence rate — volume (log scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.765 seconds)
+   **Total running time of the script:** (0 minutes 1.030 seconds)
 
 
 .. _sphx_glr_download_gallery_fundamentals_absorption_sweep.py:

@@ -8,6 +8,8 @@ an explicit cone. Collection uses a Lambertian escape assumption; it does not
 model angle-dependent Fresnel transmission or detector back-action.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/surface_detector.png'
+
 import os
 
 import numpy as np

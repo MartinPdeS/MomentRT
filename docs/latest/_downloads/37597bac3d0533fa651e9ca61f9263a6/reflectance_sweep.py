@@ -8,6 +8,8 @@ sample boundary. The parameter is not a Fresnel reflectance. Inputs are
 illustrative.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/reflectance_sweep.png'
+
 import os
 
 import matplotlib.pyplot as plt
@@ -154,3 +156,15 @@ for reflectance, result in zip(reflectance_values, results):
 
 if show_figures:
     plt.show()
+
+# %%
+# Inspect the intermediate-reflectance volume
+# -------------------------------------------
+# The middle solution uses R = 0.5 and retains the same source and geometry.
+
+volume_figure = results[1].fluence.plot(
+    view="volume",
+    scale="log",
+    overlays=[source],
+    show=show_figures,
+)

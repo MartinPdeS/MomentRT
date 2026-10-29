@@ -8,6 +8,8 @@ instrument geometry. Its recommendation is a numerical resolution check for
 these observables, not validation of P1 against radiative transfer.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/detector_convergence.png'
+
 import os
 
 import numpy as np

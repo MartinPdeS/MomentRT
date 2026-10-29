@@ -7,6 +7,8 @@ explicitly, not inferred from refractive index. All internal refractive indices
 are equal: refracting internal interfaces are outside this solver's scope.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/surface_diffusion.png'
+
 import os
 
 import matplotlib.pyplot as plt
@@ -150,11 +152,11 @@ print(f"Energy residual: {result.energy_balance['residual_power'].to('watt')}")
 # %%
 # Explore fluence in 3D
 # ---------------------
-# Inspect orthogonal slices. The logarithmic colors retain physical hover
+# Inspect the fluence volume. The logarithmic colors retain physical hover
 # values; neither negative values nor zeros are silently clipped.
 
 figure = result.fluence.plot(
-    view="slices",
+    view="volume",
     scale="log",
     show=show_figures,
 )
@@ -162,8 +164,8 @@ figure = result.fluence.plot(
 # %%
 # Save a representative cross-section
 # ------------------------------------
-# This static plane gives the gallery a compact preview; use the interactive
-# Plotly views to rotate the sample and inspect physical hover values.
+# This static plane complements the interactive volume above; use the Plotly
+# view to rotate the sample and inspect physical hover values.
 
 fluence_values = result.fluence.values.to("watt / meter**2").magnitude
 

@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Python class reference &#8212; MomentRT 0.3.0 documentation</title>
+    <title>Python class reference &#8212; MomentRT 0.4.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=f129cdf0"></script>
+    <script src="_static/documentation_options.js?v=1437fa6d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.3.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.4.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.3.0" />
+  <meta name="docsearch:version" content="0.4.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -1607,6 +1607,47 @@ balance, and composite fields in <code class="docutils literal notranslate"><spa
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="MomentRT.P3">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">P3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundaries</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/p3.html#P3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.P3" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Full steady-state three-dimensional P3 transport on a finite sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>boundaries</strong> (<em>mapping</em><em> of </em><em>str to RobinBoundary</em>) – Six matched-index faces with zero effective reflectance. Reflecting and
+index-mismatched boundaries are not implemented by this P3 solver.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Six even harmonics are solved with linear tetrahedral FEM; ten odd
+harmonics are reconstructed elementwise. Materials require anisotropy and
+use the Henyey–Greenstein phase function. Illumination is isotropic over
+the incoming hemisphere. P3 is an angular approximation and requires
+validation for the intended configuration.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.P3.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/p3.html#P3.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.P3.solve" title="Link to this definition">#</a></dt>
+<dd><p>Solve the P3 moment equations at the source wavelength.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>medium</strong> (<a class="reference internal" href="#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><em>StructuredMedium</em></a>) – Finite sample with explicitly configured material anisotropies.</p></li>
+<li><p><strong>source</strong> (<a class="reference internal" href="#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><em>UniformSurfaceSource</em></a><em> or </em><a class="reference internal" href="#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><em>SurfaceSource</em></a>) – Incoming isotropic diffuse source on a sample face.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a>) – Nodes spanning the sample.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Fluence, element-centered flux, detector boundary fields, and six
+named nodal even-moment coefficients.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#MomentRT.SimulationResult" title="MomentRT.SimulationResult">SimulationResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.TransportSolver">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">TransportSolver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/simulation.html#TransportSolver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.TransportSolver" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code></p>
@@ -2482,6 +2523,10 @@ Default is True.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SP3.solve"><code class="docutils literal notranslate"><span class="pre">SP3.solve()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.P3"><code class="docutils literal notranslate"><span class="pre">P3</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.P3.solve"><code class="docutils literal notranslate"><span class="pre">P3.solve()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TransportSolver"><code class="docutils literal notranslate"><span class="pre">TransportSolver</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TransportSolver.solve"><code class="docutils literal notranslate"><span class="pre">TransportSolver.solve()</span></code></a></li>
 </ul>
@@ -2548,7 +2593,7 @@ Default is True.</p></li>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.3.0/docs/source/python_api.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.4.0/docs/source/python_api.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

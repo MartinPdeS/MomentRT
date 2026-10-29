@@ -22,6 +22,23 @@ easy to inspect.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Solve the same seven-fiber contact geometry on two skin layers with three angular approximations. Full P3 retains the three-dimensional spherical-harmonic moments through order three. The supplied values are illustrative, and agreement between the models does not establish accuracy against radiative transfer.">
+
+.. only:: html
+
+  .. image:: /gallery/finite_samples/images/thumb/sphx_glr_compare_p3_thumb.png
+    :alt:
+
+  :doc:`/gallery/finite_samples/compare_p3`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compare full P3 with SP3 and P1</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Compare the coupled SP3 moment model and P1 diffusion in the same finite sample with matched-index boundary conditions and incoming diffuse light. This comparison illustrates model differences; it does not establish which model matches radiative transfer for a particular sensor.">
 
 .. only:: html
@@ -85,6 +102,23 @@ easy to inspect.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Changing the diffuse boundary reflectance</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Build a contact fiber bundle with six circular illumination footprints surrounding a central collection aperture. The epidermis and dermis optical properties and fiber dimensions are illustrative, not measured skin or probe parameters.">
+
+.. only:: html
+
+  .. image:: /gallery/finite_samples/images/thumb/sphx_glr_seven_fiber_skin_thumb.png
+    :alt:
+
+  :doc:`/gallery/finite_samples/seven_fiber_skin`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Seven-fiber bundle on a two-layer skin sample</div>
     </div>
 
 
@@ -217,10 +251,12 @@ easy to inspect.
 .. toctree::
    :hidden:
 
+   /gallery/finite_samples/compare_p3
    /gallery/finite_samples/compare_sp3
    /gallery/finite_samples/detector_convergence
    /gallery/finite_samples/mesh_refinement
    /gallery/finite_samples/reflectance_sweep
+   /gallery/finite_samples/seven_fiber_skin
    /gallery/finite_samples/sp3_layered_anisotropy
    /gallery/finite_samples/sp3_spectral_anisotropy
    /gallery/finite_samples/spectral_detectors

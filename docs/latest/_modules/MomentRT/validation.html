@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.validation &#8212; MomentRT 0.3.0 documentation</title>
+    <title>MomentRT.validation &#8212; MomentRT 0.4.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=f129cdf0"></script>
+    <script src="../../_static/documentation_options.js?v=1437fa6d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.3.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.4.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.3.0" />
+  <meta name="docsearch:version" content="0.4.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -618,13 +618,15 @@
 
     <span class="n">mesh</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">mesh</span>
 
-    <span class="n">finite</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">))</span>
+    <span class="n">finite</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">solver</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">)</span>
+    <span class="p">)</span>
 
     <span class="n">infinite</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">InfiniteDiffusion</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">finite</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">infinite</span><span class="p">:</span>
         <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="s2">"Preflight validation supports Diffusion, SP3, and InfiniteDiffusion solvers."</span>
+            <span class="s2">"Preflight validation supports Diffusion, SP3, P3, and InfiniteDiffusion solvers."</span>
         <span class="p">)</span>
 
     <span class="k">if</span> <span class="n">finite</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">):</span>
@@ -687,17 +689,19 @@
         <span class="k">if</span> <span class="n">medium</span><span class="o">.</span><span class="n">background</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Sample background is not configured."</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">)):</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">material</span> <span class="ow">in</span> <span class="n">materials</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">material</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">material</span><span class="o">.</span><span class="n">anisotropy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"SP3 requires anisotropy for material </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">."</span><span class="p">)</span>
+                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> requires anisotropy for material </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">."</span>
+                    <span class="p">)</span>
 
                 <span class="k">if</span> <span class="p">(</span>
                     <span class="n">material</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                     <span class="ow">and</span> <span class="n">material</span><span class="o">.</span><span class="n">phase_function</span> <span class="o">!=</span> <span class="s2">"henyey_greenstein"</span>
                 <span class="p">):</span>
                     <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                        <span class="sa">f</span><span class="s2">"SP3 does not support the phase function for material </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">."</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> does not support the phase function for material </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">."</span>
                     <span class="p">)</span>
 
         <span class="k">for</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="n">selected_wavelengths</span><span class="p">:</span>
@@ -713,7 +717,7 @@
                     <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">resolved</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">)</span>
 
                     <span class="k">if</span> <span class="p">(</span>
-                        <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">)</span>
+                        <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">))</span>
                         <span class="ow">and</span> <span class="n">resolved</span><span class="o">.</span><span class="n">anisotropy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
                     <span class="p">):</span>
                         <span class="n">MomentRT</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">_anisotropy_values</span><span class="p">(</span>
@@ -733,12 +737,17 @@
             <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
                 <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Material at </span><span class="si">{</span><span class="n">wavelength</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+        <span class="n">solver</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">)</span>
+    <span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">MomentRT</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">solver</span><span class="o">.</span><span class="n">boundaries</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">):</span>
                 <span class="n">MomentRT</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">solver</span><span class="o">.</span><span class="n">boundaries</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">):</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">solver</span><span class="o">.</span><span class="n">boundaries</span><span class="p">)</span>
         <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
             <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Boundaries: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 

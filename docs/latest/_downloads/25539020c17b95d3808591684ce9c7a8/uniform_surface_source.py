@@ -7,6 +7,8 @@ current, solve the P1 finite-element model, and inspect the three-dimensional
 fluence field. The input power is already coupled into the sample.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/uniform_surface_source.png'
+
 import os
 
 import matplotlib.pyplot as plt
@@ -102,7 +104,7 @@ figure = result.fluence.plot(
 # %%
 # Preview a central plane
 # -----------------------
-# A static section makes the penetration profile visible in the gallery card.
+# A static section complements the interactive volume with a penetration profile.
 
 fluence_values = result.fluence.values.to("watt / meter**2").magnitude
 

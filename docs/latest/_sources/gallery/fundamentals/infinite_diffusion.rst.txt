@@ -24,9 +24,10 @@ Infinite-medium diffusion
 All physical values are illustrative. The plotted box is an observation
 window, not a tissue boundary. Optical properties apply at 970 nm.
 
-.. GENERATED FROM PYTHON SOURCE LINES 8-26
+.. GENERATED FROM PYTHON SOURCE LINES 8-27
 
 .. code-block:: Python
+
 
 
     import os
@@ -53,13 +54,13 @@ window, not a tissue boundary. Optical properties apply at 970 nm.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-30
+.. GENERATED FROM PYTHON SOURCE LINES 29-32
 
 Optical properties
 ------------------
 Define illustrative absorption and reduced scattering at 970 nm.
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-41
+.. GENERATED FROM PYTHON SOURCE LINES 32-43
 
 .. code-block:: Python
 
@@ -81,14 +82,14 @@ Define illustrative absorption and reduced scattering at 970 nm.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-46
+.. GENERATED FROM PYTHON SOURCE LINES 44-48
 
 Observation window
 ------------------
 This grid samples an infinite medium; its edges are not physical boundaries.
 The even node counts avoid sampling the singular point source.
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-53
+.. GENERATED FROM PYTHON SOURCE LINES 48-55
 
 .. code-block:: Python
 
@@ -106,13 +107,13 @@ The even node counts avoid sampling the singular point source.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-57
+.. GENERATED FROM PYTHON SOURCE LINES 56-59
 
 Embedded illumination
 ---------------------
 Place an isotropic point source at the center of the observation window.
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-64
+.. GENERATED FROM PYTHON SOURCE LINES 59-66
 
 .. code-block:: Python
 
@@ -130,13 +131,13 @@ Place an isotropic point source at the center of the observation window.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 65-68
+.. GENERATED FROM PYTHON SOURCE LINES 67-70
 
 Configure transport
 -------------------
 Keep the numerical model separate from the physical configuration.
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-71
+.. GENERATED FROM PYTHON SOURCE LINES 70-73
 
 .. code-block:: Python
 
@@ -150,13 +151,13 @@ Keep the numerical model separate from the physical configuration.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 72-75
+.. GENERATED FROM PYTHON SOURCE LINES 74-77
 
 Compose the experiment
 ----------------------
 Combine the medium, illumination, observation mesh, and solver.
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-83
+.. GENERATED FROM PYTHON SOURCE LINES 77-85
 
 .. code-block:: Python
 
@@ -175,13 +176,13 @@ Combine the medium, illumination, observation mesh, and solver.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-87
+.. GENERATED FROM PYTHON SOURCE LINES 86-89
 
 Inspect the configuration
 -------------------------
 Rotate the three-dimensional observation window and locate the source.
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-92
+.. GENERATED FROM PYTHON SOURCE LINES 89-94
 
 .. code-block:: Python
 
@@ -201,13 +202,13 @@ Rotate the three-dimensional observation window and locate the source.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 93-96
+.. GENERATED FROM PYTHON SOURCE LINES 95-98
 
 Calculate fluence
 -----------------
 Solve the analytical infinite-medium diffusion model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-99
+.. GENERATED FROM PYTHON SOURCE LINES 98-101
 
 .. code-block:: Python
 
@@ -221,14 +222,14 @@ Solve the analytical infinite-medium diffusion model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-104
+.. GENERATED FROM PYTHON SOURCE LINES 102-106
 
 Inspect the fluence field
 -------------------------
 The volume uses a logarithmic color scale with physical values
 retained on hover. Values close to the source remain diffusion approximations.
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-111
+.. GENERATED FROM PYTHON SOURCE LINES 106-113
 
 .. code-block:: Python
 
@@ -250,14 +251,14 @@ retained on hover. Values close to the source remain diffusion approximations.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-116
+.. GENERATED FROM PYTHON SOURCE LINES 114-118
 
 Make a static central-plane overview
 -------------------------------------
 The gallery uses this Matplotlib image as a compact thumbnail. The live
 three-dimensional Plotly volume remains available in the example above.
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-152
+.. GENERATED FROM PYTHON SOURCE LINES 118-154
 
 .. code-block:: Python
 
@@ -312,7 +313,7 @@ three-dimensional Plotly volume remains available in the example above.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.389 seconds)
+   **Total running time of the script:** (0 minutes 0.270 seconds)
 
 
 .. _sphx_glr_download_gallery_fundamentals_infinite_diffusion.py:

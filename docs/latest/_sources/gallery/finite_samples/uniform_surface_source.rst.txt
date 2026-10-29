@@ -25,9 +25,10 @@ Illuminate an entire finite sample face with a uniform diffuse partial
 current, solve the P1 finite-element model, and inspect the three-dimensional
 fluence field. The input power is already coupled into the sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-28
+.. GENERATED FROM PYTHON SOURCE LINES 9-29
 
 .. code-block:: Python
+
 
 
     import os
@@ -55,13 +56,13 @@ fluence field. The input power is already coupled into the sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-32
+.. GENERATED FROM PYTHON SOURCE LINES 31-34
 
 Create the homogeneous slab
 ---------------------------
 Set all optical properties and dimensions explicitly for this wavelength.
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-48
+.. GENERATED FROM PYTHON SOURCE LINES 34-50
 
 .. code-block:: Python
 
@@ -88,14 +89,14 @@ Set all optical properties and dimensions explicitly for this wavelength.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-53
+.. GENERATED FROM PYTHON SOURCE LINES 51-55
 
 Configure the mesh, source, and six faces
 -----------------------------------------
 The incoming diffuse power is spread uniformly across the complete z_min
 face. All faces use the same explicit effective diffuse reflectance.
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-80
+.. GENERATED FROM PYTHON SOURCE LINES 55-82
 
 .. code-block:: Python
 
@@ -133,13 +134,13 @@ face. All faces use the same explicit effective diffuse reflectance.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-84
+.. GENERATED FROM PYTHON SOURCE LINES 83-86
 
 Solve and view the field
 ------------------------
 The 3D plot is made from the nodal finite-element fluence values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-102
+.. GENERATED FROM PYTHON SOURCE LINES 86-104
 
 .. code-block:: Python
 
@@ -172,13 +173,13 @@ The 3D plot is made from the nodal finite-element fluence values.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-106
+.. GENERATED FROM PYTHON SOURCE LINES 105-108
 
 Preview a central plane
 -----------------------
-A static section makes the penetration profile visible in the gallery card.
+A static section complements the interactive volume with a penetration profile.
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-146
+.. GENERATED FROM PYTHON SOURCE LINES 108-148
 
 .. code-block:: Python
 
@@ -245,7 +246,7 @@ A static section makes the penetration profile visible in the gallery card.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.174 seconds)
+   **Total running time of the script:** (0 minutes 0.238 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_uniform_surface_source.py:

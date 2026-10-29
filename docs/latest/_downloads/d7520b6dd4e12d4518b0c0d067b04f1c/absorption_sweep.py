@@ -7,6 +7,8 @@ absorption coefficients. Higher absorption shortens the distance over which
 fluence reaches a given value. Inputs are illustrative.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/absorption_sweep.png'
+
 import os
 
 import matplotlib.pyplot as plt
@@ -112,3 +114,16 @@ figure.tight_layout()
 
 if show_figures:
     plt.show()
+
+# %%
+# Explore a three-dimensional fluence volume
+# ------------------------------------------
+# This is the highest-absorption solution above. The mesh is an observation
+# window within the infinite medium, not the boundary of a physical sample.
+
+volume_figure = result.fluence.plot(
+    view="volume",
+    scale="log",
+    overlays=[source],
+    show=show_figures,
+)

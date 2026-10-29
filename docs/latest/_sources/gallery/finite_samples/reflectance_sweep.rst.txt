@@ -26,9 +26,10 @@ The centerline fluence increases as less diffuse current escapes through the
 sample boundary. The parameter is not a Fresnel reflectance. Inputs are
 illustrative.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-29
+.. GENERATED FROM PYTHON SOURCE LINES 10-30
 
 .. code-block:: Python
+
 
 
     import os
@@ -56,14 +57,14 @@ illustrative.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-34
+.. GENERATED FROM PYTHON SOURCE LINES 32-36
 
 Define a homogeneous finite sample
 ----------------------------------
 The sample is illuminated through its upper z face and uses a common
 refractive index throughout.
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-63
+.. GENERATED FROM PYTHON SOURCE LINES 36-65
 
 .. code-block:: Python
 
@@ -103,14 +104,14 @@ refractive index throughout.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-68
+.. GENERATED FROM PYTHON SOURCE LINES 66-70
 
 Reuse the same inputs while varying R
 -------------------------------------
 Compare a more open diffuse boundary with progressively stronger internal
 diffuse reflection.
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-116
+.. GENERATED FROM PYTHON SOURCE LINES 70-118
 
 .. code-block:: Python
 
@@ -169,13 +170,13 @@ diffuse reflection.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 117-120
+.. GENERATED FROM PYTHON SOURCE LINES 119-122
 
 Plot fluence through the center of the sample
 ---------------------------------------------
 Each curve shares the same material, source power, spot, and mesh.
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-139
+.. GENERATED FROM PYTHON SOURCE LINES 122-141
 
 .. code-block:: Python
 
@@ -210,13 +211,13 @@ Each curve shares the same material, source power, spot, and mesh.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-143
+.. GENERATED FROM PYTHON SOURCE LINES 142-145
 
 Check energy accounting for each case
 -------------------------------------
 The reported escape is transmitted power integrated over all sample faces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-157
+.. GENERATED FROM PYTHON SOURCE LINES 145-160
 
 .. code-block:: Python
 
@@ -238,6 +239,7 @@ The reported escape is transmitted power integrated over all sample faces.
 
 
 
+
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
@@ -249,10 +251,38 @@ The reported escape is transmitted power integrated over all sample faces.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 161-164
+
+Inspect the intermediate-reflectance volume
+-------------------------------------------
+The middle solution uses R = 0.5 and retains the same source and geometry.
+
+.. GENERATED FROM PYTHON SOURCE LINES 164-171
+
+.. code-block:: Python
+
+
+    volume_figure = results[1].fluence.plot(
+        view="volume",
+        scale="log",
+        overlays=[source],
+        show=show_figures,
+    )
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/reflectance_sweep-1.html" title="Fluence rate — volume (log scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.261 seconds)
+   **Total running time of the script:** (0 minutes 0.361 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_reflectance_sweep.py:

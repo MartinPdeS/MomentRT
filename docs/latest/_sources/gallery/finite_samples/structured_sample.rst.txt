@@ -26,9 +26,10 @@ and a box-shaped heterogeneity. Its materials are illustrative and assumed at
 one wavelength. Positive z points into the sample. Then illuminate the sample
 and inspect the finite-sample P1 fluence volume.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-30
+.. GENERATED FROM PYTHON SOURCE LINES 10-31
 
 .. code-block:: Python
+
 
 
     import os
@@ -57,13 +58,13 @@ and inspect the finite-sample P1 fluence volume.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-34
+.. GENERATED FROM PYTHON SOURCE LINES 33-36
 
 Optical materials
 -----------------
 Use explicit unit-bearing optical coefficients. These values are illustrative.
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-77
+.. GENERATED FROM PYTHON SOURCE LINES 36-79
 
 .. code-block:: Python
 
@@ -117,13 +118,13 @@ Use explicit unit-bearing optical coefficients. These values are illustrative.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-81
+.. GENERATED FROM PYTHON SOURCE LINES 80-83
 
 Finite sample extent
 --------------------
 Set the lower corner and full dimensions. Positive z points into the sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-91
+.. GENERATED FROM PYTHON SOURCE LINES 83-93
 
 .. code-block:: Python
 
@@ -144,14 +145,14 @@ Set the lower corner and full dimensions. Positive z points into the sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-96
+.. GENERATED FROM PYTHON SOURCE LINES 94-98
 
 Stack background layers
 -----------------------
 Each layer starts below the preceding one. The remaining depth keeps the
 explicitly configured background material.
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-109
+.. GENERATED FROM PYTHON SOURCE LINES 98-111
 
 .. code-block:: Python
 
@@ -175,14 +176,14 @@ explicitly configured background material.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-114
+.. GENERATED FROM PYTHON SOURCE LINES 112-116
 
 Add a deeper layer and three localized regions
 ----------------------------------------------
 The two spheres overlap layer interfaces. The box intersects the y=0 section.
 Batch insertion makes the region replacement order explicit.
 
-.. GENERATED FROM PYTHON SOURCE LINES 114-148
+.. GENERATED FROM PYTHON SOURCE LINES 116-150
 
 .. code-block:: Python
 
@@ -227,14 +228,14 @@ Batch insertion makes the region replacement order explicit.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-153
+.. GENERATED FROM PYTHON SOURCE LINES 151-155
 
 Explore the sample in 3D
 ------------------------
 Rotate the geometry and toggle regions in the legend. Transparent surfaces
 show primitive boundaries; the section below resolves overlaps.
 
-.. GENERATED FROM PYTHON SOURCE LINES 153-158
+.. GENERATED FROM PYTHON SOURCE LINES 155-160
 
 .. code-block:: Python
 
@@ -254,14 +255,14 @@ show primitive boundaries; the section below resolves overlaps.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-163
+.. GENERATED FROM PYTHON SOURCE LINES 161-165
 
 Configure a finite-sample solve
 ---------------------------------
 Use equal refractive indices across all regions because internal refraction
 at refractive-index jumps is outside the current continuous-fluence FEM model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 163-197
+.. GENERATED FROM PYTHON SOURCE LINES 165-199
 
 .. code-block:: Python
 
@@ -306,14 +307,14 @@ at refractive-index jumps is outside the current continuous-fluence FEM model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 198-202
+.. GENERATED FROM PYTHON SOURCE LINES 200-204
 
 Solve and inspect fluence in 3D
 ----------------------------------
 The logarithmic volume displays the nodal fluence rate throughout the sample.
 The mesh gives a useful visualization; refine it to assess interface accuracy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 202-212
+.. GENERATED FROM PYTHON SOURCE LINES 204-214
 
 .. code-block:: Python
 
@@ -338,14 +339,14 @@ The mesh gives a useful visualization; refine it to assess interface accuracy.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 213-217
+.. GENERATED FROM PYTHON SOURCE LINES 215-219
 
 Inspect the resolved cross-section
 ----------------------------------
 Unlike transparent construction surfaces, this map resolves material
 replacement. The y=0 plane intersects both spheres and the box.
 
-.. GENERATED FROM PYTHON SOURCE LINES 217-223
+.. GENERATED FROM PYTHON SOURCE LINES 219-225
 
 .. code-block:: Python
 
@@ -369,7 +370,7 @@ replacement. The y=0 plane intersects both spheres and the box.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.724 seconds)
+   **Total running time of the script:** (0 minutes 0.986 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_structured_sample.py:

@@ -26,9 +26,10 @@ aperture samples escaping power over a disk and accepts outgoing rays within
 an explicit cone. Collection uses a Lambertian escape assumption; it does not
 model angle-dependent Fresnel transmission or detector back-action.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-29
+.. GENERATED FROM PYTHON SOURCE LINES 10-30
 
 .. code-block:: Python
+
 
 
     import os
@@ -56,14 +57,14 @@ model angle-dependent Fresnel transmission or detector back-action.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-34
+.. GENERATED FROM PYTHON SOURCE LINES 32-36
 
 Define a monochromatic phantom and incoming diffuse spot
 ------------------------------------------------------------
 The optical coefficients are illustrative at 800 nm. Positive z points
 into the sample, so reflected light exits toward negative z.
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-70
+.. GENERATED FROM PYTHON SOURCE LINES 36-72
 
 .. code-block:: Python
 
@@ -110,7 +111,7 @@ into the sample, so reflected light exits toward negative z.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-77
+.. GENERATED FROM PYTHON SOURCE LINES 73-79
 
 Specify aperture geometry and angular acceptance
 ------------------------------------------------
@@ -119,7 +120,7 @@ The radius describes a disk in the face plane. acceptance_angle is the
 half-angle around that axis. A normal 30-degree cone collects one quarter
 of Lambertian escaping power from its sampled aperture.
 
-.. GENERATED FROM PYTHON SOURCE LINES 77-109
+.. GENERATED FROM PYTHON SOURCE LINES 79-111
 
 .. code-block:: Python
 
@@ -166,7 +167,7 @@ of Lambertian escaping power from its sampled aperture.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 110-117
+.. GENERATED FROM PYTHON SOURCE LINES 112-119
 
 Solve, inspect power, and check aperture sampling
 -------------------------------------------------
@@ -176,7 +177,7 @@ area should approach the geometric area under mesh refinement.
 The volume plot reuses the same source and detector geometry through overlays.
 Legend entries toggle each object; the opacity slider controls only fluence.
 
-.. GENERATED FROM PYTHON SOURCE LINES 117-137
+.. GENERATED FROM PYTHON SOURCE LINES 119-139
 
 .. code-block:: Python
 
@@ -225,7 +226,7 @@ Legend entries toggle each object; the opacity slider controls only fluence.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.140 seconds)
+   **Total running time of the script:** (0 minutes 0.180 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_surface_detector.py:

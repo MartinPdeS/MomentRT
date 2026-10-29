@@ -90,6 +90,10 @@ Meshes and transport
    :members:
    :member-order: bysource
 
+.. autoclass:: MomentRT.P3
+   :members:
+   :member-order: bysource
+
 .. autoclass:: MomentRT.TransportSolver
    :members:
    :member-order: bysource

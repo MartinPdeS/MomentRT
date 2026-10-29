@@ -27,7 +27,7 @@ how it affects the predicted field.
       :link: fundamentals/absorption_sweep
       :link-type: doc
       :img-top: fundamentals/images/thumb/sphx_glr_absorption_sweep_thumb.png
-      :img-alt: Radial fluence profiles for three absorption values
+      :img-alt: Three-dimensional infinite-medium fluence for the highest absorption
 
       Compare fluence profiles while holding reduced scattering and the source
       fixed.
@@ -46,7 +46,7 @@ resolution.
       :link: finite_samples/structured_sample
       :link-type: doc
       :img-top: finite_samples/images/thumb/sphx_glr_structured_sample_thumb.png
-      :img-alt: Layered MomentRT sample with overlapping spherical and box regions
+      :img-alt: Fluence volume in the layered sample with inclusions
 
       Combine three layers, two spheres, and a box, solve the illuminated
       sample, and explore its 3D fluence volume.
@@ -73,7 +73,7 @@ resolution.
       :link: finite_samples/reflectance_sweep
       :link-type: doc
       :img-top: finite_samples/images/thumb/sphx_glr_reflectance_sweep_thumb.png
-      :img-alt: Centerline fluence profiles under three effective reflectances
+      :img-alt: Fluence volume for an intermediate effective boundary reflectance
 
       Compare centerline fluence and escaping power as the effective diffuse
       reflectance changes.
@@ -82,7 +82,7 @@ resolution.
       :link: finite_samples/mesh_refinement
       :link-type: doc
       :img-top: finite_samples/images/thumb/sphx_glr_mesh_refinement_thumb.png
-      :img-alt: Fluence profiles computed on coarse, medium, and fine meshes
+      :img-alt: Finite-sample fluence volume on the finest mesh
 
       Compare a fixed sample and source over three grids to assess this
       observable's sensitivity to discretization.
@@ -91,7 +91,7 @@ resolution.
       :link: finite_samples/surface_detector
       :link-type: doc
       :img-top: finite_samples/images/thumb/sphx_glr_surface_detector_thumb.png
-      :img-alt: Contact detector apertures and a diffuse source on a finite sample
+      :img-alt: Finite-sample fluence volume with a source and detector apertures
 
       Define detector positions and acceptance cones, inspect the 3D system,
       and calculate reflection and transmission signals.
@@ -100,7 +100,7 @@ resolution.
       :link: finite_samples/spectral_detectors
       :link-type: doc
       :img-top: finite_samples/images/thumb/sphx_glr_spectral_detectors_thumb.png
-      :img-alt: Spectral phantom with fixed source and detector apertures
+      :img-alt: Monochromatic fluence volume from the spectral sensor sweep
 
       Interpolate two material spectra and plot collected power across five
       wavelengths with a fixed geometry.
@@ -112,6 +112,22 @@ resolution.
       :img-alt: SP3 fluence volume with contact source and detector
 
       Compare detector signals from the two moment models on the same sample.
+
+   .. grid-item-card:: Compare P1, SP3, and full P3
+      :link: finite_samples/compare_p3
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_compare_p3_thumb.png
+      :img-alt: Full P3 fluence with a source and contact detector
+
+      Solve the same sensor geometry with three angular approximations.
+
+   .. grid-item-card:: Seven-fiber skin probe
+      :link: finite_samples/seven_fiber_skin
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_seven_fiber_skin_thumb.png
+      :img-alt: Six illumination fibers and a central detector on layered skin
+
+      Explore a two-layer sample and a six-around-one contact fiber arrangement.
 
    .. grid-item-card:: Assign anisotropy by layer
       :link: finite_samples/sp3_layered_anisotropy
@@ -133,7 +149,7 @@ resolution.
       :link: finite_samples/detector_convergence
       :link-type: doc
       :img-top: finite_samples/images/thumb/sphx_glr_detector_convergence_thumb.png
-      :img-alt: Detector power and footprint areas across four meshes
+      :img-alt: Finest-mesh fluence volume with a source and detector
 
       Compare detector signals and sampled source and aperture areas, then
       inspect the finest fluence volume with instrument overlays.

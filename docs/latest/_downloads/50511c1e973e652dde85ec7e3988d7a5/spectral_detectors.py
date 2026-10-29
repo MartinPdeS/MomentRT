@@ -8,6 +8,8 @@ illustrative. The sweep runs independent monochromatic P1 solves; it is not
 a broadband source integration or a validated tissue spectrum.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/spectral_detectors.png'
+
 import os
 
 import numpy as np

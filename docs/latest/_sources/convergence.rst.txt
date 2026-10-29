@@ -12,7 +12,7 @@ fluence volume with instrument overlays.
 Running a study
 -----------------
 
-Configure a finite ``Diffusion`` or ``SP3`` simulation with at least one named detector,
+Configure a finite ``Diffusion``, ``SP3``, or ``P3`` simulation with at least one named detector,
 then supply meshes from coarse to fine:
 
 .. code-block:: python
@@ -166,6 +166,6 @@ outside the sample or unsupported index mismatch, propagate as configuration
 errors rather than being disguised as coarse-mesh failures.
 
 This study assesses resolution of the tested observables and footprints.
-It does not establish P1 or SP3 accuracy against RTE, validate material spectra or
+It does not establish P1, SP3, or P3 accuracy against RTE, validate material spectra or
 detector optics, or guarantee convergence of unrelated local field values.
 See :doc:`finite_element` and :doc:`detectors` for those distinctions.

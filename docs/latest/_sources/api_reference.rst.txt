@@ -79,6 +79,12 @@ requires an explicit Henyey–Greenstein ``anisotropy`` on every material. It su
 faces and zero-reflectance Robin faces with isotropic incoming diffuse
 radiance. See :doc:`sp3` for the equations and limitations.
 
+``P3`` solves the full three-dimensional angular expansion through degree
+three with six even-parity nodal fields. It requires material anisotropy,
+isotropic incoming diffuse sources, and zero-reflectance Robin conditions on
+all faces. Reflecting and refracting boundaries are not supported. See
+:doc:`p3` for the formulation and validation limits.
+
 ``RobinBoundary`` requires a plain ``effective_reflectance`` in [0, 1).
 ``ReflectingBoundary`` imposes zero normal current and does not accept
 illumination.

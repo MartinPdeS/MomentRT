@@ -1,3 +1,3 @@
 """Package version shared with release metadata."""
 
-__version__ = version = "0.2.1"
+__version__ = version = "0.3.0"

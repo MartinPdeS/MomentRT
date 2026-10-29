@@ -7,7 +7,7 @@ absorption coefficients. Higher absorption shortens the distance over which
 fluence reaches a given value. Inputs are illustrative.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/absorption_sweep.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/absorption_sweep.png'
 import os
 
 import matplotlib.pyplot as plt
@@ -128,3 +128,11 @@ volume_figure = result.fluence.plot(
     overlays=[source],
     show=show_figures,
 )
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = simulation.plot_system(show=False)

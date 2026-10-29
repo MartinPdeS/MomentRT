@@ -8,7 +8,7 @@ an explicit cone. Collection uses a Lambertian escape assumption; it does not
 model angle-dependent Fresnel transmission or detector back-action.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/surface_detector.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/surface_detector.png'
 import os
 
 import numpy as np
@@ -137,3 +137,11 @@ fluence_figure = result.fluence.plot(
     },
     show=show_figures,
 )
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = simulation.plot_system(show=False)

@@ -305,6 +305,116 @@ def _circle_points(
     return ring
 
 
+def _add_direction_arrow(
+    *,
+    figure: MomentRT.plotting.Figure,
+    start: NDArray[np.float64],
+    direction: NDArray[np.float64],
+    length: float,
+    color: str,
+    label: str,
+    legendgroup: str | None,
+) -> None:
+    """Add an arrow indicating a direction in display coordinates.
+
+    Parameters
+    ----------
+    figure : plotly.graph_objects.Figure
+        Figure to modify.
+    start : ndarray of float, shape (3,)
+        Arrow tail in display coordinates.
+    direction : ndarray of float, shape (3,)
+        Unit direction vector.
+    length : float
+        Arrow length in displayed coordinate units.
+    color : str
+        Plotly color for the arrow.
+    label : str
+        Description displayed on hover.
+    legendgroup : str or None
+        Group linking the arrow to its footprint.
+    """
+    go = require_plotly()
+
+    tip = start + length * direction
+
+    figure.add_trace(
+        go.Scatter3d(
+            x=[start[0], tip[0]],
+            y=[start[1], tip[1]],
+            z=[start[2], tip[2]],
+            mode="lines",
+            line={"color": color, "width": 5},
+            hovertemplate=f"{label}<extra></extra>",
+            legendgroup=legendgroup,
+            showlegend=False,
+        )
+    )
+
+    figure.add_trace(
+        go.Cone(
+            x=[tip[0]],
+            y=[tip[1]],
+            z=[tip[2]],
+            u=[direction[0]],
+            v=[direction[1]],
+            w=[direction[2]],
+            anchor="tip",
+            sizemode="absolute",
+            sizeref=0.3 * length,
+            colorscale=[[0, color], [1, color]],
+            showscale=False,
+            hovertemplate=f"{label}<extra></extra>",
+            legendgroup=legendgroup,
+            showlegend=False,
+        )
+    )
+
+
+def _add_footprint_fill(
+    *,
+    figure: MomentRT.plotting.Figure,
+    position: NDArray[np.float64],
+    ring: NDArray[np.float64],
+    color: str,
+    legendgroup: str | None,
+) -> None:
+    """Add a translucent circular footprint in display coordinates.
+
+    Parameters
+    ----------
+    figure : plotly.graph_objects.Figure
+        Figure to modify.
+    position : ndarray of float, shape (3,)
+        Disk center in displayed coordinate units.
+    ring : ndarray of float, shape (N, 3)
+        Closed circle in displayed coordinate units.
+    color : str
+        Plotly color for the footprint.
+    legendgroup : str or None
+        Group linking the fill to its outline.
+    """
+    go = require_plotly()
+
+    vertices = np.vstack([position, ring])
+
+    figure.add_trace(
+        go.Mesh3d(
+            x=vertices[:, 0],
+            y=vertices[:, 1],
+            z=vertices[:, 2],
+            i=np.zeros(len(ring) - 1, dtype=int),
+            j=np.arange(1, len(ring)),
+            k=np.arange(2, len(ring) + 1),
+            color=color,
+            opacity=0.35,
+            hoverinfo="skip",
+            legendgroup=legendgroup,
+            showlegend=False,
+        )
+    )
+
+
 def plot_field(
     *,
     field: MomentRT.fields.ScalarField,

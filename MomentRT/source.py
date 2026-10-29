@@ -218,17 +218,20 @@ class UniformSurfaceSource:
             )
         )
 
-        figure.add_trace(
-            go.Scatter3d(
-                x=[position[0]],
-                y=[position[1]],
-                z=[position[2]],
-                mode="markers",
-                marker={"color": "crimson", "size": 7},
-                name=context.get("name") or "Surface source",
-                legendgroup=context.get("legendgroup"),
-                showlegend=False,
-            )
+        direction = np.zeros(3)
+
+        direction[axis] = 1 if self.face.endswith("min") else -1
+
+        length = 0.25 * min((upper - lower)[axes])
+
+        MomentRT.plotting._add_direction_arrow(
+            figure=figure,
+            start=position - length * direction,
+            direction=direction,
+            length=length,
+            color="crimson",
+            label="Inward normal (diffuse illumination)",
+            legendgroup=context.get("legendgroup"),
         )
 
 
@@ -386,15 +389,26 @@ class SurfaceSource(UniformSurfaceSource):
             )
         )
 
-        figure.add_trace(
-            go.Scatter3d(
-                x=[position[0]],
-                y=[position[1]],
-                z=[position[2]],
-                mode="markers",
-                marker={"color": "crimson", "size": 7},
-                name=context.get("name") or "Surface source",
-                legendgroup=context.get("legendgroup"),
-                showlegend=False,
-            )
+        MomentRT.plotting._add_footprint_fill(
+            figure=figure,
+            position=position,
+            ring=ring,
+            color="crimson",
+            legendgroup=context.get("legendgroup"),
+        )
+
+        direction = np.zeros(3)
+
+        direction["xyz".index(self.face[0])] = 1 if self.face.endswith("min") else -1
+
+        length = 2 * self.radius.to(context["length_unit"]).magnitude
+
+        MomentRT.plotting._add_direction_arrow(
+            figure=figure,
+            start=position - length * direction,
+            direction=direction,
+            length=length,
+            color="crimson",
+            label="Inward normal (diffuse illumination)",
+            legendgroup=context.get("legendgroup"),
         )

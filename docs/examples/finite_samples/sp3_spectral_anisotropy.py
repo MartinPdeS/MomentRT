@@ -7,7 +7,7 @@ SP3 sensor at several wavelengths. The numbers are illustrative. Each result
 is monochromatic; the sweep is not a broadband integration.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/sp3_spectral_anisotropy.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/sp3_spectral_anisotropy.png'
 
 import os
 
@@ -140,3 +140,11 @@ fluence_figure = spectrum.results[2].fluence.plot(
     overlays={"Source": source, "Contact detector": detector},
     show=show_figures,
 )
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = simulation.plot_system(show=False)

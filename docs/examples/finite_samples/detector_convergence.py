@@ -8,7 +8,7 @@ instrument geometry. Its recommendation is a numerical resolution check for
 these observables, not validation of P1 against radiative transfer.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/detector_convergence.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/detector_convergence.png'
 import os
 
 import numpy as np
@@ -144,3 +144,11 @@ fluence_figure = finest_result.fluence.plot(
     overlays={"Illumination": source, "Reflection detector": detector},
     show=show_figures,
 )
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = simulation.plot_system(show=False)

@@ -7,7 +7,7 @@ current, solve the P1 finite-element model, and inspect the three-dimensional
 fluence field. The input power is already coupled into the sample.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/uniform_surface_source.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/uniform_surface_source.png'
 import os
 
 import matplotlib.pyplot as plt
@@ -146,3 +146,11 @@ if show_figures:
 print(f"Incoming power: {result.energy_balance['incoming_power']}")
 print(f"Absorbed power: {result.energy_balance['absorbed_power']}")
 print(f"Escaping power: {result.energy_balance['escaping_power']}")
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = simulation.plot_system(show=False)

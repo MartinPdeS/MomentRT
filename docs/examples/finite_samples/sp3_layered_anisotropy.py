@@ -7,7 +7,7 @@ with SP3. The values are illustrative, not measured skin properties. SP3
 uses the Henyey–Greenstein phase function for each material.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/sp3_layered_anisotropy.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/sp3_layered_anisotropy.png'
 
 import os
 
@@ -134,3 +134,11 @@ fluence_figure = result.fluence.plot(
     overlays={"Source": source, "Contact detector": detector},
     show=show_figures,
 )
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = simulation.plot_system(show=False)

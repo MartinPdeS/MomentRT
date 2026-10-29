@@ -69,24 +69,34 @@ def test_named_overlays_convert_units_and_preserve_field_and_opacity_control(fie
 
     assert max(figure.data[1].x) == pytest.approx(400)
 
-    np.testing.assert_allclose(figure.data[3].z, 4000)
+    np.testing.assert_allclose(figure.data[5].z, 4000)
 
-    assert max(figure.data[3].x) == pytest.approx(500)
+    assert max(figure.data[5].x) == pytest.approx(500)
 
     np.testing.assert_allclose(
-        np.array([figure.data[4].x[1], figure.data[4].y[1], figure.data[4].z[1]]),
+        np.array([figure.data[7].x[1], figure.data[7].y[1], figure.data[7].z[1]]),
         [1000 / np.sqrt(2), 0, 4000 + 1000 / np.sqrt(2)],
     )
 
+    np.testing.assert_allclose(figure.data[3].z, [-800, 0])
+
+    assert figure.data[2].type == "mesh3d"
+
+    assert figure.data[6].type == "mesh3d"
+
+    assert figure.data[4].type == "cone"
+
+    assert figure.data[8].type == "cone"
+
     assert figure.data[1].name == "Illumination"
 
-    assert figure.data[3].name == "Collection"
+    assert figure.data[5].name == "Collection"
 
     assert figure.data[1].legendgroup == figure.data[2].legendgroup
 
-    assert figure.data[3].legendgroup == figure.data[4].legendgroup
+    assert figure.data[5].legendgroup == figure.data[7].legendgroup
 
-    assert figure.data[1].legendgroup != figure.data[3].legendgroup
+    assert figure.data[1].legendgroup != figure.data[5].legendgroup
 
     assert figure.layout.legend.orientation == "h"
 

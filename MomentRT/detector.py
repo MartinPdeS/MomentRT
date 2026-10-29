@@ -281,20 +281,22 @@ class SurfaceDetector:
             )
         )
 
-        tip = position + 2 * radius * self.collection_axis
+        MomentRT.plotting._add_footprint_fill(
+            figure=figure,
+            position=position,
+            ring=ring,
+            color="royalblue",
+            legendgroup=context.get("legendgroup"),
+        )
 
-        figure.add_trace(
-            go.Scatter3d(
-                x=[position[0], tip[0]],
-                y=[position[1], tip[1]],
-                z=[position[2], tip[2]],
-                mode="lines+markers",
-                line={"color": "royalblue", "width": 3},
-                marker={"size": 3},
-                showlegend=False,
-                hovertemplate=f"Collection axis: {name}<extra></extra>",
-                legendgroup=context.get("legendgroup"),
-            )
+        MomentRT.plotting._add_direction_arrow(
+            figure=figure,
+            start=position,
+            direction=self.collection_axis,
+            length=2 * radius,
+            color="royalblue",
+            label=f"Collection axis: {name}",
+            legendgroup=context.get("legendgroup"),
         )
 
     def _validate_sample(

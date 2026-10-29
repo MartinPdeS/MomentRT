@@ -167,7 +167,7 @@ The displayed fluence combines both SP3 moments. Refine the mesh and
 compare against an independent transport reference before interpreting a
 particular source–detector configuration.
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-113
+.. GENERATED FROM PYTHON SOURCE LINES 106-115
 
 .. code-block:: Python
 
@@ -181,6 +181,8 @@ particular source–detector configuration.
 
 
 
+
+
 .. raw:: html
 
    <iframe src="../../_static/gallery/compare_sp3-1.html" title="Fluence rate — volume (linear scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
@@ -189,10 +191,33 @@ particular source–detector configuration.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 116-119
+
+Inspect the modeled geometry
+----------------------------
+This view shows the configured geometry and instrument footprints.
+
+.. GENERATED FROM PYTHON SOURCE LINES 119-121
+
+.. code-block:: Python
+
+
+    gallery_system_figure = sp3_simulation.plot_system(show=False)
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/compare_sp3-2.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.185 seconds)
+   **Total running time of the script:** (0 minutes 0.165 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_compare_sp3.py:

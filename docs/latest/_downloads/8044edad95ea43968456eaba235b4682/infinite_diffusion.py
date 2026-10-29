@@ -6,7 +6,7 @@ All physical values are illustrative. The plotted box is an observation
 window, not a tissue boundary. Optical properties apply at 970 nm.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/infinite_diffusion.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/infinite_diffusion.png'
 import os
 
 import matplotlib.pyplot as plt
@@ -152,3 +152,11 @@ figure_static.tight_layout()
 
 if show_figures:
     plt.show()
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = simulation.plot_system(show=False)

@@ -7,7 +7,7 @@ sample. Both have zero mean scattering cosine, but their second angular
 moments differ. All optical properties are illustrative.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/phase-functions-sample.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/phase_functions.png'
 
 import os
 

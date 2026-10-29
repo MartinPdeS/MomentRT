@@ -8,7 +8,7 @@ illustrative. The sweep runs independent monochromatic P1 solves; it is not
 a broadband source integration or a validated tissue spectrum.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/spectral_detectors.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/spectral_detectors.png'
 import os
 
 import numpy as np
@@ -172,3 +172,11 @@ fluence_figure = spectrum.results[2].fluence.plot(
     },
     show=show_figures,
 )
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = simulation.plot_system(show=False)

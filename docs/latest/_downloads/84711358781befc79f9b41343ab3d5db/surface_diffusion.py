@@ -7,7 +7,7 @@ explicitly, not inferred from refractive index. All internal refractive indices
 are equal: refracting internal interfaces are outside this solver's scope.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/surface_diffusion.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/surface_diffusion.png'
 import os
 
 import matplotlib.pyplot as plt
@@ -214,3 +214,11 @@ flux_figure = result.flux.plot(
 
 if show_figures:
     plt.show()
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = simulation.plot_system(show=False)

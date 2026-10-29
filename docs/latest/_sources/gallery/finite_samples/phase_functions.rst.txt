@@ -239,7 +239,7 @@ shows the sample, source, and detector rather than the phase-function result.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.182 seconds)
+   **Total running time of the script:** (0 minutes 0.141 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_phase_functions.py:

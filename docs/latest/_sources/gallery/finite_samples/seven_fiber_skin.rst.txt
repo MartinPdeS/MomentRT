@@ -304,7 +304,7 @@ model of guided fiber modes, numerical aperture coupling, or Fresnel loss.
  .. code-block:: none
 
     Total coupled illumination power: 1 mW
-    Central fiber collected power: 0.0048925418963712 mW
+    Central fiber collected power: 0.0048925418963712015 mW
     Collection sampled area: 0.5866666666666666 mm²
     Collection geometric area: 0.6361725123519332 mm²
 
@@ -321,7 +321,7 @@ circular areas. Refine the mesh and compare the combined detector signal
 before interpreting a result; the approximations themselves also require
 validation against a suitable radiative-transfer or Monte Carlo reference.
 
-.. GENERATED FROM PYTHON SOURCE LINES 204-219
+.. GENERATED FROM PYTHON SOURCE LINES 204-221
 
 .. code-block:: Python
 
@@ -343,6 +343,8 @@ validation against a suitable radiative-transfer or Monte Carlo reference.
 
 
 
+
+
 .. raw:: html
 
    <iframe src="../../_static/gallery/seven_fiber_skin-2.html" title="Combined SP3 fluence rate — volume (linear scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
@@ -351,10 +353,33 @@ validation against a suitable radiative-transfer or Monte Carlo reference.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 222-225
+
+Inspect the modeled geometry
+----------------------------
+This view shows the configured geometry and instrument footprints.
+
+.. GENERATED FROM PYTHON SOURCE LINES 225-227
+
+.. code-block:: Python
+
+
+    gallery_system_figure = sample.plot(overlays=overlays, show=False)
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/seven_fiber_skin-3.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.617 seconds)
+   **Total running time of the script:** (0 minutes 3.681 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_seven_fiber_skin.py:

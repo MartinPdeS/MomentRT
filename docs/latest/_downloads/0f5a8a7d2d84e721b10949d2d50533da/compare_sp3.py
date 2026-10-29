@@ -8,7 +8,7 @@ This comparison illustrates model differences; it does not establish which
 model matches radiative transfer for a particular sensor.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/sp3-fluence.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/compare_sp3.png'
 
 import os
 
@@ -110,3 +110,11 @@ figure = sp3_result.fluence.plot(
     overlays=[source, detector],
     show=show_figures,
 )
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = sp3_simulation.plot_system(show=False)

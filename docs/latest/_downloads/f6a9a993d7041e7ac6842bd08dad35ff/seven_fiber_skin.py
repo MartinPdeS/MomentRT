@@ -8,7 +8,7 @@ properties and fiber dimensions are illustrative, not measured skin or probe
 parameters.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/seven-fiber-skin.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/seven_fiber_skin.png'
 
 import os
 
@@ -216,3 +216,11 @@ fluence_figure = combined_fluence.plot(
     overlays=overlays,
     show=show_figures,
 )
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = sample.plot(overlays=overlays, show=False)

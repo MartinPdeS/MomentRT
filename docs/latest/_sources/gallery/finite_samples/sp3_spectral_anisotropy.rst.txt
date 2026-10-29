@@ -217,7 +217,7 @@ The 800 nm solution uses the third entry in the sweep. The detector uses a
 separate Lambertian angular-acceptance approximation. Check mesh convergence
 and compare with a transport reference for the intended application.
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-143
+.. GENERATED FROM PYTHON SOURCE LINES 136-145
 
 .. code-block:: Python
 
@@ -231,6 +231,8 @@ and compare with a transport reference for the intended application.
 
 
 
+
+
 .. raw:: html
 
    <iframe src="../../_static/gallery/sp3_spectral_anisotropy-2.html" title="Fluence rate — volume (linear scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
@@ -239,10 +241,33 @@ and compare with a transport reference for the intended application.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 146-149
+
+Inspect the modeled geometry
+----------------------------
+This view shows the configured geometry and instrument footprints.
+
+.. GENERATED FROM PYTHON SOURCE LINES 149-151
+
+.. code-block:: Python
+
+
+    gallery_system_figure = simulation.plot_system(show=False)
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/sp3_spectral_anisotropy-3.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.892 seconds)
+   **Total running time of the script:** (0 minutes 0.730 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_sp3_spectral_anisotropy.py:

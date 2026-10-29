@@ -9,7 +9,7 @@ order three. The supplied values are illustrative, and agreement between the
 models does not establish accuracy against radiative transfer.
 """
 
-# sphinx_gallery_thumbnail_path = '_static/images/p3-fluence.png'
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/compare_p3.png'
 
 import os
 
@@ -186,3 +186,11 @@ fluence_figure = combined_fields["P3"].plot(
     overlays=overlays,
     show=show_figures,
 )
+
+
+# %%
+# Inspect the modeled geometry
+# ----------------------------
+# This view shows the configured geometry and instrument footprints.
+
+gallery_system_figure = sample.plot(overlays=overlays, show=False)

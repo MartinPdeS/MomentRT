@@ -291,8 +291,8 @@ numerical accounting, not the accuracy of diffusion against radiative transfer.
 
     Incoming power: 1 milliwatt
     Absorbed power: 0.2423444860639861 milliwatt
-    Escaping power: 0.7576555139360296 milliwatt
-    Energy residual: -1.5612511283791264e-17 watt
+    Escaping power: 0.7576555139360297 milliwatt
+    Energy residual: -1.5720931501039814e-17 watt
 
 
 
@@ -390,7 +390,7 @@ Inspect diffusive flux
 ----------------------
 Arrows show element-centered flux without smoothing across interfaces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 210-217
+.. GENERATED FROM PYTHON SOURCE LINES 210-219
 
 .. code-block:: Python
 
@@ -404,6 +404,8 @@ Arrows show element-centered flux without smoothing across interfaces.
 
 
 
+
+
 .. raw:: html
 
    <iframe src="../../_static/gallery/surface_diffusion-3.html" title="Diffusive flux (element centers; relative arrow lengths)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
@@ -412,10 +414,33 @@ Arrows show element-centered flux without smoothing across interfaces.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 220-223
+
+Inspect the modeled geometry
+----------------------------
+This view shows the configured geometry and instrument footprints.
+
+.. GENERATED FROM PYTHON SOURCE LINES 223-225
+
+.. code-block:: Python
+
+
+    gallery_system_figure = simulation.plot_system(show=False)
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/surface_diffusion-4.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.108 seconds)
+   **Total running time of the script:** (0 minutes 0.880 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_surface_diffusion.py:

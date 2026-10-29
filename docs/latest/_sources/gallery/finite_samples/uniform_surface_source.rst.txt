@@ -180,7 +180,7 @@ Preview a central plane
 -----------------------
 A static section complements the interactive volume with a penetration profile.
 
-.. GENERATED FROM PYTHON SOURCE LINES 109-149
+.. GENERATED FROM PYTHON SOURCE LINES 109-151
 
 .. code-block:: Python
 
@@ -227,6 +227,8 @@ A static section complements the interactive volume with a penetration profile.
 
 
 
+
+
 .. image-sg:: /gallery/finite_samples/images/sphx_glr_uniform_surface_source_001.png
    :alt: log10 fluence from uniform face illumination
    :srcset: /gallery/finite_samples/images/sphx_glr_uniform_surface_source_001.png
@@ -238,8 +240,31 @@ A static section complements the interactive volume with a penetration profile.
  .. code-block:: none
 
     Incoming power: 1 milliwatt
-    Absorbed power: 0.00020454076689282107 watt
-    Escaping power: 0.000795459233107183 watt
+    Absorbed power: 0.00020454076689282105 watt
+    Escaping power: 0.0007954592331071827 watt
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 152-155
+
+Inspect the modeled geometry
+----------------------------
+This view shows the configured geometry and instrument footprints.
+
+.. GENERATED FROM PYTHON SOURCE LINES 155-157
+
+.. code-block:: Python
+
+
+    gallery_system_figure = simulation.plot_system(show=False)
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/uniform_surface_source-2.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
 
 
 
@@ -247,7 +272,7 @@ A static section complements the interactive volume with a penetration profile.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.233 seconds)
+   **Total running time of the script:** (0 minutes 0.186 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_uniform_surface_source.py:

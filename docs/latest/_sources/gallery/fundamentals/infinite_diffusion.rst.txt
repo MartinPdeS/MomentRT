@@ -259,7 +259,7 @@ Make a static central-plane overview
 The gallery uses this Matplotlib image as a compact thumbnail. The live
 three-dimensional Plotly volume remains available in the example above.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-155
+.. GENERATED FROM PYTHON SOURCE LINES 119-157
 
 .. code-block:: Python
 
@@ -302,6 +302,8 @@ three-dimensional Plotly volume remains available in the example above.
 
 
 
+
+
 .. image-sg:: /gallery/fundamentals/images/sphx_glr_infinite_diffusion_001.png
    :alt: log10 fluence on a central plane
    :srcset: /gallery/fundamentals/images/sphx_glr_infinite_diffusion_001.png
@@ -311,10 +313,33 @@ three-dimensional Plotly volume remains available in the example above.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 158-161
+
+Inspect the modeled geometry
+----------------------------
+This view shows the configured geometry and instrument footprints.
+
+.. GENERATED FROM PYTHON SOURCE LINES 161-163
+
+.. code-block:: Python
+
+
+    gallery_system_figure = simulation.plot_system(show=False)
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/infinite_diffusion-3.html" title="Interactive view" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.262 seconds)
+   **Total running time of the script:** (0 minutes 0.208 seconds)
 
 
 .. _sphx_glr_download_gallery_fundamentals_infinite_diffusion.py:

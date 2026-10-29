@@ -353,7 +353,7 @@ Inspect the resolved cross-section
 Unlike transparent construction surfaces, this map resolves material
 replacement. The y=0 plane intersects both spheres and the box.
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-232
+.. GENERATED FROM PYTHON SOURCE LINES 226-234
 
 .. code-block:: Python
 
@@ -366,6 +366,8 @@ replacement. The y=0 plane intersects both spheres and the box.
 
 
 
+
+
 .. raw:: html
 
    <iframe src="../../_static/gallery/structured_sample-3.html" title="material — y = 0 mm" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
@@ -374,10 +376,33 @@ replacement. The y=0 plane intersects both spheres and the box.
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 235-238
+
+Inspect the modeled geometry
+----------------------------
+This view shows the configured geometry and instrument footprints.
+
+.. GENERATED FROM PYTHON SOURCE LINES 238-240
+
+.. code-block:: Python
+
+
+    gallery_system_figure = simulation.plot_system(show=False)
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/structured_sample-4.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
+
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.871 seconds)
+   **Total running time of the script:** (0 minutes 0.697 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_structured_sample.py:

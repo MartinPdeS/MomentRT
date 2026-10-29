@@ -1,9 +1,14 @@
 """Optional interactive Plotly figures for geometry and physical fields."""
 
-from collections.abc import Mapping
+from __future__ import annotations
+
+from collections.abc import Iterable, Mapping
 from html import escape
+from types import ModuleType
+from typing import TYPE_CHECKING, Any, Literal, cast
 
 import numpy as np
+from numpy.typing import NDArray
 
 import MomentRT
 
@@ -12,24 +17,60 @@ try:
     from plotly.colors import qualitative
     from plotly.subplots import make_subplots
 except ImportError:
-    go = None
+    go = None  # type: ignore[assignment]
     qualitative = None
     make_subplots = None
 
 try:
     import pyvista as pv
 except ImportError:
-    pv = None
+    pv = None  # type: ignore[assignment]
 
 
-def require_plotly():
+if TYPE_CHECKING:
+    from plotly.graph_objects import Figure as Figure
+    from plotly.graph_objects import Mesh3d as Mesh3d
+    from pyvista import ImageData as ImageData
+else:
+    Figure = None if go is None else go.Figure
+    Mesh3d = None if go is None else go.Mesh3d
+    ImageData = None if pv is None else pv.ImageData
+
+
+def require_plotly() -> ModuleType:
+    """Require the optional Plotly backend without importing it inside a function.
+
+    Returns
+    -------
+    module
+        Plotly graph_objects module when the visualization extra is installed.
+
+    Raises
+    ------
+    ImportError
+        If Plotly is unavailable; install MomentRT[viz].
+    """
+
     if go is None:
         raise ImportError('Install 3D support with: pip install "MomentRT[viz]"')
 
     return go
 
 
-def require_pyvista():
+def require_pyvista() -> ModuleType:
+    """Require the optional PyVista backend without importing it inside a function.
+
+    Returns
+    -------
+    module
+        PyVista module when the VTK extra is installed.
+
+    Raises
+    ------
+    ImportError
+        If PyVista is unavailable; install MomentRT[vtk].
+    """
+
     if pv is None:
         raise ImportError(
             'Install VTK export support with: pip install "MomentRT[vtk]"'
@@ -38,7 +79,20 @@ def require_pyvista():
     return pv
 
 
-def make_figure(*, length_unit):
+def make_figure(*, length_unit: str) -> MomentRT.plotting.Figure:
+    """Create a 3D figure with labeled Cartesian coordinates.
+
+    Parameters
+    ----------
+    length_unit : str
+        Length unit used for displayed or exported coordinates.
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        Empty three-dimensional figure with labeled Cartesian axes.
+    """
+
     go = require_plotly()
 
     figure = go.Figure()
@@ -57,7 +111,32 @@ def make_figure(*, length_unit):
     return figure
 
 
-def plot_medium(*, medium, mesh, length_unit, show):
+def plot_medium(
+    *,
+    medium: MomentRT.medium.HomogeneousMedium | MomentRT.medium.StructuredMedium,
+    mesh: MomentRT.mesh.CartesianMesh,
+    length_unit: str,
+    show: bool,
+) -> MomentRT.plotting.Figure:
+    """Plot a homogeneous medium within its finite observation window.
+
+    Parameters
+    ----------
+    medium : HomogeneousMedium or StructuredMedium
+        Physical material configuration, compatible with the chosen solver.
+    mesh : CartesianMesh
+        Cartesian nodes used for sampling or finite-element discretization.
+    length_unit : str
+        Length unit used for displayed or exported coordinates.
+    show : bool
+        Whether to display the figure immediately. The figure is always returned.
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        Homogeneous material shown within the observation window.
+    """
+
     go = require_plotly()
 
     points = mesh.points.to(length_unit).magnitude
@@ -137,8 +216,24 @@ def plot_medium(*, medium, mesh, length_unit, show):
     return figure
 
 
-def _add_overlays(*, figure, overlays, context):
-    """Add each object's spatial traces using a shared plotting context."""
+def _add_overlays(
+    *,
+    figure: MomentRT.plotting.Figure,
+    overlays: Iterable[object] | Mapping[str, object] | None,
+    context: Mapping[str, Any],
+) -> None:
+    """Add each object's spatial traces using a shared plotting context.
+
+    Parameters
+    ----------
+    figure : plotly.graph_objects.Figure
+        Figure to modify in place.
+    overlays : iterable or mapping of str to object, or None
+        Sources or detectors implementing the plotting hook. Mapping keys
+        become legend labels. Full-face sources require finite-sample bounds.
+    context : mapping of str to object
+        Coordinate units, legend labels, and physical sample bounds.
+    """
 
     if overlays is None:
         return
@@ -178,8 +273,25 @@ def _add_overlays(*, figure, overlays, context):
         )
 
 
-def _circle_points(*, position, radius, face):
-    """Build a display-coordinate circle in an axis-aligned face plane."""
+def _circle_points(
+    *, position: NDArray[np.float64], radius: float, face: MomentRT.boundary.Face
+) -> NDArray[np.float64]:
+    """Build a display-coordinate circle in an axis-aligned face plane.
+
+    Parameters
+    ----------
+    position : ndarray of float, shape (3,)
+        Circle center in displayed coordinate units.
+    radius : float
+        Circle radius in displayed coordinate units.
+    face : {'x_min', 'x_max', 'y_min', 'y_max', 'z_min', 'z_max'}
+        Axis-aligned sample face; min and max refer to outward boundaries.
+
+    Returns
+    -------
+    ndarray of float, shape (65, 3)
+        Closed ring coordinates in the supplied display units.
+    """
     angle = np.linspace(0, 2 * np.pi, 65)
 
     ring = np.repeat(position[None, :], len(angle), axis=0).astype(float)
@@ -194,8 +306,47 @@ def _circle_points(*, position, radius, face):
 
 
 def plot_field(
-    *, field, view, scale, length_unit, opacity, isosurface_count, show, overlays=None
-):
+    *,
+    field: MomentRT.fields.ScalarField,
+    view: Literal["volume", "isosurfaces", "slices"],
+    scale: Literal["linear", "log"],
+    length_unit: str,
+    opacity: float | None,
+    isosurface_count: int | None,
+    show: bool,
+    overlays: Iterable[object] | Mapping[str, object] | None = None,
+) -> MomentRT.plotting.Figure:
+    """Visualize a scalar field with physical hover values and spatial overlays.
+
+    Parameters
+    ----------
+    field : ScalarField
+        Nodal unit-bearing scalar values on a Cartesian mesh.
+    view : {'volume', 'isosurfaces', 'slices'}
+        Three-dimensional scalar-field rendering mode.
+    scale : {'linear', 'log'}
+        Display scaling. Logarithmic scaling requires strictly positive values.
+    length_unit : str
+        Length unit used for displayed or exported coordinates.
+    opacity : float or None
+        Initial surface opacity in [0, 1]. None selects the rendering default.
+        Volume and isosurface views expose an interactive opacity slider.
+    isosurface_count : int or None
+        Positive number of iso levels for volume or isosurface rendering.
+        None uses 8 for volume and 6 for isosurfaces; invalid for slices.
+    show : bool
+        Whether to display the figure immediately. The figure is always returned.
+    overlays : iterable or mapping of str to object, or None, optional
+        Sources or detectors implementing the plotting hook. Mapping keys
+        become legend labels. Full-face sources require finite-sample bounds.
+        Default is None.
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        Scalar-field visualization with physical hover values and optional overlays.
+    """
+
     if view not in {"slices", "volume", "isosurfaces"}:
         raise ValueError("view must be slices, volume, or isosurfaces.")
 
@@ -240,7 +391,9 @@ def plot_field(
     if minimum == maximum:
         maximum = minimum + max(abs(minimum), 1) * 1e-6
 
-    colorbar = {"title": {"text": f"{field.name} [{field.values.units:~}]"}}
+    colorbar: dict[str, Any] = {
+        "title": {"text": f"{field.name} [{field.values.units:~}]"}
+    }
 
     if scale == "log":
         ticks = np.linspace(minimum, maximum, 5)
@@ -260,23 +413,27 @@ def plot_field(
 
     if view == "slices":
         for axis in range(3):
-            selection = [slice(None)] * 3
+            selection: list[slice | int] = [slice(None)] * 3
 
             # Use an actual central grid plane; do not imply interpolation.
             selection[axis] = field.mesh.shape[axis] // 2
 
-            selection = tuple(selection)
+            plane_selection = tuple(selection)
 
-            plane = points[selection]
+            plane = points[plane_selection]
 
-            options = {**common, "customdata": raw[selection], "showscale": axis == 0}
+            options = {
+                **common,
+                "customdata": raw[plane_selection],
+                "showscale": axis == 0,
+            }
 
             figure.add_trace(
                 go.Surface(
                     x=plane[..., 0],
                     y=plane[..., 1],
                     z=plane[..., 2],
-                    surfacecolor=displayed[selection],
+                    surfacecolor=displayed[plane_selection],
                     cmin=minimum,
                     cmax=maximum,
                     name=f"{'xyz'[axis]} slice",
@@ -386,7 +543,38 @@ def plot_field(
     return figure
 
 
-def _box_surface(*, origin, size, name, color, opacity, hover):
+def _box_surface(
+    *,
+    origin: NDArray[np.float64],
+    size: NDArray[np.float64],
+    name: str,
+    color: str,
+    opacity: float,
+    hover: str,
+) -> MomentRT.plotting.Mesh3d:
+    """Create a triangulated axis-aligned box surface.
+
+    Parameters
+    ----------
+    origin : ndarray of float, shape (3,)
+        Box lower corner in displayed coordinate units.
+    size : ndarray of float, shape (3,)
+        Box full extents in displayed coordinate units.
+    name : str
+        Nonempty name identifying this object.
+    color : str
+        Plotly color for the construction surface.
+    opacity : float
+        Construction-surface opacity in [0, 1].
+    hover : str
+        Hover text for the construction surface.
+
+    Returns
+    -------
+    plotly.graph_objects.Mesh3d
+        Triangulated box construction trace.
+    """
+
     go = require_plotly()
 
     vertices = np.array(
@@ -430,8 +618,31 @@ def _box_surface(*, origin, size, name, color, opacity, hover):
     )
 
 
-def plot_sample(*, sample, length_unit, opacity, show):
-    """Render construction surfaces with stable colors and material hover labels."""
+def plot_sample(
+    *,
+    sample: MomentRT.medium.StructuredMedium,
+    length_unit: str,
+    opacity: float,
+    show: bool,
+) -> MomentRT.plotting.Figure:
+    """Render construction surfaces with stable colors and material hover labels.
+
+    Parameters
+    ----------
+    sample : StructuredMedium
+        Finite rectangular sample with an explicit background.
+    length_unit : str
+        Length unit used for displayed or exported coordinates.
+    opacity : float
+        Construction-surface opacity in [0, 1].
+    show : bool
+        Whether to display the figure immediately. The figure is always returned.
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        Transparent primitive construction surfaces; overlaps are not CSG subtraction.
+    """
 
     if not np.isscalar(opacity) or not np.isfinite(opacity) or not 0 <= opacity <= 1:
         raise ValueError("opacity must be between zero and one.")
@@ -447,7 +658,11 @@ def plot_sample(*, sample, length_unit, opacity, show):
     colors = ["#E5AD79", "#CB7582", "#EDCC71", "#65B3AD", "#7C93C3"]
 
     for region_number, region in enumerate((None, *sample.structures)):
-        material = sample.background if region is None else region.material
+        material = (
+            cast(MomentRT.material.Material, sample.background)
+            if region is None
+            else region.material
+        )
 
         name = "Background / sample extent" if region is None else region.name
 
@@ -525,8 +740,39 @@ def plot_sample(*, sample, length_unit, opacity, show):
     return figure
 
 
-def plot_section(*, section, quantity, length_unit, value_unit, scale, show):
-    """Plot resolved material or property samples with physical hover values."""
+def plot_section(
+    *,
+    section: MomentRT.sections.SampleSection,
+    quantity: Literal[
+        "material", "absorption", "reduced_scattering", "refractive_index"
+    ],
+    length_unit: str,
+    value_unit: str | None,
+    scale: Literal["linear", "log"],
+    show: bool,
+) -> MomentRT.plotting.Figure:
+    """Plot resolved material or property samples with physical hover values.
+
+    Parameters
+    ----------
+    section : SampleSection
+        Resolved cell-center material and optical-property map.
+    quantity : {'material', 'absorption', 'reduced_scattering', 'refractive_index'}
+        Material labels or optical property to display.
+    length_unit : str
+        Length unit used for displayed or exported coordinates.
+    value_unit : str or None
+        Unit for displayed optical-property values; None uses stored SI units.
+    scale : {'linear', 'log'}
+        Display scaling. Logarithmic scaling requires strictly positive values.
+    show : bool
+        Whether to display the figure immediately. The figure is always returned.
+
+    Returns
+    -------
+    plotly.graph_objects.Figure
+        Resolved cross-section figure with depth increasing downwards.
+    """
 
     if quantity not in ("material", *section.fields):
         raise ValueError(
@@ -539,6 +785,8 @@ def plot_section(*, section, quantity, length_unit, value_unit, scale, show):
     go = require_plotly()
 
     names = np.asarray([escape(name) for name in section.names])[section.labels]
+
+    colorscale: str | list[list[object]]
 
     if quantity == "material":
         if scale != "linear" or value_unit is not None:

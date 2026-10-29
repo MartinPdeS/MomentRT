@@ -1,15 +1,31 @@
 """Linear tetrahedral FEM kernels on a conforming Cartesian subdivision."""
 
+from __future__ import annotations
+
 from itertools import permutations
+from typing import cast
 
 import numpy as np
+from numpy.typing import NDArray
 from scipy import sparse
 
 import MomentRT
 
 
-def tetrahedralize(*, mesh):
-    """Split each voxel into six tetrahedra sharing its lower/upper diagonal."""
+def tetrahedralize(*, mesh: MomentRT.mesh.CartesianMesh) -> NDArray[np.int64]:
+    """Split each voxel into six tetrahedra sharing its lower/upper diagonal.
+
+    Parameters
+    ----------
+    mesh : CartesianMesh
+        Cartesian nodes used for sampling or finite-element discretization.
+
+    Returns
+    -------
+    ndarray of int, shape (T, 4)
+        Tetrahedral connectivity into mesh.points reshaped to (N, 3),
+        with T = 6 * (nx - 1) * (ny - 1) * (nz - 1).
+    """
     shape = np.asarray(mesh.shape)
 
     cells = np.stack(
@@ -33,7 +49,26 @@ def tetrahedralize(*, mesh):
     return np.concatenate(tetrahedra)
 
 
-def element_geometry(*, points, tetrahedra):
+def element_geometry(
+    *, points: NDArray[np.float64], tetrahedra: NDArray[np.int64]
+) -> tuple[NDArray[np.float64], NDArray[np.float64]]:
+    """Calculate tetrahedral volumes and linear shape-function gradients.
+
+    Parameters
+    ----------
+    points : ndarray of float, shape (N, 3)
+        Flattened nodal coordinates in meters; this numerical kernel
+        accepts SI magnitudes rather than quantities.
+    tetrahedra : ndarray of int, shape (T, 4)
+        Tetrahedral node indices into the flattened Cartesian point array.
+
+    Returns
+    -------
+    tuple of ndarray
+        Element volumes in cubic meters, shape (T,), and linear basis
+        gradients in inverse meters, shape (T, 4, 3).
+    """
+
     vertices = points[tetrahedra]
 
     edges = vertices[:, 1:] - vertices[:, :1]
@@ -49,7 +84,24 @@ def element_geometry(*, points, tetrahedra):
     return volumes, gradients
 
 
-def boundary_triangles(*, tetrahedra, shape):
+def boundary_triangles(
+    *, tetrahedra: NDArray[np.int64], shape: tuple[int, int, int]
+) -> dict[MomentRT.boundary.Face, NDArray[np.int64]]:
+    """Extract exterior tetrahedron faces and group them by sample boundary.
+
+    Parameters
+    ----------
+    tetrahedra : ndarray of int, shape (T, 4)
+        Tetrahedral node indices into the flattened Cartesian point array.
+    shape : tuple of int
+        Node counts (nx, ny, nz), each at least two.
+
+    Returns
+    -------
+    dict of str to ndarray
+        Exterior triangle connectivity, shape (F, 3) per sample face.
+    """
+
     candidates = np.concatenate(
         [tetrahedra[:, face] for face in ([0, 1, 2], [0, 1, 3], [0, 2, 3], [1, 2, 3])]
     )
@@ -60,19 +112,39 @@ def boundary_triangles(*, tetrahedra, shape):
 
     indices = np.stack(np.unravel_index(triangles, shape), axis=-1)
 
-    faces = {}
+    faces: dict[MomentRT.boundary.Face, NDArray[np.int64]] = {}
 
     for axis, name in enumerate("xyz"):
-        faces[f"{name}_min"] = triangles[np.all(indices[..., axis] == 0, axis=1)]
+        faces[cast(MomentRT.boundary.Face, f"{name}_min")] = triangles[
+            np.all(indices[..., axis] == 0, axis=1)
+        ]
 
-        faces[f"{name}_max"] = triangles[
+        faces[cast(MomentRT.boundary.Face, f"{name}_max")] = triangles[
             np.all(indices[..., axis] == shape[axis] - 1, axis=1)
         ]
 
     return faces
 
 
-def triangle_areas(*, points, triangles):
+def triangle_areas(
+    *, points: NDArray[np.float64], triangles: NDArray[np.int64]
+) -> NDArray[np.float64]:
+    """Calculate boundary triangle areas from SI nodal coordinates.
+
+    Parameters
+    ----------
+    points : ndarray of float, shape (N, 3)
+        Flattened nodal coordinates in meters; this numerical kernel
+        accepts SI magnitudes rather than quantities.
+    triangles : ndarray of int, shape (F, 3)
+        Boundary triangle node indices.
+
+    Returns
+    -------
+    ndarray of float, shape (F,)
+        Triangle areas in square meters.
+    """
+
     vertices = points[triangles]
 
     return (
@@ -84,8 +156,26 @@ def triangle_areas(*, points, triangles):
     )
 
 
-def triangle_quadrature(*, points, triangles):
-    """Return positions, barycentric basis values, and area weights in SI."""
+def triangle_quadrature(
+    *, points: NDArray[np.float64], triangles: NDArray[np.int64]
+) -> tuple[NDArray[np.float64], NDArray[np.float64], NDArray[np.float64]]:
+    """Return positions, barycentric basis values, and area weights in SI.
+
+    Parameters
+    ----------
+    points : ndarray of float, shape (N, 3)
+        Flattened nodal coordinates in meters; this numerical kernel
+        accepts SI magnitudes rather than quantities.
+    triangles : ndarray of int, shape (F, 3)
+        Boundary triangle node indices.
+
+    Returns
+    -------
+    tuple of ndarray
+        Quadrature positions (F, 3, 3) in meters, barycentric basis values
+        (3, 3), and area weights (F, 3) in square meters. The three-point
+        rule integrates quadratic polynomials on each triangle exactly.
+    """
     barycentric = np.array(
         [[2 / 3, 1 / 6, 1 / 6], [1 / 6, 2 / 3, 1 / 6], [1 / 6, 1 / 6, 2 / 3]]
     )
@@ -99,8 +189,31 @@ def triangle_quadrature(*, points, triangles):
     return quadrature, barycentric, weights
 
 
-def source_irradiance(*, quadrature, weights, source):
-    """Evaluate the incoming diffuse profile with its sampled-area normalization."""
+def source_irradiance(
+    *,
+    quadrature: NDArray[np.float64],
+    weights: NDArray[np.float64],
+    source: MomentRT.source.UniformSurfaceSource,
+) -> tuple[NDArray[np.float64], float]:
+    """Evaluate the incoming diffuse profile with its sampled-area normalization.
+
+    Parameters
+    ----------
+    quadrature : ndarray of float, shape (F, 3, 3)
+        Boundary quadrature positions in meters.
+    weights : ndarray of float, shape (F, 3)
+        Boundary quadrature area weights in square meters.
+    source : UniformSurfaceSource or SurfaceSource
+        Incoming diffuse illumination on a Robin face; optical power is
+        already coupled into the sample.
+
+    Returns
+    -------
+    tuple of ndarray and float
+        Incoming irradiance (F, 3) in watts per square meter and sampled
+        footprint area in square meters. Its weighted integral equals the
+        configured incoming power.
+    """
 
     selected = np.ones(quadrature.shape[:2], dtype=bool)
 
@@ -129,8 +242,31 @@ def source_irradiance(*, quadrature, weights, source):
     return irradiance, sampled_area
 
 
-def source_load(*, points, triangles, source):
-    """Three-point triangle quadrature for the disk footprint and nodal load."""
+def source_load(
+    *,
+    points: NDArray[np.float64],
+    triangles: NDArray[np.int64],
+    source: MomentRT.source.UniformSurfaceSource,
+) -> tuple[NDArray[np.float64], float]:
+    """Three-point triangle quadrature for the disk footprint and nodal load.
+
+    Parameters
+    ----------
+    points : ndarray of float, shape (N, 3)
+        Flattened nodal coordinates in meters; this numerical kernel
+        accepts SI magnitudes rather than quantities.
+    triangles : ndarray of int, shape (F, 3)
+        Boundary triangle node indices.
+    source : UniformSurfaceSource or SurfaceSource
+        Incoming diffuse illumination on a Robin face; optical power is
+        already coupled into the sample.
+
+    Returns
+    -------
+    tuple of ndarray and float
+        Triangle-local nodal loads (F, 3) in watts and sampled source area
+        in square meters; the Robin source factor has not yet been applied.
+    """
     quadrature, barycentric, weights = triangle_quadrature(
         points=points, triangles=triangles
     )
@@ -147,7 +283,15 @@ def source_load(*, points, triangles, source):
 class _MeshGeometry:
     """Numerical geometry prepared once for a fixed finite Cartesian mesh."""
 
-    def __init__(self, *, mesh):
+    def __init__(self, *, mesh: MomentRT.mesh.CartesianMesh) -> None:
+        """Initialize the _MeshGeometry configuration.
+
+        Parameters
+        ----------
+        mesh : CartesianMesh
+            Cartesian nodes used for sampling or finite-element discretization.
+        """
+
         self.points = mesh.points.to("m").magnitude.reshape(-1, 3)
 
         self.tetrahedra = tetrahedralize(mesh=mesh)
@@ -170,8 +314,24 @@ class _MeshGeometry:
         }
 
 
-def _region_matrices(*, geometry, labels):
-    """Assemble unit diffusion and absorption matrices for each occupied region."""
+def _region_matrices(
+    *, geometry: _MeshGeometry, labels: NDArray[np.int64]
+) -> dict[int, tuple[sparse.csr_matrix, sparse.csr_matrix]]:
+    """Assemble unit diffusion and absorption matrices for each occupied region.
+
+    Parameters
+    ----------
+    geometry : _MeshGeometry
+        Prepared nodal coordinates, elements, and boundary quadrature in SI.
+    labels : ndarray of int, shape (T,)
+        Resolved material label at each tetrahedral centroid.
+
+    Returns
+    -------
+    dict of int to tuple of scipy.sparse.csr_matrix
+        Unit-coefficient stiffness and mass matrices for each occupied region.
+        Multiply by diffusion length (m) and absorption (1/m), respectively.
+    """
 
     stiffness = geometry.volumes[:, None, None] * np.einsum(
         "tik,tjk->tij", geometry.gradients, geometry.gradients

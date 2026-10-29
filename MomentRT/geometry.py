@@ -1,11 +1,29 @@
 """Material-bearing geometry for finite samples; z increases into the sample."""
 
+from __future__ import annotations
+
 import numpy as np
+from numpy.typing import NDArray
+from pint import Quantity
 
 import MomentRT
 
 
-def _validate_region(*, material, name):
+def _validate_region(
+    *,
+    material: MomentRT.material.Material | MomentRT.material.SpectralMaterial,
+    name: str,
+) -> None:
+    """Validate the material type and nonempty region name.
+
+    Parameters
+    ----------
+    material : Material or SpectralMaterial
+        Optical coefficients assigned to this region.
+    name : str
+        Nonempty name identifying this object.
+    """
+
     if not isinstance(
         material, (MomentRT.material.Material, MomentRT.material.SpectralMaterial)
     ):
@@ -16,9 +34,42 @@ def _validate_region(*, material, name):
 
 
 class Box:
-    """Axis-aligned box, specified by its lower corner and full size."""
+    """Axis-aligned box, specified by its lower corner and full size.
 
-    def __init__(self, *, origin, size, material, name):
+    Parameters
+    ----------
+    origin : pint.Quantity
+        Lower Cartesian corner, shape (3,), with length units.
+    size : pint.Quantity
+        Positive full Cartesian extents, shape (3,), with length units.
+    material : Material or SpectralMaterial
+        Optical coefficients assigned to this region.
+    name : str
+        Nonempty name identifying this object.
+    """
+
+    def __init__(
+        self,
+        *,
+        origin: Quantity,
+        size: Quantity,
+        material: MomentRT.material.Material | MomentRT.material.SpectralMaterial,
+        name: str,
+    ) -> None:
+        """Initialize the Box configuration.
+
+        Parameters
+        ----------
+        origin : pint.Quantity
+            Lower Cartesian corner, shape (3,), with length units.
+        size : pint.Quantity
+            Positive full Cartesian extents, shape (3,), with length units.
+        material : Material or SpectralMaterial
+            Optical coefficients assigned to this region.
+        name : str
+            Nonempty name identifying this object.
+        """
+
         MomentRT.units.validate_units(value=origin, unit="m", name="origin", shape=(3,))
 
         MomentRT.units.validate_units(
@@ -35,7 +86,20 @@ class Box:
 
         self.name = name
 
-    def contains(self, *, points):
+    def contains(self, *, points: Quantity) -> NDArray[np.bool_]:
+        """Test point membership, including the region interfaces.
+
+        Parameters
+        ----------
+        points : pint.Quantity
+            Query coordinates with length units and shape (..., 3).
+
+        Returns
+        -------
+        ndarray of bool
+            Membership mask with shape points.shape[:-1]; interfaces are included.
+        """
+
         lower = self.origin.to("m").magnitude
 
         upper = lower + self.size.to("m").magnitude
@@ -46,9 +110,42 @@ class Box:
 
 
 class Sphere:
-    """Sphere specified by center and radius."""
+    """Sphere specified by center and radius.
 
-    def __init__(self, *, center, radius, material, name):
+    Parameters
+    ----------
+    center : pint.Quantity
+        Absolute Cartesian center, shape (3,), with length units.
+    radius : pint.Quantity
+        Positive scalar radius with length units.
+    material : Material or SpectralMaterial
+        Optical coefficients assigned to this region.
+    name : str
+        Nonempty name identifying this object.
+    """
+
+    def __init__(
+        self,
+        *,
+        center: Quantity,
+        radius: Quantity,
+        material: MomentRT.material.Material | MomentRT.material.SpectralMaterial,
+        name: str,
+    ) -> None:
+        """Initialize the Sphere configuration.
+
+        Parameters
+        ----------
+        center : pint.Quantity
+            Absolute Cartesian center, shape (3,), with length units.
+        radius : pint.Quantity
+            Positive scalar radius with length units.
+        material : Material or SpectralMaterial
+            Optical coefficients assigned to this region.
+        name : str
+            Nonempty name identifying this object.
+        """
+
         MomentRT.units.validate_units(value=center, unit="m", name="center", shape=(3,))
 
         MomentRT.units.validate_units(
@@ -65,7 +162,20 @@ class Sphere:
 
         self.name = name
 
-    def contains(self, *, points):
+    def contains(self, *, points: Quantity) -> NDArray[np.bool_]:
+        """Test point membership, including the region interfaces.
+
+        Parameters
+        ----------
+        points : pint.Quantity
+            Query coordinates with length units and shape (..., 3).
+
+        Returns
+        -------
+        ndarray of bool
+            Membership mask with shape points.shape[:-1]; interfaces are included.
+        """
+
         distance = np.linalg.norm((points - self.center).to("m").magnitude, axis=-1)
 
         return distance <= self.radius.to("m").magnitude
@@ -76,9 +186,41 @@ class Layer:
 
     depth is the absolute z coordinate of the upper interface. The layer
     occupies depth <= z <= depth + thickness; later regions win at interfaces.
+
+    Parameters
+    ----------
+    depth : pint.Quantity
+        Absolute z coordinate of the upper interface, with length units.
+    thickness : pint.Quantity
+        Positive scalar layer thickness with length units.
+    material : Material or SpectralMaterial
+        Optical coefficients assigned to this region.
+    name : str
+        Nonempty name identifying this object.
     """
 
-    def __init__(self, *, depth, thickness, material, name):
+    def __init__(
+        self,
+        *,
+        depth: Quantity,
+        thickness: Quantity,
+        material: MomentRT.material.Material | MomentRT.material.SpectralMaterial,
+        name: str,
+    ) -> None:
+        """Initialize the Layer configuration.
+
+        Parameters
+        ----------
+        depth : pint.Quantity
+            Absolute z coordinate of the upper interface, with length units.
+        thickness : pint.Quantity
+            Positive scalar layer thickness with length units.
+        material : Material or SpectralMaterial
+            Optical coefficients assigned to this region.
+        name : str
+            Nonempty name identifying this object.
+        """
+
         MomentRT.units.validate_units(value=depth, unit="m", name="depth", shape=())
 
         MomentRT.units.validate_units(
@@ -95,7 +237,20 @@ class Layer:
 
         self.name = name
 
-    def contains(self, *, points):
+    def contains(self, *, points: Quantity) -> NDArray[np.bool_]:
+        """Test point membership, including the region interfaces.
+
+        Parameters
+        ----------
+        points : pint.Quantity
+            Query coordinates with length units and shape (..., 3).
+
+        Returns
+        -------
+        ndarray of bool
+            Membership mask with shape points.shape[:-1]; interfaces are included.
+        """
+
         z = points.to("m").magnitude[..., 2]
 
         lower = self.depth.to("m").magnitude

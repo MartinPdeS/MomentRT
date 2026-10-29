@@ -1,8 +1,12 @@
 """Analytical steady-state diffusion Green function in an infinite medium."""
 
+from __future__ import annotations
+
 import copy
+from collections.abc import Mapping
 
 import numpy as np
+from pint import Quantity
 from scipy import sparse
 from scipy.sparse import linalg as sparse_linalg
 
@@ -14,9 +18,45 @@ class InfiniteDiffusion:
 
     No boundary, Fresnel interface, or finite-source correction is applied.
     The observation window does not truncate the physical medium.
+
+    Notes
+    -----
+    The Green function is Phi(r) = P exp(-sqrt(mu_a / D) r) / (4 pi D r).
+    No physical outer boundary, Fresnel interface, or finite-source correction
+    is applied. The observation window does not truncate the medium.
     """
 
-    def solve(self, *, medium, source, mesh):
+    def solve(
+        self,
+        *,
+        medium: MomentRT.medium.HomogeneousMedium,
+        source: MomentRT.source.PointSource,
+        mesh: MomentRT.mesh.CartesianMesh,
+    ) -> MomentRT.fields.ScalarField:
+        """Solve the transport equation for the supplied physical configuration.
+
+        Parameters
+        ----------
+        medium : HomogeneousMedium
+            Infinite homogeneous material resolved at the source wavelength.
+        source : PointSource
+            Embedded isotropic point source; no grid node may coincide with it.
+        mesh : CartesianMesh
+            Cartesian nodes used for sampling or finite-element discretization.
+
+        Returns
+        -------
+        ScalarField
+            Analytical infinite-medium fluence rate in watts per square meter.
+
+        Raises
+        ------
+        TypeError
+            If the medium or source is incompatible with the infinite model.
+        ValueError
+            If a grid node coincides with the singular point source.
+        """
+
         if not isinstance(medium, MomentRT.medium.HomogeneousMedium):
             raise TypeError(
                 "InfiniteDiffusion supports only HomogeneousMedium; finite structured samples require a boundary-aware solver."
@@ -62,8 +102,24 @@ class InfiniteDiffusion:
         )
 
 
-def _finite_materials_at(*, medium, wavelength):
-    """Resolve finite material coefficients and the supported interface convention."""
+def _finite_materials_at(
+    *, medium: MomentRT.medium.StructuredMedium, wavelength: Quantity
+) -> list[MomentRT.material.Material]:
+    """Resolve finite material coefficients and the supported interface convention.
+
+    Parameters
+    ----------
+    medium : StructuredMedium
+        Finite sample with a background and no internal refractive-index jumps.
+    wavelength : pint.Quantity
+        Positive scalar vacuum wavelength, with length units.
+
+    Returns
+    -------
+    list of Material
+        Resolved background followed by structure materials; internal index
+        jumps are rejected.
+    """
     if medium.background is None:
         raise ValueError("Configure the sample background before solving.")
 
@@ -88,9 +144,40 @@ class Diffusion:
 
     Geometry preparation is scoped to a solve or wavelength sweep. No persistent
     cache survives changes to a sample, source, mesh, or boundary configuration.
+
+    Parameters
+    ----------
+    boundaries : mapping of str to RobinBoundary or ReflectingBoundary
+        Conditions for exactly all six sample faces. Reflecting faces cannot
+        carry illumination.
+
+    Notes
+    -----
+    The steady-state P1 equation is -div(D grad(Phi)) + mu_a Phi = 0,
+    with J = -D grad(Phi). Linear tetrahedra use centroid-sampled material
+    coefficients. Fluence is continuous across interfaces; internal
+    refractive-index jumps are unsupported. Footprint and unaligned interface
+    errors require mesh refinement. Geometry preparation is scoped to a
+    solve or sweep, with no persistent cache.
     """
 
-    def __init__(self, *, boundaries):
+    def __init__(
+        self,
+        *,
+        boundaries: Mapping[
+            MomentRT.boundary.Face,
+            MomentRT.boundary.RobinBoundary | MomentRT.boundary.ReflectingBoundary,
+        ],
+    ) -> None:
+        """Initialize the Diffusion configuration.
+
+        Parameters
+        ----------
+        boundaries : mapping of str to RobinBoundary or ReflectingBoundary
+            Conditions for exactly all six sample faces. Reflecting faces cannot
+            carry illumination.
+        """
+
         if set(boundaries) != set(MomentRT.boundary.FACES):
             raise ValueError(
                 f"Configure exactly these boundary faces: {MomentRT.boundary.FACES}."
@@ -107,7 +194,31 @@ class Diffusion:
 
         self.boundaries = dict(boundaries)
 
-    def _prepare(self, *, medium, source, mesh):
+    def _prepare(
+        self,
+        *,
+        medium: MomentRT.medium.StructuredMedium,
+        source: MomentRT.source.UniformSurfaceSource,
+        mesh: MomentRT.mesh.CartesianMesh,
+    ) -> _PreparedDiffusion:
+        """Prepare frozen finite-element geometry and source sampling.
+
+        Parameters
+        ----------
+        medium : StructuredMedium
+            Finite sample with a background and no internal refractive-index jumps.
+        source : UniformSurfaceSource or SurfaceSource
+            Incoming diffuse illumination on a Robin face; optical power is
+            already coupled into the sample.
+        mesh : CartesianMesh
+            Cartesian nodes used for sampling or finite-element discretization.
+
+        Returns
+        -------
+        _PreparedDiffusion
+            Frozen geometry and source footprint prepared for this solve or sweep.
+        """
+
         return _PreparedDiffusion(
             medium=medium,
             source=source,
@@ -115,7 +226,41 @@ class Diffusion:
             boundaries=self.boundaries,
         )
 
-    def solve(self, *, medium, source, mesh):
+    def solve(
+        self,
+        *,
+        medium: MomentRT.medium.StructuredMedium,
+        source: MomentRT.source.UniformSurfaceSource,
+        mesh: MomentRT.mesh.CartesianMesh,
+    ) -> MomentRT.results.SimulationResult:
+        """Solve the transport equation for the supplied physical configuration.
+
+        Parameters
+        ----------
+        medium : StructuredMedium
+            Finite sample with a background and no internal refractive-index jumps.
+        source : UniformSurfaceSource or SurfaceSource
+            Incoming diffuse illumination on a Robin face; optical power is
+            already coupled into the sample.
+        mesh : CartesianMesh
+            Cartesian nodes used for sampling or finite-element discretization.
+
+        Returns
+        -------
+        SimulationResult
+            Finite-element fluence, element flux, boundary fields, and power balance.
+
+        Raises
+        ------
+        TypeError
+            If the medium or source is incompatible with the finite model.
+        ValueError
+            If the mesh does not span the sample, interfaces have refractive-index
+            jumps, or a source does not fit on an illuminated Robin face.
+        SourceResolutionError
+            If no boundary quadrature point resolves the illumination footprint.
+        """
+
         problem = self._prepare(medium=medium, source=source, mesh=mesh)
 
         return problem.solve(medium=medium, source=source, mesh=mesh)
@@ -124,7 +269,33 @@ class Diffusion:
 class _PreparedDiffusion:
     """One frozen instrument geometry with wavelength-dependent bulk operators."""
 
-    def __init__(self, *, medium, source, mesh, boundaries):
+    def __init__(
+        self,
+        *,
+        medium: MomentRT.medium.StructuredMedium,
+        source: MomentRT.source.UniformSurfaceSource,
+        mesh: MomentRT.mesh.CartesianMesh,
+        boundaries: Mapping[
+            MomentRT.boundary.Face,
+            MomentRT.boundary.RobinBoundary | MomentRT.boundary.ReflectingBoundary,
+        ],
+    ) -> None:
+        """Initialize the _PreparedDiffusion configuration.
+
+        Parameters
+        ----------
+        medium : StructuredMedium
+            Finite sample with a background and no internal refractive-index jumps.
+        source : UniformSurfaceSource or SurfaceSource
+            Incoming diffuse illumination on a Robin face; optical power is
+            already coupled into the sample.
+        mesh : CartesianMesh
+            Cartesian nodes used for sampling or finite-element discretization.
+        boundaries : mapping of str to RobinBoundary or ReflectingBoundary
+            Conditions for exactly all six sample faces. Reflecting faces cannot
+            carry illumination.
+        """
+
         if not isinstance(medium, MomentRT.medium.StructuredMedium):
             raise TypeError("Diffusion requires a finite StructuredMedium.")
 
@@ -276,7 +447,31 @@ class _PreparedDiffusion:
 
         self.solve_count = 0
 
-    def solve(self, *, medium, source, mesh):
+    def solve(
+        self,
+        *,
+        medium: MomentRT.medium.StructuredMedium,
+        source: MomentRT.source.UniformSurfaceSource,
+        mesh: MomentRT.mesh.CartesianMesh,
+    ) -> MomentRT.results.SimulationResult:
+        """Solve the transport equation for the supplied physical configuration.
+
+        Parameters
+        ----------
+        medium : StructuredMedium
+            Finite sample with a background and no internal refractive-index jumps.
+        source : UniformSurfaceSource or SurfaceSource
+            Incoming diffuse illumination on a Robin face; optical power is
+            already coupled into the sample.
+        mesh : CartesianMesh
+            Cartesian nodes used for sampling or finite-element discretization.
+
+        Returns
+        -------
+        SimulationResult
+            Finite-element fluence, element flux, boundary fields, and power balance.
+        """
+
         MomentRT.units.validate_units(
             value=source.optical_power,
             unit="W",
@@ -344,7 +539,7 @@ class _PreparedDiffusion:
             2 * self.boundaries[self.source.face].leakage_coefficient * power
         )
 
-        boundary_fields = {}
+        boundary_fields: dict[str, MomentRT.fields.BoundaryField] = {}
 
         for face, triangles in geometry.faces.items():
             quadrature, barycentric, weights = geometry.quadrature[face]

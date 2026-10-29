@@ -12,6 +12,7 @@ from zipfile import ZipFile
 
 REQUIRED_MODULES = (
     "MomentRT/__init__.py",
+    "MomentRT/py.typed",
     "MomentRT/_version.py",
     "MomentRT/boundary.py",
     "MomentRT/convergence.py",
@@ -28,7 +29,9 @@ REQUIRED_MODULES = (
     "MomentRT/sections.py",
     "MomentRT/simulation.py",
     "MomentRT/source.py",
+    "MomentRT/sp3.py",
     "MomentRT/units.py",
+    "MomentRT/validation.py",
 )
 
 

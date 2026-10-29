@@ -5,7 +5,7 @@ BUILD_DIR ?= build
 TAG_VERSION ?= $(or $(VERSION),$(filter v%,$(MAKECMDGOALS)))
 RELEASE_KIND := $(filter major minor patch,$(MAKECMDGOALS))
 
-.PHONY: help configure build install uninstall quick rebuild editable clean quality typecheck stubcheck test check package-check release-check tag release major minor patch
+.PHONY: help configure build install uninstall quick rebuild editable clean quality typecheck docstring-check stubcheck test check package-check release-check tag release major minor patch
 
 help:
 	@echo "MomentRT development commands"
@@ -19,7 +19,8 @@ help:
 	@echo "  make editable              Install an editable package"
 	@echo "  make clean                 Remove build artifacts"
 	@echo "  make quality               Run static checks"
-	@echo "  make typecheck             Report Python API typing support"
+	@echo "  make typecheck             Check Python API type hints"
+	@echo "  make docstring-check       Validate NumPy-style API docstrings"
 	@echo "  make stubcheck             Report native binding stub support"
 	@echo "  make test                  Run the test suite"
 	@echo "  make check                 Run quality and tests"
@@ -61,7 +62,10 @@ quality:
 	$(PYTHON) -m ruff format --check MomentRT tests docs/examples tools
 
 typecheck:
-	@echo "MomentRT does not currently provide a typed Python API."
+	$(PYTHON) -m mypy MomentRT
+
+docstring-check:
+	$(PYTHON) tools/check_docstrings.py
 
 stubcheck:
 	@echo "MomentRT has no native binding stubs to check."

@@ -1,6 +1,12 @@
 """Ideal isotropic point illumination inside an infinite medium."""
 
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any
+
 import numpy as np
+from pint import Quantity
 
 import MomentRT
 
@@ -10,7 +16,38 @@ class SourceResolutionError(ValueError):
 
 
 class PointSource:
-    def __init__(self, *, position, wavelength, optical_power):
+    """Isotropic point illumination embedded in an infinite medium.
+
+    Parameters
+    ----------
+    position : pint.Quantity
+        Absolute Cartesian position, shape (3,), with length units.
+    wavelength : pint.Quantity
+        Positive scalar vacuum wavelength, with length units.
+    optical_power : pint.Quantity
+        Positive scalar optical power with power units.
+
+    Notes
+    -----
+    Use with InfiniteDiffusion. The point-source singularity is not
+    regularized, and the Cartesian mesh is an observation window.
+    """
+
+    def __init__(
+        self, *, position: Quantity, wavelength: Quantity, optical_power: Quantity
+    ) -> None:
+        """Initialize the PointSource configuration.
+
+        Parameters
+        ----------
+        position : pint.Quantity
+            Absolute Cartesian position, shape (3,), with length units.
+        wavelength : pint.Quantity
+            Positive scalar vacuum wavelength, with length units.
+        optical_power : pint.Quantity
+            Positive scalar optical power with power units.
+        """
+
         MomentRT.units.validate_units(
             value=position, unit="m", name="position", shape=(3,)
         )
@@ -29,7 +66,19 @@ class PointSource:
 
         self.optical_power = optical_power
 
-    def _add_to_figure(self, *, figure, context):
+    def _add_to_figure(
+        self, *, figure: MomentRT.plotting.Figure, context: Mapping[str, Any]
+    ) -> None:
+        """Append this instrument geometry to an existing figure in place.
+
+        Parameters
+        ----------
+        figure : plotly.graph_objects.Figure
+            Figure to modify in place.
+        context : mapping of str to object
+            Coordinate units, legend labels, and physical sample bounds.
+        """
+
         go = MomentRT.plotting.require_plotly()
 
         position = self.position.to(context["length_unit"]).magnitude
@@ -53,9 +102,42 @@ class UniformSurfaceSource:
     optical_power is power already transmitted into the sample, before diffuse
     internal reflection. This does not model collimated LED entry or specular
     Fresnel loss. The boundary condition's source factor is applied by the solver.
+
+    Parameters
+    ----------
+    face : {'x_min', 'x_max', 'y_min', 'y_max', 'z_min', 'z_max'}
+        Axis-aligned sample face; min and max refer to outward boundaries.
+    wavelength : pint.Quantity
+        Positive scalar vacuum wavelength, with length units.
+    optical_power : pint.Quantity
+        Positive scalar optical power with power units.
+
+    Notes
+    -----
+    Power is incoming diffuse power already coupled into the sample.
+    Collimated propagation and specular Fresnel entry losses are not modeled.
+    The solver applies the Robin source factor separately.
     """
 
-    def __init__(self, *, face, wavelength, optical_power):
+    def __init__(
+        self,
+        *,
+        face: MomentRT.boundary.Face,
+        wavelength: Quantity,
+        optical_power: Quantity,
+    ) -> None:
+        """Initialize the UniformSurfaceSource configuration.
+
+        Parameters
+        ----------
+        face : {'x_min', 'x_max', 'y_min', 'y_max', 'z_min', 'z_max'}
+            Axis-aligned sample face; min and max refer to outward boundaries.
+        wavelength : pint.Quantity
+            Positive scalar vacuum wavelength, with length units.
+        optical_power : pint.Quantity
+            Positive scalar optical power with power units.
+        """
+
         if face not in MomentRT.boundary.FACES:
             raise ValueError(f"face must be one of {MomentRT.boundary.FACES}.")
 
@@ -73,7 +155,19 @@ class UniformSurfaceSource:
 
         self.optical_power = optical_power
 
-    def _add_to_figure(self, *, figure, context):
+    def _add_to_figure(
+        self, *, figure: MomentRT.plotting.Figure, context: Mapping[str, Any]
+    ) -> None:
+        """Append this instrument geometry to an existing figure in place.
+
+        Parameters
+        ----------
+        figure : plotly.graph_objects.Figure
+            Figure to modify in place.
+        context : mapping of str to object
+            Coordinate units, legend labels, and physical sample bounds.
+        """
+
         origin = context.get("sample_origin")
 
         size = context.get("sample_size")
@@ -145,9 +239,52 @@ class SurfaceSource(UniformSurfaceSource):
     The entire disk must fit on the selected face. Surface quadrature samples
     its footprint and is normalized to optical_power; refine the mesh to
     resolve the disk edge and check the reported quadrature spot area.
+
+    Parameters
+    ----------
+    face : {'x_min', 'x_max', 'y_min', 'y_max', 'z_min', 'z_max'}
+        Axis-aligned sample face; min and max refer to outward boundaries.
+    position : pint.Quantity
+        Absolute Cartesian position, shape (3,), with length units.
+    radius : pint.Quantity
+        Positive scalar radius with length units.
+    wavelength : pint.Quantity
+        Positive scalar vacuum wavelength, with length units.
+    optical_power : pint.Quantity
+        Positive scalar optical power with power units.
+
+    Notes
+    -----
+    The entire disk must fit on the selected Robin face. Boundary quadrature
+    is normalized to the specified incoming power; energy conservation alone
+    does not establish that the disk edge is spatially resolved.
     """
 
-    def __init__(self, *, face, position, radius, wavelength, optical_power):
+    def __init__(
+        self,
+        *,
+        face: MomentRT.boundary.Face,
+        position: Quantity,
+        radius: Quantity,
+        wavelength: Quantity,
+        optical_power: Quantity,
+    ) -> None:
+        """Initialize the SurfaceSource configuration.
+
+        Parameters
+        ----------
+        face : {'x_min', 'x_max', 'y_min', 'y_max', 'z_min', 'z_max'}
+            Axis-aligned sample face; min and max refer to outward boundaries.
+        position : pint.Quantity
+            Absolute Cartesian position, shape (3,), with length units.
+        radius : pint.Quantity
+            Positive scalar radius with length units.
+        wavelength : pint.Quantity
+            Positive scalar vacuum wavelength, with length units.
+        optical_power : pint.Quantity
+            Positive scalar optical power with power units.
+        """
+
         super().__init__(face=face, wavelength=wavelength, optical_power=optical_power)
 
         MomentRT.units.validate_units(
@@ -162,7 +299,71 @@ class SurfaceSource(UniformSurfaceSource):
 
         self.radius = radius.copy()
 
-    def _add_to_figure(self, *, figure, context):
+    @classmethod
+    def on_face(
+        cls,
+        *,
+        sample: MomentRT.medium.StructuredMedium,
+        face: MomentRT.boundary.Face,
+        coordinates: Quantity,
+        radius: Quantity,
+        wavelength: Quantity,
+        optical_power: Quantity,
+    ) -> SurfaceSource:
+        """Place a circular source using absolute coordinates in a sample face.
+
+        Parameters
+        ----------
+        sample : StructuredMedium
+            Physical sample used to determine the face coordinate.
+        face : str
+            Cartesian face name, such as ``z_min``.
+        coordinates : pint.Quantity
+            Two absolute in-plane coordinates, ordered by Cartesian axis
+            (y, z for x faces; x, z for y faces; x, y for z faces).
+        radius : pint.Quantity
+            Positive illumination radius with length units.
+        wavelength : pint.Quantity
+            Positive vacuum wavelength with length units.
+        optical_power : pint.Quantity
+            Incoming diffuse power already coupled into the sample.
+
+        Returns
+        -------
+        SurfaceSource
+            Source with its absolute three-dimensional position recorded.
+        """
+        position = MomentRT.boundary._face_position(
+            sample=sample, face=face, coordinates=coordinates
+        )
+
+        source = cls(
+            face=face,
+            position=position,
+            radius=radius,
+            wavelength=wavelength,
+            optical_power=optical_power,
+        )
+
+        MomentRT.boundary._validate_face_disk(
+            sample=sample, face=face, position=source.position, radius=source.radius
+        )
+
+        return source
+
+    def _add_to_figure(
+        self, *, figure: MomentRT.plotting.Figure, context: Mapping[str, Any]
+    ) -> None:
+        """Append this instrument geometry to an existing figure in place.
+
+        Parameters
+        ----------
+        figure : plotly.graph_objects.Figure
+            Figure to modify in place.
+        context : mapping of str to object
+            Coordinate units, legend labels, and physical sample bounds.
+        """
+
         go = MomentRT.plotting.require_plotly()
 
         position = self.position.to(context["length_unit"]).magnitude

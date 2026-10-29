@@ -1,7 +1,7 @@
 Examples
 ========
 
-Browse ten worked examples, from the analytical infinite-medium solution to
+Browse worked examples, from the analytical infinite-medium solution to
 finite-sample FEM. Each card opens an executable example with its complete
 configuration and generated plots. Input values are illustrative.
 
@@ -104,6 +104,30 @@ resolution.
 
       Interpolate two material spectra and plot collected power across five
       wavelengths with a fixed geometry.
+
+   .. grid-item-card:: Compare P1 and SP3
+      :link: finite_samples/compare_sp3
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_compare_sp3_thumb.png
+      :img-alt: SP3 fluence volume with contact source and detector
+
+      Compare detector signals from the two moment models on the same sample.
+
+   .. grid-item-card:: Assign anisotropy by layer
+      :link: finite_samples/sp3_layered_anisotropy
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_sp3_layered_anisotropy_thumb.png
+      :img-alt: SP3 fluence for a layered sample with a source and detector
+
+      Give each material its own scattering anisotropy and solve with SP3.
+
+   .. grid-item-card:: Sweep spectral anisotropy
+      :link: finite_samples/sp3_spectral_anisotropy
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_sp3_spectral_anisotropy_thumb.png
+      :img-alt: SP3 fluence from wavelength-dependent material tables
+
+      Interpolate layer-specific anisotropy and detector power across wavelengths.
 
    .. grid-item-card:: Choose a detector mesh
       :link: finite_samples/detector_convergence

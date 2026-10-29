@@ -1,7 +1,7 @@
 Choose a workflow
 =================
 
-MomentRT currently exposes two steady-state P1 workflows. Choose based on
+MomentRT exposes steady-state P1 and SP3 workflows. Choose based on
 whether the physical domain is unbounded and homogeneous or a finite sample
 with an explicitly modeled illuminated boundary.
 
@@ -29,6 +29,13 @@ with an explicitly modeled illuminated boundary.
       Define layers and inclusions, inspect geometry, and resolve material
       cross-sections.
 
+   .. grid-item-card:: Compare P1 and SP3
+      :link: sp3
+      :link-type: doc
+
+      Solve coupled SP3 moments with explicit scattering anisotropy and
+      matched-index boundary conditions.
+
    .. grid-item-card:: Inspect outputs
       :link: results
       :link-type: doc
@@ -55,13 +62,14 @@ with an explicitly modeled illuminated boundary.
 
 .. note::
 
-   Both models use the P1 diffusion approximation. The finite solver is not a
-   full radiative-transfer model and does not infer boundary parameters from
-   refractive index.
+   P1 and SP3 are approximations to transport. Neither model infers boundary
+   parameters from refractive index or replaces validation against transport
+   references for the geometry of interest.
 
 .. toctree::
    :hidden:
 
    Finite-aperture detectors <detectors>
+   SP3 transport <sp3>
    Materials and wavelength sweeps <spectral>
    Detector mesh convergence <convergence>

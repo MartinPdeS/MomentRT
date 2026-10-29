@@ -54,9 +54,11 @@ Features
   fixed source, sample, and detector geometry.
 * Detector mesh-refinement studies and reusable finite-element preparation
   across wavelengths.
+* A coupled SP3 finite-element solver with explicit scattering anisotropy and
+  matched-index boundaries, alongside the P1 diffusion solver.
 
-MomentRT uses the P1 diffusion approximation. It does not currently solve the
-full radiative transfer equation or implement P3/SP3, collimated LED
+MomentRT offers P1 diffusion and SP3 approximations. It does not currently solve the
+full radiative transfer equation or implement full P3, collimated LED
 propagation, free-space detector optics, broadband spectral integration,
 time dependence, or inverse estimation. Read the `scientific guide`_ for the equations,
 approximations, validation limits, and complete workflow.
@@ -350,7 +352,9 @@ the same Python interpreter used for development:
    make docs PYTHON=.venv/bin/python
 
 ``make check`` runs quality checks and tests. The codebase intentionally keeps
-the package flat and does not use Python type annotations.
+the package flat, with type hints and NumPy-style API docstrings. Run
+``make typecheck docstring-check`` to validate annotations and public
+parameter documentation.
 
 Citation and license
 --------------------

@@ -1,19 +1,60 @@
 """Detector convergence studies on an explicit sequence of finite meshes."""
 
+from __future__ import annotations
+
 import copy
+from collections.abc import Iterable
+from typing import cast
 
 import numpy as np
+from pint import Quantity
 
 import MomentRT
 
 
 def _run_study(
-    *, simulation, mesh_shapes, power_rtol, area_rtol, power_atol, required_consecutive
-):
+    *,
+    simulation: MomentRT.simulation.Simulation,
+    mesh_shapes: Iterable[tuple[int, int, int]],
+    power_rtol: float,
+    area_rtol: float,
+    power_atol: Quantity | None,
+    required_consecutive: int,
+) -> MomentRT.results.DetectorConvergenceResult:
+    """Run the finite-detector refinement study on independent mesh snapshots.
+
+    Parameters
+    ----------
+    simulation : Simulation
+        Finite Diffusion configuration with at least one named detector.
+    mesh_shapes : iterable of tuple of int
+        At least two coarse-to-fine node shapes. Each shape must refine at
+        least one axis and coarsen none.
+    power_rtol : float
+        Nonnegative relative power tolerance against adjacent and finest meshes.
+    area_rtol : float
+        Nonnegative relative tolerance of sampled source and detector areas
+        against their geometric areas.
+    power_atol : pint.Quantity or None
+        Nonnegative absolute power tolerance. None means zero watts.
+    required_consecutive : int
+        Positive number of consecutive passing refinements required at the
+        fine end of the mesh sequence.
+
+    Returns
+    -------
+    DetectorConvergenceResult
+        Completed study including unresolved levels and refinement diagnostics.
+    """
+
     if not isinstance(
         simulation.medium, MomentRT.medium.StructuredMedium
-    ) or not isinstance(simulation.solver, MomentRT.diffusion.Diffusion):
-        raise TypeError("Detector convergence requires a finite Diffusion simulation.")
+    ) or not isinstance(
+        simulation.solver, (MomentRT.diffusion.Diffusion, MomentRT.sp3.SP3)
+    ):
+        raise TypeError(
+            "Detector convergence requires a finite Diffusion or SP3 simulation."
+        )
 
     if not simulation.detectors:
         raise ValueError("Configure at least one detector for a convergence study.")
@@ -83,7 +124,7 @@ def _run_study(
             medium.size[[index for index in range(3) if index != axis]]
         )
 
-    results = []
+    results: list[MomentRT.results.SimulationResult | None] = []
 
     level_errors = []
 
@@ -126,7 +167,7 @@ def _run_study(
                     "Negative escaping irradiance in the aperture."
                 )
 
-        if result.diagnostics["minimum_fluence"].magnitude < 0:
+        if cast(Quantity, result.diagnostics["minimum_fluence"]).magnitude < 0:
             errors["fluence"] = "Negative nodal fluence."
 
         results.append(result)

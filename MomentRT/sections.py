@@ -1,6 +1,11 @@
 """Resolved planar material maps independent of the transport mesh."""
 
+from __future__ import annotations
+
+from typing import Literal, cast
+
 import numpy as np
+from pint import Quantity
 
 import MomentRT
 
@@ -10,9 +15,71 @@ class SampleSection:
 
     Arrays use (vertical, horizontal) order. Physical inputs retain their units;
     optical-property arrays are stored in SI. No interpolation is applied.
+
+    Parameters
+    ----------
+    sample : StructuredMedium
+        Finite rectangular sample with an explicit background.
+    normal : {'x', 'y', 'z'}
+        Axis normal to the section plane.
+    position : pint.Quantity
+        Absolute scalar coordinate along the plane normal, with length units.
+    resolution : tuple of int
+        Horizontal and vertical cell counts, each at least two.
+        The stored section arrays have shape (vertical, horizontal).
+    wavelength : pint.Quantity or None, optional
+        Vacuum wavelength used to resolve spectral materials. Required when
+        any material is spectral; None retains fixed coefficients.
+        Default is None.
+
+    Attributes
+    ----------
+    labels : numpy.ndarray of int
+        Cell-center material labels, shape (vertical, horizontal). Zero denotes
+        background; positive labels follow structure insertion order.
+    fields : dict of str to pint.Quantity
+        Absorption and reduced scattering in inverse meters and dimensionless
+        refractive index, with the same shape as labels.
+    names : tuple of str
+        Background and structure names indexed by labels.
+    horizontal : pint.Quantity
+        One-dimensional horizontal cell-center coordinates in meters.
+    vertical : pint.Quantity
+        One-dimensional vertical cell-center coordinates in meters.
+    extent : pint.Quantity
+        Horizontal and vertical lower/upper bounds, shape (2, 2), in meters.
+    axes : tuple of str
+        Names of the horizontal and vertical Cartesian axes.
     """
 
-    def __init__(self, *, sample, normal, position, resolution, wavelength=None):
+    def __init__(
+        self,
+        *,
+        sample: MomentRT.medium.StructuredMedium,
+        normal: Literal["x", "y", "z"],
+        position: Quantity,
+        resolution: tuple[int, int],
+        wavelength: Quantity | None = None,
+    ) -> None:
+        """Initialize the SampleSection configuration.
+
+        Parameters
+        ----------
+        sample : StructuredMedium
+            Finite rectangular sample with an explicit background.
+        normal : {'x', 'y', 'z'}
+            Axis normal to the section plane.
+        position : pint.Quantity
+            Absolute scalar coordinate along the plane normal, with length units.
+        resolution : tuple of int
+            Horizontal and vertical cell counts, each at least two.
+            The stored section arrays have shape (vertical, horizontal).
+        wavelength : pint.Quantity or None, optional
+            Vacuum wavelength used to resolve spectral materials. Required when
+            any material is spectral; None retains fixed coefficients.
+            Default is None.
+        """
+
         sample = sample._at_for_display(wavelength=wavelength)
 
         if normal not in ("x", "y", "z"):
@@ -81,7 +148,7 @@ class SampleSection:
         self.names = ("Background", *(shape.name for shape in sample.structures))
 
         materials = [
-            sample.background,
+            cast(MomentRT.material.Material, sample.background),
             *(shape.material for shape in sample.structures),
         ]
 
@@ -106,12 +173,40 @@ class SampleSection:
     def plot(
         self,
         *,
-        quantity="material",
-        length_unit="mm",
-        value_unit=None,
-        scale="linear",
-        show=True,
-    ):
+        quantity: Literal[
+            "material", "absorption", "reduced_scattering", "refractive_index"
+        ] = "material",
+        length_unit: str = "mm",
+        value_unit: str | None = None,
+        scale: Literal["linear", "log"] = "linear",
+        show: bool = True,
+    ) -> MomentRT.plotting.Figure:
+        """Create an interactive visualization of this object.
+
+        Parameters
+        ----------
+        quantity : {'material', 'absorption', 'reduced_scattering', 'refractive_index'}, optional
+            Material labels or optical property to display.
+            Default is 'material'.
+        length_unit : str, optional
+            Length unit used for displayed or exported coordinates.
+            Default is 'mm'.
+        value_unit : str or None, optional
+            Unit for displayed optical-property values; None uses stored SI units.
+            Default is None.
+        scale : {'linear', 'log'}, optional
+            Display scaling. Logarithmic scaling requires strictly positive values.
+            Default is 'linear'.
+        show : bool, optional
+            Whether to display the figure immediately. The figure is always returned.
+            Default is True.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            Composable interactive figure, also displayed when show is True.
+        """
+
         return MomentRT.plotting.plot_section(
             section=self,
             quantity=quantity,

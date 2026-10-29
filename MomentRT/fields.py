@@ -1,14 +1,58 @@
 """Unit-bearing nodal scalar fields with mesh-aware visualization."""
 
+from __future__ import annotations
+
+from collections.abc import Iterable, Mapping
 from pathlib import Path
+from typing import Literal
 
 import numpy as np
+from pint import Quantity
 
 import MomentRT
 
 
 class ScalarField:
-    def __init__(self, *, mesh, values, name, metadata=None):
+    """Unit-bearing scalar samples at Cartesian mesh nodes.
+
+    Parameters
+    ----------
+    mesh : CartesianMesh
+        Cartesian nodes used for sampling or finite-element discretization.
+    values : pint.Quantity
+        Finite nodal scalar values with shape equal to mesh.shape.
+        The supplied physical units are retained.
+    name : str
+        Nonempty name identifying this object.
+    metadata : mapping of str to object, or None, optional
+        Field provenance and optional physical sample bounds.
+        Default is None.
+    """
+
+    def __init__(
+        self,
+        *,
+        mesh: MomentRT.mesh.CartesianMesh,
+        values: Quantity,
+        name: str,
+        metadata: Mapping[str, object] | None = None,
+    ) -> None:
+        """Initialize the ScalarField configuration.
+
+        Parameters
+        ----------
+        mesh : CartesianMesh
+            Cartesian nodes used for sampling or finite-element discretization.
+        values : pint.Quantity
+            Finite nodal scalar values with shape equal to mesh.shape.
+            The supplied physical units are retained.
+        name : str
+            Nonempty name identifying this object.
+        metadata : mapping of str to object, or None, optional
+            Field provenance and optional physical sample bounds.
+            Default is None.
+        """
+
         if not isinstance(values, MomentRT.units.ureg.Quantity):
             raise TypeError("values must carry units.")
 
@@ -23,7 +67,21 @@ class ScalarField:
 
         self.metadata = dict(metadata or {})
 
-    def to_pyvista(self, *, length_unit="mm"):
+    def to_pyvista(self, *, length_unit: str = "mm") -> MomentRT.plotting.ImageData:
+        """Convert Cartesian data to a PyVista image grid.
+
+        Parameters
+        ----------
+        length_unit : str, optional
+            Length unit used for displayed or exported coordinates.
+            Default is 'mm'.
+
+        Returns
+        -------
+        pyvista.ImageData
+            Cartesian VTK grid with coordinates converted to length_unit.
+        """
+
         grid = self.mesh.to_pyvista(length_unit=length_unit)
 
         grid.point_data[self.name] = self.values.magnitude.ravel(order="F")
@@ -39,7 +97,18 @@ class ScalarField:
 
         return grid
 
-    def export(self, *, path, length_unit="mm"):
+    def export(self, *, path: str | Path, length_unit: str = "mm") -> None:
+        """Write the scalar field and provenance to a VTK image file.
+
+        Parameters
+        ----------
+        path : str or pathlib.Path
+            Destination filename ending in .vti. Existing files may be overwritten.
+        length_unit : str, optional
+            Length unit used for displayed or exported coordinates.
+            Default is 'mm'.
+        """
+
         if Path(path).suffix != ".vti":
             raise ValueError("Cartesian fields must be exported with a .vti extension.")
 
@@ -50,19 +119,57 @@ class ScalarField:
     def plot(
         self,
         *,
-        view="volume",
-        scale="linear",
-        length_unit="mm",
-        opacity=None,
-        isosurface_count=None,
-        overlays=None,
-        show=True,
-    ):
+        view: Literal["volume", "isosurfaces", "slices"] = "volume",
+        scale: Literal["linear", "log"] = "linear",
+        length_unit: str = "mm",
+        opacity: float | None = None,
+        isosurface_count: int | None = None,
+        overlays: Iterable[object] | Mapping[str, object] | None = None,
+        show: bool = True,
+    ) -> MomentRT.plotting.Figure:
         """Plot the scalar field with optional source and detector geometry.
 
         overlays accepts an iterable of drawable objects or a mapping from
         legend labels to objects. Full-face sources require the physical
         sample bounds recorded by the finite solver.
+
+        Parameters
+        ----------
+        view : {'volume', 'isosurfaces', 'slices'}, optional
+            Three-dimensional scalar-field rendering mode.
+            Default is 'volume'.
+        scale : {'linear', 'log'}, optional
+            Display scaling. Logarithmic scaling requires strictly positive values.
+            Default is 'linear'.
+        length_unit : str, optional
+            Length unit used for displayed or exported coordinates.
+            Default is 'mm'.
+        opacity : float or None, optional
+            Initial surface opacity in [0, 1]. None selects the rendering default.
+            Volume and isosurface views expose an interactive opacity slider.
+            Default is None.
+        isosurface_count : int or None, optional
+            Positive number of iso levels for volume or isosurface rendering.
+            None uses 8 for volume and 6 for isosurfaces; invalid for slices.
+            Default is None.
+        overlays : iterable or mapping of str to object, or None, optional
+            Sources or detectors implementing the plotting hook. Mapping keys
+            become legend labels. Full-face sources require finite-sample bounds.
+            Default is None.
+        show : bool, optional
+            Whether to display the figure immediately. The figure is always returned.
+            Default is True.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            Composable interactive figure, also displayed when show is True.
+
+        Notes
+        -----
+        Logarithmic rendering rejects nonpositive data rather than clipping it.
+        Full-face source overlays require physical sample bounds saved by the
+        finite solver; an infinite observation window is not a physical sample.
         """
 
         return MomentRT.plotting.plot_field(
@@ -83,19 +190,60 @@ class BoundaryField:
     positions, area_weights, and escaping_irradiance share a leading shape.
     Escaping irradiance includes the incident-field correction on a source face.
     It is not an angle-resolved radiance.
+
+    Parameters
+    ----------
+    face : {'x_min', 'x_max', 'y_min', 'y_max', 'z_min', 'z_max'}
+        Axis-aligned sample face; min and max refer to outward boundaries.
+    positions : pint.Quantity
+        Cartesian sampling coordinates with length units and trailing axis (3,).
+    area_weights : pint.Quantity
+        Positive quadrature area weights with area units; shape matches
+        the leading axes of positions.
+    escaping_irradiance : pint.Quantity
+        Escaping diffuse irradiance with power-per-area units; shape matches
+        area_weights. Values are not clipped to zero.
+    sample_origin : pint.Quantity
+        Physical sample lower corner, shape (3,), with length units.
+    sample_size : pint.Quantity
+        Positive physical sample extents, shape (3,), with length units.
+    wavelength : pint.Quantity
+        Positive scalar vacuum wavelength, with length units.
     """
 
     def __init__(
         self,
         *,
-        face,
-        positions,
-        area_weights,
-        escaping_irradiance,
-        sample_origin,
-        sample_size,
-        wavelength,
-    ):
+        face: MomentRT.boundary.Face,
+        positions: Quantity,
+        area_weights: Quantity,
+        escaping_irradiance: Quantity,
+        sample_origin: Quantity,
+        sample_size: Quantity,
+        wavelength: Quantity,
+    ) -> None:
+        """Initialize the BoundaryField configuration.
+
+        Parameters
+        ----------
+        face : {'x_min', 'x_max', 'y_min', 'y_max', 'z_min', 'z_max'}
+            Axis-aligned sample face; min and max refer to outward boundaries.
+        positions : pint.Quantity
+            Cartesian sampling coordinates with length units and trailing axis (3,).
+        area_weights : pint.Quantity
+            Positive quadrature area weights with area units; shape matches
+            the leading axes of positions.
+        escaping_irradiance : pint.Quantity
+            Escaping diffuse irradiance with power-per-area units; shape matches
+            area_weights. Values are not clipped to zero.
+        sample_origin : pint.Quantity
+            Physical sample lower corner, shape (3,), with length units.
+        sample_size : pint.Quantity
+            Positive physical sample extents, shape (3,), with length units.
+        wavelength : pint.Quantity
+            Positive scalar vacuum wavelength, with length units.
+        """
+
         if face not in MomentRT.boundary.FACES:
             raise ValueError(f"face must be one of {MomentRT.boundary.FACES}.")
 
@@ -146,14 +294,46 @@ class BoundaryField:
         self.wavelength = wavelength.copy()
 
     @property
-    def escaping_power(self):
+    def escaping_power(self) -> Quantity:
+        """Integrate the escaping irradiance over the complete boundary face.
+
+        Returns
+        -------
+        pint.Quantity
+            Integral of escaping irradiance over this entire face, with power units.
+        """
+
         return (self.escaping_irradiance * self.area_weights).sum()
 
 
 class VectorField:
-    """Element-centered vectors, without smoothing across material interfaces."""
+    """Element-centered vectors, without smoothing across material interfaces.
 
-    def __init__(self, *, positions, values, name):
+    Parameters
+    ----------
+    positions : pint.Quantity
+        Element-center coordinates, shape (N, 3), with length units; N > 0.
+    values : pint.Quantity
+        Finite vector values, shape (N, 3), with physical units.
+        Values are not smoothed across material interfaces.
+    name : str
+        Nonempty name identifying this object.
+    """
+
+    def __init__(self, *, positions: Quantity, values: Quantity, name: str) -> None:
+        """Initialize the VectorField configuration.
+
+        Parameters
+        ----------
+        positions : pint.Quantity
+            Element-center coordinates, shape (N, 3), with length units; N > 0.
+        values : pint.Quantity
+            Finite vector values, shape (N, 3), with physical units.
+            Values are not smoothed across material interfaces.
+        name : str
+            Nonempty name identifying this object.
+        """
+
         MomentRT.units.validate_units(value=positions, unit="m", name="positions")
 
         if positions.ndim != 2 or positions.shape[1] != 3 or len(positions) == 0:
@@ -174,7 +354,29 @@ class VectorField:
 
         self.name = name
 
-    def plot(self, *, max_vectors=500, length_unit="mm", show=True):
+    def plot(
+        self, *, max_vectors: int = 500, length_unit: str = "mm", show: bool = True
+    ) -> MomentRT.plotting.Figure:
+        """Create an interactive visualization of this object.
+
+        Parameters
+        ----------
+        max_vectors : int, optional
+            Positive maximum number of evenly selected element-centered arrows.
+            Default is 500.
+        length_unit : str, optional
+            Length unit used for displayed or exported coordinates.
+            Default is 'mm'.
+        show : bool, optional
+            Whether to display the figure immediately. The figure is always returned.
+            Default is True.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            Composable interactive figure, also displayed when show is True.
+        """
+
         if (
             isinstance(max_vectors, bool)
             or not isinstance(max_vectors, (int, np.integer))

@@ -1,7 +1,5 @@
-import ast
 import builtins
 import importlib
-from pathlib import Path
 
 import numpy as np
 import pytest
@@ -185,17 +183,3 @@ def test_optional_visualization(monkeypatch):
                 simulation.mesh.to_pyvista()
     finally:
         importlib.reload(MomentRT.plotting)
-
-
-def test_no_python_annotations():
-    for path in Path(MomentRT.__file__).parent.glob("*.py"):
-        tree = ast.parse(path.read_text())
-
-        for node in ast.walk(tree):
-            assert not isinstance(node, ast.AnnAssign)
-
-            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                assert node.returns is None
-
-            if isinstance(node, ast.arg):
-                assert node.annotation is None

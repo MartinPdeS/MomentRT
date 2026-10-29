@@ -45,3 +45,7 @@ globals().update(
         },
     )
 )
+
+# Class pages own their member documentation; avoid numpydoc-generated links
+# to separate method pages that are not built by this reference.
+numpydoc_show_class_members = False

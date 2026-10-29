@@ -1,6 +1,13 @@
 """Contact-aperture detection with an explicit Lambertian escape assumption."""
 
+from __future__ import annotations
+
+from collections.abc import Mapping
+from typing import Any
+
 import numpy as np
+from numpy.typing import ArrayLike
+from pint import Quantity
 from scipy import integrate
 
 import MomentRT
@@ -18,9 +25,56 @@ class SurfaceDetector:
     tilted. acceptance_angle is the cone half-angle, with explicit angular units.
     This is a passive contact measurement with Lambertian escaping radiance;
     it does not alter the transport boundary or model refraction and lenses.
+
+    Parameters
+    ----------
+    face : {'x_min', 'x_max', 'y_min', 'y_max', 'z_min', 'z_max'}
+        Axis-aligned sample face; min and max refer to outward boundaries.
+    position : pint.Quantity
+        Absolute Cartesian position, shape (3,), with length units.
+    radius : pint.Quantity
+        Positive scalar radius with length units.
+    collection_axis : array_like of float, shape (3,)
+        Nonzero dimensionless direction along accepted outgoing rays.
+        It is normalized internally and must point into the outward hemisphere.
+    acceptance_angle : pint.Quantity
+        Acceptance-cone half-angle, from 0 to 90 degrees, with angular units.
+
+    Notes
+    -----
+    This is a passive contact measurement assuming Lambertian escaping
+    radiance. It does not change the transport boundary or model lenses,
+    refraction, or angle-resolved Fresnel transmission. For a cone wholly
+    inside the outward hemisphere, the accepted fraction is
+    cos(tilt) * sin(acceptance_angle)**2.
     """
 
-    def __init__(self, *, face, position, radius, collection_axis, acceptance_angle):
+    def __init__(
+        self,
+        *,
+        face: MomentRT.boundary.Face,
+        position: Quantity,
+        radius: Quantity,
+        collection_axis: ArrayLike,
+        acceptance_angle: Quantity,
+    ) -> None:
+        """Initialize the SurfaceDetector configuration.
+
+        Parameters
+        ----------
+        face : {'x_min', 'x_max', 'y_min', 'y_max', 'z_min', 'z_max'}
+            Axis-aligned sample face; min and max refer to outward boundaries.
+        position : pint.Quantity
+            Absolute Cartesian position, shape (3,), with length units.
+        radius : pint.Quantity
+            Positive scalar radius with length units.
+        collection_axis : array_like of float, shape (3,)
+            Nonzero dimensionless direction along accepted outgoing rays.
+            It is normalized internally and must point into the outward hemisphere.
+        acceptance_angle : pint.Quantity
+            Acceptance-cone half-angle, from 0 to 90 degrees, with angular units.
+        """
+
         if face not in MomentRT.boundary.FACES:
             raise ValueError(f"face must be one of {MomentRT.boundary.FACES}.")
 
@@ -79,9 +133,73 @@ class SurfaceDetector:
 
         self.acceptance_angle = acceptance_angle.copy()
 
+    @classmethod
+    def on_face(
+        cls,
+        *,
+        sample: MomentRT.medium.StructuredMedium,
+        face: MomentRT.boundary.Face,
+        coordinates: Quantity,
+        radius: Quantity,
+        acceptance_angle: Quantity,
+        orientation: str,
+    ) -> SurfaceDetector:
+        """Place a detector on a face with an explicitly selected outward normal.
+
+        Parameters
+        ----------
+        sample : StructuredMedium
+            Physical sample used to determine the face position.
+        face : str
+            Cartesian face name, such as ``z_min``.
+        coordinates : pint.Quantity
+            Two absolute in-plane coordinates, ordered by Cartesian axis
+            (y, z for x faces; x, z for y faces; x, y for z faces).
+        radius : pint.Quantity
+            Positive aperture radius with length units.
+        acceptance_angle : pint.Quantity
+            Acceptance cone half-angle with angular units, from zero to 90 degrees.
+        orientation : {'outward_normal'}
+            Explicitly select the outward face normal as the collection axis.
+            Use the main constructor for a tilted collection axis.
+
+        Returns
+        -------
+        SurfaceDetector
+            Detector with the derived 3D position and collection axis recorded.
+        """
+        if orientation != "outward_normal":
+            raise ValueError("orientation must be 'outward_normal'.")
+
+        position = MomentRT.boundary._face_position(
+            sample=sample, face=face, coordinates=coordinates
+        )
+
+        axis = np.zeros(3)
+
+        axis["xyz".index(face[0])] = -1 if face.endswith("min") else 1
+
+        detector = cls(
+            face=face,
+            position=position,
+            radius=radius,
+            collection_axis=axis,
+            acceptance_angle=acceptance_angle,
+        )
+
+        detector._validate_sample(sample_origin=sample.origin, sample_size=sample.size)
+
+        return detector
+
     @property
-    def angular_fraction(self):
-        """Fraction of Lambertian escaping irradiance inside the acceptance cone."""
+    def angular_fraction(self) -> float:
+        """Fraction of Lambertian escaping irradiance inside the acceptance cone.
+
+        Returns
+        -------
+        float
+            Accepted fraction in [0, 1] under Lambertian escaping radiance.
+        """
 
         axis = "xyz".index(self.face[0])
 
@@ -104,7 +222,7 @@ class SurfaceDetector:
         if sine_tilt < 1e-14:
             return float(np.sin(half_angle) ** 2)
 
-        def integrand(cosine):
+        def integrand(cosine: float) -> float:
             denominator = sine_tilt * np.sqrt(max(0.0, 1 - cosine**2))
 
             threshold = (np.cos(half_angle) - cosine_tilt * cosine) / denominator
@@ -126,7 +244,19 @@ class SurfaceDetector:
 
         return float(fraction)
 
-    def _add_to_figure(self, *, figure, context):
+    def _add_to_figure(
+        self, *, figure: MomentRT.plotting.Figure, context: Mapping[str, Any]
+    ) -> None:
+        """Append this instrument geometry to an existing figure in place.
+
+        Parameters
+        ----------
+        figure : plotly.graph_objects.Figure
+            Figure to modify in place.
+        context : mapping of str to object
+            Coordinate units, legend labels, and physical sample bounds.
+        """
+
         go = MomentRT.plotting.require_plotly()
 
         position = self.position.to(context["length_unit"]).magnitude
@@ -167,7 +297,19 @@ class SurfaceDetector:
             )
         )
 
-    def _validate_sample(self, *, sample_origin, sample_size):
+    def _validate_sample(
+        self, *, sample_origin: Quantity, sample_size: Quantity
+    ) -> None:
+        """Require the detector disk to lie completely on its configured face.
+
+        Parameters
+        ----------
+        sample_origin : pint.Quantity
+            Physical sample lower corner, shape (3,), with length units.
+        sample_size : pint.Quantity
+            Positive physical sample extents, shape (3,), with length units.
+        """
+
         axis = "xyz".index(self.face[0])
 
         in_plane = [coordinate for coordinate in range(3) if coordinate != axis]
@@ -198,12 +340,33 @@ class SurfaceDetector:
                 "The entire detector aperture must fit on its sample face."
             )
 
-    def measure(self, *, result):
-        """Integrate the solved escaping field over the sampled disk aperture."""
+    def measure(
+        self, *, result: MomentRT.results.SimulationResult
+    ) -> MomentRT.results.DetectorResult:
+        """Integrate the solved escaping field over the sampled disk aperture.
+
+        Parameters
+        ----------
+        result : SimulationResult
+            Finite-sample solution with escaping-irradiance boundary fields.
+
+        Returns
+        -------
+        DetectorResult
+            Collected power, sampled and exact areas, angular fraction, and
+            minimum sampled irradiance. Quadrature area is not renormalized.
+
+        Raises
+        ------
+        ValueError
+            If boundary data are missing or the aperture does not fit on its face.
+        DetectorResolutionError
+            If no quadrature point samples the aperture; refine the mesh.
+        """
 
         if self.face not in result.boundary_fields:
             raise ValueError(
-                "SurfaceDetector requires finite-sample boundary fields from Diffusion."
+                "SurfaceDetector requires finite-sample boundary fields from Diffusion or SP3."
             )
 
         field = result.boundary_fields[self.face]

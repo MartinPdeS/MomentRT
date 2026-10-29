@@ -74,9 +74,27 @@ that configures exactly six faces with ``RobinBoundary`` or
 ``ReflectingBoundary`` objects. The finite solver accepts ``SurfaceSource`` or
 ``UniformSurfaceSource``.
 
+``SP3`` solves two coupled moment equations on the same finite sample and
+requires an explicit Henyey–Greenstein ``anisotropy`` on every material. It supports reflecting
+faces and zero-reflectance Robin faces with isotropic incoming diffuse
+radiance. See :doc:`sp3` for the equations and limitations.
+
 ``RobinBoundary`` requires a plain ``effective_reflectance`` in [0, 1).
 ``ReflectingBoundary`` imposes zero normal current and does not accept
 illumination.
+
+``Boundaries.uniform(condition=...)`` applies an explicitly chosen condition
+to all six faces. ``boundaries.with_overrides(conditions={...})`` returns a
+new mapping with selected faces replaced. Both solvers also accept ordinary
+six-face mappings.
+
+For circular surface objects, ``SurfaceSource.on_face(...)`` and
+``SurfaceDetector.on_face(...)`` accept the sample, face, and two absolute
+in-plane coordinates. Coordinates follow Cartesian axis order: ``(y, z)``
+for x faces, ``(x, z)`` for y faces, and ``(x, y)`` for z faces. A detector
+requires ``orientation="outward_normal"``; use its full constructor for a
+tilted collection axis. The resulting objects expose their full 3D positions
+and detector axis.
 
 Simulation and results
 ----------------------
@@ -91,6 +109,14 @@ Configured measurements are in ``result.detectors``; the
 ``result.detector_power`` property maps their names to collected powers.
 Boundary fields are ``BoundaryField`` snapshots of triangle-quadrature
 positions, area weights, escaping irradiance, geometry, and wavelength.
+
+``simulation.validate(wavelengths=...)`` checks configuration and, for finite
+samples, measures source and detector footprint areas using boundary
+quadrature. Its ``ValidationReport`` contains ``valid``, ``errors``,
+``warnings``, and sampled areas. Omit wavelengths to check the source
+wavelength. Call ``report.summary()`` or ``result.summary()`` for readable
+diagnostics. A valid configuration does not establish mesh convergence or
+accuracy of the physical model.
 
 ``simulation.sweep(wavelengths=..., optical_power=...)`` returns a
 ``SpectralSimulationResult`` with ordered ``wavelengths``, per-wavelength
@@ -132,4 +158,18 @@ solver. See :doc:`results` for examples.
 ``max_vectors``, ``length_unit``, and ``show``.
 
 The public classes are exported from :mod:`MomentRT`; plotting dependencies
-are loaded only when a plotting method is called.
+are optional and guarded at module scope.
+
+Detailed Python API
+-------------------
+
+The reference below is generated from NumPy-style docstrings and type hints.
+Dimensional annotations use ``pint.Quantity``; the docstrings specify the
+required physical units and array shapes. Runtime unit validation remains
+in force. Third-party solvers can implement the ``TransportSolver`` protocol
+without inheriting from it.
+
+.. toctree::
+   :maxdepth: 1
+
+   python_api

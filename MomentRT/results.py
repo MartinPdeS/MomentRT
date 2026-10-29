@@ -1,25 +1,105 @@
 """Results retain physical fields and their provenance."""
 
+from __future__ import annotations
+
+from collections.abc import Mapping, Sequence
+from typing import cast
+
 import numpy as np
+from pint import Quantity
 
 import MomentRT
 
 
 class SimulationResult:
+    """Monochromatic transport fields, energy accounting, and measurements.
+
+    Parameters
+    ----------
+    fluence : ScalarField
+        Nodal fluence rate, with power-per-area units.
+    flux : VectorField or None, optional
+        Element-centered diffuse current density, with power-per-area units.
+        Default is None.
+    moments : mapping of str to ScalarField, or None, optional
+        Additional solver-specific nodal moment fields.
+    energy_balance : mapping of str to pint.Quantity, or None, optional
+        Incoming, absorbed, net outward, and residual power accounting.
+        Default is None.
+    outgoing_power_by_face : mapping of str to pint.Quantity, or None, optional
+        Escaping transmitted power per complete sample face; not a finite
+        aperture measurement.
+        Default is None.
+    diagnostics : mapping of str to object, or None, optional
+        Numerical provenance, residuals, geometry statistics, or timing quantities.
+        Default is None.
+    boundary_fields : mapping of str to BoundaryField, or None, optional
+        Per-face snapshots of escaping-irradiance quadrature samples.
+        Default is None.
+    detectors : mapping of str to DetectorResult, or None, optional
+        Named finite-aperture measurements already evaluated on this solution.
+        Default is None.
+
+    Attributes
+    ----------
+    fluence : ScalarField
+        Nodal fluence rate with power-per-area units.
+    flux : VectorField or None
+        Element-centered current density, absent for the infinite Green function.
+    boundary_fields : dict of str to BoundaryField
+        Quadrature snapshots for finite-sample contact measurements.
+    detectors : dict of str to DetectorResult
+        Evaluated measurements, keyed by detector name.
+    diagnostics : dict of str to object
+        Solver provenance, residuals, and resolution statistics.
+    """
+
     def __init__(
         self,
         *,
-        fluence,
-        flux=None,
-        energy_balance=None,
-        outgoing_power_by_face=None,
-        diagnostics=None,
-        boundary_fields=None,
-        detectors=None,
-    ):
+        fluence: MomentRT.fields.ScalarField,
+        flux: MomentRT.fields.VectorField | None = None,
+        moments: Mapping[str, MomentRT.fields.ScalarField] | None = None,
+        energy_balance: Mapping[str, Quantity] | None = None,
+        outgoing_power_by_face: Mapping[str, Quantity] | None = None,
+        diagnostics: Mapping[str, object] | None = None,
+        boundary_fields: Mapping[str, MomentRT.fields.BoundaryField] | None = None,
+        detectors: Mapping[str, MomentRT.results.DetectorResult] | None = None,
+    ) -> None:
+        """Initialize the SimulationResult configuration.
+
+        Parameters
+        ----------
+        fluence : ScalarField
+            Nodal fluence rate, with power-per-area units.
+        flux : VectorField or None, optional
+            Element-centered diffuse current density, with power-per-area units.
+            Default is None.
+        moments : mapping of str to ScalarField, or None, optional
+            Additional solver-specific nodal moment fields.
+        energy_balance : mapping of str to pint.Quantity, or None, optional
+            Incoming, absorbed, net outward, and residual power accounting.
+            Default is None.
+        outgoing_power_by_face : mapping of str to pint.Quantity, or None, optional
+            Escaping transmitted power per complete sample face; not a finite
+            aperture measurement.
+            Default is None.
+        diagnostics : mapping of str to object, or None, optional
+            Numerical provenance, residuals, geometry statistics, or timing quantities.
+            Default is None.
+        boundary_fields : mapping of str to BoundaryField, or None, optional
+            Per-face snapshots of escaping-irradiance quadrature samples.
+            Default is None.
+        detectors : mapping of str to DetectorResult, or None, optional
+            Named finite-aperture measurements already evaluated on this solution.
+            Default is None.
+        """
+
         self.fluence = fluence
 
         self.flux = flux
+
+        self.moments = dict(moments or {})
 
         self.energy_balance = dict(energy_balance or {})
 
@@ -32,7 +112,122 @@ class SimulationResult:
         self.detectors = dict(detectors or {})
 
     @property
-    def detector_power(self):
+    def source_sampled_area(self) -> Quantity | None:
+        """Return the sampled source footprint area, when available.
+
+        Returns
+        -------
+        pint.Quantity or None
+            Sampled area with physical units, or None for an infinite solution.
+        """
+        return cast(Quantity | None, self.diagnostics.get("source_quadrature_area"))
+
+    @property
+    def source_geometric_area(self) -> Quantity | None:
+        """Return the exact source footprint area, when available.
+
+        Returns
+        -------
+        pint.Quantity or None
+            Geometric area with physical units, or None for an infinite solution.
+        """
+        return cast(Quantity | None, self.diagnostics.get("source_geometric_area"))
+
+    @property
+    def linear_relative_residual(self) -> float | None:
+        """Return the relative linear-system residual, when available.
+
+        Returns
+        -------
+        float or None
+            Relative residual, or None for an analytical solution.
+        """
+        return cast(float | None, self.diagnostics.get("linear_relative_residual"))
+
+    @property
+    def minimum_fluence(self) -> Quantity | None:
+        """Return the minimum nodal fluence, when recorded by the solver.
+
+        Returns
+        -------
+        pint.Quantity or None
+            Minimum fluence rate; negative values are not clipped.
+        """
+        return cast(Quantity | None, self.diagnostics.get("minimum_fluence"))
+
+    def summary(self) -> str:
+        """Format detector powers, sampling, energy balance, and diagnostics.
+
+        Returns
+        -------
+        str
+            Human-readable result summary with the stored physical units.
+        """
+        lines = ["Transport result"]
+
+        for name, measurement in self.detectors.items():
+            lines.append(
+                f"Detector {name}: {measurement.collected_power:~P} (sampled area {measurement.sampled_area:~P}; geometric area {measurement.geometric_area:~P})"
+            )
+
+            if measurement.minimum_escaping_irradiance.magnitude < 0:
+                lines.append(
+                    f"Warning: detector {name} samples negative escaping irradiance."
+                )
+
+            area_error = abs(
+                (measurement.sampled_area / measurement.geometric_area).to("").magnitude
+                - 1
+            )
+
+            if area_error > 0.02:
+                lines.append(
+                    f"Warning: detector {name} sampled area differs from geometric area by {area_error:.1%}."
+                )
+
+        if (
+            self.source_sampled_area is not None
+            and self.source_geometric_area is not None
+        ):
+            lines.append(
+                f"Source sampled area: {self.source_sampled_area:~P}; geometric area: {self.source_geometric_area:~P}"
+            )
+
+            area_error = abs(
+                (self.source_sampled_area / self.source_geometric_area).to("").magnitude
+                - 1
+            )
+
+            if area_error > 0.02:
+                lines.append(
+                    f"Warning: source sampled area differs from geometric area by {area_error:.1%}."
+                )
+
+        for name, power in self.energy_balance.items():
+            lines.append(f"{name.replace('_', ' ').capitalize()}: {power:~P}")
+
+        if self.linear_relative_residual is not None:
+            lines.append(
+                f"Linear relative residual: {self.linear_relative_residual:.3g}"
+            )
+
+        if self.minimum_fluence is not None and self.minimum_fluence.magnitude < 0:
+            lines.append(
+                f"Warning: minimum fluence is negative: {self.minimum_fluence:~P}"
+            )
+
+        return "\n".join(lines)
+
+    @property
+    def detector_power(self) -> dict[str, Quantity]:
+        """Return collected powers keyed by detector name.
+
+        Returns
+        -------
+        dict of str to pint.Quantity
+            Collected optical powers keyed by detector name.
+        """
+
         return {
             name: measurement.collected_power
             for name, measurement in self.detectors.items()
@@ -40,19 +235,61 @@ class SimulationResult:
 
 
 class DetectorResult:
-    """Finite-aperture diffuse collection and quadrature provenance."""
+    """Finite-aperture diffuse collection and quadrature provenance.
+
+    Parameters
+    ----------
+    collected_power : pint.Quantity
+        Integrated accepted diffuse optical power, with power units.
+    sampled_area : pint.Quantity
+        Aperture area represented by selected quadrature weights.
+        It is not normalized to the geometric area.
+    geometric_area : pint.Quantity
+        Exact circular aperture area, with area units.
+    angular_fraction : float
+        Fraction of Lambertian escaping irradiance accepted by the cone.
+    wavelength : pint.Quantity
+        Positive scalar vacuum wavelength, with length units.
+    minimum_escaping_irradiance : pint.Quantity
+        Smallest sampled escaping irradiance inside the aperture.
+        Negative values flag discretization artifacts and remain unchanged.
+    detector : SurfaceDetector
+        Snapshot of the aperture and angular collection configuration.
+    """
 
     def __init__(
         self,
         *,
-        collected_power,
-        sampled_area,
-        geometric_area,
-        angular_fraction,
-        wavelength,
-        minimum_escaping_irradiance,
-        detector,
-    ):
+        collected_power: Quantity,
+        sampled_area: Quantity,
+        geometric_area: Quantity,
+        angular_fraction: float,
+        wavelength: Quantity,
+        minimum_escaping_irradiance: Quantity,
+        detector: MomentRT.detector.SurfaceDetector,
+    ) -> None:
+        """Initialize the DetectorResult configuration.
+
+        Parameters
+        ----------
+        collected_power : pint.Quantity
+            Integrated accepted diffuse optical power, with power units.
+        sampled_area : pint.Quantity
+            Aperture area represented by selected quadrature weights.
+            It is not normalized to the geometric area.
+        geometric_area : pint.Quantity
+            Exact circular aperture area, with area units.
+        angular_fraction : float
+            Fraction of Lambertian escaping irradiance accepted by the cone.
+        wavelength : pint.Quantity
+            Positive scalar vacuum wavelength, with length units.
+        minimum_escaping_irradiance : pint.Quantity
+            Smallest sampled escaping irradiance inside the aperture.
+            Negative values flag discretization artifacts and remain unchanged.
+        detector : SurfaceDetector
+            Snapshot of the aperture and angular collection configuration.
+        """
+
         self.collected_power = collected_power
 
         self.sampled_area = sampled_area
@@ -71,22 +308,116 @@ class DetectorResult:
 
 
 class DetectorConvergenceResult:
-    """Detector signals and footprint sampling on successively refined meshes."""
+    """Detector signals and footprint sampling on successively refined meshes.
+
+    Parameters
+    ----------
+    meshes : sequence of CartesianMesh
+        Coarse-to-fine meshes used in the study.
+    results : sequence of SimulationResult or None
+        Per-level solutions; None records an unresolved source footprint.
+    detectors : mapping of str to SurfaceDetector
+        Named passive contact detectors.
+    source_geometric_area : pint.Quantity
+        Exact source footprint area, with area units.
+    wavelength : pint.Quantity
+        Positive scalar vacuum wavelength, with length units.
+    level_errors : sequence of mapping of str to str
+        Per-level resolution failures and negative-field diagnostics.
+    power_rtol : float
+        Nonnegative relative power tolerance against adjacent and finest meshes.
+    area_rtol : float
+        Nonnegative relative tolerance of sampled source and detector areas
+        against their geometric areas.
+    power_atol : pint.Quantity
+        Nonnegative absolute power tolerance, with power units.
+    required_consecutive : int
+        Positive number of consecutive passing refinements required at the
+        fine end of the mesh sequence.
+
+    Attributes
+    ----------
+    node_counts : numpy.ndarray of int
+        Number of nodes at each refinement level.
+    tetrahedron_counts : numpy.ndarray of int
+        Number of tetrahedra at each refinement level.
+    source_sampled_area : pint.Quantity
+        Sampled illumination areas in square meters, one per level.
+    source_area_relative_error : numpy.ndarray of float
+        Absolute relative errors against the exact source footprint area.
+    detector_power : dict of str to pint.Quantity
+        Per-detector collected power vectors in watts. Unavailable powers are NaN.
+    detector_sampled_area : dict of str to pint.Quantity
+        Per-detector sampled aperture areas in square meters. Unsampled apertures
+        have zero sampled area; unresolved sources produce NaN.
+    detector_geometric_area : dict of str to pint.Quantity
+        Exact aperture area for each detector.
+    detector_area_relative_error : dict of str to numpy.ndarray
+        Absolute relative aperture-area errors at each mesh level.
+    power_relative_change : dict of str to numpy.ndarray
+        Relative power differences against the preceding level. The first
+        difference and unavailable values are NaN.
+    power_relative_to_finest : dict of str to numpy.ndarray
+        Relative power differences against the finest level; unavailable
+        values are NaN.
+    meets_tolerances : numpy.ndarray of bool
+        Per-level power, area, and resolution checks.
+    stable_refinements : numpy.ndarray of int
+        Number of consecutive passing refinements ending at each level.
+    recommended_index : int or None
+        Index of the recommended mesh; None if the final sequence fails.
+
+    Notes
+    -----
+    Only a stable final sequence can support a recommendation. Sampled
+    source and detector areas must approximate their exact geometric areas,
+    and powers must meet adjacent-level and finest-level tolerances.
+    Unresolved levels and negative fields remain visible; passing these
+    checks is not proof of accuracy of the P1 approximation.
+    """
 
     def __init__(
         self,
         *,
-        meshes,
-        results,
-        detectors,
-        source_geometric_area,
-        wavelength,
-        level_errors,
-        power_rtol,
-        area_rtol,
-        power_atol,
-        required_consecutive,
-    ):
+        meshes: Sequence[MomentRT.mesh.CartesianMesh],
+        results: Sequence[MomentRT.results.SimulationResult | None],
+        detectors: Mapping[str, MomentRT.detector.SurfaceDetector],
+        source_geometric_area: Quantity,
+        wavelength: Quantity,
+        level_errors: Sequence[Mapping[str, str]],
+        power_rtol: float,
+        area_rtol: float,
+        power_atol: Quantity,
+        required_consecutive: int,
+    ) -> None:
+        """Initialize the DetectorConvergenceResult configuration.
+
+        Parameters
+        ----------
+        meshes : sequence of CartesianMesh
+            Coarse-to-fine meshes used in the study.
+        results : sequence of SimulationResult or None
+            Per-level solutions; None records an unresolved source footprint.
+        detectors : mapping of str to SurfaceDetector
+            Named passive contact detectors.
+        source_geometric_area : pint.Quantity
+            Exact source footprint area, with area units.
+        wavelength : pint.Quantity
+            Positive scalar vacuum wavelength, with length units.
+        level_errors : sequence of mapping of str to str
+            Per-level resolution failures and negative-field diagnostics.
+        power_rtol : float
+            Nonnegative relative power tolerance against adjacent and finest meshes.
+        area_rtol : float
+            Nonnegative relative tolerance of sampled source and detector areas
+            against their geometric areas.
+        power_atol : pint.Quantity
+            Nonnegative absolute power tolerance, with power units.
+        required_consecutive : int
+            Positive number of consecutive passing refinements required at the
+            fine end of the mesh sequence.
+        """
+
         self.meshes = tuple(meshes)
 
         self.mesh_shapes = tuple(mesh.shape for mesh in meshes)
@@ -120,7 +451,7 @@ class DetectorConvergenceResult:
                 [
                     0
                     if result is None
-                    else result.diagnostics["source_quadrature_area"]
+                    else cast(Quantity, result.diagnostics["source_quadrature_area"])
                     .to("m^2")
                     .magnitude
                     for result in results
@@ -281,11 +612,27 @@ class DetectorConvergenceResult:
                     break
 
     @property
-    def converged(self):
+    def converged(self) -> bool:
+        """Report whether the final refinement sequence supports a mesh recommendation.
+
+        Returns
+        -------
+        bool
+            Whether the final stable refinement sequence supports a recommendation.
+        """
+
         return self.recommended_index is not None
 
     @property
-    def recommended_mesh(self):
+    def recommended_mesh(self) -> MomentRT.mesh.CartesianMesh | None:
+        """Return the recommended mesh when the convergence criteria are met.
+
+        Returns
+        -------
+        CartesianMesh or None
+            Recommended existing mesh, or None when criteria are not met.
+        """
+
         return (
             None
             if self.recommended_index is None
@@ -293,12 +640,26 @@ class DetectorConvergenceResult:
         )
 
     @property
-    def recommended_shape(self):
+    def recommended_shape(self) -> tuple[int, int, int] | None:
+        """Return the node shape of the recommended mesh, if any.
+
+        Returns
+        -------
+        tuple of int or None
+            Recommended node counts, or None when no mesh is recommended.
+        """
+
         return None if self.recommended_mesh is None else self.recommended_mesh.shape
 
     @property
-    def records(self):
-        """Return per-level records with quantities intact and explicit failure flags."""
+    def records(self) -> list[dict[str, object]]:
+        """Return per-level records with quantities intact and explicit failure flags.
+
+        Returns
+        -------
+        list of dict
+            Per-level quantities, detector diagnostics, and explicit failure flags.
+        """
         return [
             {
                 "mesh_shape": shape,
@@ -330,8 +691,28 @@ class DetectorConvergenceResult:
             for index, shape in enumerate(self.mesh_shapes)
         ]
 
-    def plot(self, *, power_unit="mW", area_unit="mm^2", show=True):
-        """Compare powers, aperture areas, and source area against mesh node count."""
+    def plot(
+        self, *, power_unit: str = "mW", area_unit: str = "mm^2", show: bool = True
+    ) -> MomentRT.plotting.Figure:
+        """Compare powers, aperture areas, and source area against mesh node count.
+
+        Parameters
+        ----------
+        power_unit : str, optional
+            Power unit used for plotted detector signals.
+            Default is 'mW'.
+        area_unit : str, optional
+            Area unit used for plotted sampled and geometric areas.
+            Default is 'mm^2'.
+        show : bool, optional
+            Whether to display the figure immediately. The figure is always returned.
+            Default is True.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            Composable interactive figure, also displayed when show is True.
+        """
 
         go = MomentRT.plotting.require_plotly()
 
@@ -458,9 +839,51 @@ class DetectorConvergenceResult:
 
 
 class SpectralSimulationResult:
-    """Ordered independent monochromatic solves on one instrument geometry."""
+    """Ordered independent monochromatic solves on one instrument geometry.
 
-    def __init__(self, *, wavelengths, results, diagnostics=None):
+    Parameters
+    ----------
+    wavelengths : pint.Quantity
+        Nonempty one-dimensional vector of positive vacuum wavelengths.
+    results : sequence of SimulationResult
+        One solution for each wavelength, in the same order. All solutions
+        must contain the same detector names.
+    diagnostics : mapping of str to object, or None, optional
+        Numerical provenance, residuals, geometry statistics, or timing quantities.
+        Default is None.
+
+    Attributes
+    ----------
+    wavelengths : pint.Quantity
+        Supplied vacuum wavelengths in their original units and order.
+    results : tuple of SimulationResult
+        One independent solution at each wavelength.
+    diagnostics : dict of str to object
+        Sweep preparation count and unit-bearing preparation, solve, and total
+        timings when created by Simulation.sweep.
+    """
+
+    def __init__(
+        self,
+        *,
+        wavelengths: Quantity,
+        results: Sequence[MomentRT.results.SimulationResult],
+        diagnostics: Mapping[str, object] | None = None,
+    ) -> None:
+        """Initialize the SpectralSimulationResult configuration.
+
+        Parameters
+        ----------
+        wavelengths : pint.Quantity
+            Nonempty one-dimensional vector of positive vacuum wavelengths.
+        results : sequence of SimulationResult
+            One solution for each wavelength, in the same order. All solutions
+            must contain the same detector names.
+        diagnostics : mapping of str to object, or None, optional
+            Numerical provenance, residuals, geometry statistics, or timing quantities.
+            Default is None.
+        """
+
         MomentRT.units.validate_units(
             value=wavelengths, unit="m", name="wavelengths", positive=True
         )
@@ -489,7 +912,15 @@ class SpectralSimulationResult:
         self.diagnostics = dict(diagnostics or {})
 
     @property
-    def detector_power(self):
+    def detector_power(self) -> dict[str, Quantity]:
+        """Return collected powers keyed by detector name.
+
+        Returns
+        -------
+        dict of str to pint.Quantity
+            Collected optical powers keyed by detector name.
+        """
+
         return {
             name: np.array(
                 [
@@ -501,8 +932,28 @@ class SpectralSimulationResult:
             for name in self.results[0].detectors
         }
 
-    def plot(self, *, wavelength_unit="nm", power_unit="mW", show=True):
-        """Plot collected power for each detector; no spectral integration is applied."""
+    def plot(
+        self, *, wavelength_unit: str = "nm", power_unit: str = "mW", show: bool = True
+    ) -> MomentRT.plotting.Figure:
+        """Plot collected power for each detector; no spectral integration is applied.
+
+        Parameters
+        ----------
+        wavelength_unit : str, optional
+            Length unit used for plotted vacuum wavelengths.
+            Default is 'nm'.
+        power_unit : str, optional
+            Power unit used for plotted detector signals.
+            Default is 'mW'.
+        show : bool, optional
+            Whether to display the figure immediately. The figure is always returned.
+            Default is True.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            Composable interactive figure, also displayed when show is True.
+        """
 
         powers = self.detector_power
 

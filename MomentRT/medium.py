@@ -1,20 +1,83 @@
 """Homogeneous material viewed through a finite observation window."""
 
+from __future__ import annotations
+
 import copy
+from typing import Literal, cast
 
 import numpy as np
+from numpy.typing import NDArray
+from pint import Quantity
 
 import MomentRT
 
 
 class HomogeneousMedium:
-    def __init__(self, *, material):
+    """Uniform optical material in an unbounded physical medium.
+
+    Parameters
+    ----------
+    material : Material or SpectralMaterial
+        Optical coefficients assigned to this region.
+    """
+
+    def __init__(
+        self,
+        *,
+        material: MomentRT.material.Material | MomentRT.material.SpectralMaterial,
+    ) -> None:
+        """Initialize the HomogeneousMedium configuration.
+
+        Parameters
+        ----------
+        material : Material or SpectralMaterial
+            Optical coefficients assigned to this region.
+        """
+
         self.material = material
 
-    def at(self, *, wavelength):
+    def at(self, *, wavelength: Quantity) -> MomentRT.medium.HomogeneousMedium:
+        """Resolve optical coefficients at a positive vacuum wavelength.
+
+        Parameters
+        ----------
+        wavelength : pint.Quantity
+            Positive scalar vacuum wavelength, with length units.
+
+        Returns
+        -------
+        HomogeneousMedium
+            Geometry-preserving monochromatic medium; the original is unchanged.
+        """
+
         return HomogeneousMedium(material=self.material.at(wavelength=wavelength))
 
-    def plot(self, *, mesh, length_unit="mm", show=True):
+    def plot(
+        self,
+        *,
+        mesh: MomentRT.mesh.CartesianMesh,
+        length_unit: str = "mm",
+        show: bool = True,
+    ) -> MomentRT.plotting.Figure:
+        """Create an interactive visualization of this object.
+
+        Parameters
+        ----------
+        mesh : CartesianMesh
+            Cartesian nodes used for sampling or finite-element discretization.
+        length_unit : str, optional
+            Length unit used for displayed or exported coordinates.
+            Default is 'mm'.
+        show : bool, optional
+            Whether to display the figure immediately. The figure is always returned.
+            Default is True.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            Composable interactive figure, also displayed when show is True.
+        """
+
         return MomentRT.plotting.plot_medium(
             medium=self,
             mesh=mesh,
@@ -30,9 +93,26 @@ class StructuredMedium:
     Builders mutate in place and return None. Later structures replace earlier
     materials, including at shared interfaces. Shapes must fit inside the sample.
     This geometry is independent of the numerical discretization.
+
+    Parameters
+    ----------
+    origin : pint.Quantity
+        Lower Cartesian corner, shape (3,), with length units.
+    size : pint.Quantity
+        Positive full Cartesian extents, shape (3,), with length units.
     """
 
-    def __init__(self, *, origin, size):
+    def __init__(self, *, origin: Quantity, size: Quantity) -> None:
+        """Initialize the StructuredMedium configuration.
+
+        Parameters
+        ----------
+        origin : pint.Quantity
+            Lower Cartesian corner, shape (3,), with length units.
+        size : pint.Quantity
+            Positive full Cartesian extents, shape (3,), with length units.
+        """
+
         MomentRT.units.validate_units(value=origin, unit="m", name="origin", shape=(3,))
 
         MomentRT.units.validate_units(
@@ -43,16 +123,43 @@ class StructuredMedium:
 
         self.size = size.copy()
 
-        self.background = None
+        self.background: (
+            MomentRT.material.Material | MomentRT.material.SpectralMaterial | None
+        ) = None
 
-        self._structures = ()
+        self._structures: tuple[
+            MomentRT.geometry.Box | MomentRT.geometry.Sphere | MomentRT.geometry.Layer,
+            ...,
+        ] = ()
 
     @property
-    def structures(self):
+    def structures(
+        self,
+    ) -> tuple[
+        MomentRT.geometry.Box | MomentRT.geometry.Sphere | MomentRT.geometry.Layer, ...
+    ]:
+        """Return the immutable ordered collection of material-bearing regions.
+
+        Returns
+        -------
+        tuple of Box, Sphere, or Layer
+            Regions in insertion order; later regions replace earlier materials.
+        """
+
         return self._structures
 
-    def add_background(self, *, material):
-        """Replace the background while retaining existing structures."""
+    def add_background(
+        self,
+        *,
+        material: MomentRT.material.Material | MomentRT.material.SpectralMaterial,
+    ) -> None:
+        """Replace the background while retaining existing structures.
+
+        Parameters
+        ----------
+        material : Material or SpectralMaterial
+            Optical coefficients assigned to this region.
+        """
 
         if not isinstance(
             material, (MomentRT.material.Material, MomentRT.material.SpectralMaterial)
@@ -61,8 +168,19 @@ class StructuredMedium:
 
         self.background = material
 
-    def at(self, *, wavelength):
-        """Resolve all materials on a geometry-preserving monochromatic copy."""
+    def at(self, *, wavelength: Quantity) -> MomentRT.medium.StructuredMedium:
+        """Resolve all materials on a geometry-preserving monochromatic copy.
+
+        Parameters
+        ----------
+        wavelength : pint.Quantity
+            Positive scalar vacuum wavelength, with length units.
+
+        Returns
+        -------
+        StructuredMedium
+            Geometry-preserving monochromatic medium; the original is unchanged.
+        """
 
         if self.background is None:
             raise ValueError("Configure an explicit background with add_background().")
@@ -88,7 +206,23 @@ class StructuredMedium:
 
         return sample
 
-    def _at_for_display(self, *, wavelength):
+    def _at_for_display(
+        self, *, wavelength: Quantity | None
+    ) -> MomentRT.medium.StructuredMedium:
+        """Resolve spectral materials when needed for property sampling or display.
+
+        Parameters
+        ----------
+        wavelength : pint.Quantity or None
+            Vacuum wavelength used to resolve spectral materials. Required when
+            any material is spectral; None retains fixed coefficients.
+
+        Returns
+        -------
+        StructuredMedium
+            Sample with fixed monochromatic coefficients for display.
+        """
+
         if wavelength is not None:
             return self.at(wavelength=wavelength)
 
@@ -102,8 +236,21 @@ class StructuredMedium:
 
         return self
 
-    def add_structures(self, *structures):
-        """Append named shapes in argument order; validate the whole batch first."""
+    def add_structures(
+        self,
+        *structures: MomentRT.geometry.Box
+        | MomentRT.geometry.Sphere
+        | MomentRT.geometry.Layer,
+    ) -> None:
+        """Append named shapes in argument order; validate the whole batch first.
+
+        Parameters
+        ----------
+        *structures : Box, Sphere, or Layer
+            Named regions appended in argument order. Later regions replace
+            earlier ones, including on shared interfaces; the batch is validated
+            before any mutation.
+        """
 
         lower = self.origin.to("m").magnitude
 
@@ -158,10 +305,27 @@ class StructuredMedium:
 
         self._structures = (*self.structures, *structures)
 
-    def material_labels(self, *, points):
+    def material_labels(self, *, points: Quantity) -> NDArray[np.int64]:
         """Return 0 for background and 1..N for ordered structures.
 
         Points must lie inside the finite sample. The trailing axis is x/y/z.
+
+        Parameters
+        ----------
+        points : pint.Quantity
+            Query coordinates with length units and shape (..., 3).
+
+        Returns
+        -------
+        ndarray of int
+            Labels with shape points.shape[:-1]: zero for background and 1..N
+            for ordered structures. Later structures win at overlaps.
+
+        Raises
+        ------
+        ValueError
+            If no background is configured, points have invalid shape, or any
+            query lies outside the finite sample.
         """
 
         MomentRT.units.validate_units(value=points, unit="m", name="points")
@@ -188,15 +352,36 @@ class StructuredMedium:
 
         return labels
 
-    def optical_fields(self, *, mesh, wavelength=None):
-        """Sample the material map onto mesh nodes, returning unit-bearing fields."""
+    def optical_fields(
+        self,
+        *,
+        mesh: MomentRT.mesh.CartesianMesh,
+        wavelength: Quantity | None = None,
+    ) -> dict[str, MomentRT.fields.ScalarField]:
+        """Sample the material map onto mesh nodes, returning unit-bearing fields.
+
+        Parameters
+        ----------
+        mesh : CartesianMesh
+            Cartesian nodes used for sampling or finite-element discretization.
+        wavelength : pint.Quantity or None, optional
+            Vacuum wavelength used to resolve spectral materials. Required when
+            any material is spectral; None retains fixed coefficients.
+            Default is None.
+
+        Returns
+        -------
+        dict of str to ScalarField
+            Nodal absorption and reduced scattering in inverse meters, plus
+            dimensionless refractive index. This is sampling, not interface fitting.
+        """
 
         sample = self._at_for_display(wavelength=wavelength)
 
         labels = sample.material_labels(points=mesh.points)
 
         materials = [
-            sample.background,
+            cast(MomentRT.material.Material, sample.background),
             *(shape.material for shape in sample.structures),
         ]
 
@@ -226,12 +411,43 @@ class StructuredMedium:
         return fields
 
     def plot(
-        self, *, mesh=None, wavelength=None, length_unit="mm", opacity=0.45, show=True
-    ):
+        self,
+        *,
+        mesh: MomentRT.mesh.CartesianMesh | None = None,
+        wavelength: Quantity | None = None,
+        length_unit: str = "mm",
+        opacity: float = 0.45,
+        show: bool = True,
+    ) -> MomentRT.plotting.Figure:
         """Plot named region surfaces; mesh is optional and does not define geometry.
 
         Transparent primitive surfaces show the construction geometry; overlap
         precedence follows insertion order, not optical mixing or CSG subtraction.
+
+        Parameters
+        ----------
+        mesh : CartesianMesh or None, optional
+            Optional compatibility argument; construction surfaces use the
+            physical sample bounds and do not depend on a numerical mesh.
+            Default is None.
+        wavelength : pint.Quantity or None, optional
+            Vacuum wavelength used to resolve spectral materials. Required when
+            any material is spectral; None retains fixed coefficients.
+            Default is None.
+        length_unit : str, optional
+            Length unit used for displayed or exported coordinates.
+            Default is 'mm'.
+        opacity : float, optional
+            Construction-surface opacity in [0, 1].
+            Default is 0.45.
+        show : bool, optional
+            Whether to display the figure immediately. The figure is always returned.
+            Default is True.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            Composable interactive figure, also displayed when show is True.
         """
 
         if self.background is None:
@@ -244,12 +460,27 @@ class StructuredMedium:
             show=show,
         )
 
-    def add_layer(self, *, name, thickness, material):
+    def add_layer(
+        self,
+        *,
+        name: str,
+        thickness: Quantity,
+        material: MomentRT.material.Material | MomentRT.material.SpectralMaterial,
+    ) -> None:
         """Append a layer below the deepest existing layer; return None.
 
         The first layer starts at origin.z. Boxes and spheres do not change
         stacking depth. Explicit Layer objects added through add_structures
         also participate. New layers follow the usual insertion precedence.
+
+        Parameters
+        ----------
+        name : str
+            Nonempty name identifying this object.
+        thickness : pint.Quantity
+            Positive scalar layer thickness with length units.
+        material : Material or SpectralMaterial
+            Optical coefficients assigned to this region.
         """
 
         depth = self.origin[2]
@@ -267,11 +498,38 @@ class StructuredMedium:
 
         self.add_structures(layer)
 
-    def section(self, *, normal, position, resolution=(200, 200), wavelength=None):
+    def section(
+        self,
+        *,
+        normal: Literal["x", "y", "z"],
+        position: Quantity,
+        resolution: tuple[int, int] = (200, 200),
+        wavelength: Quantity | None = None,
+    ) -> MomentRT.sections.SampleSection:
         """Sample a plane at an absolute coordinate, resolving region overlaps.
 
         resolution gives (horizontal, vertical) cell counts. Cell-center
         samples represent a discrete map, not an exact geometric intersection.
+
+        Parameters
+        ----------
+        normal : {'x', 'y', 'z'}
+            Axis normal to the section plane.
+        position : pint.Quantity
+            Absolute scalar coordinate along the plane normal, with length units.
+        resolution : tuple of int, optional
+            Horizontal and vertical cell counts, each at least two.
+            The stored section arrays have shape (vertical, horizontal).
+            Default is (200, 200).
+        wavelength : pint.Quantity or None, optional
+            Vacuum wavelength used to resolve spectral materials. Required when
+            any material is spectral; None retains fixed coefficients.
+            Default is None.
+
+        Returns
+        -------
+        SampleSection
+            Snapshot of cell-center labels and SI optical-property arrays.
         """
 
         return MomentRT.sections.SampleSection(
@@ -285,17 +543,55 @@ class StructuredMedium:
     def plot_section(
         self,
         *,
-        normal,
-        position,
-        quantity="material",
-        resolution=(200, 200),
-        wavelength=None,
-        length_unit="mm",
-        value_unit=None,
-        scale="linear",
-        show=True,
-    ):
-        """Plot a resolved cross-section, with depth increasing downwards."""
+        normal: Literal["x", "y", "z"],
+        position: Quantity,
+        quantity: Literal[
+            "material", "absorption", "reduced_scattering", "refractive_index"
+        ] = "material",
+        resolution: tuple[int, int] = (200, 200),
+        wavelength: Quantity | None = None,
+        length_unit: str = "mm",
+        value_unit: str | None = None,
+        scale: Literal["linear", "log"] = "linear",
+        show: bool = True,
+    ) -> MomentRT.plotting.Figure:
+        """Plot a resolved cross-section, with depth increasing downwards.
+
+        Parameters
+        ----------
+        normal : {'x', 'y', 'z'}
+            Axis normal to the section plane.
+        position : pint.Quantity
+            Absolute scalar coordinate along the plane normal, with length units.
+        quantity : {'material', 'absorption', 'reduced_scattering', 'refractive_index'}, optional
+            Material labels or optical property to display.
+            Default is 'material'.
+        resolution : tuple of int, optional
+            Horizontal and vertical cell counts, each at least two.
+            The stored section arrays have shape (vertical, horizontal).
+            Default is (200, 200).
+        wavelength : pint.Quantity or None, optional
+            Vacuum wavelength used to resolve spectral materials. Required when
+            any material is spectral; None retains fixed coefficients.
+            Default is None.
+        length_unit : str, optional
+            Length unit used for displayed or exported coordinates.
+            Default is 'mm'.
+        value_unit : str or None, optional
+            Unit for displayed optical-property values; None uses stored SI units.
+            Default is None.
+        scale : {'linear', 'log'}, optional
+            Display scaling. Logarithmic scaling requires strictly positive values.
+            Default is 'linear'.
+        show : bool, optional
+            Whether to display the figure immediately. The figure is always returned.
+            Default is True.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            Resolved cross-section figure with depth increasing downwards.
+        """
         section = self.section(
             normal=normal,
             position=position,

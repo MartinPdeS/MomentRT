@@ -180,7 +180,12 @@ Those operations require additional physical data and normalization.
 Reusing finite-element preparation
 -----------------------------------
 
-For finite ``Diffusion`` sweeps, the package prepares mesh geometry,
+For SP3, each ``SpectralMaterial`` must additionally specify ``anisotropy``
+as a plain scalar or a vector on the wavelength grid. A vector is interpolated
+linearly along with the other material coefficients; separate materials can
+have different anisotropies. P1 does not require this property.
+
+For finite ``Diffusion`` and ``SP3`` sweeps, the package prepares mesh geometry,
 tetrahedra, element volumes and gradients, centroid material labels, boundary
 triangles, and boundary quadrature once per sweep. It also prepares the
 fixed boundary matrix, source footprint, and normalized source load.

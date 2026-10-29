@@ -56,9 +56,10 @@ Features
   across wavelengths.
 * A coupled SP3 finite-element solver with explicit scattering anisotropy and
   matched-index boundaries, alongside the P1 diffusion solver.
+* A full three-dimensional P3 finite-element solver with matched-index faces.
 
-MomentRT offers P1 diffusion and SP3 approximations. It does not currently solve the
-full radiative transfer equation or implement full P3, collimated LED
+MomentRT offers P1, SP3, and P3 approximations. It does not currently solve the
+full radiative transfer equation or implement collimated LED
 propagation, free-space detector optics, broadband spectral integration,
 time dependence, or inverse estimation. Read the `scientific guide`_ for the equations,
 approximations, validation limits, and complete workflow.

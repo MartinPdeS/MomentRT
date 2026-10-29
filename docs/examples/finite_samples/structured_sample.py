@@ -8,6 +8,8 @@ one wavelength. Positive z points into the sample. Then illuminate the sample
 and inspect the finite-sample P1 fluence volume.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/structured_sample.png'
+
 import os
 
 import numpy as np

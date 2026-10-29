@@ -366,7 +366,7 @@ class SurfaceDetector:
 
         if self.face not in result.boundary_fields:
             raise ValueError(
-                "SurfaceDetector requires finite-sample boundary fields from Diffusion or SP3."
+                "SurfaceDetector requires finite-sample boundary fields from Diffusion, SP3, or P3."
             )
 
         field = result.boundary_fields[self.face]

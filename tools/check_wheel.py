@@ -24,6 +24,7 @@ REQUIRED_MODULES = (
     "MomentRT/material.py",
     "MomentRT/medium.py",
     "MomentRT/mesh.py",
+    "MomentRT/p3.py",
     "MomentRT/plotting.py",
     "MomentRT/results.py",
     "MomentRT/sections.py",

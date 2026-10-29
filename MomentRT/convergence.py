@@ -50,10 +50,11 @@ def _run_study(
     if not isinstance(
         simulation.medium, MomentRT.medium.StructuredMedium
     ) or not isinstance(
-        simulation.solver, (MomentRT.diffusion.Diffusion, MomentRT.sp3.SP3)
+        simulation.solver,
+        (MomentRT.diffusion.Diffusion, MomentRT.sp3.SP3, MomentRT.p3.P3),
     ):
         raise TypeError(
-            "Detector convergence requires a finite Diffusion or SP3 simulation."
+            "Detector convergence requires a finite Diffusion, SP3, or P3 simulation."
         )
 
     if not simulation.detectors:

@@ -6,6 +6,8 @@ All physical values are illustrative. The plotted box is an observation
 window, not a tissue boundary. Optical properties apply at 970 nm.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/infinite_diffusion.png'
+
 import os
 
 import matplotlib.pyplot as plt

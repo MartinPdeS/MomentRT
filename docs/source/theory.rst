@@ -452,9 +452,8 @@ For the asymptotic basis of simplified moment systems, see the original
 `the work on time-dependent SPN equations
 <https://doi.org/10.1016/j.jcp.2007.07.009>`_.
 Neither label means that a P1 solve secretly contains P2 or P3.
-MomentRT solves the P1 diffusion equation above and also offers the separate
-:doc:`sp3` solver. Neither is a full P3
-system.
+MomentRT offers the P1 diffusion equation above, the separate :doc:`sp3`
+solver, and the full three-dimensional :doc:`p3` moment system.
 
 Angular order and finite element order
 --------------------------------------

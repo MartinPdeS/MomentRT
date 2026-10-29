@@ -13,6 +13,7 @@ import MomentRT.geometry
 import MomentRT.material
 import MomentRT.medium
 import MomentRT.mesh
+import MomentRT.p3
 import MomentRT.plotting as plotting  # noqa: F401 -- public submodule
 import MomentRT.results
 import MomentRT.sections
@@ -49,6 +50,7 @@ SampleSection = MomentRT.sections.SampleSection
 TransportSolver = MomentRT.simulation.TransportSolver
 Simulation = MomentRT.simulation.Simulation
 SP3 = MomentRT.sp3.SP3
+P3 = MomentRT.p3.P3
 ValidationReport = MomentRT.validation.ValidationReport
 PointSource = MomentRT.source.PointSource
 SourceResolutionError = MomentRT.source.SourceResolutionError
@@ -57,6 +59,7 @@ UniformSurfaceSource = MomentRT.source.UniformSurfaceSource
 ureg = MomentRT.units.ureg
 
 __all__ = [
+    "P3",
     "ValidationReport",
     "Boundaries",
     "SP3",

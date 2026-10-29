@@ -8,6 +8,8 @@ setup; it does not validate the P1 approximation against radiative transfer.
 All inputs are illustrative.
 """
 
+# sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/mesh_refinement.png'
+
 import os
 
 import matplotlib.pyplot as plt
@@ -161,3 +163,16 @@ for shape, result in zip(mesh_shapes, results):
 
 if show_figures:
     plt.show()
+
+# %%
+# Inspect the finest-grid fluence volume
+# --------------------------------------
+# This view uses the final mesh from the refinement sequence. A visually
+# smooth volume alone does not establish numerical convergence.
+
+volume_figure = results[-1].fluence.plot(
+    view="volume",
+    scale="log",
+    overlays=[source],
+    show=show_figures,
+)

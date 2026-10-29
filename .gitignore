@@ -7,6 +7,7 @@ build/
 dist/
 *.png
 !docs/source/_static/images/*.png
+!docs/source/_static/images/gallery_volumes/*.png
 !docs/images/*.png
 *.vti
 *.html

@@ -115,13 +115,15 @@ def _validate(
 
     mesh = simulation.mesh
 
-    finite = isinstance(solver, (MomentRT.diffusion.Diffusion, MomentRT.sp3.SP3))
+    finite = isinstance(
+        solver, (MomentRT.diffusion.Diffusion, MomentRT.sp3.SP3, MomentRT.p3.P3)
+    )
 
     infinite = isinstance(solver, MomentRT.diffusion.InfiniteDiffusion)
 
     if not finite and not infinite:
         errors.append(
-            "Preflight validation supports Diffusion, SP3, and InfiniteDiffusion solvers."
+            "Preflight validation supports Diffusion, SP3, P3, and InfiniteDiffusion solvers."
         )
 
     if finite and not isinstance(medium, MomentRT.medium.StructuredMedium):
@@ -184,17 +186,19 @@ def _validate(
         if medium.background is None:
             errors.append("Sample background is not configured.")
 
-        if isinstance(solver, MomentRT.sp3.SP3):
+        if isinstance(solver, (MomentRT.sp3.SP3, MomentRT.p3.P3)):
             for name, material in materials:
                 if material is not None and material.anisotropy is None:
-                    errors.append(f"SP3 requires anisotropy for material {name!r}.")
+                    errors.append(
+                        f"{type(solver).__name__} requires anisotropy for material {name!r}."
+                    )
 
                 if (
                     material is not None
                     and material.phase_function != "henyey_greenstein"
                 ):
                     errors.append(
-                        f"SP3 does not support the phase function for material {name!r}."
+                        f"{type(solver).__name__} does not support the phase function for material {name!r}."
                     )
 
         for wavelength in selected_wavelengths:
@@ -210,7 +214,7 @@ def _validate(
                     indices.append(resolved.refractive_index)
 
                     if (
-                        isinstance(solver, MomentRT.sp3.SP3)
+                        isinstance(solver, (MomentRT.sp3.SP3, MomentRT.p3.P3))
                         and resolved.anisotropy is not None
                     ):
                         MomentRT.material._anisotropy_values(
@@ -230,12 +234,17 @@ def _validate(
             except (ValueError, TypeError) as error:
                 errors.append(f"Material at {wavelength:~P}: {error}")
 
-    if isinstance(solver, (MomentRT.diffusion.Diffusion, MomentRT.sp3.SP3)):
+    if isinstance(
+        solver, (MomentRT.diffusion.Diffusion, MomentRT.sp3.SP3, MomentRT.p3.P3)
+    ):
         try:
             MomentRT.diffusion.Diffusion(boundaries=solver.boundaries)
 
             if isinstance(solver, MomentRT.sp3.SP3):
                 MomentRT.sp3.SP3(boundaries=solver.boundaries)
+
+            if isinstance(solver, MomentRT.p3.P3):
+                MomentRT.p3.P3(boundaries=solver.boundaries)
         except (ValueError, TypeError, AttributeError) as error:
             errors.append(f"Boundaries: {error}")
 

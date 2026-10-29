@@ -210,7 +210,7 @@ def _validate(
                 try:
                     resolved = material.at(wavelength=wavelength)
 
-                    indices.append(resolved.refractive_index)
+                    indices.append((name, resolved.refractive_index))
 
                     if isinstance(solver, (MomentRT.sp3.SP3, MomentRT.p3.P3)) and (
                         resolved.anisotropy is not None
@@ -223,9 +223,12 @@ def _validate(
                 except (ValueError, TypeError) as error:
                     errors.append(f"Material {name!r} at {wavelength:~P}: {error}")
 
-            if indices and any(index != indices[0] for index in indices):
+            if indices and any(index != indices[0][1] for _, index in indices):
+                details = ", ".join(f"{name!r}={index:g}" for name, index in indices)
+
                 errors.append(
-                    f"Internal refractive-index jumps are unsupported at {wavelength:~P}."
+                    f"Internal refractive-index jumps are unsupported at "
+                    f"{wavelength:~P}: {details}."
                 )
     elif isinstance(medium, MomentRT.medium.HomogeneousMedium):
         for wavelength in selected_wavelengths:
@@ -251,7 +254,9 @@ def _validate(
         if isinstance(source, MomentRT.source.UniformSurfaceSource) and not isinstance(
             solver.boundaries.get(source.face), MomentRT.boundary.RobinBoundary
         ):
-            errors.append("The illuminated face requires a RobinBoundary.")
+            errors.append(
+                f"The illuminated face {source.face!r} requires a RobinBoundary."
+            )
 
     if (
         finite

@@ -16,6 +16,9 @@ def plotly_scraper(block, block_vars, gallery_conf):
 
     script = Path(block_vars["target_file"])
 
+    if not rendered:
+        (output / f"{script.stem}-preview.txt").unlink(missing_ok=True)
+
     markup = []
 
     for figure in block_vars["example_globals"].values():
@@ -33,6 +36,9 @@ def plotly_scraper(block, block_vars, gallery_conf):
             include_plotlyjs="directory",
             config={"responsive": True, "scrollZoom": True},
         )
+
+        if figure is block_vars["example_globals"].get("gallery_system_figure"):
+            (output / f"{script.stem}-preview.txt").write_text(filename.name)
 
         relative = Path(os.path.relpath(filename, script.parent)).as_posix()
 

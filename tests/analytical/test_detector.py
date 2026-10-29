@@ -257,3 +257,34 @@ def test_spectral_slab_detector_signals_match_constant_current_solutions():
         result.detectors["transmission"].detector is not aperture
         for result in spectrum.results
     )
+
+
+@pytest.mark.parametrize("face", MomentRT.boundary.FACES)
+def test_full_hemisphere_detector_on_each_face(face):
+    sample = StructuredMedium(
+        origin=np.zeros(3) * ureg.mm,
+        size=np.full(3, 4) * ureg.mm,
+    )
+
+    aperture = SurfaceDetector.full_hemisphere_on_face(
+        sample=sample,
+        face=face,
+        coordinates=np.array([2, 2]) * ureg.mm,
+        radius=0.5 * ureg.mm,
+    )
+
+    axis = "xyz".index(face[0])
+
+    expected = np.zeros(3)
+
+    expected[axis] = -1 if face.endswith("min") else 1
+
+    np.testing.assert_array_equal(aperture.collection_axis, expected)
+
+    assert aperture.position[axis].to("mm").magnitude == (
+        0 if face.endswith("min") else 4
+    )
+
+    assert aperture.angular_fraction == pytest.approx(1)
+
+    assert aperture.acceptance_angle.to("degree").magnitude == 90

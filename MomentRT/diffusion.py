@@ -132,8 +132,16 @@ def _finite_materials_at(
         material.refractive_index != materials[0].refractive_index
         for material in materials
     ):
+        names = ["background", *(shape.name for shape in medium.structures)]
+
+        indices = ", ".join(
+            f"{name!r}={material.refractive_index:g}"
+            for name, material in zip(names, materials)
+        )
+
         raise ValueError(
-            "Internal refractive-index jumps are not supported by this continuous-fluence FEM solver."
+            "Internal refractive-index jumps are not supported by this "
+            f"continuous-fluence FEM solver at {wavelength:~P}: {indices}."
         )
 
     return materials
@@ -346,7 +354,9 @@ class _PreparedDiffusion:
         condition = self.boundaries[self.source.face]
 
         if not isinstance(condition, MomentRT.boundary.RobinBoundary):
-            raise ValueError("The illuminated face requires a RobinBoundary.")
+            raise ValueError(
+                f"The illuminated face {self.source.face!r} requires a RobinBoundary."
+            )
 
         axis = "xyz".index(self.source.face[0])
 
@@ -367,7 +377,16 @@ class _PreparedDiffusion:
             if np.any(position[in_plane] - radius < lower[in_plane]) or np.any(
                 position[in_plane] + radius > upper[in_plane]
             ):
-                raise ValueError("The entire illumination disk must fit on its face.")
+                raise ValueError(
+                    MomentRT.boundary._disk_bounds_message(
+                        face=self.source.face,
+                        position=self.source.position,
+                        radius=self.source.radius,
+                        lower=self.medium.origin,
+                        upper=self.medium.origin + self.medium.size,
+                        label="illumination disk",
+                    )
+                )
 
             self.source_geometric_area = np.pi * radius**2
         else:
@@ -599,20 +618,17 @@ class _PreparedDiffusion:
 
         self.solve_count += 1
 
+        energy_balance, outgoing_power_by_face = MomentRT.results._energy_accounting(
+            incoming_power=source.optical_power,
+            absorbed_watts=absorbed,
+            escaping_watts=escaping,
+        )
+
         return MomentRT.results.SimulationResult(
             fluence=fluence,
             flux=flux,
-            energy_balance={
-                "incoming_power": source.optical_power.copy(),
-                "absorbed_power": absorbed * MomentRT.units.ureg.watt,
-                "escaping_power": sum(escaping.values()) * MomentRT.units.ureg.watt,
-                "residual_power": (power - absorbed - sum(escaping.values()))
-                * MomentRT.units.ureg.watt,
-            },
-            outgoing_power_by_face={
-                face: value * MomentRT.units.ureg.watt
-                for face, value in escaping.items()
-            },
+            energy_balance=energy_balance,
+            outgoing_power_by_face=outgoing_power_by_face,
             diagnostics={
                 "linear_relative_residual": relative_residual,
                 "source_quadrature_area": self.source_sampled_area

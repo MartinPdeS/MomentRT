@@ -49,12 +49,18 @@ class SP3:
         """
         validated = MomentRT.diffusion.Diffusion(boundaries=boundaries)
 
-        if any(
-            isinstance(boundary, MomentRT.boundary.RobinBoundary)
+        unsupported = [
+            face
+            for face, boundary in validated.boundaries.items()
+            if isinstance(boundary, MomentRT.boundary.RobinBoundary)
             and boundary.effective_reflectance != 0
-            for boundary in validated.boundaries.values()
-        ):
-            raise ValueError("SP3 supports only zero-reflectance Robin boundaries.")
+        ]
+
+        if unsupported:
+            raise ValueError(
+                "SP3 supports only zero-reflectance Robin boundaries. "
+                f"Unsupported faces: {', '.join(unsupported)}."
+            )
 
         self.boundaries = validated.boundaries
 
@@ -292,6 +298,12 @@ class _PreparedSP3(MomentRT.diffusion._PreparedDiffusion):
 
         self.solve_count += 1
 
+        energy_balance, outgoing_power_by_face = MomentRT.results._energy_accounting(
+            incoming_power=source.optical_power,
+            absorbed_watts=absorbed,
+            escaping_watts=escaping,
+        )
+
         return MomentRT.results.SimulationResult(
             fluence=field(values=scalar, name="Fluence rate"),
             flux=MomentRT.fields.VectorField(
@@ -303,17 +315,8 @@ class _PreparedSP3(MomentRT.diffusion._PreparedDiffusion):
                 "composite_1": field(values=u, name="SP3 composite moment 1"),
                 "composite_2": field(values=v, name="SP3 composite moment 2"),
             },
-            energy_balance={
-                "incoming_power": source.optical_power.copy(),
-                "absorbed_power": absorbed * MomentRT.units.ureg.watt,
-                "escaping_power": sum(escaping.values()) * MomentRT.units.ureg.watt,
-                "residual_power": (power - absorbed - sum(escaping.values()))
-                * MomentRT.units.ureg.watt,
-            },
-            outgoing_power_by_face={
-                face: value * MomentRT.units.ureg.watt
-                for face, value in escaping.items()
-            },
+            energy_balance=energy_balance,
+            outgoing_power_by_face=outgoing_power_by_face,
             diagnostics={
                 "linear_relative_residual": relative_residual,
                 "source_quadrature_area": self.source_sampled_area

@@ -204,6 +204,12 @@ def test_real_study_preserves_configuration_and_matches_linear_slab():
 
     assert study.converged
 
+    summary = study.results[-1].summary(convergence=study)
+
+    assert "Supplied convergence study: converged" in summary
+
+    assert "Verify that the study applies" in summary
+
     assert simulation.mesh is original_mesh
 
     assert simulation.source is original_source

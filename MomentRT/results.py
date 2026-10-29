@@ -11,6 +11,49 @@ from pint import Quantity
 import MomentRT
 
 
+def _energy_accounting(
+    *,
+    incoming_power: Quantity,
+    absorbed_watts: float,
+    escaping_watts: Mapping[MomentRT.boundary.Face, float],
+) -> tuple[dict[str, Quantity], dict[str, Quantity]]:
+    """Package finite-solver power accounting without changing signed outputs.
+
+    Parameters
+    ----------
+    incoming_power : pint.Quantity
+        Incoming coupled power, with power units.
+    absorbed_watts : float
+        Integrated absorption in watts.
+    escaping_watts : mapping of str to float
+        Signed escaping power by face in watts.
+
+    Returns
+    -------
+    tuple of dict
+        Energy balance and per-face escaping powers, both with power units.
+    """
+    watt = MomentRT.units.ureg.watt
+
+    escaping_total = sum(escaping_watts.values())
+
+    balance = {
+        "incoming_power": incoming_power.copy(),
+        "absorbed_power": absorbed_watts * watt,
+        "escaping_power": escaping_total * watt,
+        "residual_power": (
+            incoming_power.to("W").magnitude - absorbed_watts - escaping_total
+        )
+        * watt,
+    }
+
+    by_face: dict[str, Quantity] = {
+        face: value * watt for face, value in escaping_watts.items()
+    }
+
+    return balance, by_face
+
+
 class SimulationResult:
     """Monochromatic transport fields, energy accounting, and measurements.
 
@@ -155,8 +198,17 @@ class SimulationResult:
         """
         return cast(Quantity | None, self.diagnostics.get("minimum_fluence"))
 
-    def summary(self) -> str:
+    def summary(
+        self, *, convergence: MomentRT.results.DetectorConvergenceResult | None = None
+    ) -> str:
         """Format detector powers, sampling, energy balance, and diagnostics.
+
+        Parameters
+        ----------
+        convergence : DetectorConvergenceResult or None, optional
+            Separately supplied convergence study to summarize. The caller must
+            verify it applies to this result; None means none was supplied.
+            Default is None.
 
         Returns
         -------
@@ -164,6 +216,29 @@ class SimulationResult:
             Human-readable result summary with the stored physical units.
         """
         lines = ["Transport result"]
+
+        transport = self.fluence.metadata.get("transport")
+
+        if transport is not None:
+            lines.append(f"Model: {transport}")
+
+        wavelength = self.fluence.metadata.get("wavelength")
+
+        if isinstance(wavelength, Quantity):
+            lines.append(f"Wavelength: {wavelength:~P}")
+
+        lines.append(f"Mesh shape: {self.fluence.mesh.shape}")
+
+        if convergence is None:
+            lines.append(
+                "Convergence study: not supplied; convergence is not established."
+            )
+        else:
+            lines.append(
+                f"Supplied convergence study: {'converged' if convergence.converged else 'not converged'}; "
+                f"recommended mesh: {convergence.recommended_shape}. "
+                "Verify that the study applies to this result."
+            )
 
         for name, measurement in self.detectors.items():
             lines.append(
@@ -910,6 +985,22 @@ class SpectralSimulationResult:
         self.results = results
 
         self.diagnostics = dict(diagnostics or {})
+
+    @property
+    def detectors(self) -> dict[str, tuple[MomentRT.results.DetectorResult, ...]]:
+        """Return each detector's measurements in supplied wavelength order.
+
+        Returns
+        -------
+        dict of str to tuple of DetectorResult
+            Detector names mapped to monochromatic measurements, including
+            collected power and sampled and geometric aperture areas. These
+            are independent solves, not a broadband integral.
+        """
+        return {
+            name: tuple(result.detectors[name] for result in self.results)
+            for name in self.results[0].detectors
+        }
 
     @property
     def detector_power(self) -> dict[str, Quantity]:

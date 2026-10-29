@@ -1,12 +1,15 @@
 Transport theory and approximations
 ===================================
 
-MomentRT currently implements steady-state P1 diffusion. It does not solve
-the full radiative transfer equation (RTE), a higher-order :math:`P_N` system,
-or an :math:`SP_N` approximation. Those models have different angular
-closures and capabilities. The two implemented solvers use the same diffusion
-physics in different geometries: an analytical Green function for an infinite
-homogeneous medium and a finite-domain FEM solve.
+MomentRT implements steady-state P1 diffusion, simplified P3 (SP3), and
+full three-dimensional P3. These are distinct angular-moment approximations
+to the radiative transfer equation (RTE); MomentRT does not solve the full
+RTE. P1 is available as an analytical Green function in an infinite
+homogeneous medium and as a finite-domain FEM solver. SP3 and P3 use finite
+sample FEM solvers, with their own boundary and material restrictions.
+
+This page derives the P1 diffusion model. For the higher-order models and
+their limits, see :doc:`sp3` and :doc:`p3`.
 
 How to read this theory
 -----------------------

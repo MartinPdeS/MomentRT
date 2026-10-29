@@ -191,6 +191,48 @@ class SurfaceDetector:
 
         return detector
 
+    @classmethod
+    def full_hemisphere_on_face(
+        cls,
+        *,
+        sample: MomentRT.medium.StructuredMedium,
+        face: MomentRT.boundary.Face,
+        coordinates: Quantity,
+        radius: Quantity,
+    ) -> SurfaceDetector:
+        """Collect all escaping irradiance across a circular contact aperture.
+
+        Parameters
+        ----------
+        sample : StructuredMedium
+            Physical sample used to determine and validate the face position.
+        face : {'x_min', 'x_max', 'y_min', 'y_max', 'z_min', 'z_max'}
+            Axis-aligned sample face.
+        coordinates : pint.Quantity
+            Absolute in-plane coordinates, shape (2,), with length units, ordered
+            by Cartesian axis.
+        radius : pint.Quantity
+            Positive aperture radius with length units.
+
+        Returns
+        -------
+        SurfaceDetector
+            A detector with outward-normal axis and 90-degree acceptance half-angle.
+
+        Notes
+        -----
+        This ideal contact measurement accepts the entire outward hemisphere.
+        It does not model external optics or change the transport boundary.
+        """
+        return cls.on_face(
+            sample=sample,
+            face=face,
+            coordinates=coordinates,
+            radius=radius,
+            acceptance_angle=90 * MomentRT.units.ureg.degree,
+            orientation="outward_normal",
+        )
+
     @property
     def angular_fraction(self) -> float:
         """Fraction of Lambertian escaping irradiance inside the acceptance cone.
@@ -339,7 +381,14 @@ class SurfaceDetector:
             position[in_plane] + radius > upper[in_plane] + tolerance[in_plane]
         ):
             raise ValueError(
-                "The entire detector aperture must fit on its sample face."
+                MomentRT.boundary._disk_bounds_message(
+                    face=self.face,
+                    position=self.position,
+                    radius=self.radius,
+                    lower=sample_origin,
+                    upper=sample_origin + sample_size,
+                    label="detector aperture",
+                )
             )
 
     def measure(

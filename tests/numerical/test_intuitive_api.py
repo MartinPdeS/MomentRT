@@ -226,3 +226,95 @@ def test_material_phase_function_is_visible_and_checked():
             refractive_index=1.4,
             phase_function="unknown",
         )
+
+
+def test_spectral_detector_measurements_and_result_summary():
+    simulation = configuration()
+
+    spectrum = simulation.sweep(
+        wavelengths=np.array([850, 800]) * MomentRT.ureg.nm,
+    )
+
+    measurements = spectrum.detectors["contact"]
+
+    assert [
+        measurement.wavelength.to("nm").magnitude for measurement in measurements
+    ] == [
+        850,
+        800,
+    ]
+
+    for index, measurement in enumerate(measurements):
+        assert measurement is spectrum.results[index].detectors["contact"]
+
+        assert measurement.collected_power.to("W").magnitude == pytest.approx(
+            spectrum.detector_power["contact"][index].to("W").magnitude
+        )
+
+        assert measurement.sampled_area.to("mm^2").magnitude > 0
+
+        assert measurement.geometric_area.to("mm^2").magnitude == pytest.approx(
+            np.pi * 0.7**2
+        )
+
+    summary = spectrum.results[0].summary()
+
+    assert "Model: steady-state tetrahedral SP3 FEM" in summary
+
+    assert "Wavelength: 850" in summary
+
+    assert "Mesh shape: (9, 9, 7)" in summary
+
+    assert "convergence is not established" in summary
+
+
+def test_configuration_errors_identify_affected_face_and_bounds():
+    simulation = configuration()
+
+    with pytest.raises(ValueError) as error:
+        MomentRT.SurfaceDetector.full_hemisphere_on_face(
+            sample=simulation.medium,
+            face="z_min",
+            coordinates=np.array([2, 0]) * MomentRT.ureg.mm,
+            radius=0.5 * MomentRT.ureg.mm,
+        )
+
+    message = str(error.value)
+
+    assert "z_min" in message and "radius=" in message
+
+    assert "x=[" in message and "y=[" in message
+
+    boundaries = MomentRT.Boundaries.uniform(
+        condition=MomentRT.RobinBoundary(effective_reflectance=0),
+    ).with_overrides(conditions={"x_max": MomentRT.ReflectingBoundary()})
+
+    with pytest.raises(ValueError, match="x_max"):
+        MomentRT.P3(boundaries=boundaries)
+
+
+def test_refractive_index_errors_identify_materials():
+    simulation = configuration()
+
+    other = MomentRT.Material(
+        absorption=0.02 / MomentRT.ureg.mm,
+        reduced_scattering=1 / MomentRT.ureg.mm,
+        refractive_index=1.5,
+        anisotropy=0.8,
+        phase_function=MomentRT.HenyeyGreenstein(),
+    )
+
+    simulation.medium.add_layer(
+        name="upper layer",
+        thickness=0.5 * MomentRT.ureg.mm,
+        material=other,
+    )
+
+    report = simulation.validate()
+
+    assert any(
+        "background" in error and "upper layer" in error for error in report.errors
+    )
+
+    with pytest.raises(ValueError, match="upper layer"):
+        simulation.run()

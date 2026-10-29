@@ -5,14 +5,13 @@ images are committed so documentation builds do not need a browser.
 """
 
 import argparse
-import re
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# Each example ends with its physical geometry, or observation window.
+# Each example explicitly identifies its geometry or observation-window figure.
 EXAMPLES = tuple(sorted((ROOT / "docs/examples").glob("*/*.py")))
 
 
@@ -42,19 +41,23 @@ def main() -> None:
         for example in EXAMPLES:
             name = example.stem
 
-            rst = ROOT / "docs/source/gallery" / example.parent.name / f"{name}.rst"
+            gallery = ROOT / "docs/_build/html/_static/gallery"
 
-            figures = re.findall(
-                rf"_static/gallery/{re.escape(name)}-(\d+)\.html",
-                rst.read_text(),
-            )
+            manifest = gallery / f"{name}-preview.txt"
 
-            if not figures:
-                raise ValueError(f"No Plotly figures in {rst}; run make docs first.")
+            if not manifest.exists():
+                raise FileNotFoundError(
+                    f"Missing preview selection for {name}; run make docs first."
+                )
 
-            html = ROOT / f"docs/_build/html/_static/gallery/{name}-{figures[-1]}.html"
+            selected = manifest.read_text().strip()
 
-            if not html.exists():
+            if not selected.startswith(f"{name}-") or not selected.endswith(".html"):
+                raise ValueError(f"Invalid preview selection in {manifest}.")
+
+            html = gallery / selected
+
+            if not html.is_file():
                 raise FileNotFoundError(f"Missing {html}; run make docs first.")
 
             page.goto(html.as_uri(), wait_until="load")

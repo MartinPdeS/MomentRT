@@ -40,9 +40,10 @@ equation with linear tetrahedral finite elements and explicitly configured
 conditions on all six faces. It currently requires a common refractive index
 throughout the sample.
 
-Both models are diffusion approximations. See :doc:`theory` for the moment
-equations and their validity limits, and :doc:`finite_element` for the
-finite-domain boundary model and its weak form.
+For finite samples, :class:`~MomentRT.SP3` and :class:`~MomentRT.P3` provide
+higher-order moment approximations with different boundary and phase-function
+requirements. See :doc:`theory`, :doc:`sp3`, and :doc:`p3` for their model
+limits, and :doc:`finite_element` for the P1 finite-domain formulation.
 
 Units and optical properties
 -----------------------------
@@ -158,42 +159,60 @@ of operations; the gallery example contains a complete runnable configuration.
        shape=(25, 25, 17),
    )
 
-   source = SurfaceSource(
+   source = SurfaceSource.on_face(
+       sample=sample,
        face="z_min",
-       position=np.array([0, 0, 0]) * ureg.millimeter,
-       radius=1 * ureg.millimeter,
+       coordinates=np.array([-1, 0]) * ureg.millimeter,
+       radius=0.5 * ureg.millimeter,
        wavelength=970 * ureg.nanometer,
        optical_power=1 * ureg.milliwatt,
    )
 
-   boundary = RobinBoundary(effective_reflectance=0.5)
+   detector = SurfaceDetector.full_hemisphere_on_face(
+       sample=sample,
+       face="z_min",
+       coordinates=np.array([1, 0]) * ureg.millimeter,
+       radius=0.5 * ureg.millimeter,
+   )
 
-   solver = Diffusion(
-       boundaries={
-           "x_min": boundary,
-           "x_max": boundary,
-           "y_min": boundary,
-           "y_max": boundary,
-           "z_min": boundary,
-           "z_max": boundary,
-       },
+   boundaries = Boundaries.uniform(
+       condition=RobinBoundary(effective_reflectance=0.5),
    )
 
    simulation = Simulation(
        medium=sample,
        source=source,
        mesh=mesh,
-       solver=solver,
+       solver=Diffusion(boundaries=boundaries),
+       detectors={"reflection": detector},
    )
 
+   report = simulation.validate()
+
+   print(report.summary())
+
+   if not report.valid:
+       raise ValueError("Correct the configuration errors before solving.")
+
    result = simulation.run()
+
+   print(result.summary())
+
+   measurement = result.detectors["reflection"]
+
+   print(f"Collected power: {measurement.collected_power:~P}")
+   print(f"Sampled aperture area: {measurement.sampled_area:~P}")
+   print(f"Geometric aperture area: {measurement.geometric_area:~P}")
 
 The finite sample, source footprint, mesh, and boundary coefficients must all
 be compatible. The source face must use a Robin boundary, the source disk must
 fit on the face, and the mesh must span the sample exactly. The accepted power
 is diffuse power already coupled into the sample; MomentRT does not model a
-collimated LED or its specular entry loss. Review :doc:`finite_element` before
-interpreting the predicted field.
+collimated LED or its specular entry loss. The detector collects the modeled
+escaping irradiance over the entire outward hemisphere; it does not model
+external optics. Preflight validation reports configuration errors and footprint
+sampling but does not establish mesh convergence or transport accuracy. Review
+:doc:`finite_element` before interpreting the predicted field.
 
 The full surface-source example and the sample-construction example are in
 the :doc:`finite-sample gallery <gallery/index>`.

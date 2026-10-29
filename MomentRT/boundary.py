@@ -218,4 +218,39 @@ def _validate_face_disk(
     if np.any(
         center[in_plane] - distance < lower[in_plane] - tolerance[in_plane]
     ) or np.any(center[in_plane] + distance > upper[in_plane] + tolerance[in_plane]):
-        raise ValueError("The entire circular footprint must fit on its sample face.")
+        raise ValueError(
+            _disk_bounds_message(
+                face=face,
+                position=position,
+                radius=radius,
+                lower=sample.origin,
+                upper=sample.origin + sample.size,
+                label="circular footprint",
+            )
+        )
+
+
+def _disk_bounds_message(
+    *,
+    face: Face,
+    position: Quantity,
+    radius: Quantity,
+    lower: Quantity,
+    upper: Quantity,
+    label: str,
+) -> str:
+    """Describe a footprint and the in-plane bounds it must fit within."""
+    axes = [index for index in range(3) if index != "xyz".index(face[0])]
+
+    unit = position.units
+
+    bounds = ", ".join(
+        f"{'xyz'[axis]}=[{lower[axis].to(unit):~P}, {upper[axis].to(unit):~P}]"
+        for axis in axes
+    )
+
+    return (
+        f"The entire {label} must fit on its sample face {face}: "
+        f"center={position:~P}, radius={radius.to(unit):~P}; "
+        f"in-plane bounds: {bounds}."
+    )

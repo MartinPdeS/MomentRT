@@ -46,11 +46,12 @@ fields so that numerical output can be interpreted in context.
 Before interpreting a field
 ---------------------------
 
-MomentRT solves the diffusion approximation, not the radiative transfer
-equation. Its fields are model predictions; they are not measurements or
-automatically validated tissue properties. Read the assumptions in
-:doc:`theory` and :doc:`finite_element` before interpreting fine structure,
-near-source values, or boundary behavior.
+MomentRT solves steady-state P1 diffusion, SP3, and full P3 moment models,
+not the full radiative transfer equation. Their fields are model predictions;
+they are not measurements or automatically validated tissue properties. Read
+the assumptions in :doc:`theory`, :doc:`sp3`, :doc:`p3`, and
+:doc:`finite_element` before interpreting fine structure, near-source values,
+or boundary behavior.
 
 .. toctree::
    :maxdepth: 2

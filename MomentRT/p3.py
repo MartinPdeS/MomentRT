@@ -158,13 +158,17 @@ class P3:
         """
         validated = MomentRT.diffusion.Diffusion(boundaries=boundaries)
 
-        if any(
-            not isinstance(condition, MomentRT.boundary.RobinBoundary)
-            or condition.effective_reflectance != 0
-            for condition in validated.boundaries.values()
-        ):
+        unsupported = [
+            face
+            for face, boundary in validated.boundaries.items()
+            if not isinstance(boundary, MomentRT.boundary.RobinBoundary)
+            or boundary.effective_reflectance != 0
+        ]
+
+        if unsupported:
             raise ValueError(
-                "P3 supports only zero-reflectance Robin boundaries on all faces."
+                "P3 supports only zero-reflectance Robin boundaries on all faces. "
+                f"Unsupported faces: {', '.join(unsupported)}."
             )
 
         self.boundaries = validated.boundaries
@@ -438,6 +442,12 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
 
         self.solve_count += 1
 
+        energy_balance, outgoing_power_by_face = MomentRT.results._energy_accounting(
+            incoming_power=source.optical_power,
+            absorbed_watts=absorbed,
+            escaping_watts=escaping,
+        )
+
         return MomentRT.results.SimulationResult(
             fluence=MomentRT.fields.ScalarField(
                 mesh=result_mesh,
@@ -451,17 +461,8 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
                 name="P3 flux",
             ),
             moments=moments,
-            energy_balance={
-                "incoming_power": source.optical_power.copy(),
-                "absorbed_power": absorbed * MomentRT.units.ureg.watt,
-                "escaping_power": sum(escaping.values()) * MomentRT.units.ureg.watt,
-                "residual_power": (power - absorbed - sum(escaping.values()))
-                * MomentRT.units.ureg.watt,
-            },
-            outgoing_power_by_face={
-                face: value * MomentRT.units.ureg.watt
-                for face, value in escaping.items()
-            },
+            energy_balance=energy_balance,
+            outgoing_power_by_face=outgoing_power_by_face,
             diagnostics={
                 "linear_relative_residual": residual,
                 "source_quadrature_area": self.source_sampled_area

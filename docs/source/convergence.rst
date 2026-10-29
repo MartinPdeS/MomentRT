@@ -169,3 +169,18 @@ This study assesses resolution of the tested observables and footprints.
 It does not establish P1, SP3, or P3 accuracy against RTE, validate material spectra or
 detector optics, or guarantee convergence of unrelated local field values.
 See :doc:`finite_element` and :doc:`detectors` for those distinctions.
+
+Performance measurements
+------------------------
+
+The repository includes a repeatable finite spectral sweep benchmark. For example::
+
+   .venv/bin/python tools/benchmark_sweeps.py --solver p1 --shape 9 9 9 --wavelengths 3
+   .venv/bin/python tools/benchmark_sweeps.py --solver sp3 --shape 15 15 11 --wavelengths 5
+
+The JSON output records the mesh, solver, software versions, geometry preparation
+and individual solve times, and the peak memory tracked by Python's
+``tracemalloc`` during the sweep and, where available, peak process RSS since
+process start (including imports and setup). Traced memory may exclude native
+solver allocations; peak RSS is unavailable on Windows. Compare runs on the same machine and software
+configuration; these illustrative cases do not establish numerical convergence.

@@ -623,6 +623,7 @@ def plot_sample(
     sample: MomentRT.medium.StructuredMedium,
     length_unit: str,
     opacity: float,
+    overlays: Iterable[object] | Mapping[str, object] | None,
     show: bool,
 ) -> MomentRT.plotting.Figure:
     """Render construction surfaces with stable colors and material hover labels.
@@ -635,6 +636,9 @@ def plot_sample(
         Length unit used for displayed or exported coordinates.
     opacity : float
         Construction-surface opacity in [0, 1].
+    overlays : iterable or mapping of str to object, or None, optional
+        Sources and detectors to draw on top of the sample geometry.
+        Mapping keys become legend labels.
     show : bool
         Whether to display the figure immediately. The figure is always returned.
 
@@ -732,6 +736,16 @@ def plot_sample(
         scene_camera={"eye": {"x": 1.8, "y": 1.8, "z": 1.8}},
         scene_zaxis={"autorange": "reversed"},
         legend={"title": {"text": "Regions (later replaces earlier)"}},
+    )
+
+    _add_overlays(
+        figure=figure,
+        overlays=overlays,
+        context={
+            "length_unit": length_unit,
+            "sample_origin": sample.origin,
+            "sample_size": sample.size,
+        },
     )
 
     if show:

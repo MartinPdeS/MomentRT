@@ -3,6 +3,7 @@ import runpy
 import numpy as np
 import pytest
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     Diffusion,
@@ -20,7 +21,10 @@ FACES = ("x_min", "x_max", "y_min", "y_max", "z_min", "z_max")
 
 def configuration(*, face="z_min"):
     material = Material(
-        absorption=0.02 / ureg.mm, reduced_scattering=1 / ureg.mm, refractive_index=1.4
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
+        absorption=0.02 / ureg.mm,
+        reduced_scattering=1 / ureg.mm,
+        refractive_index=1.4,
     )
 
     sample = StructuredMedium(
@@ -125,7 +129,10 @@ def test_configuration_validation():
     sample, mesh, source, solver = configuration()
 
     other = Material(
-        absorption=0.02 / ureg.mm, reduced_scattering=1 / ureg.mm, refractive_index=1.5
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
+        absorption=0.02 / ureg.mm,
+        reduced_scattering=1 / ureg.mm,
+        refractive_index=1.5,
     )
 
     sample.add_layer(name="index jump", material=other, thickness=1 * ureg.mm)

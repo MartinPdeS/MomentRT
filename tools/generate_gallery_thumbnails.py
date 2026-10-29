@@ -19,6 +19,7 @@ VOLUMES = {
     "compare_sp3": (1, "sp3-fluence.png"),
     "detector_convergence": (2, "gallery_volumes/detector_convergence.png"),
     "mesh_refinement": (1, "gallery_volumes/mesh_refinement.png"),
+    "phase_functions": (1, "phase-functions-sample.png"),
     "reflectance_sweep": (1, "gallery_volumes/reflectance_sweep.png"),
     "seven_fiber_skin": (2, "seven-fiber-skin.png"),
     "sp3_layered_anisotropy": (2, "sp3_layered_anisotropy.png"),

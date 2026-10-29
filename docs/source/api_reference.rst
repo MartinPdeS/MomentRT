@@ -10,13 +10,15 @@ Dimensional values require quantities from ``MomentRT.ureg``. See
 Materials and media
 -------------------
 
-``Material`` requires ``absorption``, ``reduced_scattering``, and
-``refractive_index``. The first two are nonnegative/positive inverse-length
-quantities; refractive index is a positive plain number.
+``Material`` requires ``absorption``, ``reduced_scattering``,
+``refractive_index``, and a ``phase_function`` object. The first two are
+nonnegative/positive inverse-length quantities; refractive index is a positive
+plain number. Henyey–Greenstein also requires ``anisotropy`` for SP3/P3.
 
 ``SpectralMaterial`` requires a strictly increasing ``wavelengths`` vector,
 same-length ``absorption`` and ``reduced_scattering`` quantities, and a
-scalar or same-length plain ``refractive_index``. Its
+scalar or same-length plain ``refractive_index``, and an explicit
+``phase_function`` object. Its
 ``at(wavelength=...)`` method linearly interpolates a monochromatic
 ``Material`` and rejects extrapolation. Fixed ``Material`` objects also
 support ``at(wavelength=...)`` and retain their fixed coefficients.
@@ -75,12 +77,13 @@ that configures exactly six faces with ``RobinBoundary`` or
 ``UniformSurfaceSource``.
 
 ``SP3`` solves two coupled moment equations on the same finite sample and
-requires an explicit Henyey–Greenstein ``anisotropy`` on every material. It supports reflecting
+uses each material's explicit :doc:`phase function <phase_functions>`. The
+Henyey–Greenstein function requires material ``anisotropy``. It supports reflecting
 faces and zero-reflectance Robin faces with isotropic incoming diffuse
 radiance. See :doc:`sp3` for the equations and limitations.
 
 ``P3`` solves the full three-dimensional angular expansion through degree
-three with six even-parity nodal fields. It requires material anisotropy,
+three with six even-parity nodal fields. It requires material phase moments,
 isotropic incoming diffuse sources, and zero-reflectance Robin conditions on
 all faces. Reflecting and refracting boundaries are not supported. See
 :doc:`p3` for the formulation and validation limits.

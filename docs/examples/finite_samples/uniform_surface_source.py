@@ -8,12 +8,12 @@ fluence field. The input power is already coupled into the sample.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/uniform_surface_source.png'
-
 import os
 
 import matplotlib.pyplot as plt
 import numpy as np
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     Diffusion,
@@ -33,6 +33,7 @@ show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 # Set all optical properties and dimensions explicitly for this wavelength.
 
 material = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.03 / ureg.millimeter,
     reduced_scattering=1.0 / ureg.millimeter,
     refractive_index=1.4,

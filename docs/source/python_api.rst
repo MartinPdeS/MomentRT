@@ -8,6 +8,26 @@ Plotting methods require the relevant optional visualization extra.
 Materials and sample geometry
 -----------------------------
 
+.. autoclass:: MomentRT.PhaseFunction
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.HenyeyGreenstein
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.Isotropic
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.Rayleigh
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.TabulatedPhaseFunction
+   :members:
+   :member-order: bysource
+
 .. autoclass:: MomentRT.Material
    :members:
    :member-order: bysource

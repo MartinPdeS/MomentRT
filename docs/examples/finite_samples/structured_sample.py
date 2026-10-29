@@ -9,11 +9,11 @@ and inspect the finite-sample P1 fluence volume.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/structured_sample.png'
-
 import os
 
 import numpy as np
 
+import MomentRT
 from MomentRT import (
     Box,
     CartesianMesh,
@@ -35,42 +35,49 @@ show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 # Use explicit unit-bearing optical coefficients. These values are illustrative.
 
 background = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.01 / ureg.millimeter,
     reduced_scattering=0.8 / ureg.millimeter,
     refractive_index=1.4,
 )
 
 epidermal_material = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.1 / ureg.millimeter,
     reduced_scattering=1.5 / ureg.millimeter,
     refractive_index=1.4,
 )
 
 papillary_material = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.04 / ureg.millimeter,
     reduced_scattering=1.3 / ureg.millimeter,
     refractive_index=1.4,
 )
 
 reticular_material = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.02 / ureg.millimeter,
     reduced_scattering=0.9 / ureg.millimeter,
     refractive_index=1.4,
 )
 
 inclusion_material = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.18 / ureg.millimeter,
     reduced_scattering=1.6 / ureg.millimeter,
     refractive_index=1.4,
 )
 
 second_inclusion_material = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.08 / ureg.millimeter,
     reduced_scattering=2.0 / ureg.millimeter,
     refractive_index=1.4,
 )
 
 box_material = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.06 / ureg.millimeter,
     reduced_scattering=0.6 / ureg.millimeter,
     refractive_index=1.4,

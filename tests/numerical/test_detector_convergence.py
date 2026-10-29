@@ -3,6 +3,7 @@
 import numpy as np
 import pytest
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     DetectorConvergenceResult,
@@ -28,6 +29,7 @@ def configuration():
     )
 
     material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0 / ureg.mm,
         reduced_scattering=1 / ureg.mm,
         refractive_index=1.4,
@@ -261,6 +263,7 @@ def test_invalid_interface_is_not_hidden_by_an_unresolved_source():
     simulation = configuration()
 
     other = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0.01 / ureg.mm,
         reduced_scattering=1 / ureg.mm,
         refractive_index=1.5,

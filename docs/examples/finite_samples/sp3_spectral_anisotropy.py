@@ -29,6 +29,7 @@ show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 table_wavelengths = np.array([700, 800, 900]) * ureg.nanometer
 
 dermis = MomentRT.SpectralMaterial(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     wavelengths=table_wavelengths,
     absorption=np.array([0.035, 0.025, 0.03]) / ureg.millimeter,
     reduced_scattering=np.array([1.3, 1.1, 0.9]) / ureg.millimeter,
@@ -37,6 +38,7 @@ dermis = MomentRT.SpectralMaterial(
 )
 
 epidermis = MomentRT.SpectralMaterial(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     wavelengths=table_wavelengths,
     absorption=np.array([0.06, 0.045, 0.05]) / ureg.millimeter,
     reduced_scattering=np.array([1.8, 1.6, 1.4]) / ureg.millimeter,

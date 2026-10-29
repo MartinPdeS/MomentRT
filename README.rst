@@ -57,6 +57,8 @@ Features
 * A coupled SP3 finite-element solver with explicit scattering anisotropy and
   matched-index boundaries, alongside the P1 diffusion solver.
 * A full three-dimensional P3 finite-element solver with matched-index faces.
+* Scalar Henyey–Greenstein, isotropic, Rayleigh, and tabulated scattering
+  phase functions for SP3 and P3.
 
 MomentRT offers P1, SP3, and P3 approximations. It does not currently solve the
 full radiative transfer equation or implement collimated LED
@@ -100,6 +102,7 @@ nodes, avoiding the singular point-source location.
 .. code-block:: python
 
    import numpy as np
+   import MomentRT
 
    from MomentRT import (
        CartesianMesh,
@@ -115,6 +118,7 @@ nodes, avoiding the singular point-source location.
        absorption=0.02 / ureg.millimeter,
        reduced_scattering=1.0 / ureg.millimeter,
        refractive_index=1.4,
+       phase_function=MomentRT.phase_function.HenyeyGreenstein(),
    )
 
    medium = HomogeneousMedium(material=material)
@@ -161,6 +165,7 @@ circular diffuse source on the upper face.
 .. code-block:: python
 
    import numpy as np
+   import MomentRT
 
    from MomentRT import (
        CartesianMesh,
@@ -177,12 +182,14 @@ circular diffuse source on the upper face.
        absorption=0.02 / ureg.millimeter,
        reduced_scattering=1.0 / ureg.millimeter,
        refractive_index=1.4,
+       phase_function=MomentRT.phase_function.HenyeyGreenstein(),
    )
 
    upper_material = Material(
        absorption=0.04 / ureg.millimeter,
        reduced_scattering=1.5 / ureg.millimeter,
        refractive_index=1.4,
+       phase_function=MomentRT.phase_function.HenyeyGreenstein(),
    )
 
    sample = StructuredMedium(

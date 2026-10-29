@@ -6,6 +6,7 @@ from functools import wraps
 import numpy as np
 import pytest
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     Diffusion,
@@ -22,6 +23,7 @@ from MomentRT import (
 
 def configuration():
     background = SpectralMaterial(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         wavelengths=np.array([700, 900]) * ureg.nm,
         absorption=np.array([0.01, 0.04]) / ureg.mm,
         reduced_scattering=np.array([1.2, 0.8]) / ureg.mm,
@@ -29,6 +31,7 @@ def configuration():
     )
 
     upper = SpectralMaterial(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         wavelengths=np.array([700, 900]) * ureg.nm,
         absorption=np.array([0.04, 0.08]) / ureg.mm,
         reduced_scattering=np.array([1.5, 1.0]) / ureg.mm,

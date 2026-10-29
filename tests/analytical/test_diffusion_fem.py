@@ -3,6 +3,7 @@
 import numpy as np
 import pytest
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     Diffusion,
@@ -18,6 +19,7 @@ from MomentRT import (
 
 def slab(*, count, reflectance, layered=False, absorption=0.02):
     material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=absorption / ureg.mm,
         reduced_scattering=1 / ureg.mm,
         refractive_index=1.4,
@@ -31,6 +33,7 @@ def slab(*, count, reflectance, layered=False, absorption=0.02):
 
     if layered:
         upper_material = Material(
+            phase_function=MomentRT.phase_function.HenyeyGreenstein(),
             absorption=0.04 / ureg.mm,
             reduced_scattering=2 / ureg.mm,
             refractive_index=1.4,

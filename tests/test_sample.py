@@ -3,6 +3,7 @@ import runpy
 import numpy as np
 import pytest
 
+import MomentRT
 from MomentRT import (
     Box,
     CartesianMesh,
@@ -17,6 +18,7 @@ from MomentRT import (
 
 def material(*, absorption):
     return Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=absorption / ureg.mm,
         reduced_scattering=1 / ureg.mm,
         refractive_index=1.4,

@@ -22,8 +22,9 @@ class SP3:
 
     Notes
     -----
-    Each material must supply its own anisotropy. The solver assumes the
-    Henyey–Greenstein phase function and uses its higher angular moments.
+    Each material supplies its phase function. Henyey–Greenstein materials
+    require anisotropy; isotropic, Rayleigh, and tabulated functions provide
+    their own first three normalized Legendre moments.
     Illumination is isotropic over the incoming hemisphere. Fluence is the
     zeroth moment, not the first composite unknown. The implementation assumes
     continuous composite moments across internal interfaces and rejects index
@@ -138,37 +139,28 @@ class _PreparedSP3(MomentRT.diffusion._PreparedDiffusion):
             medium=self.medium, wavelength=source.wavelength
         )
 
-        if any(
-            material.phase_function != "henyey_greenstein" for material in materials
-        ):
-            raise ValueError(
-                "SP3 supports only the 'henyey_greenstein' phase function."
-            )
-
         names = ["background", *(shape.name for shape in self.medium.structures)]
 
         missing = [
             name
             for name, material in zip(names, materials)
             if material.anisotropy is None
+            and isinstance(
+                material.phase_function, MomentRT.phase_function.HenyeyGreenstein
+            )
         ]
 
         if missing:
             raise ValueError(
-                "SP3 requires anisotropy on every material; missing for: "
+                "SP3 requires anisotropy on every material using Henyey–Greenstein; missing for: "
                 + ", ".join(missing)
             )
 
-        anisotropy = np.array(
-            [
-                float(
-                    MomentRT.material._anisotropy_values(
-                        value=material.anisotropy, shape=()
-                    )
-                )
-                for material in materials
-            ]
-        )
+        phase_moments = np.array([material._phase_moments() for material in materials])
+
+        anisotropy = phase_moments[:, 1]
+
+        factors = np.array([material._transport_factors() for material in materials])
 
         mu_a = np.array(
             [material.absorption.to("1/m").magnitude for material in materials]
@@ -180,9 +172,9 @@ class _PreparedSP3(MomentRT.diffusion._PreparedDiffusion):
 
         mu_1 = mu_a + mu_s1
 
-        mu_2 = mu_a + mu_s1 * (1 + anisotropy)
+        mu_2 = mu_a + mu_s1 * factors[:, 2]
 
-        mu_3 = mu_a + mu_s1 * (1 + anisotropy + anisotropy**2)
+        mu_3 = mu_a + mu_s1 * factors[:, 3]
 
         first = self.boundary_matrix.copy()
 

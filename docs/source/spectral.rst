@@ -15,11 +15,16 @@ Supplying a material table
 
 .. code-block:: python
 
+   import numpy as np
+   import MomentRT
+   from MomentRT import SpectralMaterial, ureg
+
    material = SpectralMaterial(
        wavelengths=np.array([700, 800, 900]) * ureg.nm,
        absorption=np.array([0.01, 0.02, 0.04]) / ureg.mm,
        reduced_scattering=np.array([1.2, 1.0, 0.8]) / ureg.mm,
        refractive_index=1.4,
+       phase_function=MomentRT.phase_function.HenyeyGreenstein(),
    )
 
 The wavelength vector must contain at least two positive, strictly increasing
@@ -180,10 +185,13 @@ Those operations require additional physical data and normalization.
 Reusing finite-element preparation
 -----------------------------------
 
-For SP3 or P3, each ``SpectralMaterial`` must additionally specify ``anisotropy``
-as a plain scalar or a vector on the wavelength grid. A vector is interpolated
+For SP3 or P3 with the Henyey–Greenstein model, each
+``SpectralMaterial`` must additionally specify ``anisotropy`` as a plain
+scalar or a vector on the wavelength grid. A vector is interpolated
 linearly along with the other material coefficients; separate materials can
-have different anisotropies. P1 does not require this property.
+have different anisotropies. Fixed isotropic, Rayleigh, and tabulated phase
+functions supply their own first moment and may omit anisotropy. P1 does not
+require this property.
 
 For finite ``Diffusion``, ``SP3``, and ``P3`` sweeps, the package prepares mesh geometry,
 tetrahedra, element volumes and gradients, centroid material labels, boundary

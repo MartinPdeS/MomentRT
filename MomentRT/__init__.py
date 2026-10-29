@@ -14,6 +14,7 @@ import MomentRT.material
 import MomentRT.medium
 import MomentRT.mesh
 import MomentRT.p3
+import MomentRT.phase_function
 import MomentRT.plotting as plotting  # noqa: F401 -- public submodule
 import MomentRT.results
 import MomentRT.sections
@@ -51,6 +52,11 @@ TransportSolver = MomentRT.simulation.TransportSolver
 Simulation = MomentRT.simulation.Simulation
 SP3 = MomentRT.sp3.SP3
 P3 = MomentRT.p3.P3
+PhaseFunction = MomentRT.phase_function.PhaseFunction
+HenyeyGreenstein = MomentRT.phase_function.HenyeyGreenstein
+Isotropic = MomentRT.phase_function.Isotropic
+Rayleigh = MomentRT.phase_function.Rayleigh
+TabulatedPhaseFunction = MomentRT.phase_function.Tabulated
 ValidationReport = MomentRT.validation.ValidationReport
 PointSource = MomentRT.source.PointSource
 SourceResolutionError = MomentRT.source.SourceResolutionError
@@ -59,6 +65,11 @@ UniformSurfaceSource = MomentRT.source.UniformSurfaceSource
 ureg = MomentRT.units.ureg
 
 __all__ = [
+    "PhaseFunction",
+    "HenyeyGreenstein",
+    "Isotropic",
+    "Rayleigh",
+    "TabulatedPhaseFunction",
     "P3",
     "ValidationReport",
     "Boundaries",

@@ -18,6 +18,7 @@ from MomentRT import (
 
 def configuration():
     material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0.02 / ureg.mm,
         reduced_scattering=1 / ureg.mm,
         refractive_index=1.4,
@@ -74,7 +75,12 @@ def test_diffusion_energy_and_radial_symmetry():
 
 def test_explicit_units_and_singularity():
     with pytest.raises(TypeError):
-        Material(absorption=0.02, reduced_scattering=1 / ureg.mm, refractive_index=1.4)
+        Material(
+            phase_function=MomentRT.phase_function.HenyeyGreenstein(),
+            absorption=0.02,
+            reduced_scattering=1 / ureg.mm,
+            refractive_index=1.4,
+        )
 
     simulation = configuration()
 

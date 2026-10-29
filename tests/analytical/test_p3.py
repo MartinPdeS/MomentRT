@@ -11,6 +11,7 @@ def cube(*, count, source_face="z_min", absorption=1.0, scattering=1e-7):
     ureg = MomentRT.ureg
 
     material = MomentRT.Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=absorption / ureg.mm,
         reduced_scattering=scattering / ureg.m,
         refractive_index=1.4,

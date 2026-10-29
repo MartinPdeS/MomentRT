@@ -9,11 +9,11 @@ these observables, not validation of P1 against radiative transfer.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/detector_convergence.png'
-
 import os
 
 import numpy as np
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     Diffusion,
@@ -35,6 +35,7 @@ show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 # The disk source and the separated reflection aperture lie on the top face.
 
 material = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.02 / ureg.mm,
     reduced_scattering=1.0 / ureg.mm,
     refractive_index=1.4,

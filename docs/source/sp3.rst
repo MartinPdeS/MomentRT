@@ -10,14 +10,18 @@ is a simplification of P3, not the full spherical-harmonics system.
 Scattering and bulk equations
 -----------------------------
 
-The first reduced scattering coefficient alone does not determine the higher
-angular moments needed by SP3. Each material therefore requires an explicit,
-dimensionless ``anisotropy`` :math:`g` in :math:`(-1,1)`. The current solver
-assumes a Henyey–Greenstein phase function in every region. Different
-materials can have different values; ``SpectralMaterial`` can also interpolate
-anisotropy across wavelengths. Materials expose the current choice as
-``phase_function="henyey_greenstein"``. With absorption :math:`\mu_a` and
-reduced scattering :math:`\mu'_s = \mu_s(1-g)`, define
+The reduced scattering coefficient alone does not determine the higher
+angular moments needed by SP3. Each material supplies a scalar phase function
+whose normalized Legendre moments are :math:`g_0=1,g_1,g_2,g_3`. For
+absorption :math:`\mu_a` and reduced scattering
+:math:`\mu'_s=\mu_s(1-g_1)`, define
+
+.. math::
+
+   \mu_l=\mu_a+\mu'_s\frac{1-g_l}{1-g_1},\quad l=1,2,3.
+
+The Henyey–Greenstein model requires material ``anisotropy``
+:math:`g=g_1` and has :math:`g_l=g^l`. For that specific model,
 
 .. math::
 
@@ -34,8 +38,9 @@ The two composite nodal fields :math:`u` and :math:`v` obey
    -\nabla\!\cdot(D_2\nabla v) - \tfrac23\mu_a u
       + \tfrac19(4\mu_a+5\mu_2)v &= 0.
 
-Each coefficient is evaluated with the anisotropy of the local material at
-the source wavelength. The physical fluence and first angular current are
+Each coefficient is evaluated with the local material's phase-function
+moments at the source wavelength. See :doc:`phase_functions` for the available
+models. The physical fluence and first angular current are
 
 .. math::
 

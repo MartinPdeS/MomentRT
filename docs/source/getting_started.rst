@@ -54,12 +54,14 @@ index is a plain dimensionless number.
 
 .. code-block:: python
 
+   import MomentRT
    from MomentRT import Material, ureg
 
    material = Material(
        absorption=0.02 / ureg.millimeter,
        reduced_scattering=1.0 / ureg.millimeter,
        refractive_index=1.4,
+       phase_function=MomentRT.phase_function.HenyeyGreenstein(),
    )
 
 MomentRT converts quantities at numerical boundaries as required and keeps
@@ -78,6 +80,7 @@ center, so that no mesh node coincides with the point-source singularity.
 .. code-block:: python
 
    import numpy as np
+   import MomentRT
 
    from MomentRT import (
        CartesianMesh,
@@ -93,6 +96,7 @@ center, so that no mesh node coincides with the point-source singularity.
        absorption=0.02 / ureg.millimeter,
        reduced_scattering=1.0 / ureg.millimeter,
        refractive_index=1.4,
+       phase_function=MomentRT.phase_function.HenyeyGreenstein(),
    )
 
    medium = HomogeneousMedium(material=material)

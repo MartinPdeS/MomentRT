@@ -188,17 +188,16 @@ def _validate(
 
         if isinstance(solver, (MomentRT.sp3.SP3, MomentRT.p3.P3)):
             for name, material in materials:
-                if material is not None and material.anisotropy is None:
-                    errors.append(
-                        f"{type(solver).__name__} requires anisotropy for material {name!r}."
-                    )
-
                 if (
                     material is not None
-                    and material.phase_function != "henyey_greenstein"
+                    and material.anisotropy is None
+                    and isinstance(
+                        material.phase_function,
+                        MomentRT.phase_function.HenyeyGreenstein,
+                    )
                 ):
                     errors.append(
-                        f"{type(solver).__name__} does not support the phase function for material {name!r}."
+                        f"{type(solver).__name__} requires anisotropy for material {name!r}."
                     )
 
         for wavelength in selected_wavelengths:
@@ -213,13 +212,14 @@ def _validate(
 
                     indices.append(resolved.refractive_index)
 
-                    if (
-                        isinstance(solver, (MomentRT.sp3.SP3, MomentRT.p3.P3))
-                        and resolved.anisotropy is not None
-                    ):
-                        MomentRT.material._anisotropy_values(
-                            value=resolved.anisotropy, shape=()
+                    if isinstance(solver, (MomentRT.sp3.SP3, MomentRT.p3.P3)) and (
+                        resolved.anisotropy is not None
+                        or not isinstance(
+                            resolved.phase_function,
+                            MomentRT.phase_function.HenyeyGreenstein,
                         )
+                    ):
+                        resolved._phase_moments()
                 except (ValueError, TypeError) as error:
                     errors.append(f"Material {name!r} at {wavelength:~P}: {error}")
 

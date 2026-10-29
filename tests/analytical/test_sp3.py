@@ -11,6 +11,7 @@ def configuration(*, count, anisotropy=0.7, layered=False, layer_anisotropy=0.4)
     ureg = MomentRT.ureg
 
     material = MomentRT.Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0.02 / ureg.mm,
         reduced_scattering=1 / ureg.mm,
         refractive_index=1.4,
@@ -26,6 +27,7 @@ def configuration(*, count, anisotropy=0.7, layered=False, layer_anisotropy=0.4)
 
     if layered:
         layer_material = MomentRT.Material(
+            phase_function=MomentRT.phase_function.HenyeyGreenstein(),
             absorption=0.04 / ureg.mm,
             reduced_scattering=2 / ureg.mm,
             refractive_index=1.4,
@@ -183,6 +185,7 @@ def test_sp3_sweep_reuses_geometry():
 def test_sp3_requires_physical_anisotropy(anisotropy):
     with pytest.raises(ValueError, match="anisotropy"):
         MomentRT.Material(
+            phase_function=MomentRT.phase_function.HenyeyGreenstein(),
             absorption=0.02 / MomentRT.ureg.mm,
             reduced_scattering=1 / MomentRT.ureg.mm,
             refractive_index=1.4,
@@ -214,6 +217,7 @@ def test_sp3_spectral_anisotropy_interpolates_and_changes_solution():
     ureg = MomentRT.ureg
 
     material = MomentRT.SpectralMaterial(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         wavelengths=np.array([800, 1000]) * ureg.nm,
         absorption=np.array([0.02, 0.02]) / ureg.mm,
         reduced_scattering=np.array([1.0, 1.0]) / ureg.mm,
@@ -259,6 +263,7 @@ def test_sp3_spectral_anisotropy_interpolates_and_changes_solution():
 def test_spectral_anisotropy_rejects_invalid_tables(anisotropy):
     with pytest.raises(ValueError, match="anisotropy"):
         MomentRT.SpectralMaterial(
+            phase_function=MomentRT.phase_function.HenyeyGreenstein(),
             wavelengths=np.array([800, 1000]) * MomentRT.ureg.nm,
             absorption=np.array([0.02, 0.02]) / MomentRT.ureg.mm,
             reduced_scattering=np.array([1, 1]) / MomentRT.ureg.mm,

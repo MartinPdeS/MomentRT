@@ -135,8 +135,8 @@ class P3:
     Notes
     -----
     Six even harmonics are solved with linear tetrahedral FEM; ten odd
-    harmonics are reconstructed elementwise. Materials require anisotropy and
-    use the Henyey–Greenstein phase function. Illumination is isotropic over
+    harmonics are reconstructed elementwise. Materials provide normalized
+    scattering phase-function moments. Illumination is isotropic over
     the incoming hemisphere. P3 is an angular approximation and requires
     validation for the intended configuration.
     """
@@ -231,18 +231,16 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
             name
             for name, material in zip(names, materials)
             if material.anisotropy is None
+            and isinstance(
+                material.phase_function, MomentRT.phase_function.HenyeyGreenstein
+            )
         ]
 
         if missing:
             raise ValueError(
-                "P3 requires anisotropy on every material; missing for: "
+                "P3 requires anisotropy on every material using Henyey–Greenstein; missing for: "
                 + ", ".join(missing)
             )
-
-        if any(
-            material.phase_function != "henyey_greenstein" for material in materials
-        ):
-            raise ValueError("P3 supports only the 'henyey_greenstein' phase function.")
 
         MomentRT.units.validate_units(
             value=source.optical_power,
@@ -260,16 +258,7 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
             [material.reduced_scattering.to("1/m").magnitude for material in materials]
         )
 
-        anisotropy = np.array(
-            [
-                float(
-                    MomentRT.material._anisotropy_values(
-                        value=material.anisotropy, shape=()
-                    )
-                )
-                for material in materials
-            ]
-        )
+        factors = np.array([material._transport_factors() for material in materials])
 
         streaming, current, face_matrices, face_source = _angular_operators()
 
@@ -296,13 +285,7 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
 
             odd_sigma = np.array(
                 [
-                    absorption[label]
-                    + scattering[label]
-                    * (
-                        1
-                        if degree == 1
-                        else 1 + anisotropy[label] + anisotropy[label] ** 2
-                    )
+                    absorption[label] + scattering[label] * factors[label, degree]
                     for degree, _ in _ODD
                 ]
             )
@@ -315,7 +298,7 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
                 sigma = (
                     absorption[label]
                     if degree == 0
-                    else absorption[label] + scattering[label] * (1 + anisotropy[label])
+                    else absorption[label] + scattering[label] * factors[label, 2]
                 )
 
                 blocks[a][a] += sigma * mass
@@ -377,17 +360,11 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
             geometry.gradients,
         )
 
+        odd_degrees = [degree for degree, _ in _ODD]
+
         odd_sigma = (
             absorption[self.labels, None]
-            + scattering[self.labels, None]
-            * np.array(
-                [
-                    np.ones_like(anisotropy[self.labels])
-                    if degree == 1
-                    else 1 + anisotropy[self.labels] + anisotropy[self.labels] ** 2
-                    for degree, _ in _ODD
-                ]
-            ).T
+            + scattering[self.labels, None] * factors[self.labels][:, odd_degrees]
         )
 
         odd = -np.einsum("ioe,tei->to", streaming, gradients) / odd_sigma

@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Literal
-
 import numpy as np
 from numpy.typing import ArrayLike
 from pint import Quantity
@@ -47,10 +45,11 @@ class Material:
         Positive dimensionless refractive index, supplied without units.
     anisotropy : float or None, optional
         Mean scattering cosine in (-1, 1), supplied without units. Required
-        by SP3, where it selects Henyey–Greenstein scattering; P1 does not use it.
-    phase_function : {'henyey_greenstein'}, optional
-        Scattering phase-function model used by SP3. Defaults to
-        ``'henyey_greenstein'``; P1 does not use it.
+        by Henyey–Greenstein SP3/P3 calculations. Phase functions with their
+        own first moment can omit it; P1 does not use it.
+    phase_function : PhaseFunction
+        Explicit scalar scattering phase function. SP3 and P3 use its moments;
+        P1 only needs reduced scattering.
 
     Notes
     -----
@@ -65,6 +64,7 @@ class Material:
     ...     absorption=0.1 / ureg.millimeter,
     ...     reduced_scattering=1.0 / ureg.millimeter,
     ...     refractive_index=1.4,
+    ...     phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     ... )
     """
 
@@ -75,7 +75,7 @@ class Material:
         reduced_scattering: Quantity,
         refractive_index: float,
         anisotropy: float | None = None,
-        phase_function: Literal["henyey_greenstein"] = "henyey_greenstein",
+        phase_function: MomentRT.phase_function.PhaseFunction,
     ) -> None:
         """Initialize the Material configuration.
 
@@ -88,9 +88,10 @@ class Material:
         refractive_index : float
             Positive dimensionless refractive index, supplied without units.
         anisotropy : float or None, optional
-            Mean scattering cosine in (-1, 1). Required by SP3; unused by P1.
-        phase_function : {'henyey_greenstein'}, optional
-            SP3 scattering phase-function model; defaults to Henyey–Greenstein.
+            Mean scattering cosine in (-1, 1). Required for Henyey–Greenstein
+            SP3/P3 calculations; unused by P1.
+        phase_function : PhaseFunction
+            Explicit scalar scattering phase function for SP3 and P3.
         """
 
         MomentRT.units.validate_units(
@@ -119,8 +120,8 @@ class Material:
 
         self.refractive_index = refractive_index
 
-        if phase_function != "henyey_greenstein":
-            raise ValueError("phase_function must be 'henyey_greenstein'.")
+        if not isinstance(phase_function, MomentRT.phase_function.PhaseFunction):
+            raise ValueError("phase_function must be a PhaseFunction object.")
 
         self.phase_function = phase_function
 
@@ -128,6 +129,70 @@ class Material:
             None
             if anisotropy is None
             else float(_anisotropy_values(value=anisotropy, shape=()))
+        )
+
+        if isinstance(
+            phase_function, MomentRT.phase_function.PhaseFunction
+        ) and not isinstance(phase_function, MomentRT.phase_function.HenyeyGreenstein):
+            phase_function.moments(anisotropy=self.anisotropy)
+
+    def _phase_moments(self) -> np.ndarray:
+        """Resolve and validate normalized phase-function moments for transport."""
+        phase = self.phase_function
+
+        if not isinstance(phase, MomentRT.phase_function.PhaseFunction):
+            raise ValueError("phase_function must be a PhaseFunction object.")
+
+        values = np.asarray(phase.moments(anisotropy=self.anisotropy), dtype=float)
+
+        if (
+            values.shape != (4,)
+            or not np.all(np.isfinite(values))
+            or not np.isclose(values[0], 1, rtol=1e-10, atol=1e-10)
+            or np.any(np.abs(values[1:]) > 1 + 1e-10)
+            or not -1 < values[1] < 1
+        ):
+            raise ValueError(
+                "phase-function moments must be finite, normalized, and physically admissible with first moment in (-1, 1)."
+            )
+
+        first = values[1]
+
+        second = (2 * values[2] + 1) / 3
+
+        third = (2 * values[3] + 3 * first) / 5
+
+        for sign in (-1, 1):
+            moment_matrix = np.array(
+                [
+                    [1 + sign * first, first + sign * second],
+                    [first + sign * second, second + sign * third],
+                ]
+            )
+
+            if np.linalg.eigvalsh(moment_matrix).min() < -1e-10:
+                raise ValueError(
+                    "phase-function moments cannot represent a nonnegative scattering distribution on [-1, 1]."
+                )
+
+        return values
+
+    def _transport_factors(self) -> np.ndarray:
+        """Return scattering attenuation factors relative to reduced scattering."""
+        moments = self._phase_moments()
+
+        if isinstance(self.phase_function, MomentRT.phase_function.HenyeyGreenstein):
+            g = moments[1]
+
+            return np.array([0, 1, 1 + g, 1 + g + g**2])
+
+        return np.array(
+            [
+                0,
+                1,
+                (1 - moments[2]) / (1 - moments[1]),
+                (1 - moments[3]) / (1 - moments[1]),
+            ]
         )
 
     def at(self, *, wavelength: Quantity) -> MomentRT.material.Material:
@@ -172,9 +237,10 @@ class SpectralMaterial:
         Dimensionless quantities are not accepted.
     anisotropy : float or array_like of float or None, optional
         Plain scalar or wavelength-grid vector of mean scattering cosines in
-        (-1, 1). Interpolated linearly; required for SP3, unused by P1.
-    phase_function : {'henyey_greenstein'}, optional
-        SP3 scattering phase-function model, fixed across the wavelength table.
+        (-1, 1). Interpolated linearly; required for Henyey–Greenstein
+        SP3/P3 calculations, unused by P1.
+    phase_function : PhaseFunction
+        Explicit scattering phase function, fixed across the wavelength table.
     """
 
     def __init__(
@@ -185,7 +251,7 @@ class SpectralMaterial:
         reduced_scattering: Quantity,
         refractive_index: float | ArrayLike,
         anisotropy: float | ArrayLike | None = None,
-        phase_function: Literal["henyey_greenstein"] = "henyey_greenstein",
+        phase_function: MomentRT.phase_function.PhaseFunction,
     ) -> None:
         """Initialize the SpectralMaterial configuration.
 
@@ -205,9 +271,9 @@ class SpectralMaterial:
             Dimensionless quantities are not accepted.
         anisotropy : float or array_like of float or None, optional
             Plain scalar or wavelength-grid vector of scattering cosines in
-            (-1, 1). Required by SP3; unused by P1.
-        phase_function : {'henyey_greenstein'}, optional
-            SP3 scattering phase-function model, fixed across wavelengths.
+            (-1, 1). Required for Henyey–Greenstein SP3/P3; unused by P1.
+        phase_function : PhaseFunction
+            Explicit scattering phase function, fixed across wavelengths.
         """
 
         MomentRT.units.validate_units(
@@ -259,8 +325,8 @@ class SpectralMaterial:
 
         self.refractive_index = indices.copy()
 
-        if phase_function != "henyey_greenstein":
-            raise ValueError("phase_function must be 'henyey_greenstein'.")
+        if not isinstance(phase_function, MomentRT.phase_function.PhaseFunction):
+            raise ValueError("phase_function must be a PhaseFunction object.")
 
         self.phase_function = phase_function
 
@@ -269,6 +335,15 @@ class SpectralMaterial:
             if anisotropy is None
             else _anisotropy_values(value=anisotropy, shape=wavelengths.shape).copy()
         )
+
+        if isinstance(
+            phase_function, MomentRT.phase_function.PhaseFunction
+        ) and not isinstance(phase_function, MomentRT.phase_function.HenyeyGreenstein):
+            if self.anisotropy is None:
+                phase_function.moments()
+            else:
+                for value in np.atleast_1d(self.anisotropy):
+                    phase_function.moments(anisotropy=float(value))
 
     def at(self, *, wavelength: Quantity) -> MomentRT.material.Material:
         """Evaluate a monochromatic Material without modifying the table.

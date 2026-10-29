@@ -14,7 +14,7 @@ def configuration():
         reduced_scattering=1 / ureg.mm,
         refractive_index=1.4,
         anisotropy=0.8,
-        phase_function="henyey_greenstein",
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     )
 
     sample = MomentRT.StructuredMedium(
@@ -174,7 +174,7 @@ def test_preflight_reports_spectral_coverage_and_unresolved_detector():
         reduced_scattering=np.array([1.0, 1.1]) / MomentRT.ureg.mm,
         refractive_index=1.4,
         anisotropy=[0.7, 0.8],
-        phase_function="henyey_greenstein",
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     )
 
     simulation.medium.add_background(material=material)
@@ -191,9 +191,9 @@ def test_preflight_reports_spectral_coverage_and_unresolved_detector():
 
     assert report.detector_sampled_areas["contact"].magnitude == 0
 
-    assert (
-        material.at(wavelength=850 * MomentRT.ureg.nm).phase_function
-        == "henyey_greenstein"
+    assert isinstance(
+        material.at(wavelength=850 * MomentRT.ureg.nm).phase_function,
+        MomentRT.phase_function.HenyeyGreenstein,
     )
 
 
@@ -214,7 +214,10 @@ def test_face_placement_rejects_footprints_outside_sample():
 def test_material_phase_function_is_visible_and_checked():
     simulation = configuration()
 
-    assert simulation.medium.background.phase_function == "henyey_greenstein"
+    assert isinstance(
+        simulation.medium.background.phase_function,
+        MomentRT.phase_function.HenyeyGreenstein,
+    )
 
     with pytest.raises(ValueError, match="phase_function"):
         MomentRT.Material(

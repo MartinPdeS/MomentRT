@@ -3,6 +3,7 @@
 import numpy as np
 import pytest
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     Diffusion,
@@ -52,6 +53,7 @@ def test_projected_acceptance_for_aligned_and_tilted_cones():
 
 def test_contact_collection_in_exact_nonabsorbing_slab():
     material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0 / ureg.mm,
         reduced_scattering=1 / ureg.mm,
         refractive_index=1.4,
@@ -187,6 +189,7 @@ def test_acceptance_requires_an_explicit_quantity():
 
 def test_spectral_slab_detector_signals_match_constant_current_solutions():
     material = SpectralMaterial(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         wavelengths=np.array([700, 900]) * ureg.nm,
         absorption=np.zeros(2) / ureg.mm,
         reduced_scattering=np.array([0.5, 1.5]) / ureg.mm,

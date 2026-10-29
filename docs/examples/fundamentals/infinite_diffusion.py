@@ -7,12 +7,12 @@ window, not a tissue boundary. Optical properties apply at 970 nm.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/infinite_diffusion.png'
-
 import os
 
 import matplotlib.pyplot as plt
 import numpy as np
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     HomogeneousMedium,
@@ -31,6 +31,7 @@ show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 # Define illustrative absorption and reduced scattering at 970 nm.
 
 material = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.02 / ureg.millimeter,
     reduced_scattering=1 / ureg.millimeter,
     refractive_index=1.4,

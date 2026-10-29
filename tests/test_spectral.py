@@ -3,6 +3,7 @@
 import numpy as np
 import pytest
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     HomogeneousMedium,
@@ -19,6 +20,7 @@ from MomentRT import (
 
 def table():
     return SpectralMaterial(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         wavelengths=np.array([700, 800, 900]) * ureg.nm,
         absorption=np.array([10, 20, 40]) / ureg.m,
         reduced_scattering=np.array([1.2, 1.0, 0.8]) / ureg.mm,
@@ -64,6 +66,7 @@ def test_spectral_interpolation_and_coverage():
 def test_invalid_spectral_tables(wavelengths, absorption, scattering, refractive_index):
     with pytest.raises(ValueError):
         SpectralMaterial(
+            phase_function=MomentRT.phase_function.HenyeyGreenstein(),
             wavelengths=np.array(wavelengths) * ureg.nm,
             absorption=np.array(absorption) / ureg.mm,
             reduced_scattering=np.array(scattering) / ureg.mm,
@@ -140,6 +143,7 @@ def test_spectral_sample_snapshots_and_optical_sections():
     spectral = table()
 
     fixed = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=1 / ureg.m,
         reduced_scattering=1 / ureg.mm,
         refractive_index=1.4,

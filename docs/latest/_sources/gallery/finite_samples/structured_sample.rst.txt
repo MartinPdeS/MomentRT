@@ -377,7 +377,7 @@ replacement. The y=0 plane intersects both spheres and the box.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.519 seconds)
+   **Total running time of the script:** (0 minutes 0.871 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_structured_sample.py:

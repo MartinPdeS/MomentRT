@@ -92,7 +92,7 @@ The sample is solved twice with equal absorption and reduced scattering.
 SP3 uses the selected phase function's higher moments. P1 only uses the
 reduced scattering coefficient and would therefore give the same result.
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-77
+.. GENERATED FROM PYTHON SOURCE LINES 44-111
 
 .. code-block:: Python
 
@@ -127,30 +127,6 @@ reduced scattering coefficient and would therefore give the same result.
             refractive_index=1.4,
             phase_function=phases["Isotropic"],
         )
-    )
-
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 78-82
-
-Preview the sample and instrument geometry
-------------------------------------------
-The gallery thumbnail is taken from this geometry view so that it shows the
-physical sample, source, and detector rather than the angular phase curves.
-
-.. GENERATED FROM PYTHON SOURCE LINES 82-122
-
-.. code-block:: Python
-
-
-    sample_figure = sample.plot(
-        overlays={"Source": source, "Detector": detector},
-        show=show_figures,
     )
 
     mesh = MomentRT.CartesianMesh.from_sample(sample=sample, shape=(11, 11, 9))
@@ -190,10 +166,6 @@ physical sample, source, and detector rather than the angular phase curves.
 
 
 
-.. raw:: html
-
-   <iframe src="../../_static/gallery/phase_functions-1.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
-
 
 .. rst-class:: sphx-glr-script-out
 
@@ -205,7 +177,7 @@ physical sample, source, and detector rather than the angular phase curves.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-129
+.. GENERATED FROM PYTHON SOURCE LINES 112-118
 
 Visualize the Rayleigh solution
 -------------------------------
@@ -214,7 +186,7 @@ function. Source and detector overlays use their physical contact positions.
 Verify mesh convergence and compare with a transport reference for the
 intended application; the contact detector assumes Lambertian escape.
 
-.. GENERATED FROM PYTHON SOURCE LINES 129-136
+.. GENERATED FROM PYTHON SOURCE LINES 118-126
 
 .. code-block:: Python
 
@@ -228,9 +200,37 @@ intended application; the contact detector assumes Lambertian escape.
 
 
 
+
 .. raw:: html
 
-   <iframe src="../../_static/gallery/phase_functions-2.html" title="Fluence rate — volume (linear scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+   <iframe src="../../_static/gallery/phase_functions-1.html" title="Fluence rate — volume (linear scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 127-131
+
+Preview the sample and instrument geometry
+------------------------------------------
+Keep the physical geometry as the final figure so the gallery thumbnail
+shows the sample, source, and detector rather than the phase-function result.
+
+.. GENERATED FROM PYTHON SOURCE LINES 131-136
+
+.. code-block:: Python
+
+
+    sample_figure = sample.plot(
+        overlays={"Source": source, "Detector": detector},
+        show=show_figures,
+    )
+
+
+
+.. raw:: html
+
+   <iframe src="../../_static/gallery/phase_functions-2.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
 
 
 
@@ -239,7 +239,7 @@ intended application; the contact detector assumes Lambertian escape.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.109 seconds)
+   **Total running time of the script:** (0 minutes 0.182 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_phase_functions.py:

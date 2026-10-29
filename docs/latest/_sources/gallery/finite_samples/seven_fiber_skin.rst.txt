@@ -57,7 +57,7 @@ The lower dermis fills the background; the epidermis spans the top of the
 sample. SP3 currently requires equal refractive indices across internal
 interfaces and a material-specific Henyey–Greenstein anisotropy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-59
+.. GENERATED FROM PYTHON SOURCE LINES 29-66
 
 .. code-block:: Python
 
@@ -85,6 +85,13 @@ interfaces and a material-specific Henyey–Greenstein anisotropy.
 
     sample.add_background(material=dermis)
 
+
+    sample.add_layer(
+        name="Dermis",
+        thickness=3.2 * ureg.millimeter,
+        material=dermis,
+    )
+
     sample.add_layer(
         name="Epidermis",
         thickness=0.8 * ureg.millimeter,
@@ -98,7 +105,7 @@ interfaces and a material-specific Henyey–Greenstein anisotropy.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-66
+.. GENERATED FROM PYTHON SOURCE LINES 67-73
 
 Arrange the seven fiber contacts
 --------------------------------
@@ -107,7 +114,7 @@ fiber. Each source supplies one sixth of the total coupled optical power.
 Disk footprints represent diffuse light already coupled into the tissue;
 fiber propagation, entry losses, and coherent interference are not modeled.
 
-.. GENERATED FROM PYTHON SOURCE LINES 66-111
+.. GENERATED FROM PYTHON SOURCE LINES 73-118
 
 .. code-block:: Python
 
@@ -163,14 +170,14 @@ fiber propagation, entry losses, and coherent interference are not modeled.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-116
+.. GENERATED FROM PYTHON SOURCE LINES 119-123
 
 Inspect the tissue geometry
 ---------------------------
 The transparent surfaces show the epidermis layer and dermis background;
 the resolved fluence and seven fiber contacts are shown together below.
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-119
+.. GENERATED FROM PYTHON SOURCE LINES 123-126
 
 .. code-block:: Python
 
@@ -188,7 +195,7 @@ the resolved fluence and seven fiber contacts are shown together below.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-127
+.. GENERATED FROM PYTHON SOURCE LINES 127-134
 
 Solve the six illumination fibers with SP3
 -------------------------------------------
@@ -198,7 +205,7 @@ monochromatic solves can be summed to obtain the simultaneous diffuse
 fluence and collected power. This is incoherent power superposition, not a
 coherent optical field calculation. SP3 is not the full 3D P3 system.
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-156
+.. GENERATED FROM PYTHON SOURCE LINES 134-163
 
 .. code-block:: Python
 
@@ -249,7 +256,7 @@ coherent optical field calculation. SP3 is not the full 3D P3 system.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-163
+.. GENERATED FROM PYTHON SOURCE LINES 164-170
 
 Combine the fluence and collection signals
 ------------------------------------------
@@ -258,7 +265,7 @@ Its accepted power is therefore additive under this diffuse linear model.
 The angular acceptance uses a Lambertian escape assumption; this is not a
 model of guided fiber modes, numerical aperture coupling, or Fresnel loss.
 
-.. GENERATED FROM PYTHON SOURCE LINES 163-189
+.. GENERATED FROM PYTHON SOURCE LINES 170-196
 
 .. code-block:: Python
 
@@ -297,14 +304,14 @@ model of guided fiber modes, numerical aperture coupling, or Fresnel loss.
  .. code-block:: none
 
     Total coupled illumination power: 1 mW
-    Central fiber collected power: 0.003360277364181396 mW
+    Central fiber collected power: 0.0048925418963712 mW
     Collection sampled area: 0.5866666666666666 mm²
     Collection geometric area: 0.6361725123519332 mm²
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 190-197
+.. GENERATED FROM PYTHON SOURCE LINES 197-204
 
 Visualize the combined fluence and seven contacts
 -------------------------------------------------
@@ -314,7 +321,7 @@ circular areas. Refine the mesh and compare the combined detector signal
 before interpreting a result; the approximations themselves also require
 validation against a suitable radiative-transfer or Monte Carlo reference.
 
-.. GENERATED FROM PYTHON SOURCE LINES 197-212
+.. GENERATED FROM PYTHON SOURCE LINES 204-219
 
 .. code-block:: Python
 
@@ -347,7 +354,7 @@ validation against a suitable radiative-transfer or Monte Carlo reference.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.896 seconds)
+   **Total running time of the script:** (0 minutes 4.617 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_seven_fiber_skin.py:

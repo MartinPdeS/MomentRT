@@ -74,17 +74,6 @@ sample.add_background(
     )
 )
 
-# %%
-# Preview the sample and instrument geometry
-# ------------------------------------------
-# The gallery thumbnail is taken from this geometry view so that it shows the
-# physical sample, source, and detector rather than the angular phase curves.
-
-sample_figure = sample.plot(
-    overlays={"Source": source, "Detector": detector},
-    show=show_figures,
-)
-
 mesh = MomentRT.CartesianMesh.from_sample(sample=sample, shape=(11, 11, 9))
 
 boundary = MomentRT.RobinBoundary(effective_reflectance=0)
@@ -130,6 +119,17 @@ for name, phase in phases.items():
 fluence_figure = results["Rayleigh"].fluence.plot(
     view="volume",
     scale="linear",
+    overlays={"Source": source, "Detector": detector},
+    show=show_figures,
+)
+
+# %%
+# Preview the sample and instrument geometry
+# ------------------------------------------
+# Keep the physical geometry as the final figure so the gallery thumbnail
+# shows the sample, source, and detector rather than the phase-function result.
+
+sample_figure = sample.plot(
     overlays={"Source": source, "Detector": detector},
     show=show_figures,
 )

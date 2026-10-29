@@ -50,6 +50,13 @@ sample = MomentRT.StructuredMedium(
 
 sample.add_background(material=dermis)
 
+
+sample.add_layer(
+    name="Dermis",
+    thickness=3.2 * ureg.millimeter,
+    material=dermis,
+)
+
 sample.add_layer(
     name="Epidermis",
     thickness=0.8 * ureg.millimeter,

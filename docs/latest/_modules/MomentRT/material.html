@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.material &#8212; MomentRT 0.4.0 documentation</title>
+    <title>MomentRT.material &#8212; MomentRT 0.5.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.4.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4.0" />
+  <meta name="docsearch:version" content="0.5.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -499,8 +499,6 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
@@ -546,10 +544,11 @@
 <span class="sd">        Positive dimensionless refractive index, supplied without units.</span>
 <span class="sd">    anisotropy : float or None, optional</span>
 <span class="sd">        Mean scattering cosine in (-1, 1), supplied without units. Required</span>
-<span class="sd">        by SP3, where it selects Henyey–Greenstein scattering; P1 does not use it.</span>
-<span class="sd">    phase_function : {'henyey_greenstein'}, optional</span>
-<span class="sd">        Scattering phase-function model used by SP3. Defaults to</span>
-<span class="sd">        ``'henyey_greenstein'``; P1 does not use it.</span>
+<span class="sd">        by Henyey–Greenstein SP3/P3 calculations. Phase functions with their</span>
+<span class="sd">        own first moment can omit it; P1 does not use it.</span>
+<span class="sd">    phase_function : PhaseFunction</span>
+<span class="sd">        Explicit scalar scattering phase function. SP3 and P3 use its moments;</span>
+<span class="sd">        P1 only needs reduced scattering.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -564,6 +563,7 @@
 <span class="sd">    ...     absorption=0.1 / ureg.millimeter,</span>
 <span class="sd">    ...     reduced_scattering=1.0 / ureg.millimeter,</span>
 <span class="sd">    ...     refractive_index=1.4,</span>
+<span class="sd">    ...     phase_function=MomentRT.phase_function.HenyeyGreenstein(),</span>
 <span class="sd">    ... )</span>
 <span class="sd">    """</span>
 
@@ -574,7 +574,7 @@
         <span class="n">reduced_scattering</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">refractive_index</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
         <span class="n">anisotropy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">phase_function</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"henyey_greenstein"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"henyey_greenstein"</span><span class="p">,</span>
+        <span class="n">phase_function</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">PhaseFunction</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Initialize the Material configuration.</span>
 
@@ -587,9 +587,10 @@
 <span class="sd">        refractive_index : float</span>
 <span class="sd">            Positive dimensionless refractive index, supplied without units.</span>
 <span class="sd">        anisotropy : float or None, optional</span>
-<span class="sd">            Mean scattering cosine in (-1, 1). Required by SP3; unused by P1.</span>
-<span class="sd">        phase_function : {'henyey_greenstein'}, optional</span>
-<span class="sd">            SP3 scattering phase-function model; defaults to Henyey–Greenstein.</span>
+<span class="sd">            Mean scattering cosine in (-1, 1). Required for Henyey–Greenstein</span>
+<span class="sd">            SP3/P3 calculations; unused by P1.</span>
+<span class="sd">        phase_function : PhaseFunction</span>
+<span class="sd">            Explicit scalar scattering phase function for SP3 and P3.</span>
 <span class="sd">        """</span>
 
         <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
@@ -618,8 +619,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span> <span class="o">=</span> <span class="n">refractive_index</span>
 
-        <span class="k">if</span> <span class="n">phase_function</span> <span class="o">!=</span> <span class="s2">"henyey_greenstein"</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"phase_function must be 'henyey_greenstein'."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">phase_function</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">PhaseFunction</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"phase_function must be a PhaseFunction object."</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">phase_function</span> <span class="o">=</span> <span class="n">phase_function</span>
 
@@ -627,6 +628,70 @@
             <span class="kc">None</span>
             <span class="k">if</span> <span class="n">anisotropy</span> <span class="ow">is</span> <span class="kc">None</span>
             <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">_anisotropy_values</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">anisotropy</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">()))</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">phase_function</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">PhaseFunction</span>
+        <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">phase_function</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">HenyeyGreenstein</span><span class="p">):</span>
+            <span class="n">phase_function</span><span class="o">.</span><span class="n">moments</span><span class="p">(</span><span class="n">anisotropy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">anisotropy</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_phase_moments</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Resolve and validate normalized phase-function moments for transport."""</span>
+        <span class="n">phase</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">phase_function</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">phase</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">PhaseFunction</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"phase_function must be a PhaseFunction object."</span><span class="p">)</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">phase</span><span class="o">.</span><span class="n">moments</span><span class="p">(</span><span class="n">anisotropy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">anisotropy</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">4</span><span class="p">,)</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-10</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="o">+</span> <span class="mf">1e-10</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="o">-</span><span class="mi">1</span> <span class="o">&lt;</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"phase-function moments must be finite, normalized, and physically admissible with first moment in (-1, 1)."</span>
+            <span class="p">)</span>
+
+        <span class="n">first</span> <span class="o">=</span> <span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">second</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">values</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
+
+        <span class="n">third</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">values</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">first</span><span class="p">)</span> <span class="o">/</span> <span class="mi">5</span>
+
+        <span class="k">for</span> <span class="n">sign</span> <span class="ow">in</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">moment_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="p">[</span><span class="mi">1</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">first</span><span class="p">,</span> <span class="n">first</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">second</span><span class="p">],</span>
+                    <span class="p">[</span><span class="n">first</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">second</span><span class="p">,</span> <span class="n">second</span> <span class="o">+</span> <span class="n">sign</span> <span class="o">*</span> <span class="n">third</span><span class="p">],</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eigvalsh</span><span class="p">(</span><span class="n">moment_matrix</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">1e-10</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"phase-function moments cannot represent a nonnegative scattering distribution on [-1, 1]."</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_transport_factors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return scattering attenuation factors relative to reduced scattering."""</span>
+        <span class="n">moments</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_phase_moments</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">phase_function</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">HenyeyGreenstein</span><span class="p">):</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">moments</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">g</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">g</span> <span class="o">+</span> <span class="n">g</span><span class="o">**</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="mi">0</span><span class="p">,</span>
+                <span class="mi">1</span><span class="p">,</span>
+                <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">moments</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">moments</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">moments</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">moments</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+            <span class="p">]</span>
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Material.at">
@@ -677,9 +742,10 @@
 <span class="sd">        Dimensionless quantities are not accepted.</span>
 <span class="sd">    anisotropy : float or array_like of float or None, optional</span>
 <span class="sd">        Plain scalar or wavelength-grid vector of mean scattering cosines in</span>
-<span class="sd">        (-1, 1). Interpolated linearly; required for SP3, unused by P1.</span>
-<span class="sd">    phase_function : {'henyey_greenstein'}, optional</span>
-<span class="sd">        SP3 scattering phase-function model, fixed across the wavelength table.</span>
+<span class="sd">        (-1, 1). Interpolated linearly; required for Henyey–Greenstein</span>
+<span class="sd">        SP3/P3 calculations, unused by P1.</span>
+<span class="sd">    phase_function : PhaseFunction</span>
+<span class="sd">        Explicit scattering phase function, fixed across the wavelength table.</span>
 <span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -690,7 +756,7 @@
         <span class="n">reduced_scattering</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">refractive_index</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span>
         <span class="n">anisotropy</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">phase_function</span><span class="p">:</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">"henyey_greenstein"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"henyey_greenstein"</span><span class="p">,</span>
+        <span class="n">phase_function</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">PhaseFunction</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Initialize the SpectralMaterial configuration.</span>
 
@@ -710,9 +776,9 @@
 <span class="sd">            Dimensionless quantities are not accepted.</span>
 <span class="sd">        anisotropy : float or array_like of float or None, optional</span>
 <span class="sd">            Plain scalar or wavelength-grid vector of scattering cosines in</span>
-<span class="sd">            (-1, 1). Required by SP3; unused by P1.</span>
-<span class="sd">        phase_function : {'henyey_greenstein'}, optional</span>
-<span class="sd">            SP3 scattering phase-function model, fixed across wavelengths.</span>
+<span class="sd">            (-1, 1). Required for Henyey–Greenstein SP3/P3; unused by P1.</span>
+<span class="sd">        phase_function : PhaseFunction</span>
+<span class="sd">            Explicit scattering phase function, fixed across wavelengths.</span>
 <span class="sd">        """</span>
 
         <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
@@ -764,8 +830,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">refractive_index</span> <span class="o">=</span> <span class="n">indices</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">phase_function</span> <span class="o">!=</span> <span class="s2">"henyey_greenstein"</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"phase_function must be 'henyey_greenstein'."</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">phase_function</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">PhaseFunction</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"phase_function must be a PhaseFunction object."</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">phase_function</span> <span class="o">=</span> <span class="n">phase_function</span>
 
@@ -774,6 +840,15 @@
             <span class="k">if</span> <span class="n">anisotropy</span> <span class="ow">is</span> <span class="kc">None</span>
             <span class="k">else</span> <span class="n">_anisotropy_values</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">anisotropy</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">phase_function</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">PhaseFunction</span>
+        <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">phase_function</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">HenyeyGreenstein</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">anisotropy</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">phase_function</span><span class="o">.</span><span class="n">moments</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">anisotropy</span><span class="p">):</span>
+                    <span class="n">phase_function</span><span class="o">.</span><span class="n">moments</span><span class="p">(</span><span class="n">anisotropy</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
 
 <div class="viewcode-block" id="SpectralMaterial.at">
 <a class="viewcode-back" href="../../python_api.html#MomentRT.SpectralMaterial.at">[docs]</a>

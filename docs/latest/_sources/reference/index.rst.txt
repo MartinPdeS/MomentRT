@@ -25,10 +25,17 @@ objects, and see the project's current development scope.
 
       Current implementation status and planned directions.
 
+   .. grid-item-card:: Scattering phase functions
+      :link: ../phase_functions
+      :link-type: doc
+
+      Scalar angular scattering models, normalized moments, and tabulated data.
+
 .. toctree::
    :maxdepth: 1
    :hidden:
 
    Results and visualization <../results>
    API reference <../api_reference>
+   Scattering phase functions <../phase_functions>
    Roadmap <../roadmap>

@@ -31,12 +31,12 @@ All inputs are illustrative.
 .. code-block:: Python
 
 
-
     import os
 
     import matplotlib.pyplot as plt
     import numpy as np
 
+    import MomentRT
     from MomentRT import (
         CartesianMesh,
         Diffusion,
@@ -64,12 +64,13 @@ Fix the physical sample and illumination
 Uniform surface illumination avoids adding a finite disk edge to this mesh
 refinement comparison.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-73
+.. GENERATED FROM PYTHON SOURCE LINES 36-74
 
 .. code-block:: Python
 
 
     material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0.03 / ureg.millimeter,
         reduced_scattering=1.0 / ureg.millimeter,
         refractive_index=1.4,
@@ -112,14 +113,14 @@ refinement comparison.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-78
+.. GENERATED FROM PYTHON SOURCE LINES 75-79
 
 Solve on coarse, medium, and fine grids
 ---------------------------------------
 Each grid has nodes at the centerline and at one-millimeter depth, so those
 physical points can be compared directly.
 
-.. GENERATED FROM PYTHON SOURCE LINES 78-122
+.. GENERATED FROM PYTHON SOURCE LINES 79-123
 
 .. code-block:: Python
 
@@ -174,14 +175,14 @@ physical points can be compared directly.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-127
+.. GENERATED FROM PYTHON SOURCE LINES 124-128
 
 Compare interpolated centerline profiles
 ----------------------------------------
 Interpolation puts the plotted lines on the same depth coordinates; it does
 not change the finite-element solution or create additional mesh resolution.
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-147
+.. GENERATED FROM PYTHON SOURCE LINES 128-148
 
 .. code-block:: Python
 
@@ -217,14 +218,14 @@ not change the finite-element solution or create additional mesh resolution.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 148-152
+.. GENERATED FROM PYTHON SOURCE LINES 149-153
 
 Report solver residuals and energy residuals
 --------------------------------------------
 Algebraic and energy residuals diagnose the solve, while profile changes
 show this observable's sensitivity to mesh resolution.
 
-.. GENERATED FROM PYTHON SOURCE LINES 152-167
+.. GENERATED FROM PYTHON SOURCE LINES 153-168
 
 .. code-block:: Python
 
@@ -258,14 +259,14 @@ show this observable's sensitivity to mesh resolution.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 168-172
+.. GENERATED FROM PYTHON SOURCE LINES 169-173
 
 Inspect the finest-grid fluence volume
 --------------------------------------
 This view uses the final mesh from the refinement sequence. A visually
 smooth volume alone does not establish numerical convergence.
 
-.. GENERATED FROM PYTHON SOURCE LINES 172-179
+.. GENERATED FROM PYTHON SOURCE LINES 173-180
 
 .. code-block:: Python
 
@@ -290,7 +291,7 @@ smooth volume alone does not establish numerical convergence.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.358 seconds)
+   **Total running time of the script:** (0 minutes 0.217 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_mesh_refinement.py:

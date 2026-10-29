@@ -113,6 +113,14 @@ resolution.
 
       Compare detector signals from the two moment models on the same sample.
 
+   .. grid-item-card:: Compare scattering phase functions
+      :link: finite_samples/phase_functions
+      :link-type: doc
+      :img-top: finite_samples/images/thumb/sphx_glr_phase_functions_thumb.png
+      :img-alt: SP3 fluence for the Rayleigh scattering example
+
+      Compare phase functions with the same anisotropy but different higher moments.
+
    .. grid-item-card:: Compare P1, SP3, and full P3
       :link: finite_samples/compare_p3
       :link-type: doc

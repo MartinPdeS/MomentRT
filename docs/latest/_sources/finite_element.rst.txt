@@ -511,6 +511,7 @@ The finite workflow follows directly from the weak equation:
 .. code-block:: python
 
    import numpy as np
+   import MomentRT
 
    from MomentRT import (
        CartesianMesh,
@@ -527,6 +528,7 @@ The finite workflow follows directly from the weak equation:
        absorption=0.02 / ureg.millimeter,
        reduced_scattering=1.0 / ureg.millimeter,
        refractive_index=1.4,
+       phase_function=MomentRT.phase_function.HenyeyGreenstein(),
    )
 
    sample = StructuredMedium(

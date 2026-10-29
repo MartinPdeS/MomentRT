@@ -9,11 +9,11 @@ a broadband source integration or a validated tissue spectrum.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/spectral_detectors.png'
-
 import os
 
 import numpy as np
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     Diffusion,
@@ -38,6 +38,7 @@ show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 table_wavelengths = np.array([650, 750, 850, 950]) * ureg.nm
 
 background = SpectralMaterial(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     wavelengths=table_wavelengths,
     absorption=np.array([0.025, 0.014, 0.018, 0.035]) / ureg.mm,
     reduced_scattering=np.array([1.5, 1.3, 1.1, 0.9]) / ureg.mm,
@@ -45,6 +46,7 @@ background = SpectralMaterial(
 )
 
 upper_material = SpectralMaterial(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     wavelengths=table_wavelengths,
     absorption=np.array([0.06, 0.03, 0.025, 0.05]) / ureg.mm,
     reduced_scattering=np.array([1.8, 1.6, 1.4, 1.2]) / ureg.mm,

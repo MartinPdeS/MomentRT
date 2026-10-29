@@ -8,12 +8,12 @@ are equal: refracting internal interfaces are outside this solver's scope.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/surface_diffusion.png'
-
 import os
 
 import matplotlib.pyplot as plt
 import numpy as np
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     Diffusion,
@@ -34,12 +34,14 @@ show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 # does not support refracting internal interfaces.
 
 background = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.02 / ureg.millimeter,
     reduced_scattering=1 / ureg.millimeter,
     refractive_index=1.4,
 )
 
 upper_material = Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.04 / ureg.millimeter,
     reduced_scattering=1.5 / ureg.millimeter,
     refractive_index=1.4,

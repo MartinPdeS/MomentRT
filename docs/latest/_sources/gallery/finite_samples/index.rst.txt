@@ -90,6 +90,23 @@ easy to inspect.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare isotropic and unpolarized Rayleigh scattering in the same finite sample. Both have zero mean scattering cosine, but their second angular moments differ. All optical properties are illustrative.">
+
+.. only:: html
+
+  .. image:: /gallery/finite_samples/images/thumb/sphx_glr_phase_functions_thumb.png
+    :alt:
+
+  :doc:`/gallery/finite_samples/phase_functions`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compare scattering phase functions</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Solve the same illuminated slab with three effective diffuse reflectances. The centerline fluence increases as less diffuse current escapes through the sample boundary. The parameter is not a Fresnel reflectance. Inputs are illustrative.">
 
 .. only:: html
@@ -255,6 +272,7 @@ easy to inspect.
    /gallery/finite_samples/compare_sp3
    /gallery/finite_samples/detector_convergence
    /gallery/finite_samples/mesh_refinement
+   /gallery/finite_samples/phase_functions
    /gallery/finite_samples/reflectance_sweep
    /gallery/finite_samples/seven_fiber_skin
    /gallery/finite_samples/sp3_layered_anisotropy

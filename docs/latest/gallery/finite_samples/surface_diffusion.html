@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Surface illumination and FEM diffusion &#8212; MomentRT 0.4.0 documentation</title>
+    <title>Surface illumination and FEM diffusion &#8212; MomentRT 0.5.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="../../_static/documentation_options.js?v=70f82a29"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.4.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4.0" />
+  <meta name="docsearch:version" content="0.5.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -468,6 +468,7 @@
 <li class="toctree-l2"><a class="reference internal" href="compare_sp3.html">Compare P1 and SP3 transport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="detector_convergence.html">Choose a mesh for detector collection</a></li>
 <li class="toctree-l2"><a class="reference internal" href="mesh_refinement.html">Check finite-element mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="phase_functions.html">Compare scattering phase functions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
 <li class="toctree-l2"><a class="reference internal" href="seven_fiber_skin.html">Seven-fiber bundle on a two-layer skin sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="sp3_layered_anisotropy.html">Use different anisotropies in a layered sample</a></li>
@@ -557,6 +558,7 @@ are equal: refracting internal interfaces are outside this solver’s scope.</p>
 </span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib</span><span class="nn">.</span><span class="nn">pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span><span class="w">
 </span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span><span class="w">
 </span><span class="w">
+</span><span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span><span class="w">
 </span><span class="kn">from</span><span class="w"> </span><span class="nn">MomentRT</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
 </span>    <span class="n">CartesianMesh</span><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Diffusion" title="MomentRT.Diffusion"><span class="n">Diffusion</span></a><span class="p">,</span><span class="w">
@@ -575,12 +577,14 @@ are equal: refracting internal interfaces are outside this solver’s scope.</p>
 <p>Use equal internal refractive indices: this continuous-fluence FEM model
 does not support refracting internal interfaces.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">background</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">Material</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">phase_function</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.HenyeyGreenstein" title="MomentRT.HenyeyGreenstein"><span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">HenyeyGreenstein</span></a><span class="p">(</span><span class="p">)</span><span class="p">,</span><span class="w">
 </span>    <span class="n">absorption</span><span class="o">=</span><span class="mf">0.02</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
 </span>    <span class="n">reduced_scattering</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
 </span>    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">upper_material</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">Material</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">phase_function</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.HenyeyGreenstein" title="MomentRT.HenyeyGreenstein"><span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">HenyeyGreenstein</span></a><span class="p">(</span><span class="p">)</span><span class="p">,</span><span class="w">
 </span>    <span class="n">absorption</span><span class="o">=</span><span class="mf">0.04</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
 </span>    <span class="n">reduced_scattering</span><span class="o">=</span><span class="mf">1.5</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">millimeter</span><span class="p">,</span><span class="w">
 </span>    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span><span class="w">
@@ -748,7 +752,7 @@ view to rotate the sample and inspect physical hover values.</p>
 </span><span class="k">if</span> <span class="n">show_figures</span><span class="p">:</span><span class="w">
 </span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<iframe src="../../_static/gallery/surface_diffusion-3.html" title="Diffusive flux (element centers; relative arrow lengths)" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.206 seconds)</p>
+<iframe src="../../_static/gallery/surface_diffusion-3.html" title="Diffusive flux (element centers; relative arrow lengths)" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.656 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-finite-samples-surface-diffusion-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/22ce9b7a701d6677edbceaf8e8257b56/surface_diffusion.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">surface_diffusion.ipynb</span></code></a></p>
@@ -829,7 +833,7 @@ view to rotate the sample and inspect physical hover values.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.4.0/docs/source/gallery/finite_samples/surface_diffusion.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.5.0/docs/source/gallery/finite_samples/surface_diffusion.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

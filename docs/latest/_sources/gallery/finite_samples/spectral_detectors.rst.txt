@@ -31,11 +31,11 @@ a broadband source integration or a validated tissue spectrum.
 .. code-block:: Python
 
 
-
     import os
 
     import numpy as np
 
+    import MomentRT
     from MomentRT import (
         CartesianMesh,
         Diffusion,
@@ -65,7 +65,7 @@ Tables are linearly interpolated. Out-of-range wavelengths are rejected.
 The refractive index is constant across the internal interface at every
 wavelength, as required by the current continuous-fluence solver.
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-67
+.. GENERATED FROM PYTHON SOURCE LINES 37-69
 
 .. code-block:: Python
 
@@ -73,6 +73,7 @@ wavelength, as required by the current continuous-fluence solver.
     table_wavelengths = np.array([650, 750, 850, 950]) * ureg.nm
 
     background = SpectralMaterial(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         wavelengths=table_wavelengths,
         absorption=np.array([0.025, 0.014, 0.018, 0.035]) / ureg.mm,
         reduced_scattering=np.array([1.5, 1.3, 1.1, 0.9]) / ureg.mm,
@@ -80,6 +81,7 @@ wavelength, as required by the current continuous-fluence solver.
     )
 
     upper_material = SpectralMaterial(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         wavelengths=table_wavelengths,
         absorption=np.array([0.06, 0.03, 0.025, 0.05]) / ureg.mm,
         reduced_scattering=np.array([1.8, 1.6, 1.4, 1.2]) / ureg.mm,
@@ -106,7 +108,7 @@ wavelength, as required by the current continuous-fluence solver.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 68-73
+.. GENERATED FROM PYTHON SOURCE LINES 70-75
 
 Configure the source, mesh, boundaries, and detectors once
 ----------------------------------------------------------
@@ -114,7 +116,7 @@ Power is already coupled into the sample. The sweep retains that same
 optical power at every wavelength unless a power vector is supplied.
 Boundary effective reflectance and detector acceptance also stay fixed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-127
+.. GENERATED FROM PYTHON SOURCE LINES 75-129
 
 .. code-block:: Python
 
@@ -183,14 +185,14 @@ Boundary effective reflectance and detector acceptance also stay fixed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 128-132
+.. GENERATED FROM PYTHON SOURCE LINES 130-134
 
 Run the ordered wavelength sweep
 ----------------------------------
 Each result keeps its own fields, wavelength, and detector measurements.
 The original sample, source wavelength, and detector geometry are retained.
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-154
+.. GENERATED FROM PYTHON SOURCE LINES 134-156
 
 .. code-block:: Python
 
@@ -229,8 +231,8 @@ The original sample, source wavelength, and detector geometry are retained.
  .. code-block:: none
 
     Geometry preparations: 1
-    Preparation time: 0.07875204900000199 s
-    Per-wavelength run times: [0.049291322999991394 0.048052639000005115 0.04725484299999039 0.047409033000008094 0.04826729099998772] s
+    Preparation time: 0.04474904200000651 s
+    Per-wavelength run times: [0.028048139000006245 0.026762688999994566 0.02671833200000151 0.027028337999993823 0.026672294000007923] s
     Reflection at 700 nm: 0.0019590985219869353 mW
     Reflection at 750 nm: 0.0022726091120240026 mW
     Reflection at 800 nm: 0.0023677074555548284 mW
@@ -240,7 +242,7 @@ The original sample, source wavelength, and detector geometry are retained.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-162
+.. GENERATED FROM PYTHON SOURCE LINES 157-164
 
 Inspect one monochromatic fluence volume
 -----------------------------------------
@@ -250,7 +252,7 @@ Overlays place the instrument on the spatial field; the spectrum above keeps
 its wavelength and power axes.
 Named overlays give the two apertures distinct legend entries.
 
-.. GENERATED FROM PYTHON SOURCE LINES 162-173
+.. GENERATED FROM PYTHON SOURCE LINES 164-175
 
 .. code-block:: Python
 
@@ -279,7 +281,7 @@ Named overlays give the two apertures distinct legend entries.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.400 seconds)
+   **Total running time of the script:** (0 minutes 0.232 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_spectral_detectors.py:

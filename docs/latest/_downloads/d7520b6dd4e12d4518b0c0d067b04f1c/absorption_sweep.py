@@ -8,12 +8,12 @@ fluence reaches a given value. Inputs are illustrative.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_volumes/absorption_sweep.png'
-
 import os
 
 import matplotlib.pyplot as plt
 import numpy as np
 
+import MomentRT
 from MomentRT import (
     CartesianMesh,
     HomogeneousMedium,
@@ -66,6 +66,7 @@ fluence_profiles = []
 
 for absorption_value in absorption_values:
     material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=absorption_value / ureg.millimeter,
         reduced_scattering=0.8 / ureg.millimeter,
         refractive_index=1.4,

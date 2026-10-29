@@ -27,6 +27,7 @@ show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 # SP3 additionally uses each material's Henyey–Greenstein anisotropy.
 
 material = MomentRT.Material(
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     absorption=0.03 / ureg.millimeter,
     reduced_scattering=1 / ureg.millimeter,
     refractive_index=1.4,

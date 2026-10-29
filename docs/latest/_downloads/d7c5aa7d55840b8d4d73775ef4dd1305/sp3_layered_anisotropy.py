@@ -31,7 +31,7 @@ dermis = MomentRT.Material(
     reduced_scattering=1.0 / ureg.millimeter,
     refractive_index=1.4,
     anisotropy=0.8,
-    phase_function="henyey_greenstein",
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
 )
 
 epidermis = MomentRT.Material(
@@ -39,7 +39,7 @@ epidermis = MomentRT.Material(
     reduced_scattering=1.6 / ureg.millimeter,
     refractive_index=1.4,
     anisotropy=0.65,
-    phase_function="henyey_greenstein",
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
 )
 
 sample = MomentRT.StructuredMedium(

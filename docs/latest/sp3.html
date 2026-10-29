@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>SP3 transport model &#8212; MomentRT 0.4.0 documentation</title>
+    <title>SP3 transport model &#8212; MomentRT 0.5.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="_static/documentation_options.js?v=70f82a29"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.4.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4.0" />
+  <meta name="docsearch:version" content="0.5.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -533,14 +533,15 @@ coincide with the corresponding P3 moment equations; in three dimensions SP3
 is a simplification of P3, not the full spherical-harmonics system.</p>
 <section id="scattering-and-bulk-equations">
 <h2>Scattering and bulk equations<a class="headerlink" href="#scattering-and-bulk-equations" title="Link to this heading">#</a></h2>
-<p>The first reduced scattering coefficient alone does not determine the higher
-angular moments needed by SP3. Each material therefore requires an explicit,
-dimensionless <code class="docutils literal notranslate"><span class="pre">anisotropy</span></code> <span class="math notranslate nohighlight">\(g\)</span> in <span class="math notranslate nohighlight">\((-1,1)\)</span>. The current solver
-assumes a Henyey–Greenstein phase function in every region. Different
-materials can have different values; <code class="docutils literal notranslate"><span class="pre">SpectralMaterial</span></code> can also interpolate
-anisotropy across wavelengths. Materials expose the current choice as
-<code class="docutils literal notranslate"><span class="pre">phase_function=&quot;henyey_greenstein&quot;</span></code>. With absorption <span class="math notranslate nohighlight">\(\mu_a\)</span> and
-reduced scattering <span class="math notranslate nohighlight">\(\mu'_s = \mu_s(1-g)\)</span>, define</p>
+<p>The reduced scattering coefficient alone does not determine the higher
+angular moments needed by SP3. Each material supplies a scalar phase function
+whose normalized Legendre moments are <span class="math notranslate nohighlight">\(g_0=1,g_1,g_2,g_3\)</span>. For
+absorption <span class="math notranslate nohighlight">\(\mu_a\)</span> and reduced scattering
+<span class="math notranslate nohighlight">\(\mu'_s=\mu_s(1-g_1)\)</span>, define</p>
+<div class="math notranslate nohighlight">
+\[\mu_l=\mu_a+\mu'_s\frac{1-g_l}{1-g_1},\quad l=1,2,3.\]</div>
+<p>The Henyey–Greenstein model requires material <code class="docutils literal notranslate"><span class="pre">anisotropy</span></code>
+<span class="math notranslate nohighlight">\(g=g_1\)</span> and has <span class="math notranslate nohighlight">\(g_l=g^l\)</span>. For that specific model,</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}\mu_1 &amp;= \mu_a + \mu'_s,\\
 \mu_2 &amp;= \mu_a + \mu'_s(1+g),\\
@@ -551,8 +552,9 @@ D_1 &amp;= (3\mu_1)^{-1},\qquad D_2 = (7\mu_3)^{-1}.\end{split}\]</div>
 \[\begin{split}-\nabla\!\cdot(D_1\nabla u) + \mu_a u - \tfrac23\mu_a v &amp;= 0,\\
 -\nabla\!\cdot(D_2\nabla v) - \tfrac23\mu_a u
    + \tfrac19(4\mu_a+5\mu_2)v &amp;= 0.\end{split}\]</div>
-<p>Each coefficient is evaluated with the anisotropy of the local material at
-the source wavelength. The physical fluence and first angular current are</p>
+<p>Each coefficient is evaluated with the local material’s phase-function
+moments at the source wavelength. See <a class="reference internal" href="phase_functions.html"><span class="doc">Scattering phase functions</span></a> for the available
+models. The physical fluence and first angular current are</p>
 <div class="math notranslate nohighlight">
 \[\Phi = u - \tfrac23 v,\qquad \mathbf J=-D_1\nabla u.\]</div>
 <p>Both composite fields are available as <code class="docutils literal notranslate"><span class="pre">result.moments['composite_1']</span></code> and
@@ -686,7 +688,7 @@ propagation model</em>, International Journal of Thermal Sciences 116 (2017),
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.4.0/docs/source/sp3.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.5.0/docs/source/sp3.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; MomentRT 0.4.0 documentation</title>
+    <title>Index &#8212; MomentRT 0.5.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=1437fa6d"></script>
+    <script src="_static/documentation_options.js?v=70f82a29"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.4.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.5.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.4.0" />
+  <meta name="docsearch:version" content="0.5.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -578,6 +578,16 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="python_api.html#MomentRT.BoundaryField.escaping_power">escaping_power (BoundaryField property)</a>
 </li>
+      <li><a href="python_api.html#MomentRT.HenyeyGreenstein.evaluate">evaluate() (HenyeyGreenstein method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.Isotropic.evaluate">(Isotropic method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.PhaseFunction.evaluate">(PhaseFunction method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.Rayleigh.evaluate">(Rayleigh method)</a>
+</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="python_api.html#MomentRT.ScalarField.export">export() (ScalarField method)</a>
@@ -596,6 +606,10 @@
 <h2 id="H">H</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.HenyeyGreenstein">HenyeyGreenstein (class in MomentRT)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="python_api.html#MomentRT.HomogeneousMedium">HomogeneousMedium (class in MomentRT)</a>
 </li>
   </ul></td>
@@ -605,6 +619,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="python_api.html#MomentRT.InfiniteDiffusion">InfiniteDiffusion (class in MomentRT)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.Isotropic">Isotropic (class in MomentRT)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -634,12 +652,22 @@
 </li>
       <li><a href="python_api.html#MomentRT.StructuredMedium.material_labels">material_labels() (StructuredMedium method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="python_api.html#MomentRT.SurfaceDetector.measure">measure() (SurfaceDetector method)</a>
 </li>
       <li><a href="python_api.html#MomentRT.SimulationResult.minimum_fluence">minimum_fluence (SimulationResult property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.HenyeyGreenstein.moments">moments() (HenyeyGreenstein method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.Isotropic.moments">(Isotropic method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.PhaseFunction.moments">(PhaseFunction method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.Rayleigh.moments">(Rayleigh method)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -663,6 +691,8 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="python_api.html#MomentRT.P3">P3 (class in MomentRT)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.PhaseFunction">PhaseFunction (class in MomentRT)</a>
 </li>
       <li><a href="python_api.html#MomentRT.DetectorConvergenceResult.plot">plot() (DetectorConvergenceResult method)</a>
 
@@ -696,14 +726,16 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.Rayleigh">Rayleigh (class in MomentRT)</a>
+</li>
       <li><a href="python_api.html#MomentRT.DetectorConvergenceResult.recommended_mesh">recommended_mesh (DetectorConvergenceResult property)</a>
 </li>
       <li><a href="python_api.html#MomentRT.DetectorConvergenceResult.recommended_shape">recommended_shape (DetectorConvergenceResult property)</a>
 </li>
-      <li><a href="python_api.html#MomentRT.DetectorConvergenceResult.records">records (DetectorConvergenceResult property)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.DetectorConvergenceResult.records">records (DetectorConvergenceResult property)</a>
+</li>
       <li><a href="python_api.html#MomentRT.ReflectingBoundary">ReflectingBoundary (class in MomentRT)</a>
 </li>
       <li><a href="python_api.html#MomentRT.RobinBoundary">RobinBoundary (class in MomentRT)</a>
@@ -776,6 +808,8 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.TabulatedPhaseFunction">TabulatedPhaseFunction (in module MomentRT)</a>
+</li>
       <li><a href="python_api.html#MomentRT.CartesianMesh.to_pyvista">to_pyvista() (CartesianMesh method)</a>
 
       <ul>

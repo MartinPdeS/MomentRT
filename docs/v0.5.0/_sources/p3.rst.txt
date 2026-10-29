@@ -1,0 +1,165 @@
+Full three-dimensional P3 transport
+====================================
+
+``P3`` approximates the angular radiance using all real spherical harmonics
+through degree three. In three dimensions there are 16 coefficients: one of
+degree zero, three of degree one, five of degree two, and seven of degree
+three. This is distinct from :doc:`sp3`, whose two scalar equations simplify
+the multidimensional angular structure. Neither approximation recovers the
+full radiative-transfer solution in every configuration.
+
+Angular representation and coefficients
+---------------------------------------
+
+For real orthonormal harmonics :math:`Y_{lm}` on the unit sphere,
+
+.. math::
+
+   L(\mathbf r,\mathbf\Omega) \simeq
+   \sum_{l=0}^{3}\sum_{m=-l}^{l} c_{lm}(\mathbf r)Y_{lm}(\mathbf\Omega).
+
+MomentRT orders each degree by :math:`m=-l,\ldots,l`; negative orders use
+sine and positive orders cosine with the Condon–Shortley convention. The
+six coefficients of degrees zero and two form :math:`\mathbf c_e`; the ten
+coefficients of degrees one and three form :math:`\mathbf c_o`. Fluence is
+:math:`\Phi=\sqrt{4\pi}\,c_{00}`.
+
+For each material's normalized phase-function moments :math:`g_l` and reduced
+scattering coefficient :math:`\mu_s'=\mu_s(1-g_1)`, the collision coefficient
+for degree :math:`l` is
+
+.. math::
+
+   \sigma_l = \mu_a + \mu_s'\frac{1-g_l}{1-g_1},\qquad l=0,1,2,3.
+
+Thus :math:`\sigma_0=\mu_a`. For Henyey–Greenstein :math:`g_l=g^l`.
+Coefficients are evaluated per material at the
+source wavelength and sampled at tetrahedron centroids. No assumption that
+different materials share an anisotropy is needed. Internal refractive-index
+jumps are currently rejected.
+
+Even-parity formulation
+-----------------------
+
+Define the angular streaming matrices and diagonal collision matrices by
+
+.. math::
+
+   (A_i)_{oe} &= \int_{4\pi} Y_o\Omega_iY_e\,d\Omega,\\
+   \Sigma_e &= \operatorname{diag}(\sigma_0,\sigma_2,\ldots,\sigma_2),
+   \qquad
+   \Sigma_o = \operatorname{diag}(\sigma_1,\ldots,\sigma_3).
+
+With no internal source, the odd moment equation can be eliminated locally:
+
+.. math::
+
+   \mathbf c_o = -\Sigma_o^{-1}\sum_i A_i\partial_i\mathbf c_e.
+
+Substitution into the even equations gives six coupled second-order
+equations, with the tensor coupling retained in three dimensions:
+
+.. math::
+
+   -\sum_{i,j}\partial_i\!\left(A_i^T\Sigma_o^{-1}A_j
+   \partial_j\mathbf c_e\right)+\Sigma_e\mathbf c_e=0.
+
+Each even moment uses the same continuous linear tetrahedral basis. The ten
+odd coefficients are reconstructed at element centers; they can be
+discontinuous across element or material boundaries. The reported
+``result.flux`` is the first angular moment reconstructed there. The six
+nodal even coefficients are available in ``result.moments`` under names
+such as ``l0_m0`` and ``l2_m0``. Their values follow the normalized harmonic
+convention above; they are not themselves the SP3 composite moments.
+
+Matched-index boundary and illumination
+----------------------------------------
+
+For outward normal :math:`\mathbf n`, the current of the even test moments
+is :math:`\mathbf q_n=\sum_i n_i A_i^T\mathbf c_o`. Project the prescribed
+incoming radiance onto the incoming half sphere using the six weights
+:math:`(\mathbf\Omega\cdot\mathbf n)Y_e`. For an isotropic incoming
+hemisphere with partial current :math:`I_{\rm in}`, its radiance is
+:math:`I_{\rm in}/\pi`. Define
+
+.. math::
+
+   B_{ef} &= 2\int_{\mathbf\Omega\cdot\mathbf n>0}
+   (\mathbf\Omega\cdot\mathbf n)Y_eY_f\,d\Omega,\\
+   b_e &= \frac1\pi\int_{\mathbf\Omega\cdot\mathbf n>0}
+   (\mathbf\Omega\cdot\mathbf n)Y_e\,d\Omega.
+
+Parity of the even and odd harmonics then gives the matched-index Marshak
+condition
+
+.. math::
+
+   \mathbf q_n = B\mathbf c_e-2I_{\rm in}\mathbf b.
+
+The weak form adds :math:`B` as a boundary mass matrix and
+:math:`2I_{\rm in}\mathbf b` as the source load. Angular matrices are
+evaluated using Gauss–Legendre and equally spaced azimuthal quadrature; the
+chosen rules integrate the required P3 polynomial products. In planar
+geometry the azimuthally symmetric P3 coefficients reduce to the familiar
+two composite equations and Marshak coefficients documented in :doc:`sp3`.
+
+All six faces currently require ``RobinBoundary(effective_reflectance=0)``.
+Reflecting boundaries and index-mismatched or refracting interfaces are not
+implemented for P3 and are rejected explicitly. Surface sources specify
+incoming diffuse power already coupled into the sample; collimated fiber
+propagation and entry losses are outside this model.
+
+The outgoing face partial current is the reconstructed net normal current
+plus the incoming partial current. The existing contact detector integrates
+that escaping field over its aperture and applies its **separate Lambertian
+angular-acceptance approximation**. It does not yet integrate the reconstructed
+P3 radiance over a fiber's acceptance cone, and does not model fiber modes or
+Fresnel transmission.
+
+Numerical checks and limits
+---------------------------
+
+Independent planar matrix-exponential slab solutions check the P3 reduction,
+boundary source, and spatial refinement. A three-dimensional nearly
+non-scattering cube is compared with an independent ballistic ray integral;
+its nonzero discrepancy is expected because P3 is a truncated angular model.
+Tests also exercise axis rotation, energy balance, spectral preparation,
+detector quadrature, and unsupported configurations. These cases do not
+establish accuracy for skin, all optical properties, or short source–detector
+separations. Compare the intended sensor geometry against Monte Carlo or a
+converged transport reference and assess spatial mesh convergence separately.
+
+Higher-order angular truncations can produce negative reconstructed fluence
+or outgoing irradiance. MomentRT preserves these values and reports them;
+it does not silently clip them. P3 has six coupled nodal unknowns rather than
+SP3's two and can require substantially more memory and computation. Actual
+cost depends on geometry, mesh, and sparse-factorization fill-in.
+
+As one illustrative local measurement, a homogeneous 4 mm cube with a
+9 × 9 × 9 mesh, uniform-face illumination, and direct sparse solves gave:
+
+.. list-table::
+   :header-rows: 1
+
+   * - Model
+     - Solve time
+     - Process peak RSS
+   * - P1
+     - 0.032 s
+     - 161 MiB
+   * - SP3
+     - 0.039 s
+     - 164 MiB
+   * - P3
+     - 0.662 s
+     - 208 MiB
+
+Each model ran in a fresh process; peak RSS includes the interpreter and
+dependencies. These are single-run macOS measurements, not performance
+guarantees. Larger meshes can change both ratios and factorization memory
+substantially.
+
+See :doc:`gallery/finite_samples/compare_p3` for a runnable comparison. For
+the finite-element P\ :sub:`N` approach in optical tomography, see
+`Mohan et al., Journal of Computational Physics 230 (2011), 7364–7383
+<https://doi.org/10.1016/j.jcp.2011.06.004>`_.

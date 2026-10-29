@@ -66,7 +66,7 @@ refractive index across internal interfaces.
         reduced_scattering=1.0 / ureg.millimeter,
         refractive_index=1.4,
         anisotropy=0.8,
-        phase_function="henyey_greenstein",
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     )
 
     epidermis = MomentRT.Material(
@@ -74,7 +74,7 @@ refractive index across internal interfaces.
         reduced_scattering=1.6 / ureg.millimeter,
         refractive_index=1.4,
         anisotropy=0.65,
-        phase_function="henyey_greenstein",
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     )
 
     sample = MomentRT.StructuredMedium(
@@ -246,7 +246,7 @@ an approximation and this plot does not establish transport accuracy.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.345 seconds)
+   **Total running time of the script:** (0 minutes 0.205 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_sp3_layered_anisotropy.py:

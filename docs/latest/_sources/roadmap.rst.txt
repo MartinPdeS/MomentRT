@@ -18,7 +18,7 @@ Development roadmap
    Linear tetrahedral FEM diffusion, explicit Robin/reflecting face conditions,
    and diffuse disk/full-face sources are implemented. Independent analytical
    slab comparisons cover homogeneous and equal-index layered media.
-   SP3 and full 3D P3 provide coupled moments with Henyey–Greenstein scattering
+   SP3 and full 3D P3 provide coupled moments with selectable scalar scattering
    and matched-index boundaries. Next: refracting interfaces and comparisons against independent
    Monte Carlo results across sensor wavelengths and source-detector distances.
    Do not substitute infinite-medium fields for surface reflectance.

@@ -31,11 +31,11 @@ model angle-dependent Fresnel transmission or detector back-action.
 .. code-block:: Python
 
 
-
     import os
 
     import numpy as np
 
+    import MomentRT
     from MomentRT import (
         CartesianMesh,
         Diffusion,
@@ -64,12 +64,13 @@ Define a monochromatic phantom and incoming diffuse spot
 The optical coefficients are illustrative at 800 nm. Positive z points
 into the sample, so reflected light exits toward negative z.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-72
+.. GENERATED FROM PYTHON SOURCE LINES 36-73
 
 .. code-block:: Python
 
 
     material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0.02 / ureg.mm,
         reduced_scattering=1.0 / ureg.mm,
         refractive_index=1.4,
@@ -111,7 +112,7 @@ into the sample, so reflected light exits toward negative z.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-79
+.. GENERATED FROM PYTHON SOURCE LINES 74-80
 
 Specify aperture geometry and angular acceptance
 ------------------------------------------------
@@ -120,7 +121,7 @@ The radius describes a disk in the face plane. acceptance_angle is the
 half-angle around that axis. A normal 30-degree cone collects one quarter
 of Lambertian escaping power from its sampled aperture.
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-111
+.. GENERATED FROM PYTHON SOURCE LINES 80-112
 
 .. code-block:: Python
 
@@ -167,7 +168,7 @@ of Lambertian escaping power from its sampled aperture.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-119
+.. GENERATED FROM PYTHON SOURCE LINES 113-120
 
 Solve, inspect power, and check aperture sampling
 -------------------------------------------------
@@ -177,7 +178,7 @@ area should approach the geometric area under mesh refinement.
 The volume plot reuses the same source and detector geometry through overlays.
 Legend entries toggle each object; the opacity slider controls only fluence.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-139
+.. GENERATED FROM PYTHON SOURCE LINES 120-140
 
 .. code-block:: Python
 
@@ -226,7 +227,7 @@ Legend entries toggle each object; the opacity slider controls only fluence.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.180 seconds)
+   **Total running time of the script:** (0 minutes 0.110 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_surface_detector.py:

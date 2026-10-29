@@ -69,7 +69,7 @@ the interface geometry and disk footprints also require mesh refinement.
         reduced_scattering=1.0 / ureg.millimeter,
         refractive_index=1.4,
         anisotropy=0.8,
-        phase_function="henyey_greenstein",
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     )
 
     epidermis = MomentRT.Material(
@@ -77,7 +77,7 @@ the interface geometry and disk footprints also require mesh refinement.
         reduced_scattering=1.6 / ureg.millimeter,
         refractive_index=1.4,
         anisotropy=0.7,
-        phase_function="henyey_greenstein",
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     )
 
     sample = MomentRT.StructuredMedium(
@@ -287,7 +287,7 @@ gallery preview is captured from this same combined P3 volume.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.325 seconds)
+   **Total running time of the script:** (0 minutes 1.317 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_compare_p3.py:

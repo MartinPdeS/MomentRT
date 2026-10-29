@@ -30,12 +30,12 @@ fluence field. The input power is already coupled into the sample.
 .. code-block:: Python
 
 
-
     import os
 
     import matplotlib.pyplot as plt
     import numpy as np
 
+    import MomentRT
     from MomentRT import (
         CartesianMesh,
         Diffusion,
@@ -62,12 +62,13 @@ Create the homogeneous slab
 ---------------------------
 Set all optical properties and dimensions explicitly for this wavelength.
 
-.. GENERATED FROM PYTHON SOURCE LINES 34-50
+.. GENERATED FROM PYTHON SOURCE LINES 34-51
 
 .. code-block:: Python
 
 
     material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0.03 / ureg.millimeter,
         reduced_scattering=1.0 / ureg.millimeter,
         refractive_index=1.4,
@@ -89,14 +90,14 @@ Set all optical properties and dimensions explicitly for this wavelength.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-55
+.. GENERATED FROM PYTHON SOURCE LINES 52-56
 
 Configure the mesh, source, and six faces
 -----------------------------------------
 The incoming diffuse power is spread uniformly across the complete z_min
 face. All faces use the same explicit effective diffuse reflectance.
 
-.. GENERATED FROM PYTHON SOURCE LINES 55-82
+.. GENERATED FROM PYTHON SOURCE LINES 56-83
 
 .. code-block:: Python
 
@@ -134,13 +135,13 @@ face. All faces use the same explicit effective diffuse reflectance.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-86
+.. GENERATED FROM PYTHON SOURCE LINES 84-87
 
 Solve and view the field
 ------------------------
 The 3D plot is made from the nodal finite-element fluence values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 86-104
+.. GENERATED FROM PYTHON SOURCE LINES 87-105
 
 .. code-block:: Python
 
@@ -173,13 +174,13 @@ The 3D plot is made from the nodal finite-element fluence values.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-108
+.. GENERATED FROM PYTHON SOURCE LINES 106-109
 
 Preview a central plane
 -----------------------
 A static section complements the interactive volume with a penetration profile.
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-148
+.. GENERATED FROM PYTHON SOURCE LINES 109-149
 
 .. code-block:: Python
 
@@ -246,7 +247,7 @@ A static section complements the interactive volume with a penetration profile.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.238 seconds)
+   **Total running time of the script:** (0 minutes 0.131 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_uniform_surface_source.py:

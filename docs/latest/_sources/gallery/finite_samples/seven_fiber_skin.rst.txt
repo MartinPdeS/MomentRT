@@ -67,7 +67,7 @@ interfaces and a material-specific Henyey–Greenstein anisotropy.
         reduced_scattering=1.0 / ureg.millimeter,
         refractive_index=1.4,
         anisotropy=0.8,
-        phase_function="henyey_greenstein",
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     )
 
     epidermis = MomentRT.Material(
@@ -75,7 +75,7 @@ interfaces and a material-specific Henyey–Greenstein anisotropy.
         reduced_scattering=1.6 / ureg.millimeter,
         refractive_index=1.4,
         anisotropy=0.7,
-        phase_function="henyey_greenstein",
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     )
 
     sample = MomentRT.StructuredMedium(
@@ -347,7 +347,7 @@ validation against a suitable radiative-transfer or Monte Carlo reference.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.410 seconds)
+   **Total running time of the script:** (0 minutes 2.896 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_seven_fiber_skin.py:

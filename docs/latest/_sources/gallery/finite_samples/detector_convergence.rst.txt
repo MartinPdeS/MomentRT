@@ -31,11 +31,11 @@ these observables, not validation of P1 against radiative transfer.
 .. code-block:: Python
 
 
-
     import os
 
     import numpy as np
 
+    import MomentRT
     from MomentRT import (
         CartesianMesh,
         Diffusion,
@@ -64,12 +64,13 @@ Fix the sample and optical configuration
 These coefficients describe an illustrative homogeneous phantom at 800 nm.
 The disk source and the separated reflection aperture lie on the top face.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-88
+.. GENERATED FROM PYTHON SOURCE LINES 36-89
 
 .. code-block:: Python
 
 
     material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0.02 / ureg.mm,
         reduced_scattering=1.0 / ureg.mm,
         refractive_index=1.4,
@@ -127,7 +128,7 @@ The disk source and the separated reflection aperture lie on the top face.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-99
+.. GENERATED FROM PYTHON SOURCE LINES 90-100
 
 Compare explicit mesh levels
 ----------------------------
@@ -140,7 +141,7 @@ Node-count ticks identify the exact tested mesh levels.
 A missing recommendation means more refinement or different tolerances
 need investigation, rather than automatic acceptance of the last mesh.
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-131
+.. GENERATED FROM PYTHON SOURCE LINES 100-132
 
 .. code-block:: Python
 
@@ -209,7 +210,7 @@ need investigation, rather than automatic acceptance of the last mesh.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 132-137
+.. GENERATED FROM PYTHON SOURCE LINES 133-138
 
 Inspect the finest field with the same instrument overlays
 ----------------------------------------------------------
@@ -217,7 +218,7 @@ The study retains each result. A source footprint with no quadrature points
 is recorded with result=None; this example's meshes resolve the source.
 The original simulation.mesh remains unchanged.
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-146
+.. GENERATED FROM PYTHON SOURCE LINES 138-147
 
 .. code-block:: Python
 
@@ -244,7 +245,7 @@ The original simulation.mesh remains unchanged.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.095 seconds)
+   **Total running time of the script:** (0 minutes 0.591 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_detector_convergence.py:

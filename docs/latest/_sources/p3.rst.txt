@@ -24,15 +24,16 @@ six coefficients of degrees zero and two form :math:`\mathbf c_e`; the ten
 coefficients of degrees one and three form :math:`\mathbf c_o`. Fluence is
 :math:`\Phi=\sqrt{4\pi}\,c_{00}`.
 
-For the currently supported Henyey–Greenstein phase function, let :math:`g`
-be each material's supplied anisotropy and :math:`\mu_s'` its reduced
-scattering coefficient. The collision coefficient for degree :math:`l` is
+For each material's normalized phase-function moments :math:`g_l` and reduced
+scattering coefficient :math:`\mu_s'=\mu_s(1-g_1)`, the collision coefficient
+for degree :math:`l` is
 
 .. math::
 
-   \sigma_l = \mu_a + \mu_s'\frac{1-g^l}{1-g},\qquad l=0,1,2,3.
+   \sigma_l = \mu_a + \mu_s'\frac{1-g_l}{1-g_1},\qquad l=0,1,2,3.
 
-Thus :math:`\sigma_0=\mu_a`. Coefficients are evaluated per material at the
+Thus :math:`\sigma_0=\mu_a`. For Henyey–Greenstein :math:`g_l=g^l`.
+Coefficients are evaluated per material at the
 source wavelength and sampled at tetrahedron centroids. No assumption that
 different materials share an anisotropy is needed. Internal refractive-index
 jumps are currently rejected.

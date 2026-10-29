@@ -30,12 +30,12 @@ are equal: refracting internal interfaces are outside this solver's scope.
 .. code-block:: Python
 
 
-
     import os
 
     import matplotlib.pyplot as plt
     import numpy as np
 
+    import MomentRT
     from MomentRT import (
         CartesianMesh,
         Diffusion,
@@ -63,18 +63,20 @@ Single-wavelength materials
 Use equal internal refractive indices: this continuous-fluence FEM model
 does not support refracting internal interfaces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 35-48
+.. GENERATED FROM PYTHON SOURCE LINES 35-50
 
 .. code-block:: Python
 
 
     background = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0.02 / ureg.millimeter,
         reduced_scattering=1 / ureg.millimeter,
         refractive_index=1.4,
     )
 
     upper_material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
         absorption=0.04 / ureg.millimeter,
         reduced_scattering=1.5 / ureg.millimeter,
         refractive_index=1.4,
@@ -87,13 +89,13 @@ does not support refracting internal interfaces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-52
+.. GENERATED FROM PYTHON SOURCE LINES 51-54
 
 Build the layered sample
 ------------------------
 Create a finite rectangular sample and add a one-millimeter upper layer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-68
+.. GENERATED FROM PYTHON SOURCE LINES 54-70
 
 .. code-block:: Python
 
@@ -120,14 +122,14 @@ Create a finite rectangular sample and add a one-millimeter upper layer.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-73
+.. GENERATED FROM PYTHON SOURCE LINES 71-75
 
 Discretize the sample
 ---------------------
 Align the layer interface with mesh planes. Each Cartesian cell is split
 into six tetrahedra; mesh refinement is necessary to assess spatial accuracy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-79
+.. GENERATED FROM PYTHON SOURCE LINES 75-81
 
 .. code-block:: Python
 
@@ -144,14 +146,14 @@ into six tetrahedra; mesh refinement is necessary to assess spatial accuracy.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-84
+.. GENERATED FROM PYTHON SOURCE LINES 82-86
 
 Illuminate the surface
 ----------------------
 Define a finite circular diffuse spot on the upper face. Optical power is
 already coupled into the sample, excluding specular entry losses.
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-93
+.. GENERATED FROM PYTHON SOURCE LINES 86-95
 
 .. code-block:: Python
 
@@ -171,14 +173,14 @@ already coupled into the sample, excluding specular entry losses.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-98
+.. GENERATED FROM PYTHON SOURCE LINES 96-100
 
 Configure boundary conditions
 -----------------------------
 Supply the effective diffuse reflectance explicitly on every face. It is
 not the normal-incidence Fresnel reflectance.
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-114
+.. GENERATED FROM PYTHON SOURCE LINES 100-116
 
 .. code-block:: Python
 
@@ -205,13 +207,13 @@ not the normal-incidence Fresnel reflectance.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-118
+.. GENERATED FROM PYTHON SOURCE LINES 117-120
 
 Compose the simulation
 ----------------------
 Keep sample, mesh, illumination, and solver configuration distinct.
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-126
+.. GENERATED FROM PYTHON SOURCE LINES 120-128
 
 .. code-block:: Python
 
@@ -230,13 +232,13 @@ Keep sample, mesh, illumination, and solver configuration distinct.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-130
+.. GENERATED FROM PYTHON SOURCE LINES 129-132
 
 Inspect the illuminated sample
 ------------------------------
 The red circle shows the illumination footprint on the sample surface.
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-136
+.. GENERATED FROM PYTHON SOURCE LINES 132-138
 
 .. code-block:: Python
 
@@ -257,14 +259,14 @@ The red circle shows the illumination footprint on the sample surface.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-141
+.. GENERATED FROM PYTHON SOURCE LINES 139-143
 
 Solve and check energy balance
 ------------------------------
 Compare incoming, absorbed, and escaping power. Conservation verifies
 numerical accounting, not the accuracy of diffusion against radiative transfer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-152
+.. GENERATED FROM PYTHON SOURCE LINES 143-154
 
 .. code-block:: Python
 
@@ -295,14 +297,14 @@ numerical accounting, not the accuracy of diffusion against radiative transfer.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 153-157
+.. GENERATED FROM PYTHON SOURCE LINES 155-159
 
 Explore fluence in 3D
 ---------------------
 Inspect the fluence volume. The logarithmic colors retain physical hover
 values; neither negative values nor zeros are silently clipped.
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-164
+.. GENERATED FROM PYTHON SOURCE LINES 159-166
 
 .. code-block:: Python
 
@@ -324,14 +326,14 @@ values; neither negative values nor zeros are silently clipped.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 165-169
+.. GENERATED FROM PYTHON SOURCE LINES 167-171
 
 Save a representative cross-section
 ------------------------------------
 This static plane complements the interactive volume above; use the Plotly
 view to rotate the sample and inspect physical hover values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 169-204
+.. GENERATED FROM PYTHON SOURCE LINES 171-206
 
 .. code-block:: Python
 
@@ -382,13 +384,13 @@ view to rotate the sample and inspect physical hover values.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 205-208
+.. GENERATED FROM PYTHON SOURCE LINES 207-210
 
 Inspect diffusive flux
 ----------------------
 Arrows show element-centered flux without smoothing across interfaces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-215
+.. GENERATED FROM PYTHON SOURCE LINES 210-217
 
 .. code-block:: Python
 
@@ -413,7 +415,7 @@ Arrows show element-centered flux without smoothing across interfaces.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.206 seconds)
+   **Total running time of the script:** (0 minutes 0.656 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_surface_diffusion.py:

@@ -229,8 +229,8 @@ The original sample, source wavelength, and detector geometry are retained.
  .. code-block:: none
 
     Geometry preparations: 1
-    Preparation time: 0.045921962999997845 s
-    Per-wavelength run times: [0.02829677499998695 0.026355903999998986 0.027219385999998735 0.0268221659999881 0.02745377399999427] s
+    Preparation time: 0.04142735399999964 s
+    Per-wavelength run times: [0.026677983999995547 0.02423858400000256 0.024002983000002587 0.024147868999996547 0.023927369999995562] s
     Reflection at 700 nm: 0.0019590985219869353 mW
     Reflection at 750 nm: 0.0022726091120240026 mW
     Reflection at 800 nm: 0.0023677074555548284 mW
@@ -300,7 +300,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.258 seconds)
+   **Total running time of the script:** (0 minutes 0.232 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_spectral_detectors.py:

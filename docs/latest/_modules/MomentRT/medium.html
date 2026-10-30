@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.medium &#8212; MomentRT 0.8.1 documentation</title>
+    <title>MomentRT.medium &#8212; MomentRT 0.8.2 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=65a547f8"></script>
+    <script src="../../_static/documentation_options.js?v=4514dd13"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.1" />
+  <meta name="docsearch:version" content="0.8.2" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -999,12 +999,16 @@
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">thickness</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">material</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">Material</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">SpectralMaterial</span><span class="p">,</span>
+        <span class="n">clip_to_sample</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Append a layer below the deepest existing layer; return None.</span>
 
 <span class="sd">        The first layer starts at origin.z. Boxes and spheres do not change</span>
 <span class="sd">        stacking depth. Explicit Layer objects added through add_structures</span>
 <span class="sd">        also participate. New layers follow the usual insertion precedence.</span>
+<span class="sd">        When clip_to_sample is True, truncate a layer at the sample's maximum z</span>
+<span class="sd">        boundary when its requested thickness extends beyond the sample. A</span>
+<span class="sd">        layer with no overlap with the sample is omitted.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1014,13 +1018,40 @@
 <span class="sd">            Positive scalar layer thickness with length units.</span>
 <span class="sd">        material : Material or SpectralMaterial</span>
 <span class="sd">            Optical coefficients assigned to this region.</span>
+<span class="sd">        clip_to_sample : bool, optional</span>
+<span class="sd">            Whether to truncate the layer to the remaining depth up to the</span>
+<span class="sd">            sample's maximum z coordinate.</span>
+<span class="sd">            A fully out-of-bounds layer is omitted when True. Default is False,</span>
+<span class="sd">            which raises an error if the layer extends outside.</span>
 <span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">clip_to_sample</span><span class="p">,</span> <span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"clip_to_sample must be a boolean."</span><span class="p">)</span>
+
+        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"thickness"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">depth</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
 
         <span class="k">for</span> <span class="n">structure</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structures</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Layer</span><span class="p">):</span>
                 <span class="n">depth</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">depth</span><span class="p">,</span> <span class="n">structure</span><span class="o">.</span><span class="n">depth</span> <span class="o">+</span> <span class="n">structure</span><span class="o">.</span><span class="n">thickness</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">clip_to_sample</span><span class="p">:</span>
+            <span class="n">remaining_depth</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">depth</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span>
+                <span class="n">thickness</span><span class="o">.</span><span class="n">units</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">remaining_depth</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">remaining_depth</span><span class="o">.</span><span class="n">units</span><span class="p">:</span>
+                <span class="k">return</span>
+
+            <span class="k">if</span> <span class="n">thickness</span> <span class="o">&gt;</span> <span class="n">remaining_depth</span><span class="p">:</span>
+                <span class="n">thickness</span> <span class="o">=</span> <span class="n">remaining_depth</span>
 
         <span class="n">layer</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>

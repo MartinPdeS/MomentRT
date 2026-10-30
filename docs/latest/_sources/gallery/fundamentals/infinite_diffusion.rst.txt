@@ -337,7 +337,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.173 seconds)
+   **Total running time of the script:** (0 minutes 0.154 seconds)
 
 
 .. _sphx_glr_download_gallery_fundamentals_infinite_diffusion.py:

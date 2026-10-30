@@ -61,8 +61,8 @@ hypodermis = MomentRT.Material(
 )
 
 sample = MomentRT.StructuredMedium(
-    origin=(-4, -4, 0) * ureg.millimeter,
-    size=(8, 8, 4) * ureg.millimeter,
+    origin=(-6, -6, 0) * ureg.millimeter / 10,
+    size=(12, 12, 10) * ureg.millimeter / 10,
 )
 
 sample.add_background(material=hypodermis)
@@ -71,18 +71,21 @@ sample.add_layer(
     name="Epidermis",
     thickness=0.15 * ureg.millimeter,
     material=epidermis,
+    clip_to_sample=True,
 )
 
 sample.add_layer(
     name="Dermis",
     thickness=1.5 * ureg.millimeter,
     material=dermis,
+    clip_to_sample=True,
 )
 
 sample.add_layer(
     name="Hypodermis (subcutaneous fat)",
     thickness=2.35 * ureg.millimeter,
     material=hypodermis,
+    clip_to_sample=True,
 )
 
 # %%
@@ -93,9 +96,9 @@ sample.add_layer(
 # Disk footprints represent diffuse light already coupled into the tissue;
 # fiber propagation, entry losses, and coherent interference are not modeled.
 
-fiber_radius = 0.45 * ureg.millimeter
+fiber_radius = 100 * ureg.micrometer
 
-ring_radius = 1.5 * ureg.millimeter
+ring_radius = 250 * ureg.micrometer
 
 total_power = 1 * ureg.milliwatt
 
@@ -132,7 +135,7 @@ detector = MomentRT.SurfaceDetector.on_face(
 
 mesh = MomentRT.CartesianMesh.from_sample(
     sample=sample,
-    shape=(31, 21, 21),
+    shape=(31 * 1, 21 * 1, 21 * 1),
 )
 
 boundary = MomentRT.RobinBoundary(effective_reflectance=0)

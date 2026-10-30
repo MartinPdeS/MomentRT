@@ -66,7 +66,7 @@ hypodermis. The 4 mm sample spans 0.15 mm epidermis, 1.5 mm dermis, and
 2.35 mm subcutaneous fat. Optical coefficients are approximate 850 nm values.
 SP3 currently requires equal refractive indices across internal interfaces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 38-88
+.. GENERATED FROM PYTHON SOURCE LINES 38-91
 
 .. code-block:: Python
 
@@ -96,8 +96,8 @@ SP3 currently requires equal refractive indices across internal interfaces.
     )
 
     sample = MomentRT.StructuredMedium(
-        origin=(-4, -4, 0) * ureg.millimeter,
-        size=(8, 8, 4) * ureg.millimeter,
+        origin=(-6, -6, 0) * ureg.millimeter / 10,
+        size=(12, 12, 10) * ureg.millimeter / 10,
     )
 
     sample.add_background(material=hypodermis)
@@ -106,18 +106,21 @@ SP3 currently requires equal refractive indices across internal interfaces.
         name="Epidermis",
         thickness=0.15 * ureg.millimeter,
         material=epidermis,
+        clip_to_sample=True,
     )
 
     sample.add_layer(
         name="Dermis",
         thickness=1.5 * ureg.millimeter,
         material=dermis,
+        clip_to_sample=True,
     )
 
     sample.add_layer(
         name="Hypodermis (subcutaneous fat)",
         thickness=2.35 * ureg.millimeter,
         material=hypodermis,
+        clip_to_sample=True,
     )
 
 
@@ -127,7 +130,7 @@ SP3 currently requires equal refractive indices across internal interfaces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 89-95
+.. GENERATED FROM PYTHON SOURCE LINES 92-98
 
 Arrange the seven fiber contacts
 --------------------------------
@@ -136,14 +139,14 @@ fiber. Each source supplies one sixth of the total coupled optical power.
 Disk footprints represent diffuse light already coupled into the tissue;
 fiber propagation, entry losses, and coherent interference are not modeled.
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-142
+.. GENERATED FROM PYTHON SOURCE LINES 98-145
 
 .. code-block:: Python
 
 
-    fiber_radius = 0.45 * ureg.millimeter
+    fiber_radius = 100 * ureg.micrometer
 
-    ring_radius = 1.5 * ureg.millimeter
+    ring_radius = 250 * ureg.micrometer
 
     total_power = 1 * ureg.milliwatt
 
@@ -180,7 +183,7 @@ fiber propagation, entry losses, and coherent interference are not modeled.
 
     mesh = MomentRT.CartesianMesh.from_sample(
         sample=sample,
-        shape=(31, 21, 21),
+        shape=(31 * 1, 21 * 1, 21 * 1),
     )
 
     boundary = MomentRT.RobinBoundary(effective_reflectance=0)
@@ -194,14 +197,14 @@ fiber propagation, entry losses, and coherent interference are not modeled.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-147
+.. GENERATED FROM PYTHON SOURCE LINES 146-150
 
 Inspect the tissue geometry
 ---------------------------
 The transparent surfaces show the epidermis, dermis, and hypodermis in
 surface-to-depth order; the resolved fluence and seven fiber contacts follow.
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-150
+.. GENERATED FROM PYTHON SOURCE LINES 150-153
 
 .. code-block:: Python
 
@@ -219,7 +222,7 @@ surface-to-depth order; the resolved fluence and seven fiber contacts follow.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-157
+.. GENERATED FROM PYTHON SOURCE LINES 154-160
 
 Solve all six illumination fibers together with SP3
 ---------------------------------------------------
@@ -228,7 +231,7 @@ disk profiles into one boundary load, so the transport system is solved once.
 This is simultaneous diffuse power illumination, not coherent interference.
 SP3 is not the full 3D P3 system.
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-192
+.. GENERATED FROM PYTHON SOURCE LINES 160-195
 
 .. code-block:: Python
 
@@ -275,16 +278,16 @@ SP3 is not the full 3D P3 system.
 
  .. code-block:: none
 
-    Combined sampled source area: 3.8044444444444436 mm²; geometric area: 3.8170350741115993 mm²
+    Combined sampled source area: 0.18719999999999998 mm²; geometric area: 0.18849555921538758 mm²
     Total coupled illumination power: 1 mW
-    Central fiber collected power: 0.0020980116135591 mW
-    Collection sampled area: 0.6044444444444443 mm²
-    Collection geometric area: 0.6361725123519332 mm²
+    Central fiber collected power: 0.008850001793306876 mW
+    Collection sampled area: 0.030399999999999993 mm²
+    Collection geometric area: 0.031415926535897934 mm²
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 193-200
+.. GENERATED FROM PYTHON SOURCE LINES 196-203
 
 Visualize the combined fluence and seven contacts
 -------------------------------------------------
@@ -294,7 +297,7 @@ circular areas. Refine the mesh and compare the combined detector signal
 before interpreting a result; the approximations themselves also require
 validation against a suitable radiative-transfer or Monte Carlo reference.
 
-.. GENERATED FROM PYTHON SOURCE LINES 200-211
+.. GENERATED FROM PYTHON SOURCE LINES 203-214
 
 .. code-block:: Python
 
@@ -320,13 +323,13 @@ validation against a suitable radiative-transfer or Monte Carlo reference.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 212-215
+.. GENERATED FROM PYTHON SOURCE LINES 215-218
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 215-217
+.. GENERATED FROM PYTHON SOURCE LINES 218-220
 
 .. code-block:: Python
 
@@ -346,7 +349,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.176 seconds)
+   **Total running time of the script:** (0 minutes 3.720 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_seven_fiber_skin.py:

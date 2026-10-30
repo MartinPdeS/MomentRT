@@ -143,11 +143,12 @@ class ScalarField:
             Default is 'mm'.
         opacity : float or None, optional
             Initial surface opacity in [0, 1]. None selects the rendering default.
-            Volume and isosurface views expose an interactive opacity slider.
+            The volume view exposes an interactive opacity slider.
             Default is None.
         isosurface_count : int or None, optional
-            Positive number of iso levels for volume or isosurface rendering.
-            None uses 8 for volume and 6 for isosurfaces; invalid for slices.
+            Initial positive number of iso levels for volume or isosurface
+            rendering. Both views expose a density slider. None uses 8 for
+            volume and 6 for isosurfaces; invalid for slices.
             Default is None.
         overlays : iterable of objects or None, optional
             Sources, detectors, or layers implementing the plotting hook.

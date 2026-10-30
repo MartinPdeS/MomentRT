@@ -439,10 +439,12 @@ def plot_field(
         Length unit used for displayed or exported coordinates.
     opacity : float or None
         Initial surface opacity in [0, 1]. None selects the rendering default.
-        Volume and isosurface views expose an interactive opacity slider.
+        The volume view exposes an interactive opacity slider.
     isosurface_count : int or None
         Positive number of iso levels for volume or isosurface rendering.
-        None uses 8 for volume and 6 for isosurfaces; invalid for slices.
+        Sets the initial number of iso levels. None uses 8 for volume and 6
+        for isosurfaces. Both views include an interactive density slider;
+        invalid for slices.
     show : bool
         Whether to display the figure immediately. The figure is always returned.
     overlays : iterable of objects or None, optional
@@ -577,6 +579,38 @@ def plot_field(
             )
         )
 
+        density_values = [1, 2, 4, 6, 8, 12, 16, 24]
+
+        if display_surface_count not in density_values:
+            density_values.append(display_surface_count)
+
+        density_values.sort()
+
+        figure_sliders = [
+            {
+                "active": density_values.index(display_surface_count),
+                "currentvalue": {
+                    "font": {"size": 12},
+                    "prefix": "Iso-surface density: ",
+                },
+                "font": {"size": 9},
+                "len": 0.38,
+                "minorticklen": 0,
+                "pad": {"t": 12},
+                "ticklen": 2,
+                "x": 0.58,
+                "y": 0,
+                "steps": [
+                    {
+                        "label": str(value),
+                        "method": "restyle",
+                        "args": [{"surface.count": value}, [0]],
+                    }
+                    for value in density_values
+                ],
+            }
+        ]
+
         if view == "volume":
             opacity_values = [step / 20 for step in range(21)]
 
@@ -591,36 +625,37 @@ def plot_field(
                 if np.isclose(value, display_opacity)
             )
 
-            figure.update_layout(
-                sliders=[
-                    {
-                        "active": active_index,
-                        "currentvalue": {
-                            "font": {"size": 12},
-                            "prefix": "Opacity: ",
-                        },
-                        "font": {"size": 9},
-                        "len": 0.55,
-                        "minorticklen": 0,
-                        "pad": {"t": 12},
-                        "ticklen": 2,
-                        "x": 0.225,
-                        "steps": [
-                            {
-                                "label": (
-                                    f"{value:.2f}"
-                                    if np.isclose(value, display_opacity)
-                                    or np.isclose(value * 4, round(value * 4))
-                                    else ""
-                                ),
-                                "method": "restyle",
-                                "args": [{"opacity": value}, [0]],
-                            }
-                            for value in opacity_values
-                        ],
-                    }
-                ]
+            figure_sliders.append(
+                {
+                    "active": active_index,
+                    "currentvalue": {
+                        "font": {"size": 12},
+                        "prefix": "Opacity: ",
+                    },
+                    "font": {"size": 9},
+                    "len": 0.38,
+                    "minorticklen": 0,
+                    "pad": {"t": 12},
+                    "ticklen": 2,
+                    "x": 0.08,
+                    "y": 0,
+                    "steps": [
+                        {
+                            "label": (
+                                f"{value:.2f}"
+                                if np.isclose(value, display_opacity)
+                                or np.isclose(value * 4, round(value * 4))
+                                else ""
+                            ),
+                            "method": "restyle",
+                            "args": [{"opacity": value}, [0]],
+                        }
+                        for value in opacity_values
+                    ],
+                }
             )
+
+        figure.update_layout(sliders=figure_sliders)
 
     field_trace_count = len(figure.data)
 

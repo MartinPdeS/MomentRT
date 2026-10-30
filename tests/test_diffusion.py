@@ -142,6 +142,25 @@ def test_plotly_fields(view, tmp_path):
     else:
         np.testing.assert_allclose(figure.data[0].value, np.log10(original).ravel())
 
+        density_slider = next(
+            slider
+            for slider in figure.layout.sliders
+            if slider.currentvalue.prefix == "Iso-surface density: "
+        )
+
+        assert density_slider.active == {"volume": 4, "isosurfaces": 3}[view]
+
+        density_step = next(step for step in density_slider.steps if step.label == "24")
+
+        assert density_step.method == "restyle"
+
+        assert density_step.args[0] == {"surface.count": 24}
+
+        assert list(density_step.args[1]) == [0]
+
+        if view == "volume":
+            assert len(figure.layout.sliders) == 2
+
     figure.write_html(tmp_path / f"{view}.html")
 
     assert (tmp_path / f"{view}.html").stat().st_size > 1000

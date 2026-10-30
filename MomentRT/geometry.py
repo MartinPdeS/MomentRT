@@ -282,8 +282,16 @@ class Layer:
             )
 
         length_unit = context["length_unit"]
-        origin = np.asarray(sample_origin.to(length_unit).magnitude, dtype=float)
-        size = np.asarray(sample_size.to(length_unit).magnitude, dtype=float)
+        origin = np.array(
+            sample_origin.to(length_unit).magnitude,
+            dtype=float,
+            copy=True,
+        )
+        size = np.array(
+            sample_size.to(length_unit).magnitude,
+            dtype=float,
+            copy=True,
+        )
         origin[2] = self.depth.to(length_unit).magnitude
         size[2] = self.thickness.to(length_unit).magnitude
         hover = (

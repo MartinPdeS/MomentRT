@@ -471,12 +471,16 @@ class StructuredMedium:
         name: str,
         thickness: Quantity,
         material: MomentRT.material.Material | MomentRT.material.SpectralMaterial,
+        clip_to_sample: bool = False,
     ) -> None:
         """Append a layer below the deepest existing layer; return None.
 
         The first layer starts at origin.z. Boxes and spheres do not change
         stacking depth. Explicit Layer objects added through add_structures
         also participate. New layers follow the usual insertion precedence.
+        When clip_to_sample is True, truncate a layer at the sample's maximum z
+        boundary when its requested thickness extends beyond the sample. A
+        layer with no overlap with the sample is omitted.
 
         Parameters
         ----------
@@ -486,13 +490,40 @@ class StructuredMedium:
             Positive scalar layer thickness with length units.
         material : Material or SpectralMaterial
             Optical coefficients assigned to this region.
+        clip_to_sample : bool, optional
+            Whether to truncate the layer to the remaining depth up to the
+            sample's maximum z coordinate.
+            A fully out-of-bounds layer is omitted when True. Default is False,
+            which raises an error if the layer extends outside.
         """
+
+        if not isinstance(clip_to_sample, (bool, np.bool_)):
+            raise TypeError("clip_to_sample must be a boolean.")
+
+        MomentRT.units.validate_units(
+            value=thickness,
+            unit="m",
+            name="thickness",
+            shape=(),
+            positive=True,
+        )
 
         depth = self.origin[2]
 
         for structure in self.structures:
             if isinstance(structure, MomentRT.geometry.Layer):
                 depth = max(depth, structure.depth + structure.thickness)
+
+        if clip_to_sample:
+            remaining_depth = (self.origin[2] + self.size[2] - depth).to(
+                thickness.units
+            )
+
+            if remaining_depth <= 0 * remaining_depth.units:
+                return
+
+            if thickness > remaining_depth:
+                thickness = remaining_depth
 
         layer = MomentRT.geometry.Layer(
             name=name,

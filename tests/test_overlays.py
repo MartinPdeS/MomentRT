@@ -156,6 +156,38 @@ def test_full_face_overlay_rejects_observation_window_without_sample_bounds(fiel
         field.plot(overlays=[source], show=False)
 
 
+def test_layer_overlay_does_not_mutate_sample_bounds(field):
+    material = Material(
+        phase_function=MomentRT.phase_function.HenyeyGreenstein(),
+        absorption=0.02 / ureg.mm,
+        reduced_scattering=1 / ureg.mm,
+        refractive_index=1.4,
+    )
+
+    layer = MomentRT.Layer(
+        name="Dermis",
+        depth=0.5 * ureg.mm,
+        thickness=1 * ureg.mm,
+        material=material,
+    )
+
+    original_origin = field.metadata["sample_origin"].copy()
+
+    original_size = field.metadata["sample_size"].copy()
+
+    field.plot(overlays=[layer], show=False)
+
+    np.testing.assert_array_equal(
+        field.metadata["sample_origin"].magnitude,
+        original_origin.magnitude,
+    )
+
+    np.testing.assert_array_equal(
+        field.metadata["sample_size"].magnitude,
+        original_size.magnitude,
+    )
+
+
 def test_point_source_hook_is_shared_with_system_plot(field):
     source = PointSource(
         position=np.array([0.1, 0.2, 0.3]) * ureg.mm,

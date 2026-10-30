@@ -228,6 +228,39 @@ def test_layer_stacking_mixed_units_and_atomic_failure():
     assert len(sample.structures) == 4
 
 
+def test_add_layer_can_clip_to_remaining_sample_depth():
+    sample = StructuredMedium(
+        origin=np.array([0, 0, -1]) * ureg.mm,
+        size=np.array([2, 2, 3]) * ureg.mm,
+    )
+
+    background = material(absorption=0.01)
+
+    sample.add_background(material=background)
+
+    sample.add_layer(
+        name="dermis",
+        thickness=4 * ureg.mm,
+        material=background,
+        clip_to_sample=True,
+    )
+
+    layer = sample.structures[0]
+
+    assert layer.depth.to("mm").magnitude == pytest.approx(-1)
+
+    assert layer.thickness.to("mm").magnitude == pytest.approx(3)
+
+    sample.add_layer(
+        name="below-sample",
+        thickness=1 * ureg.mm,
+        material=background,
+        clip_to_sample=True,
+    )
+
+    assert len(sample.structures) == 1
+
+
 @pytest.mark.parametrize(
     "normal, axes", [("x", ("y", "z")), ("y", ("x", "z")), ("z", ("x", "y"))]
 )

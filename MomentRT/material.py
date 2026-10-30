@@ -1,35 +1,10 @@
 """Homogeneous optical properties at the configured source wavelength."""
 
 from __future__ import annotations
-
 import numpy as np
 from numpy.typing import ArrayLike
 from pint import Quantity
-
 import MomentRT
-
-
-def _anisotropy_values(
-    *, value: float | ArrayLike, shape: tuple[int, ...]
-) -> np.ndarray:
-    """Validate scalar or tabulated dimensionless scattering anisotropy."""
-    if isinstance(value, (MomentRT.units.ureg.Quantity, bool, np.bool_)):
-        raise ValueError("anisotropy must contain plain numbers in (-1, 1).")
-
-    values = np.asarray(value)
-
-    if (
-        values.dtype.kind not in "iuf"
-        or values.shape not in ((), shape)
-        or not np.all(np.isfinite(values))
-        or np.any(values <= -1)
-        or np.any(values >= 1)
-    ):
-        raise ValueError(
-            "anisotropy must be scalar or match the wavelength grid, with values in (-1, 1)."
-        )
-
-    return values
 
 
 class Material:
@@ -67,6 +42,50 @@ class Material:
     ...     phase_function=MomentRT.phase_function.HenyeyGreenstein(),
     ... )
     """
+
+    @staticmethod
+    def _anisotropy_values(
+        *,
+        value: float | ArrayLike,
+        shape: tuple[int, ...],
+    ) -> np.ndarray:
+        """Validate scalar or tabulated dimensionless scattering anisotropy.
+
+        Parameters
+        ----------
+        value : float or array_like
+            Plain scalar or values to validate.
+        shape : tuple of int
+            Required tabulated shape. A scalar is accepted for any shape.
+
+        Returns
+        -------
+        numpy.ndarray
+            Validated anisotropy values.
+
+        Raises
+        ------
+        ValueError
+            If values have units, a boolean or nonnumeric dtype, the wrong
+            shape, nonfinite entries, or values outside (-1, 1).
+        """
+        if isinstance(value, (MomentRT.units.ureg.Quantity, bool, np.bool_)):
+            raise ValueError("anisotropy must contain plain numbers in (-1, 1).")
+
+        values = np.asarray(value)
+
+        if (
+            values.dtype.kind not in "iuf"
+            or values.shape not in ((), shape)
+            or not np.all(np.isfinite(values))
+            or np.any(values <= -1)
+            or np.any(values >= 1)
+        ):
+            raise ValueError(
+                "anisotropy must be scalar or match the wavelength grid, with values in (-1, 1)."
+            )
+
+        return values
 
     def __init__(
         self,
@@ -128,7 +147,7 @@ class Material:
         self.anisotropy = (
             None
             if anisotropy is None
-            else float(_anisotropy_values(value=anisotropy, shape=()))
+            else float(self._anisotropy_values(value=anisotropy, shape=()))
         )
 
         if isinstance(
@@ -333,7 +352,10 @@ class SpectralMaterial:
         self.anisotropy = (
             None
             if anisotropy is None
-            else _anisotropy_values(value=anisotropy, shape=wavelengths.shape).copy()
+            else Material._anisotropy_values(
+                value=anisotropy,
+                shape=wavelengths.shape,
+            ).copy()
         )
 
         if isinstance(

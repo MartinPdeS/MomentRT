@@ -1,11 +1,9 @@
 """Material-bearing geometry for finite samples; z increases into the sample."""
 
 from __future__ import annotations
-
 import numpy as np
 from numpy.typing import NDArray
 from pint import Quantity
-
 import MomentRT
 
 

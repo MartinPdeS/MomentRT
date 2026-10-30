@@ -8,10 +8,8 @@ window, not a tissue boundary. Optical properties apply at 970 nm.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/infinite_diffusion.png'
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,

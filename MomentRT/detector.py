@@ -1,15 +1,12 @@
 """Contact-aperture detection with an explicit Lambertian escape assumption."""
 
 from __future__ import annotations
-
 from collections.abc import Mapping
 from typing import Any
-
 import numpy as np
 from numpy.typing import ArrayLike
 from pint import Quantity
 from scipy import integrate
-
 import MomentRT
 
 

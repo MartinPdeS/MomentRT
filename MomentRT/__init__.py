@@ -1,26 +1,27 @@
 """Deterministic light transport using angular-moment methods."""
 
 from __future__ import annotations
-
 import MomentRT._version
 import MomentRT.boundary
 import MomentRT.convergence as convergence  # noqa: F401 -- public submodule
 import MomentRT.detector
-import MomentRT.diffusion
 import MomentRT.fem as fem  # noqa: F401 -- public submodule
 import MomentRT.fields
 import MomentRT.geometry
 import MomentRT.material
+import MomentRT.materials
 import MomentRT.medium
 import MomentRT.mesh
-import MomentRT.p3
 import MomentRT.phase_function
 import MomentRT.plotting as plotting  # noqa: F401 -- public submodule
 import MomentRT.results
 import MomentRT.sections
 import MomentRT.simulation
 import MomentRT.source
-import MomentRT.sp3
+import MomentRT.transport
+import MomentRT.transport.diffusion
+import MomentRT.transport.p3
+import MomentRT.transport.sp3
 import MomentRT.units
 import MomentRT.validation
 
@@ -30,8 +31,8 @@ RobinBoundary = MomentRT.boundary.RobinBoundary
 Boundaries = MomentRT.boundary.Boundaries
 DetectorResolutionError = MomentRT.detector.DetectorResolutionError
 SurfaceDetector = MomentRT.detector.SurfaceDetector
-Diffusion = MomentRT.diffusion.Diffusion
-InfiniteDiffusion = MomentRT.diffusion.InfiniteDiffusion
+Diffusion = MomentRT.transport.diffusion.Diffusion
+InfiniteDiffusion = MomentRT.transport.diffusion.InfiniteDiffusion
 BoundaryField = MomentRT.fields.BoundaryField
 ScalarField = MomentRT.fields.ScalarField
 VectorField = MomentRT.fields.VectorField
@@ -40,6 +41,10 @@ Layer = MomentRT.geometry.Layer
 Sphere = MomentRT.geometry.Sphere
 Material = MomentRT.material.Material
 SpectralMaterial = MomentRT.material.SpectralMaterial
+Water = MomentRT.materials.liquids.Water
+Intralipid = MomentRT.materials.liquids.Intralipid
+Epidermis = MomentRT.materials.skin.Epidermis
+Dermis = MomentRT.materials.skin.Dermis
 HomogeneousMedium = MomentRT.medium.HomogeneousMedium
 StructuredMedium = MomentRT.medium.StructuredMedium
 CartesianMesh = MomentRT.mesh.CartesianMesh
@@ -50,8 +55,8 @@ SpectralSimulationResult = MomentRT.results.SpectralSimulationResult
 SampleSection = MomentRT.sections.SampleSection
 TransportSolver = MomentRT.simulation.TransportSolver
 Simulation = MomentRT.simulation.Simulation
-SP3 = MomentRT.sp3.SP3
-P3 = MomentRT.p3.P3
+SP3 = MomentRT.transport.sp3.SP3
+P3 = MomentRT.transport.p3.P3
 PhaseFunction = MomentRT.phase_function.PhaseFunction
 HenyeyGreenstein = MomentRT.phase_function.HenyeyGreenstein
 Isotropic = MomentRT.phase_function.Isotropic
@@ -97,6 +102,10 @@ __all__ = [
     "HomogeneousMedium",
     "InfiniteDiffusion",
     "Material",
+    "Water",
+    "Intralipid",
+    "Epidermis",
+    "Dermis",
     "PointSource",
     "SampleSection",
     "ScalarField",

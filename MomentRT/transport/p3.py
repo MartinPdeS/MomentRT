@@ -1,126 +1,12 @@
 """Steady-state full three-dimensional P3 transport using even-parity FEM."""
 
 from __future__ import annotations
-
 from collections.abc import Mapping
 from math import factorial
-
 import numpy as np
 from scipy import sparse, special
 from scipy.sparse import linalg as sparse_linalg
-
 import MomentRT
-
-_EVEN = [(degree, order) for degree in (0, 2) for order in range(-degree, degree + 1)]
-_ODD = [(degree, order) for degree in (1, 3) for order in range(-degree, degree + 1)]
-
-
-def _harmonics(*, directions: np.ndarray, modes: list[tuple[int, int]]) -> np.ndarray:
-    """Evaluate orthonormal real harmonics in the documented ordering."""
-    z = np.clip(directions[:, 2], -1, 1)
-
-    phi = np.arctan2(directions[:, 1], directions[:, 0])
-
-    values = []
-
-    for degree, order in modes:
-        absolute = abs(order)
-
-        scale = np.sqrt(
-            (2 * degree + 1)
-            / (4 * np.pi)
-            * factorial(degree - absolute)
-            / factorial(degree + absolute)
-        )
-
-        legendre = special.lpmv(absolute, degree, z)
-
-        if order < 0:
-            values.append(np.sqrt(2) * scale * legendre * np.sin(absolute * phi))
-        elif order > 0:
-            values.append(np.sqrt(2) * scale * legendre * np.cos(absolute * phi))
-        else:
-            values.append(scale * legendre)
-
-    return np.column_stack(values)
-
-
-def _angular_quadrature(
-    *, normal: np.ndarray | None = None
-) -> tuple[np.ndarray, np.ndarray]:
-    """Integrate the sphere or the outward hemisphere about an axis-aligned normal."""
-    nodes, weights = np.polynomial.legendre.leggauss(8)
-
-    if normal is not None:
-        nodes = (nodes + 1) / 2
-
-        weights = weights / 2
-
-    azimuth = 2 * np.pi * np.arange(16) / 16
-
-    mu, angle = np.meshgrid(nodes, azimuth, indexing="ij")
-
-    transverse = np.sqrt(1 - mu**2)
-
-    local = np.column_stack(
-        (
-            transverse.ravel() * np.cos(angle.ravel()),
-            transverse.ravel() * np.sin(angle.ravel()),
-            mu.ravel(),
-        )
-    )
-
-    if normal is not None:
-        tangent = np.eye(3)[(int(np.argmax(np.abs(normal))) + 1) % 3]
-
-        other = np.cross(normal, tangent)
-
-        local = (
-            local[:, 0, None] * tangent
-            + local[:, 1, None] * other
-            + local[:, 2, None] * normal
-        )
-
-    return local, np.repeat(weights, len(azimuth)) * (2 * np.pi / len(azimuth))
-
-
-def _angular_operators() -> tuple[
-    np.ndarray,
-    np.ndarray,
-    dict[MomentRT.boundary.Face, np.ndarray],
-    dict[MomentRT.boundary.Face, np.ndarray],
-]:
-    """Build exact P3 streaming and matched-index half-range matrices."""
-    directions, weights = _angular_quadrature()
-
-    even = _harmonics(directions=directions, modes=_EVEN)
-
-    odd = _harmonics(directions=directions, modes=_ODD)
-
-    streaming = np.einsum("q,qo,qi,qe->ioe", weights, odd, directions, even)
-
-    current = np.einsum("q,qo,qi->io", weights, odd, directions)
-
-    boundary = {}
-
-    illumination = {}
-
-    for face in MomentRT.boundary.FACES:
-        normal = np.zeros(3)
-
-        normal["xyz".index(face[0])] = -1 if face.endswith("min") else 1
-
-        outward, face_weights = _angular_quadrature(normal=normal)
-
-        face_even = _harmonics(directions=outward, modes=_EVEN)
-
-        weighted_mu = face_weights * (outward @ normal)
-
-        boundary[face] = 2 * np.einsum("q,qa,qb->ab", weighted_mu, face_even, face_even)
-
-        illumination[face] = np.einsum("q,qa->a", weighted_mu, face_even) / np.pi
-
-    return streaming, current, boundary, illumination
 
 
 class P3:
@@ -141,6 +27,127 @@ class P3:
     validation for the intended configuration.
     """
 
+    _EVEN = [
+        (degree, order) for degree in (0, 2) for order in range(-degree, degree + 1)
+    ]
+    _ODD = [
+        (degree, order) for degree in (1, 3) for order in range(-degree, degree + 1)
+    ]
+
+    @staticmethod
+    def _harmonics(
+        *, directions: np.ndarray, modes: list[tuple[int, int]]
+    ) -> np.ndarray:
+        """Evaluate orthonormal real harmonics in the documented ordering."""
+        z = np.clip(directions[:, 2], -1, 1)
+
+        phi = np.arctan2(directions[:, 1], directions[:, 0])
+
+        values = []
+
+        for degree, order in modes:
+            absolute = abs(order)
+
+            scale = np.sqrt(
+                (2 * degree + 1)
+                / (4 * np.pi)
+                * factorial(degree - absolute)
+                / factorial(degree + absolute)
+            )
+
+            legendre = special.lpmv(absolute, degree, z)
+
+            if order < 0:
+                values.append(np.sqrt(2) * scale * legendre * np.sin(absolute * phi))
+            elif order > 0:
+                values.append(np.sqrt(2) * scale * legendre * np.cos(absolute * phi))
+            else:
+                values.append(scale * legendre)
+
+        return np.column_stack(values)
+
+    @staticmethod
+    def _angular_quadrature(
+        *, normal: np.ndarray | None = None
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Integrate the sphere or the outward hemisphere about an axis-aligned normal."""
+        nodes, weights = np.polynomial.legendre.leggauss(8)
+
+        if normal is not None:
+            nodes = (nodes + 1) / 2
+
+            weights = weights / 2
+
+        azimuth = 2 * np.pi * np.arange(16) / 16
+
+        mu, angle = np.meshgrid(nodes, azimuth, indexing="ij")
+
+        transverse = np.sqrt(1 - mu**2)
+
+        local = np.column_stack(
+            (
+                transverse.ravel() * np.cos(angle.ravel()),
+                transverse.ravel() * np.sin(angle.ravel()),
+                mu.ravel(),
+            )
+        )
+
+        if normal is not None:
+            tangent = np.eye(3)[(int(np.argmax(np.abs(normal))) + 1) % 3]
+
+            other = np.cross(normal, tangent)
+
+            local = (
+                local[:, 0, None] * tangent
+                + local[:, 1, None] * other
+                + local[:, 2, None] * normal
+            )
+
+        return local, np.repeat(weights, len(azimuth)) * (2 * np.pi / len(azimuth))
+
+    @classmethod
+    def _angular_operators(
+        cls,
+    ) -> tuple[
+        np.ndarray,
+        np.ndarray,
+        dict[MomentRT.boundary.Face, np.ndarray],
+        dict[MomentRT.boundary.Face, np.ndarray],
+    ]:
+        """Build exact P3 streaming and matched-index half-range matrices."""
+        directions, weights = cls._angular_quadrature()
+
+        even = cls._harmonics(directions=directions, modes=cls._EVEN)
+
+        odd = cls._harmonics(directions=directions, modes=cls._ODD)
+
+        streaming = np.einsum("q,qo,qi,qe->ioe", weights, odd, directions, even)
+
+        current = np.einsum("q,qo,qi->io", weights, odd, directions)
+
+        boundary = {}
+
+        illumination = {}
+
+        for face in MomentRT.boundary.FACES:
+            normal = np.zeros(3)
+
+            normal["xyz".index(face[0])] = -1 if face.endswith("min") else 1
+
+            outward, face_weights = cls._angular_quadrature(normal=normal)
+
+            face_even = cls._harmonics(directions=outward, modes=cls._EVEN)
+
+            weighted_mu = face_weights * (outward @ normal)
+
+            boundary[face] = 2 * np.einsum(
+                "q,qa,qb->ab", weighted_mu, face_even, face_even
+            )
+
+            illumination[face] = np.einsum("q,qa->a", weighted_mu, face_even) / np.pi
+
+        return streaming, current, boundary, illumination
+
     def __init__(
         self,
         *,
@@ -156,7 +163,7 @@ class P3:
         boundaries : mapping of str to RobinBoundary
             Six zero-reflectance Robin faces.
         """
-        validated = MomentRT.diffusion.Diffusion(boundaries=boundaries)
+        validated = MomentRT.transport.diffusion.Diffusion(boundaries=boundaries)
 
         unsupported = [
             face
@@ -215,7 +222,7 @@ class P3:
         return prepared.solve(medium=medium, source=source, mesh=mesh)
 
 
-class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
+class _PreparedP3(MomentRT.transport.diffusion._PreparedDiffusion):
     """Prepare physical geometry once for one solve or wavelength sweep."""
 
     def solve(
@@ -225,7 +232,7 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
         source: MomentRT.source.UniformSurfaceSource,
         mesh: MomentRT.mesh.CartesianMesh,
     ) -> MomentRT.results.SimulationResult:
-        materials = MomentRT.diffusion._finite_materials_at(
+        materials = MomentRT.transport.diffusion._finite_materials_at(
             medium=self.medium, wavelength=source.wavelength
         )
 
@@ -264,33 +271,34 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
 
         factors = np.array([material._transport_factors() for material in materials])
 
-        streaming, current, face_matrices, face_source = _angular_operators()
+        streaming, current, face_matrices, face_source = (
+            MomentRT.transport.p3.P3._angular_operators()
+        )
 
         geometry = self.geometry
 
         count = len(geometry.points)
+        elements = geometry.tetrahedra
+        element_count = len(elements)
+        local_shape = (element_count, 4, 4)
+        rows = np.broadcast_to(elements[:, :, None], local_shape).ravel()
+        columns = np.broadcast_to(elements[:, None, :], local_shape).ravel()
+        mass_template = (np.ones((4, 4)) + np.eye(4)) / 20
 
-        blocks = [[sparse.csr_matrix((count, count)) for _ in _EVEN] for _ in _EVEN]
+        blocks = [
+            [sparse.csr_matrix((count, count)) for _ in MomentRT.transport.p3.P3._EVEN]
+            for _ in MomentRT.transport.p3.P3._EVEN
+        ]
 
-        for label, (_, mass) in self.region_matrices.items():
+        region_operators = {}
+
+        for label in self.region_matrices:
             selection = self.labels == label
-
-            elements = geometry.tetrahedra[selection]
-
-            gradients = geometry.gradients[selection]
-
-            volumes = geometry.volumes[selection]
-
-            local_shape = (len(elements), 4, 4)
-
-            rows = np.broadcast_to(elements[:, :, None], local_shape).ravel()
-
-            columns = np.broadcast_to(elements[:, None, :], local_shape).ravel()
 
             odd_sigma = np.array(
                 [
                     absorption[label] + scattering[label] * factors[label, degree]
-                    for degree, _ in _ODD
+                    for degree, _ in MomentRT.transport.p3.P3._ODD
                 ]
             )
 
@@ -298,23 +306,44 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
                 "ioe,o,jof->eijf", streaming, 1 / odd_sigma, streaming
             )
 
-            for a, (degree, _) in enumerate(_EVEN):
-                sigma = (
+            even_sigma = np.array(
+                [
                     absorption[label]
                     if degree == 0
                     else absorption[label] + scattering[label] * factors[label, 2]
-                )
+                    for degree, _ in MomentRT.transport.p3.P3._EVEN
+                ]
+            )
 
-                blocks[a][a] += sigma * mass
+            region_operators[label] = (selection, diffusion, even_sigma)
 
-                for b in range(len(_EVEN)):
-                    local = volumes[:, None, None] * np.einsum(
-                        "tai,ij,tbj->tab", gradients, diffusion[a, :, :, b], gradients
+        for a in range(len(MomentRT.transport.p3.P3._EVEN)):
+            for b in range(len(MomentRT.transport.p3.P3._EVEN)):
+                local = np.zeros(local_shape)
+
+                for label, (
+                    selection,
+                    diffusion,
+                    even_sigma,
+                ) in region_operators.items():
+                    gradients = geometry.gradients[selection]
+                    volumes = geometry.volumes[selection]
+
+                    local[selection] = volumes[:, None, None] * np.einsum(
+                        "tai,ij,tbj->tab",
+                        gradients,
+                        diffusion[a, :, :, b],
+                        gradients,
                     )
 
-                    blocks[a][b] += sparse.coo_matrix(
-                        (local.ravel(), (rows, columns)), shape=(count, count)
-                    ).tocsr()
+                    if a == b:
+                        local[selection] += (
+                            even_sigma[a] * volumes[:, None, None] * mass_template
+                        )
+
+                blocks[a][b] = sparse.coo_matrix(
+                    (local.ravel(), (rows, columns)), shape=(count, count)
+                ).tocsr()
 
         for face, triangles in geometry.faces.items():
             areas = geometry.quadrature[face][2].sum(axis=1)
@@ -329,8 +358,8 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
                 (face_mass.ravel(), (rows, columns)), shape=(count, count)
             ).tocsr()
 
-            for a in range(len(_EVEN)):
-                for b in range(len(_EVEN)):
+            for a in range(len(MomentRT.transport.p3.P3._EVEN)):
+                for b in range(len(MomentRT.transport.p3.P3._EVEN)):
                     blocks[a][b] += face_matrices[face][a, b] * matrix
 
         operator = sparse.bmat(blocks, format="csr")
@@ -354,7 +383,7 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
         if residual > 1e-8:
             raise RuntimeError(f"P3 linear residual is too large: {residual:g}.")
 
-        even = solution.reshape(len(_EVEN), count)
+        even = solution.reshape(len(MomentRT.transport.p3.P3._EVEN), count)
 
         scalar = np.sqrt(4 * np.pi) * even[0]
 
@@ -364,7 +393,7 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
             geometry.gradients,
         )
 
-        odd_degrees = [degree for degree, _ in _ODD]
+        odd_degrees = [degree for degree, _ in MomentRT.transport.p3.P3._ODD]
 
         odd_sigma = (
             absorption[self.labels, None]
@@ -435,7 +464,7 @@ class _PreparedP3(MomentRT.diffusion._PreparedDiffusion):
                 name=f"P3 harmonic l={degree}, m={order}",
                 metadata=metadata,
             )
-            for index, (degree, order) in enumerate(_EVEN)
+            for index, (degree, order) in enumerate(MomentRT.transport.p3.P3._EVEN)
         }
 
         reused = self.solve_count > 0

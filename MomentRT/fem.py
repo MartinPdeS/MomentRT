@@ -1,14 +1,11 @@
 """Linear tetrahedral FEM kernels on a conforming Cartesian subdivision."""
 
 from __future__ import annotations
-
 from itertools import permutations
 from typing import cast
-
 import numpy as np
 from numpy.typing import NDArray
 from scipy import sparse
-
 import MomentRT
 
 

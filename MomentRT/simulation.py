@@ -1,15 +1,12 @@
 """Composition of medium, illumination, and transport."""
 
 from __future__ import annotations
-
 import copy
 import time
 from collections.abc import Iterable, Mapping
-from typing import Any, Protocol
-
+from typing import Any, Protocol, cast
 import numpy as np
 from pint import Quantity
-
 import MomentRT
 
 
@@ -134,7 +131,350 @@ class Simulation:
             Independent errors, cautions, and sampled source and detector areas.
             Validation does not solve transport or establish mesh convergence.
         """
-        return MomentRT.validation._validate(simulation=self, wavelengths=wavelengths)
+        return self._validate_configuration(wavelengths=wavelengths)
+
+    def _validate_configuration(
+        self,
+        *,
+        wavelengths: Quantity | None,
+    ) -> MomentRT.validation.ValidationReport:
+        """Inspect supported simulation configurations without solving a PDE."""
+        errors: list[str] = []
+
+        warnings: list[str] = []
+
+        detector_areas: dict[str, Quantity] = {}
+
+        source_area = None
+
+        medium = self.medium
+
+        source = self.source
+
+        solver = self.solver
+
+        mesh = self.mesh
+
+        finite = isinstance(
+            solver,
+            (
+                MomentRT.transport.diffusion.Diffusion,
+                MomentRT.transport.sp3.SP3,
+                MomentRT.transport.p3.P3,
+            ),
+        )
+
+        infinite = isinstance(solver, MomentRT.transport.diffusion.InfiniteDiffusion)
+
+        if not finite and not infinite:
+            errors.append(
+                "Preflight validation supports Diffusion, SP3, P3, and InfiniteDiffusion solvers."
+            )
+
+        if finite and not isinstance(medium, MomentRT.medium.StructuredMedium):
+            errors.append("Finite solvers require a StructuredMedium.")
+
+        if finite and not isinstance(source, MomentRT.source.UniformSurfaceSource):
+            errors.append("Finite solvers require a surface source.")
+
+        if infinite and not isinstance(medium, MomentRT.medium.HomogeneousMedium):
+            errors.append("InfiniteDiffusion requires a HomogeneousMedium.")
+
+        if infinite and not isinstance(source, MomentRT.source.PointSource):
+            errors.append("InfiniteDiffusion requires a PointSource.")
+
+        if infinite and self.detectors:
+            errors.append("Contact detectors require finite-sample boundary fields.")
+
+        if not isinstance(mesh, MomentRT.mesh.CartesianMesh):
+            errors.append("mesh must be a CartesianMesh.")
+
+        if isinstance(
+            source, (MomentRT.source.PointSource, MomentRT.source.UniformSurfaceSource)
+        ):
+            for name, unit in (("wavelength", "m"), ("optical_power", "W")):
+                try:
+                    MomentRT.units.validate_units(
+                        value=getattr(source, name),
+                        unit=unit,
+                        name=name,
+                        shape=(),
+                        positive=True,
+                    )
+                except (ValueError, TypeError) as error:
+                    errors.append(f"Source {name}: {error}")
+
+        selected_wavelengths = []
+
+        if wavelengths is None:
+            if hasattr(source, "wavelength"):
+                selected_wavelengths = [source.wavelength]
+        else:
+            try:
+                MomentRT.units.validate_units(
+                    value=wavelengths, unit="m", name="wavelengths", positive=True
+                )
+
+                if wavelengths.ndim != 1 or not len(wavelengths):
+                    raise ValueError("wavelengths must be a nonempty vector.")
+
+                selected_wavelengths = list(wavelengths)
+            except (ValueError, TypeError) as error:
+                errors.append(f"Wavelengths: {error}")
+
+        if isinstance(medium, MomentRT.medium.StructuredMedium):
+            materials = [
+                ("background", medium.background),
+                *((shape.name, shape.material) for shape in medium.structures),
+            ]
+
+            if medium.background is None:
+                errors.append("Sample background is not configured.")
+
+            if isinstance(
+                solver, (MomentRT.transport.sp3.SP3, MomentRT.transport.p3.P3)
+            ):
+                for name, material in materials:
+                    if (
+                        material is not None
+                        and material.anisotropy is None
+                        and isinstance(
+                            material.phase_function,
+                            MomentRT.phase_function.HenyeyGreenstein,
+                        )
+                    ):
+                        errors.append(
+                            f"{type(solver).__name__} requires anisotropy for material {name!r}."
+                        )
+
+            for wavelength in selected_wavelengths:
+                indices = []
+
+                for name, material in materials:
+                    if material is None:
+                        continue
+
+                    try:
+                        resolved = material.at(wavelength=wavelength)
+
+                        indices.append((name, resolved.refractive_index))
+
+                        if isinstance(
+                            solver,
+                            (MomentRT.transport.sp3.SP3, MomentRT.transport.p3.P3),
+                        ) and (
+                            resolved.anisotropy is not None
+                            or not isinstance(
+                                resolved.phase_function,
+                                MomentRT.phase_function.HenyeyGreenstein,
+                            )
+                        ):
+                            resolved._phase_moments()
+                    except (ValueError, TypeError) as error:
+                        errors.append(f"Material {name!r} at {wavelength:~P}: {error}")
+
+                if indices and any(index != indices[0][1] for _, index in indices):
+                    details = ", ".join(
+                        f"{name!r}={index:g}" for name, index in indices
+                    )
+
+                    errors.append(
+                        f"Internal refractive-index jumps are unsupported at "
+                        f"{wavelength:~P}: {details}."
+                    )
+        elif isinstance(medium, MomentRT.medium.HomogeneousMedium):
+            for wavelength in selected_wavelengths:
+                try:
+                    medium.at(wavelength=wavelength)
+                except (ValueError, TypeError) as error:
+                    errors.append(f"Material at {wavelength:~P}: {error}")
+
+        if isinstance(
+            solver,
+            (
+                MomentRT.transport.diffusion.Diffusion,
+                MomentRT.transport.sp3.SP3,
+                MomentRT.transport.p3.P3,
+            ),
+        ):
+            try:
+                MomentRT.transport.diffusion.Diffusion(boundaries=solver.boundaries)
+
+                if isinstance(solver, MomentRT.transport.sp3.SP3):
+                    MomentRT.transport.sp3.SP3(boundaries=solver.boundaries)
+
+                if isinstance(solver, MomentRT.transport.p3.P3):
+                    MomentRT.transport.p3.P3(boundaries=solver.boundaries)
+            except (ValueError, TypeError, AttributeError) as error:
+                errors.append(f"Boundaries: {error}")
+
+            if isinstance(
+                source, MomentRT.source.UniformSurfaceSource
+            ) and not isinstance(
+                solver.boundaries.get(source.face), MomentRT.boundary.RobinBoundary
+            ):
+                errors.append(
+                    f"The illuminated face {source.face!r} requires a RobinBoundary."
+                )
+
+        if (
+            finite
+            and isinstance(medium, MomentRT.medium.StructuredMedium)
+            and isinstance(mesh, MomentRT.mesh.CartesianMesh)
+        ):
+            mesh_lower = mesh.origin.to("m").magnitude
+
+            mesh_upper = (
+                mesh_lower
+                + (np.asarray(mesh.shape) - 1) * mesh.spacing.to("m").magnitude
+            )
+
+            lower = medium.origin.to("m").magnitude
+
+            upper = (medium.origin + medium.size).to("m").magnitude
+
+            mesh_valid = np.allclose(
+                mesh_lower, lower, rtol=1e-12, atol=1e-15
+            ) and np.allclose(mesh_upper, upper, rtol=1e-12, atol=1e-15)
+
+            if not mesh_valid:
+                errors.append("The mesh must span the finite sample.")
+
+            valid_detectors = {}
+
+            for name, detector in self.detectors.items():
+                try:
+                    detector._validate_sample(
+                        sample_origin=medium.origin, sample_size=medium.size
+                    )
+
+                    valid_detectors[name] = detector
+                except (ValueError, TypeError) as error:
+                    errors.append(f"Detector {name!r}: {error}")
+
+            source_valid = isinstance(source, MomentRT.source.UniformSurfaceSource)
+
+            if isinstance(source, MomentRT.source.SurfaceSource):
+                try:
+                    axis = "xyz".index(source.face[0])
+
+                    face_coordinate = (
+                        lower[axis] if source.face.endswith("min") else upper[axis]
+                    )
+
+                    if not np.isclose(
+                        source.position.to("m").magnitude[axis],
+                        face_coordinate,
+                        rtol=1e-12,
+                        atol=1e-15,
+                    ):
+                        raise ValueError(
+                            "Source position must lie on its configured face."
+                        )
+
+                    MomentRT.boundary._validate_face_disk(
+                        sample=medium,
+                        face=source.face,
+                        position=source.position,
+                        radius=source.radius,
+                    )
+                except (ValueError, TypeError) as error:
+                    source_valid = False
+
+                    errors.append(f"Source: {error}")
+
+            if mesh_valid:
+                geometry = MomentRT.fem._MeshGeometry(mesh=mesh)
+
+                if source_valid and isinstance(
+                    source, MomentRT.source.UniformSurfaceSource
+                ):
+                    try:
+                        quadrature, _, weights = geometry.quadrature[source.face]
+
+                        _, sampled = MomentRT.fem.source_irradiance(
+                            quadrature=quadrature, weights=weights, source=source
+                        )
+
+                        source_area = sampled * MomentRT.units.ureg.meter**2
+
+                        axis = "xyz".index(source.face[0])
+
+                        geometric = (
+                            np.pi * source.radius**2
+                            if isinstance(source, MomentRT.source.SurfaceSource)
+                            else np.prod(
+                                medium.size[
+                                    [index for index in range(3) if index != axis]
+                                ]
+                            )
+                        )
+
+                        if abs((source_area / geometric).to("").magnitude - 1) > 0.02:
+                            warnings.append(
+                                "Source sampled area differs from geometric area by more than 2%; refine the mesh."
+                            )
+                    except (ValueError, TypeError, KeyError) as error:
+                        errors.append(f"Source sampling: {error}")
+
+                for name, detector in valid_detectors.items():
+                    quadrature, _, weights = geometry.quadrature[detector.face]
+
+                    axis = "xyz".index(detector.face[0])
+
+                    in_plane = [index for index in range(3) if index != axis]
+
+                    distance = np.linalg.norm(
+                        quadrature[..., in_plane]
+                        - detector.position.to("m").magnitude[in_plane],
+                        axis=-1,
+                    )
+
+                    sampled = float(
+                        np.sum(weights[distance <= detector.radius.to("m").magnitude])
+                    )
+
+                    detector_areas[name] = sampled * MomentRT.units.ureg.meter**2
+
+                    if sampled == 0:
+                        errors.append(
+                            f"Detector {name!r} is not sampled; refine the mesh."
+                        )
+                    elif (
+                        abs(
+                            sampled / (np.pi * detector.radius.to("m").magnitude ** 2)
+                            - 1
+                        )
+                        > 0.02
+                    ):
+                        warnings.append(
+                            f"Detector {name!r} sampled area differs from geometric area by more than 2%; refine the mesh."
+                        )
+
+                warnings.append(
+                    "Footprint sampling alone does not establish mesh convergence or transport accuracy."
+                )
+
+        if (
+            infinite
+            and isinstance(source, MomentRT.source.PointSource)
+            and isinstance(mesh, MomentRT.mesh.CartesianMesh)
+        ):
+            if np.any(
+                np.linalg.norm(
+                    mesh.points.to("m").magnitude - source.position.to("m").magnitude,
+                    axis=-1,
+                )
+                == 0
+            ):
+                errors.append("A mesh node coincides with the singular point source.")
+
+        return MomentRT.validation.ValidationReport(
+            errors=tuple(errors),
+            warnings=tuple(warnings),
+            source_sampled_area=source_area,
+            detector_sampled_areas=detector_areas,
+        )
 
     def run(self) -> MomentRT.results.SimulationResult:
         """Solve the configured transport problem and evaluate all named detectors.
@@ -308,9 +648,190 @@ class Simulation:
             only when the final refinement sequence meets all requested criteria.
         """
 
-        return MomentRT.convergence._run_study(
-            simulation=self,
+        return self._run_convergence_study(
             mesh_shapes=mesh_shapes,
+            power_rtol=power_rtol,
+            area_rtol=area_rtol,
+            power_atol=power_atol,
+            required_consecutive=required_consecutive,
+        )
+
+    def _run_convergence_study(
+        self,
+        *,
+        mesh_shapes: Iterable[tuple[int, int, int]],
+        power_rtol: float,
+        area_rtol: float,
+        power_atol: Quantity | None,
+        required_consecutive: int,
+    ) -> MomentRT.results.DetectorConvergenceResult:
+        """Run the finite-detector refinement study on independent mesh snapshots.
+
+        Parameters
+        ----------
+        mesh_shapes : iterable of tuple of int
+            At least two coarse-to-fine node shapes. Each shape must refine at
+            least one axis and coarsen none.
+        power_rtol : float
+            Nonnegative relative power tolerance against adjacent and finest meshes.
+        area_rtol : float
+            Nonnegative relative tolerance of sampled source and detector areas
+            against their geometric areas.
+        power_atol : pint.Quantity or None
+            Nonnegative absolute power tolerance. None means zero watts.
+        required_consecutive : int
+            Positive number of consecutive passing refinements required at the
+            fine end of the mesh sequence.
+
+        Returns
+        -------
+        DetectorConvergenceResult
+            Completed study including unresolved levels and refinement diagnostics.
+        """
+
+        if not isinstance(
+            self.medium, MomentRT.medium.StructuredMedium
+        ) or not isinstance(
+            self.solver,
+            (
+                MomentRT.transport.diffusion.Diffusion,
+                MomentRT.transport.sp3.SP3,
+                MomentRT.transport.p3.P3,
+            ),
+        ):
+            raise TypeError(
+                "Detector convergence requires a finite Diffusion, SP3, or P3 simulation."
+            )
+
+        if not self.detectors:
+            raise ValueError("Configure at least one detector for a convergence study.")
+
+        if not isinstance(self.source, MomentRT.source.UniformSurfaceSource):
+            raise TypeError("Detector convergence requires a finite surface source.")
+
+        for name, value in (("power_rtol", power_rtol), ("area_rtol", area_rtol)):
+            if (
+                isinstance(value, (bool, np.bool_))
+                or not isinstance(value, (int, float, np.integer, np.floating))
+                or not np.isfinite(value)
+                or value < 0
+            ):
+                raise ValueError(f"{name} must be a finite nonnegative plain number.")
+
+        if (
+            isinstance(required_consecutive, (bool, np.bool_))
+            or not isinstance(required_consecutive, (int, np.integer))
+            or required_consecutive < 1
+        ):
+            raise ValueError("required_consecutive must be a positive integer.")
+
+        if power_atol is None:
+            power_atol = 0 * MomentRT.units.ureg.watt
+
+        MomentRT.units.validate_units(
+            value=power_atol, unit="W", name="power_atol", shape=(), nonnegative=True
+        )
+
+        medium = copy.deepcopy(self.medium)
+
+        source = copy.deepcopy(self.source)
+
+        solver = copy.deepcopy(self.solver)
+
+        detectors = copy.deepcopy(self.detectors)
+
+        MomentRT.transport.diffusion._finite_materials_at(
+            medium=medium, wavelength=source.wavelength
+        )
+
+        for detector in detectors.values():
+            detector._validate_sample(
+                sample_origin=medium.origin, sample_size=medium.size
+            )
+
+        meshes = tuple(
+            MomentRT.mesh.CartesianMesh.from_sample(sample=medium, shape=shape)
+            for shape in mesh_shapes
+        )
+
+        if len(meshes) < 2:
+            raise ValueError("Supply at least two mesh_shapes from coarse to fine.")
+
+        for previous, current in zip(meshes[:-1], meshes[1:]):
+            if (
+                np.any(np.asarray(current.shape) < previous.shape)
+                or current.shape == previous.shape
+            ):
+                raise ValueError(
+                    "Each mesh must refine at least one axis and coarsen none."
+                )
+
+        if isinstance(source, MomentRT.source.SurfaceSource):
+            source_geometric_area = np.pi * source.radius**2
+        else:
+            axis = "xyz".index(source.face[0])
+
+            source_geometric_area = np.prod(
+                medium.size[[index for index in range(3) if index != axis]]
+            )
+
+        results: list[MomentRT.results.SimulationResult | None] = []
+
+        level_errors = []
+
+        for mesh in meshes:
+            candidate = copy.copy(self)
+
+            candidate.medium = medium
+
+            candidate.source = source
+
+            candidate.mesh = mesh
+
+            candidate.solver = solver
+
+            candidate.detectors = {}
+
+            errors = {}
+
+            try:
+                result = candidate.run()
+            except MomentRT.source.SourceResolutionError as error:
+                results.append(None)
+
+                level_errors.append({"source": str(error)})
+
+                continue
+
+            for name, detector in detectors.items():
+                try:
+                    measurement = detector.measure(result=result)
+                except MomentRT.detector.DetectorResolutionError as error:
+                    errors[f"detector:{name}"] = str(error)
+
+                    continue
+
+                result.detectors[name] = measurement
+
+                if measurement.minimum_escaping_irradiance.magnitude < 0:
+                    errors[f"detector:{name}"] = (
+                        "Negative escaping irradiance in the aperture."
+                    )
+
+            if cast(Quantity, result.diagnostics["minimum_fluence"]).magnitude < 0:
+                errors["fluence"] = "Negative nodal fluence."
+
+            results.append(result)
+
+            level_errors.append(errors)
+
+        return MomentRT.results.DetectorConvergenceResult(
+            meshes=meshes,
+            results=results,
+            detectors=detectors,
+            source_geometric_area=source_geometric_area,
+            wavelength=source.wavelength,
+            level_errors=level_errors,
             power_rtol=power_rtol,
             area_rtol=area_rtol,
             power_atol=power_atol,

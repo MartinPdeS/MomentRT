@@ -11,9 +11,7 @@ model matches radiative transfer for a particular sensor.
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/compare_sp3.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg

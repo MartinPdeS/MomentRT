@@ -1,16 +1,13 @@
 """Measure finite-sweep time and traced allocation peaks for reproducible cases."""
 
 from __future__ import annotations
-
 import argparse
 import json
 import platform
 import sys
 import tracemalloc
-
 import numpy as np
 import scipy
-
 import MomentRT
 
 try:

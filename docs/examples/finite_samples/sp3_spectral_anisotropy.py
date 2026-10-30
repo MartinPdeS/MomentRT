@@ -10,9 +10,7 @@ is monochromatic; the sweep is not a broadband integration.
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/sp3_spectral_anisotropy.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg

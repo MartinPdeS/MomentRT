@@ -1,8 +1,6 @@
 import runpy
-
 import numpy as np
 import pytest
-
 import MomentRT
 from MomentRT import (
     Box,

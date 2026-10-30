@@ -9,10 +9,8 @@ fluence field. The input power is already coupled into the sample.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/uniform_surface_source.png'
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,

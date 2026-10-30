@@ -1,15 +1,12 @@
 """Analytical steady-state diffusion Green function in an infinite medium."""
 
 from __future__ import annotations
-
 import copy
 from collections.abc import Mapping
-
 import numpy as np
 from pint import Quantity
 from scipy import sparse
 from scipy.sparse import linalg as sparse_linalg
-
 import MomentRT
 
 

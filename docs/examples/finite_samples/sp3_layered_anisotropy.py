@@ -10,9 +10,7 @@ uses the Henyey–Greenstein phase function for each material.
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/sp3_layered_anisotropy.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg

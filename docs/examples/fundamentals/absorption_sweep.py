@@ -9,10 +9,8 @@ fluence reaches a given value. Inputs are illustrative.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/absorption_sweep.png'
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,

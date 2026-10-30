@@ -1,14 +1,11 @@
 """Unit-bearing nodal scalar fields with mesh-aware visualization."""
 
 from __future__ import annotations
-
 from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Literal
-
 import numpy as np
 from pint import Quantity
-
 import MomentRT
 
 

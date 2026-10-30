@@ -9,10 +9,8 @@ are equal: refracting internal interfaces are outside this solver's scope.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/surface_diffusion.png'
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,

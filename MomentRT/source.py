@@ -1,13 +1,10 @@
 """Ideal isotropic point illumination inside an infinite medium."""
 
 from __future__ import annotations
-
 from collections.abc import Mapping
 from typing import Any
-
 import numpy as np
 from pint import Quantity
-
 import MomentRT
 
 

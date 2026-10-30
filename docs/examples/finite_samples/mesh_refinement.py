@@ -10,10 +10,8 @@ All inputs are illustrative.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/mesh_refinement.png'
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,

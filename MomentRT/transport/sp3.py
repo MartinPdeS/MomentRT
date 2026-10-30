@@ -1,13 +1,10 @@
 """Steady-state SP3 transport with matched-index Marshak boundaries."""
 
 from __future__ import annotations
-
 from collections.abc import Mapping
-
 import numpy as np
 from scipy import sparse
 from scipy.sparse import linalg as sparse_linalg
-
 import MomentRT
 
 
@@ -47,7 +44,7 @@ class SP3:
         boundaries : mapping of str to RobinBoundary or ReflectingBoundary
             Six face conditions; Robin reflectance must be zero.
         """
-        validated = MomentRT.diffusion.Diffusion(boundaries=boundaries)
+        validated = MomentRT.transport.diffusion.Diffusion(boundaries=boundaries)
 
         unsupported = [
             face
@@ -110,7 +107,7 @@ class SP3:
         return prepared.solve(medium=medium, source=source, mesh=mesh)
 
 
-class _PreparedSP3(MomentRT.diffusion._PreparedDiffusion):
+class _PreparedSP3(MomentRT.transport.diffusion._PreparedDiffusion):
     """Reuse the finite geometry and source quadrature during a sweep."""
 
     def __init__(
@@ -141,7 +138,7 @@ class _PreparedSP3(MomentRT.diffusion._PreparedDiffusion):
             positive=True,
         )
 
-        materials = MomentRT.diffusion._finite_materials_at(
+        materials = MomentRT.transport.diffusion._finite_materials_at(
             medium=self.medium, wavelength=source.wavelength
         )
 

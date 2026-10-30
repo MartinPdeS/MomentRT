@@ -35,6 +35,18 @@ insertion order are preserved on the resolved copy. Property sampling and
 display methods accept an explicit ``wavelength`` for spectral samples.
 See :doc:`spectral`.
 
+Parameterized materials are available as ``MomentRT.Intralipid(concentration=,
+wavelength=, refractive_index=)``, ``MomentRT.Epidermis(melanin_fraction=,
+wavelength=, refractive_index=)``, ``MomentRT.Dermis(hydration=, wavelength=,
+refractive_index=)``, and ``MomentRT.Water(wavelength=, refractive_index=)``.
+Intralipid concentration is particle volume fraction in percent: 22.7 is
+undiluted 20% stock. Its empirical equation has a wavelength-dependent validity
+limit. The simple skin models put melanin in the epidermis; the dermis model
+mixes water and a baseline absorber and omits blood-vessel structure. These
+literature parameterizations are starting points, not patient-specific
+properties. Pure water's very low scattering also makes it outside the useful
+regime of MomentRT's diffusion solvers.
+
 Sources
 -------
 

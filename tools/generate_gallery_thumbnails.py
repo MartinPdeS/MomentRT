@@ -6,7 +6,6 @@ images are committed so documentation builds do not need a browser.
 
 import argparse
 from pathlib import Path
-
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent

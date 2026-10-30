@@ -1,12 +1,9 @@
 """Scalar scattering phase functions and their normalized Legendre moments."""
 
 from __future__ import annotations
-
 from abc import ABC, abstractmethod
-
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
-
 import MomentRT
 
 
@@ -99,7 +96,9 @@ class HenyeyGreenstein(PhaseFunction):
         if anisotropy is None:
             raise ValueError("HenyeyGreenstein requires material anisotropy.")
 
-        g = float(MomentRT.material._anisotropy_values(value=anisotropy, shape=()))
+        g = float(
+            MomentRT.material.Material._anisotropy_values(value=anisotropy, shape=())
+        )
 
         mu = _cosines(cosine=cosine)
 
@@ -121,7 +120,9 @@ class HenyeyGreenstein(PhaseFunction):
         if anisotropy is None:
             raise ValueError("HenyeyGreenstein requires material anisotropy.")
 
-        g = float(MomentRT.material._anisotropy_values(value=anisotropy, shape=()))
+        g = float(
+            MomentRT.material.Material._anisotropy_values(value=anisotropy, shape=())
+        )
 
         return np.array([1, g, g**2, g**3])
 
@@ -165,7 +166,12 @@ class Isotropic(PhaseFunction):
         """
         if (
             anisotropy is not None
-            and float(MomentRT.material._anisotropy_values(value=anisotropy, shape=()))
+            and float(
+                MomentRT.material.Material._anisotropy_values(
+                    value=anisotropy,
+                    shape=(),
+                )
+            )
             != 0
         ):
             raise ValueError("Isotropic scattering requires anisotropy=0.")
@@ -214,7 +220,12 @@ class Rayleigh(PhaseFunction):
         """
         if (
             anisotropy is not None
-            and float(MomentRT.material._anisotropy_values(value=anisotropy, shape=()))
+            and float(
+                MomentRT.material.Material._anisotropy_values(
+                    value=anisotropy,
+                    shape=(),
+                )
+            )
             != 0
         ):
             raise ValueError("Rayleigh scattering requires anisotropy=0.")
@@ -344,7 +355,10 @@ class Tabulated(PhaseFunction):
 
         if anisotropy is not None:
             supplied = float(
-                MomentRT.material._anisotropy_values(value=anisotropy, shape=())
+                MomentRT.material.Material._anisotropy_values(
+                    value=anisotropy,
+                    shape=(),
+                )
             )
 
             if not np.isclose(supplied, moments[1], atol=1e-10, rtol=1e-10):

@@ -36,6 +36,25 @@ Materials and sample geometry
    :members:
    :member-order: bysource
 
+Premade materials
+~~~~~~~~~~~~~~~~~
+
+.. autoclass:: MomentRT.Epidermis
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.Dermis
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.Intralipid
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.Water
+   :members:
+   :member-order: bysource
+
 .. autoclass:: MomentRT.HomogeneousMedium
    :members:
    :member-order: bysource

@@ -1,5 +1,4 @@
 import numpy as np
-
 from MomentRT import CartesianMesh, ureg
 from MomentRT.fem import (
     boundary_triangles,

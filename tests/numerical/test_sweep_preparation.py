@@ -2,10 +2,8 @@
 
 from copy import copy
 from functools import wraps
-
 import numpy as np
 import pytest
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,

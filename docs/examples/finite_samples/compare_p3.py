@@ -12,9 +12,7 @@ models does not establish accuracy against radiative transfer.
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/compare_p3.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg

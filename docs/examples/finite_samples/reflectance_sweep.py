@@ -10,10 +10,8 @@ illustrative.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/reflectance_sweep.png'
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,

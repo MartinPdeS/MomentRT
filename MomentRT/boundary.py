@@ -1,14 +1,11 @@
 """Explicit partial-current boundary conditions for steady-state diffusion."""
 
 from __future__ import annotations
-
 import copy
 from collections.abc import Iterator, Mapping
 from typing import Literal
-
 import numpy as np
 from pint import Quantity
-
 import MomentRT
 
 Face = Literal["x_min", "x_max", "y_min", "y_max", "z_min", "z_max"]

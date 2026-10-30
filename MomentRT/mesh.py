@@ -1,10 +1,8 @@
 """Cartesian observation grids; these do not impose physical boundaries."""
 
 from __future__ import annotations
-
 import numpy as np
 from pint import Quantity
-
 import MomentRT
 
 

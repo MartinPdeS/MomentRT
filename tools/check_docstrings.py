@@ -2,9 +2,7 @@
 
 import inspect
 from typing import get_type_hints
-
 from numpydoc.validate import validate
-
 import MomentRT
 
 # An extended summary, example, and See Also section are useful when needed,

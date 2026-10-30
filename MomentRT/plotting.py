@@ -1,15 +1,12 @@
 """Optional interactive Plotly figures for geometry and physical fields."""
 
 from __future__ import annotations
-
 from collections.abc import Iterable, Mapping
 from html import escape
 from types import ModuleType
 from typing import TYPE_CHECKING, Any, Literal, cast
-
 import numpy as np
 from numpy.typing import NDArray
-
 import MomentRT
 
 try:

@@ -1,7 +1,6 @@
 """Physical units shared by all MomentRT objects."""
 
 from __future__ import annotations
-
 import numpy as np
 from pint import Quantity, UnitRegistry
 

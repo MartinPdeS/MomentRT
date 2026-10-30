@@ -2,7 +2,6 @@
 
 import importlib.util
 from pathlib import Path
-
 import pytest
 
 plotly = pytest.importorskip("plotly.graph_objects")

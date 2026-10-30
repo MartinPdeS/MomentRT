@@ -1,15 +1,12 @@
 """Homogeneous material viewed through a finite observation window."""
 
 from __future__ import annotations
-
 import copy
 from collections.abc import Iterable, Mapping
 from typing import Literal, cast
-
 import numpy as np
 from numpy.typing import NDArray
 from pint import Quantity
-
 import MomentRT
 
 

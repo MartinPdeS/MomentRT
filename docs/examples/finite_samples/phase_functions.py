@@ -10,9 +10,7 @@ moments differ. All optical properties are illustrative.
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/phase_functions.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg

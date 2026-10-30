@@ -10,9 +10,7 @@ a broadband source integration or a validated tissue spectrum.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/spectral_detectors.png'
 import os
-
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,

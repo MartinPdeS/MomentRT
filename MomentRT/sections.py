@@ -1,12 +1,9 @@
 """Resolved planar material maps independent of the transport mesh."""
 
 from __future__ import annotations
-
 from typing import Literal, cast
-
 import numpy as np
 from pint import Quantity
-
 import MomentRT
 
 

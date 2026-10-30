@@ -1,9 +1,7 @@
 import builtins
 import importlib
-
 import numpy as np
 import pytest
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,

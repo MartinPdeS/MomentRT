@@ -10,9 +10,7 @@ these observables, not validation of P1 against radiative transfer.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/detector_convergence.png'
 import os
-
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,

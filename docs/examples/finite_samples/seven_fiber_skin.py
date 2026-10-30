@@ -11,9 +11,7 @@ parameters.
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/seven_fiber_skin.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg
@@ -108,7 +106,8 @@ detector = MomentRT.SurfaceDetector.on_face(
 
 mesh = MomentRT.CartesianMesh.from_sample(
     sample=sample,
-    shape=(21, 21, 11),
+    # shape=(21, 21, 11),
+    shape=(31, 31, 21),
 )
 
 boundary = MomentRT.RobinBoundary(effective_reflectance=0)

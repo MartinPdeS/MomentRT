@@ -10,9 +10,7 @@ model angle-dependent Fresnel transmission or detector back-action.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/surface_detector.png'
 import os
-
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,
@@ -42,8 +40,8 @@ material = Material(
 )
 
 sample = StructuredMedium(
-    origin=np.array([-4, -3, 0]) * ureg.mm,
-    size=np.array([8, 6, 4]) * ureg.mm,
+    origin=(-4, -3, 0) * ureg.mm,
+    size=(8, 6, 4) * ureg.mm,
 )
 
 sample.add_background(material=material)
@@ -130,11 +128,7 @@ for name, measurement in result.detectors.items():
 fluence_figure = result.fluence.plot(
     view="volume",
     scale="log",
-    overlays={
-        "Illumination": source,
-        "Reflection detector": reflection_detector,
-        "Transmission detector": transmission_detector,
-    },
+    overlays=[source, reflection_detector, transmission_detector],
     show=show_figures,
 )
 

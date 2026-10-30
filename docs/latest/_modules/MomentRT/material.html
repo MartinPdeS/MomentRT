@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.material &#8212; MomentRT 0.6.0 documentation</title>
+    <title>MomentRT.material &#8212; MomentRT 0.7.1 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../../_static/documentation_options.js?v=1027fec7"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.0" />
+  <meta name="docsearch:version" content="0.7.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -498,35 +498,10 @@
 <span></span><span class="sd">"""Homogeneous optical properties at the configured source wavelength."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
-
-
-<span class="k">def</span><span class="w"> </span><span class="nf">_anisotropy_values</span><span class="p">(</span>
-    <span class="o">*</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""Validate scalar or tabulated dimensionless scattering anisotropy."""</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">)):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"anisotropy must contain plain numbers in (-1, 1)."</span><span class="p">)</span>
-
-    <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="p">(</span>
-        <span class="n">values</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">"iuf"</span>
-        <span class="ow">or</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">((),</span> <span class="n">shape</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
-        <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">values</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-        <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">values</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
-    <span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-            <span class="s2">"anisotropy must be scalar or match the wavelength grid, with values in (-1, 1)."</span>
-        <span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">values</span>
 
 
 <div class="viewcode-block" id="Material">
@@ -566,6 +541,50 @@
 <span class="sd">    ...     phase_function=MomentRT.phase_function.HenyeyGreenstein(),</span>
 <span class="sd">    ... )</span>
 <span class="sd">    """</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_anisotropy_values</span><span class="p">(</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">value</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">ArrayLike</span><span class="p">,</span>
+        <span class="n">shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Validate scalar or tabulated dimensionless scattering anisotropy.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        value : float or array_like</span>
+<span class="sd">            Plain scalar or values to validate.</span>
+<span class="sd">        shape : tuple of int</span>
+<span class="sd">            Required tabulated shape. A scalar is accepted for any shape.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        numpy.ndarray</span>
+<span class="sd">            Validated anisotropy values.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If values have units, a boolean or nonnumeric dtype, the wrong</span>
+<span class="sd">            shape, nonfinite entries, or values outside (-1, 1).</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span> <span class="nb">bool</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"anisotropy must contain plain numbers in (-1, 1)."</span><span class="p">)</span>
+
+        <span class="n">values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">values</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">kind</span> <span class="ow">not</span> <span class="ow">in</span> <span class="s2">"iuf"</span>
+            <span class="ow">or</span> <span class="n">values</span><span class="o">.</span><span class="n">shape</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">((),</span> <span class="n">shape</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">values</span><span class="p">))</span>
+            <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">values</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+            <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">values</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"anisotropy must be scalar or match the wavelength grid, with values in (-1, 1)."</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">values</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -627,7 +646,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">anisotropy</span> <span class="o">=</span> <span class="p">(</span>
             <span class="kc">None</span>
             <span class="k">if</span> <span class="n">anisotropy</span> <span class="ow">is</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">_anisotropy_values</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">anisotropy</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">()))</span>
+            <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_anisotropy_values</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">anisotropy</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">()))</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
@@ -838,7 +857,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">anisotropy</span> <span class="o">=</span> <span class="p">(</span>
             <span class="kc">None</span>
             <span class="k">if</span> <span class="n">anisotropy</span> <span class="ow">is</span> <span class="kc">None</span>
-            <span class="k">else</span> <span class="n">_anisotropy_values</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">anisotropy</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="k">else</span> <span class="n">Material</span><span class="o">.</span><span class="n">_anisotropy_values</span><span class="p">(</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">anisotropy</span><span class="p">,</span>
+                <span class="n">shape</span><span class="o">=</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+            <span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>

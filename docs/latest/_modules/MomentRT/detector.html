@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.detector &#8212; MomentRT 0.6.0 documentation</title>
+    <title>MomentRT.detector &#8212; MomentRT 0.7.1 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../../_static/documentation_options.js?v=1027fec7"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.0" />
+  <meta name="docsearch:version" content="0.7.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -498,15 +498,12 @@
 <span></span><span class="sd">"""Contact-aperture detection with an explicit Lambertian escape assumption."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">integrate</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
 
 
@@ -538,6 +535,10 @@
 <span class="sd">        It is normalized internally and must point into the outward hemisphere.</span>
 <span class="sd">    acceptance_angle : pint.Quantity</span>
 <span class="sd">        Acceptance-cone half-angle, from 0 to 90 degrees, with angular units.</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Legend label. Default is ``"Surface detector"``.</span>
+<span class="sd">    color : str, optional</span>
+<span class="sd">        Plotly-compatible color. Default is ``"royalblue"``.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -556,6 +557,8 @@
         <span class="n">radius</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">collection_axis</span><span class="p">:</span> <span class="n">ArrayLike</span><span class="p">,</span>
         <span class="n">acceptance_angle</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Surface detector"</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"royalblue"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Initialize the SurfaceDetector configuration.</span>
 
@@ -572,6 +575,10 @@
 <span class="sd">            It is normalized internally and must point into the outward hemisphere.</span>
 <span class="sd">        acceptance_angle : pint.Quantity</span>
 <span class="sd">            Acceptance-cone half-angle, from 0 to 90 degrees, with angular units.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            Nonempty legend label.</span>
+<span class="sd">        color : str, optional</span>
+<span class="sd">            Nonempty Plotly-compatible color string.</span>
 <span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">FACES</span><span class="p">:</span>
@@ -622,6 +629,12 @@
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">direction</span><span class="p">,</span> <span class="n">normal</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"collection_axis must point into the outward hemisphere."</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"name must be a nonempty string."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">color</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"color must be a nonempty Plotly color string."</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">face</span> <span class="o">=</span> <span class="n">face</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">position</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -631,6 +644,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">collection_axis</span> <span class="o">=</span> <span class="n">direction</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">acceptance_angle</span> <span class="o">=</span> <span class="n">acceptance_angle</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
 
 <div class="viewcode-block" id="SurfaceDetector.on_face">
 <a class="viewcode-back" href="../../python_api.html#MomentRT.SurfaceDetector.on_face">[docs]</a>
@@ -644,6 +661,8 @@
         <span class="n">radius</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">acceptance_angle</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">orientation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Surface detector"</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"royalblue"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SurfaceDetector</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Place a detector on a face with an explicitly selected outward normal.</span>
 
@@ -663,6 +682,10 @@
 <span class="sd">        orientation : {'outward_normal'}</span>
 <span class="sd">            Explicitly select the outward face normal as the collection axis.</span>
 <span class="sd">            Use the main constructor for a tilted collection axis.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            Legend label. Default is ``"Surface detector"``.</span>
+<span class="sd">        color : str, optional</span>
+<span class="sd">            Plotly-compatible color. Default is ``"royalblue"``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -686,6 +709,8 @@
             <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
             <span class="n">collection_axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span>
             <span class="n">acceptance_angle</span><span class="o">=</span><span class="n">acceptance_angle</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">detector</span><span class="o">.</span><span class="n">_validate_sample</span><span class="p">(</span><span class="n">sample_origin</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="n">sample</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
@@ -703,6 +728,8 @@
         <span class="n">face</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">Face</span><span class="p">,</span>
         <span class="n">coordinates</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">radius</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Surface detector"</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"royalblue"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SurfaceDetector</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Collect all escaping irradiance across a circular contact aperture.</span>
 
@@ -717,6 +744,10 @@
 <span class="sd">            by Cartesian axis.</span>
 <span class="sd">        radius : pint.Quantity</span>
 <span class="sd">            Positive aperture radius with length units.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            Legend label. Default is ``"Surface detector"``.</span>
+<span class="sd">        color : str, optional</span>
+<span class="sd">            Plotly-compatible color. Default is ``"royalblue"``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -735,6 +766,8 @@
             <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
             <span class="n">acceptance_angle</span><span class="o">=</span><span class="mi">90</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">degree</span><span class="p">,</span>
             <span class="n">orientation</span><span class="o">=</span><span class="s2">"outward_normal"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 
@@ -814,7 +847,7 @@
             <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span> <span class="n">face</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">face</span>
         <span class="p">)</span>
 
-        <span class="n">name</span> <span class="o">=</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"Surface detector"</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">context</span><span class="p">[</span><span class="s2">"name"</span><span class="p">]</span>
 
         <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
             <span class="n">go</span><span class="o">.</span><span class="n">Scatter3d</span><span class="p">(</span>
@@ -822,7 +855,7 @@
                 <span class="n">y</span><span class="o">=</span><span class="n">ring</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
                 <span class="n">z</span><span class="o">=</span><span class="n">ring</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
                 <span class="n">mode</span><span class="o">=</span><span class="s2">"lines"</span><span class="p">,</span>
-                <span class="n">line</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="s2">"royalblue"</span><span class="p">,</span> <span class="s2">"width"</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+                <span class="n">line</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s2">"width"</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
                 <span class="n">legendgroup</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"legendgroup"</span><span class="p">),</span>
             <span class="p">)</span>
@@ -832,7 +865,7 @@
             <span class="n">figure</span><span class="o">=</span><span class="n">figure</span><span class="p">,</span>
             <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
             <span class="n">ring</span><span class="o">=</span><span class="n">ring</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">"royalblue"</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
             <span class="n">legendgroup</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"legendgroup"</span><span class="p">),</span>
         <span class="p">)</span>
 
@@ -841,7 +874,7 @@
             <span class="n">start</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
             <span class="n">direction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">collection_axis</span><span class="p">,</span>
             <span class="n">length</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">radius</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">"royalblue"</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
             <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Collection axis: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="n">legendgroup</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"legendgroup"</span><span class="p">),</span>
         <span class="p">)</span>

@@ -26,15 +26,13 @@ aperture samples escaping power over a disk and accepts outgoing rays within
 an explicit cone. Collection uses a Lambertian escape assumption; it does not
 model angle-dependent Fresnel transmission or detector back-action.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-30
+.. GENERATED FROM PYTHON SOURCE LINES 10-28
 
 .. code-block:: Python
 
 
     import os
-
     import numpy as np
-
     import MomentRT
     from MomentRT import (
         CartesianMesh,
@@ -57,14 +55,14 @@ model angle-dependent Fresnel transmission or detector back-action.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-36
+.. GENERATED FROM PYTHON SOURCE LINES 30-34
 
 Define a monochromatic phantom and incoming diffuse spot
 ------------------------------------------------------------
 The optical coefficients are illustrative at 800 nm. Positive z points
 into the sample, so reflected light exits toward negative z.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-73
+.. GENERATED FROM PYTHON SOURCE LINES 34-71
 
 .. code-block:: Python
 
@@ -77,8 +75,8 @@ into the sample, so reflected light exits toward negative z.
     )
 
     sample = StructuredMedium(
-        origin=np.array([-4, -3, 0]) * ureg.mm,
-        size=np.array([8, 6, 4]) * ureg.mm,
+        origin=(-4, -3, 0) * ureg.mm,
+        size=(8, 6, 4) * ureg.mm,
     )
 
     sample.add_background(material=material)
@@ -112,7 +110,7 @@ into the sample, so reflected light exits toward negative z.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-80
+.. GENERATED FROM PYTHON SOURCE LINES 72-78
 
 Specify aperture geometry and angular acceptance
 ------------------------------------------------
@@ -121,7 +119,7 @@ The radius describes a disk in the face plane. acceptance_angle is the
 half-angle around that axis. A normal 30-degree cone collects one quarter
 of Lambertian escaping power from its sampled aperture.
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-112
+.. GENERATED FROM PYTHON SOURCE LINES 78-110
 
 .. code-block:: Python
 
@@ -168,7 +166,7 @@ of Lambertian escaping power from its sampled aperture.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 113-120
+.. GENERATED FROM PYTHON SOURCE LINES 111-118
 
 Solve, inspect power, and check aperture sampling
 -------------------------------------------------
@@ -178,7 +176,7 @@ area should approach the geometric area under mesh refinement.
 The volume plot reuses the same source and detector geometry through overlays.
 Legend entries toggle each object; the opacity slider controls only fluence.
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-142
+.. GENERATED FROM PYTHON SOURCE LINES 118-136
 
 .. code-block:: Python
 
@@ -195,11 +193,7 @@ Legend entries toggle each object; the opacity slider controls only fluence.
     fluence_figure = result.fluence.plot(
         view="volume",
         scale="log",
-        overlays={
-            "Illumination": source,
-            "Reflection detector": reflection_detector,
-            "Transmission detector": transmission_detector,
-        },
+        overlays=[source, reflection_detector, transmission_detector],
         show=show_figures,
     )
 
@@ -226,13 +220,13 @@ Legend entries toggle each object; the opacity slider controls only fluence.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-146
+.. GENERATED FROM PYTHON SOURCE LINES 137-140
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 146-148
+.. GENERATED FROM PYTHON SOURCE LINES 140-142
 
 .. code-block:: Python
 
@@ -252,7 +246,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.225 seconds)
+   **Total running time of the script:** (0 minutes 0.224 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_surface_detector.py:

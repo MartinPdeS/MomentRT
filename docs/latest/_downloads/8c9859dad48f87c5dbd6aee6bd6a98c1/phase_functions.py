@@ -10,9 +10,7 @@ moments differ. All optical properties are illustrative.
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/phase_functions.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg
@@ -43,8 +41,8 @@ for name, phase in phases.items():
 # reduced scattering coefficient and would therefore give the same result.
 
 sample = MomentRT.StructuredMedium(
-    origin=np.array([-4, -4, 0]) * ureg.millimeter,
-    size=np.array([8, 8, 4]) * ureg.millimeter,
+    origin=(-4, -4, 0) * ureg.millimeter,
+    size=(8, 8, 4) * ureg.millimeter,
 )
 
 source = MomentRT.SurfaceSource.on_face(
@@ -119,7 +117,7 @@ for name, phase in phases.items():
 fluence_figure = results["Rayleigh"].fluence.plot(
     view="volume",
     scale="linear",
-    overlays={"Source": source, "Detector": detector},
+    overlays=[source, detector],
     show=show_figures,
 )
 
@@ -130,6 +128,6 @@ fluence_figure = results["Rayleigh"].fluence.plot(
 # shows the sample, source, and detector rather than the phase-function result.
 
 gallery_system_figure = sample.plot(
-    overlays={"Source": source, "Detector": detector},
+    overlays=[source, detector],
     show=show_figures,
 )

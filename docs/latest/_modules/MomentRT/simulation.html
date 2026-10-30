@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.simulation &#8212; MomentRT 0.6.0 documentation</title>
+    <title>MomentRT.simulation &#8212; MomentRT 0.7.1 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../../_static/documentation_options.js?v=1027fec7"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.0" />
+  <meta name="docsearch:version" content="0.7.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -498,15 +498,12 @@
 <span></span><span class="sd">"""Composition of medium, illumination, and transport."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Protocol</span>
-
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">cast</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
 
 
@@ -535,7 +532,8 @@
 <span class="sd">        medium : HomogeneousMedium or StructuredMedium</span>
 <span class="sd">            Physical configuration supported by the implementation.</span>
 <span class="sd">        source : PointSource or UniformSurfaceSource</span>
-<span class="sd">            Illumination supported by the implementation.</span>
+<span class="sd">            Illumination supported by the implementation, including groups of</span>
+<span class="sd">            simultaneous surface sources.</span>
 <span class="sd">        mesh : CartesianMesh</span>
 <span class="sd">            Sampling nodes or finite-element grid.</span>
 
@@ -558,8 +556,9 @@
 <span class="sd">    ----------</span>
 <span class="sd">    medium : HomogeneousMedium or StructuredMedium</span>
 <span class="sd">        Physical material configuration, compatible with the chosen solver.</span>
-<span class="sd">    source : PointSource or UniformSurfaceSource</span>
-<span class="sd">        Illumination configuration; SurfaceSource is a finite disk subclass.</span>
+<span class="sd">    source : PointSource, UniformSurfaceSource, or iterable of SurfaceSource</span>
+<span class="sd">        Illumination configuration. An iterable of disk sources is converted</span>
+<span class="sd">        automatically to a SurfaceSourceGroup for one simultaneous solve.</span>
 <span class="sd">    mesh : CartesianMesh</span>
 <span class="sd">        Cartesian nodes used for sampling or finite-element discretization.</span>
 <span class="sd">    solver : TransportSolver</span>
@@ -574,7 +573,11 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">medium</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">HomogeneousMedium</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">,</span>
-        <span class="n">source</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">PointSource</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">,</span>
+        <span class="n">source</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">PointSource</span>
+            <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span>
+            <span class="o">|</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SurfaceSource</span><span class="p">]</span>
+        <span class="p">),</span>
         <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">,</span>
         <span class="n">solver</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">TransportSolver</span><span class="p">,</span>
         <span class="n">detectors</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">SurfaceDetector</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -585,8 +588,9 @@
 <span class="sd">        ----------</span>
 <span class="sd">        medium : HomogeneousMedium or StructuredMedium</span>
 <span class="sd">            Physical material configuration, compatible with the chosen solver.</span>
-<span class="sd">        source : PointSource or UniformSurfaceSource</span>
-<span class="sd">            Illumination configuration; SurfaceSource is a finite disk subclass.</span>
+<span class="sd">        source : PointSource, UniformSurfaceSource, or iterable of SurfaceSource</span>
+<span class="sd">            Illumination configuration. An iterable of disk sources is</span>
+<span class="sd">            converted automatically to a SurfaceSourceGroup.</span>
 <span class="sd">        mesh : CartesianMesh</span>
 <span class="sd">            Cartesian nodes used for sampling or finite-element discretization.</span>
 <span class="sd">        solver : TransportSolver</span>
@@ -599,6 +603,21 @@
 
         <span class="k">if</span> <span class="n">detectors</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">detectors</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"detectors must map names to SurfaceDetector objects."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">Mapping</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="s2">"source must be a source object or an iterable of SurfaceSource objects."</span>
+                <span class="p">)</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SurfaceSourceGroup</span><span class="p">(</span><span class="n">sources</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">TypeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="s2">"source must be a source object or an iterable of SurfaceSource objects."</span>
+                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">error</span>
 
         <span class="n">detectors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">detectors</span> <span class="ow">or</span> <span class="p">{})</span>
 
@@ -641,8 +660,384 @@
 <span class="sd">            Independent errors, cautions, and sampled source and detector areas.</span>
 <span class="sd">            Validation does not solve transport or establish mesh convergence.</span>
 <span class="sd">        """</span>
-        <span class="k">return</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">_validate</span><span class="p">(</span><span class="n">simulation</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_configuration</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">)</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_validate_configuration</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">ValidationReport</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Inspect supported simulation configurations without solving a PDE."""</span>
+        <span class="n">errors</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">warnings</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">detector_areas</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">source_area</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">medium</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">medium</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span>
+
+        <span class="n">solver</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span>
+
+        <span class="n">mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span>
+
+        <span class="n">finite</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">solver</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">,</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">,</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="n">infinite</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">InfiniteDiffusion</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">finite</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">infinite</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">"Preflight validation supports Diffusion, SP3, P3, and InfiniteDiffusion solvers."</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">finite</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Finite solvers require a StructuredMedium."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">finite</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Finite solvers require a surface source."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">infinite</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">HomogeneousMedium</span><span class="p">):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"InfiniteDiffusion requires a HomogeneousMedium."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">infinite</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">PointSource</span><span class="p">):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"InfiniteDiffusion requires a PointSource."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">infinite</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="p">:</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Contact detectors require finite-sample boundary fields."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">):</span>
+            <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"mesh must be a CartesianMesh."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">source</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">PointSource</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">unit</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"wavelength"</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"optical_power"</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">)):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+                        <span class="n">value</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span>
+                        <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">shape</span><span class="o">=</span><span class="p">(),</span>
+                        <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Source </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="s2">"wavelength"</span><span class="p">):</span>
+                <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"wavelengths"</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">wavelengths</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavelengths must be a nonempty vector."</span><span class="p">)</span>
+
+                <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Wavelengths: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">):</span>
+            <span class="n">materials</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="p">(</span><span class="s2">"background"</span><span class="p">,</span> <span class="n">medium</span><span class="o">.</span><span class="n">background</span><span class="p">),</span>
+                <span class="o">*</span><span class="p">((</span><span class="n">shape</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">shape</span><span class="o">.</span><span class="n">material</span><span class="p">)</span> <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">medium</span><span class="o">.</span><span class="n">structures</span><span class="p">),</span>
+            <span class="p">]</span>
+
+            <span class="k">if</span> <span class="n">medium</span><span class="o">.</span><span class="n">background</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"Sample background is not configured."</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">solver</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">material</span> <span class="ow">in</span> <span class="n">materials</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="p">(</span>
+                        <span class="n">material</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                        <span class="ow">and</span> <span class="n">material</span><span class="o">.</span><span class="n">anisotropy</span> <span class="ow">is</span> <span class="kc">None</span>
+                        <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                            <span class="n">material</span><span class="o">.</span><span class="n">phase_function</span><span class="p">,</span>
+                            <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">HenyeyGreenstein</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">):</span>
+                        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">solver</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2"> requires anisotropy for material </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">."</span>
+                        <span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="n">selected_wavelengths</span><span class="p">:</span>
+                <span class="n">indices</span> <span class="o">=</span> <span class="p">[]</span>
+
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">material</span> <span class="ow">in</span> <span class="n">materials</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">material</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">continue</span>
+
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">resolved</span> <span class="o">=</span> <span class="n">material</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">)</span>
+
+                        <span class="n">indices</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">resolved</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">))</span>
+
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+                            <span class="n">solver</span><span class="p">,</span>
+                            <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">),</span>
+                        <span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+                            <span class="n">resolved</span><span class="o">.</span><span class="n">anisotropy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                            <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+                                <span class="n">resolved</span><span class="o">.</span><span class="n">phase_function</span><span class="p">,</span>
+                                <span class="n">MomentRT</span><span class="o">.</span><span class="n">phase_function</span><span class="o">.</span><span class="n">HenyeyGreenstein</span><span class="p">,</span>
+                            <span class="p">)</span>
+                        <span class="p">):</span>
+                            <span class="n">resolved</span><span class="o">.</span><span class="n">_phase_moments</span><span class="p">()</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Material </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> at </span><span class="si">{</span><span class="n">wavelength</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">indices</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">index</span> <span class="o">!=</span> <span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indices</span><span class="p">):</span>
+                    <span class="n">details</span> <span class="o">=</span> <span class="s2">", "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">=</span><span class="si">{</span><span class="n">index</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">indices</span>
+                    <span class="p">)</span>
+
+                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">"Internal refractive-index jumps are unsupported at "</span>
+                        <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">wavelength</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">details</span><span class="si">}</span><span class="s2">."</span>
+                    <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">HomogeneousMedium</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="n">selected_wavelengths</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">medium</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Material at </span><span class="si">{</span><span class="n">wavelength</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="n">solver</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">,</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">,</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">solver</span><span class="o">.</span><span class="n">boundaries</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">):</span>
+                    <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">solver</span><span class="o">.</span><span class="n">boundaries</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">):</span>
+                    <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">solver</span><span class="o">.</span><span class="n">boundaries</span><span class="p">)</span>
+            <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Boundaries: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span>
+            <span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+                <span class="n">solver</span><span class="o">.</span><span class="n">boundaries</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">face</span><span class="p">),</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">RobinBoundary</span>
+            <span class="p">):</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"The illuminated face </span><span class="si">{</span><span class="n">source</span><span class="o">.</span><span class="n">face</span><span class="si">!r}</span><span class="s2"> requires a RobinBoundary."</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">finite</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="n">mesh_lower</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+            <span class="n">mesh_upper</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">mesh_lower</span>
+                <span class="o">+</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">mesh</span><span class="o">.</span><span class="n">spacing</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="p">)</span>
+
+            <span class="n">lower</span> <span class="o">=</span> <span class="n">medium</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+            <span class="n">upper</span> <span class="o">=</span> <span class="p">(</span><span class="n">medium</span><span class="o">.</span><span class="n">origin</span> <span class="o">+</span> <span class="n">medium</span><span class="o">.</span><span class="n">size</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+
+            <span class="n">mesh_valid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span>
+                <span class="n">mesh_lower</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-15</span>
+            <span class="p">)</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">mesh_upper</span><span class="p">,</span> <span class="n">upper</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">mesh_valid</span><span class="p">:</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"The mesh must span the finite sample."</span><span class="p">)</span>
+
+            <span class="n">valid_detectors</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">detector</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">detector</span><span class="o">.</span><span class="n">_validate_sample</span><span class="p">(</span>
+                        <span class="n">sample_origin</span><span class="o">=</span><span class="n">medium</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="n">medium</span><span class="o">.</span><span class="n">size</span>
+                    <span class="p">)</span>
+
+                    <span class="n">valid_detectors</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">detector</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Detector </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+            <span class="n">source_valid</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SurfaceSourceGroup</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">sources</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">axis</span> <span class="o">=</span> <span class="s2">"xyz"</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">member</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+                        <span class="n">face_coordinate</span> <span class="o">=</span> <span class="p">(</span>
+                            <span class="n">lower</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="k">if</span> <span class="n">member</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"min"</span><span class="p">)</span> <span class="k">else</span> <span class="n">upper</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+                        <span class="p">)</span>
+
+                        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span>
+                            <span class="n">member</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span>
+                            <span class="n">face_coordinate</span><span class="p">,</span>
+                            <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
+                            <span class="n">atol</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">,</span>
+                        <span class="p">):</span>
+                            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                                <span class="s2">"Source position must lie on its configured face."</span>
+                            <span class="p">)</span>
+
+                        <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">_validate_face_disk</span><span class="p">(</span>
+                            <span class="n">sample</span><span class="o">=</span><span class="n">medium</span><span class="p">,</span>
+                            <span class="n">face</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">face</span><span class="p">,</span>
+                            <span class="n">position</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
+                            <span class="n">radius</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                        <span class="n">source_valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+                        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Source </span><span class="si">{</span><span class="n">member</span><span class="o">.</span><span class="n">name</span><span class="si">!r}</span><span class="s2">: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SurfaceSource</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">axis</span> <span class="o">=</span> <span class="s2">"xyz"</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+                    <span class="n">face_coordinate</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">lower</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="k">if</span> <span class="n">source</span><span class="o">.</span><span class="n">face</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"min"</span><span class="p">)</span> <span class="k">else</span> <span class="n">upper</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span>
+                    <span class="p">)</span>
+
+                    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span>
+                        <span class="n">source</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span>
+                        <span class="n">face_coordinate</span><span class="p">,</span>
+                        <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
+                        <span class="n">atol</span><span class="o">=</span><span class="mf">1e-15</span><span class="p">,</span>
+                    <span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s2">"Source position must lie on its configured face."</span>
+                        <span class="p">)</span>
+
+                    <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">_validate_face_disk</span><span class="p">(</span>
+                        <span class="n">sample</span><span class="o">=</span><span class="n">medium</span><span class="p">,</span>
+                        <span class="n">face</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">face</span><span class="p">,</span>
+                        <span class="n">position</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
+                        <span class="n">radius</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span>
+                    <span class="p">)</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                    <span class="n">source_valid</span> <span class="o">=</span> <span class="kc">False</span>
+
+                    <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Source: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">mesh_valid</span><span class="p">:</span>
+                <span class="n">geometry</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">_MeshGeometry</span><span class="p">(</span><span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">source_valid</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
+                    <span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span>
+                <span class="p">):</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">quadrature</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">quadrature</span><span class="p">[</span><span class="n">source</span><span class="o">.</span><span class="n">face</span><span class="p">]</span>
+
+                        <span class="n">_</span><span class="p">,</span> <span class="n">sampled</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">source_irradiance</span><span class="p">(</span>
+                            <span class="n">quadrature</span><span class="o">=</span><span class="n">quadrature</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span>
+                        <span class="p">)</span>
+
+                        <span class="n">source_area</span> <span class="o">=</span> <span class="n">sampled</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span>
+
+                        <span class="n">axis</span> <span class="o">=</span> <span class="s2">"xyz"</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+                        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SurfaceSourceGroup</span><span class="p">):</span>
+                            <span class="n">geometric</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+                                <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">member</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">sources</span>
+                            <span class="p">)</span>
+                        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SurfaceSource</span><span class="p">):</span>
+                            <span class="n">geometric</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">source</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">geometric</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span>
+                                <span class="n">medium</span><span class="o">.</span><span class="n">size</span><span class="p">[</span>
+                                    <span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="n">axis</span><span class="p">]</span>
+                                <span class="p">]</span>
+                            <span class="p">)</span>
+
+                        <span class="k">if</span> <span class="nb">abs</span><span class="p">((</span><span class="n">source_area</span> <span class="o">/</span> <span class="n">geometric</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.02</span><span class="p">:</span>
+                            <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                                <span class="s2">"Source sampled area differs from geometric area by more than 2%; refine the mesh."</span>
+                            <span class="p">)</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">KeyError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Source sampling: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">valid_detectors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">quadrature</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">quadrature</span><span class="p">[</span><span class="n">detector</span><span class="o">.</span><span class="n">face</span><span class="p">]</span>
+
+                    <span class="n">axis</span> <span class="o">=</span> <span class="s2">"xyz"</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">detector</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+                    <span class="n">in_plane</span> <span class="o">=</span> <span class="p">[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="n">axis</span><span class="p">]</span>
+
+                    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+                        <span class="n">quadrature</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">in_plane</span><span class="p">]</span>
+                        <span class="o">-</span> <span class="n">detector</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">[</span><span class="n">in_plane</span><span class="p">],</span>
+                        <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="p">)</span>
+
+                    <span class="n">sampled</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">weights</span><span class="p">[</span><span class="n">distance</span> <span class="o">&lt;=</span> <span class="n">detector</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">])</span>
+                    <span class="p">)</span>
+
+                    <span class="n">detector_areas</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">sampled</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span>
+
+                    <span class="k">if</span> <span class="n">sampled</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">"Detector </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> is not sampled; refine the mesh."</span>
+                        <span class="p">)</span>
+                    <span class="k">elif</span> <span class="p">(</span>
+                        <span class="nb">abs</span><span class="p">(</span>
+                            <span class="n">sampled</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">detector</span><span class="o">.</span><span class="n">radius</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+                            <span class="o">-</span> <span class="mi">1</span>
+                        <span class="p">)</span>
+                        <span class="o">&gt;</span> <span class="mf">0.02</span>
+                    <span class="p">):</span>
+                        <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="sa">f</span><span class="s2">"Detector </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> sampled area differs from geometric area by more than 2%; refine the mesh."</span>
+                        <span class="p">)</span>
+
+                <span class="n">warnings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="s2">"Footprint sampling alone does not establish mesh convergence or transport accuracy."</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">infinite</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">PointSource</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mesh</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">)</span>
+        <span class="p">):</span>
+            <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span>
+                    <span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">-</span> <span class="n">source</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                    <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+                <span class="p">)</span>
+                <span class="o">==</span> <span class="mi">0</span>
+            <span class="p">):</span>
+                <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">"A mesh node coincides with the singular point source."</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">ValidationReport</span><span class="p">(</span>
+            <span class="n">errors</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">errors</span><span class="p">),</span>
+            <span class="n">warnings</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="n">warnings</span><span class="p">),</span>
+            <span class="n">source_sampled_area</span><span class="o">=</span><span class="n">source_area</span><span class="p">,</span>
+            <span class="n">detector_sampled_areas</span><span class="o">=</span><span class="n">detector_areas</span><span class="p">,</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="Simulation.run">
 <a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.run">[docs]</a>
@@ -752,10 +1147,24 @@
 
             <span class="n">source</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SurfaceSourceGroup</span><span class="p">):</span>
+                <span class="n">original_power</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">optical_power</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+                <span class="n">source</span><span class="o">.</span><span class="n">sources</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">member</span><span class="p">)</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">sources</span><span class="p">)</span>
+
+                <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">sources</span><span class="p">:</span>
+                    <span class="n">member</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
             <span class="k">if</span> <span class="n">optical_power</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">source</span><span class="o">.</span><span class="n">optical_power</span> <span class="o">=</span> <span class="p">(</span>
                     <span class="n">optical_power</span> <span class="k">if</span> <span class="n">optical_power</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="p">()</span> <span class="k">else</span> <span class="n">optical_power</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
                 <span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SurfaceSourceGroup</span><span class="p">):</span>
+                    <span class="n">ratio</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">optical_power</span> <span class="o">/</span> <span class="n">original_power</span>
+
+                    <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">sources</span><span class="p">:</span>
+                        <span class="n">member</span><span class="o">.</span><span class="n">optical_power</span> <span class="o">*=</span> <span class="n">ratio</span>
 
             <span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
                 <span class="n">medium</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="p">,</span>
@@ -824,8 +1233,7 @@
 <span class="sd">            only when the final refinement sequence meets all requested criteria.</span>
 <span class="sd">        """</span>
 
-        <span class="k">return</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">convergence</span><span class="o">.</span><span class="n">_run_study</span><span class="p">(</span>
-            <span class="n">simulation</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_convergence_study</span><span class="p">(</span>
             <span class="n">mesh_shapes</span><span class="o">=</span><span class="n">mesh_shapes</span><span class="p">,</span>
             <span class="n">power_rtol</span><span class="o">=</span><span class="n">power_rtol</span><span class="p">,</span>
             <span class="n">area_rtol</span><span class="o">=</span><span class="n">area_rtol</span><span class="p">,</span>
@@ -833,6 +1241,192 @@
             <span class="n">required_consecutive</span><span class="o">=</span><span class="n">required_consecutive</span><span class="p">,</span>
         <span class="p">)</span></div>
 
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_run_convergence_study</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">mesh_shapes</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]],</span>
+        <span class="n">power_rtol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">area_rtol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">power_atol</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">required_consecutive</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">DetectorConvergenceResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Run the finite-detector refinement study on independent mesh snapshots.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        mesh_shapes : iterable of tuple of int</span>
+<span class="sd">            At least two coarse-to-fine node shapes. Each shape must refine at</span>
+<span class="sd">            least one axis and coarsen none.</span>
+<span class="sd">        power_rtol : float</span>
+<span class="sd">            Nonnegative relative power tolerance against adjacent and finest meshes.</span>
+<span class="sd">        area_rtol : float</span>
+<span class="sd">            Nonnegative relative tolerance of sampled source and detector areas</span>
+<span class="sd">            against their geometric areas.</span>
+<span class="sd">        power_atol : pint.Quantity or None</span>
+<span class="sd">            Nonnegative absolute power tolerance. None means zero watts.</span>
+<span class="sd">        required_consecutive : int</span>
+<span class="sd">            Positive number of consecutive passing refinements required at the</span>
+<span class="sd">            fine end of the mesh sequence.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        DetectorConvergenceResult</span>
+<span class="sd">            Completed study including unresolved levels and refinement diagnostics.</span>
+<span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span>
+        <span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">,</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">,</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">"Detector convergence requires a finite Diffusion, SP3, or P3 simulation."</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Configure at least one detector for a convergence study."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Detector convergence requires a finite surface source."</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"power_rtol"</span><span class="p">,</span> <span class="n">power_rtol</span><span class="p">),</span> <span class="p">(</span><span class="s2">"area_rtol"</span><span class="p">,</span> <span class="n">area_rtol</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">))</span>
+                <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">floating</span><span class="p">))</span>
+                <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">0</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> must be a finite nonnegative plain number."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="nb">isinstance</span><span class="p">(</span><span class="n">required_consecutive</span><span class="p">,</span> <span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">))</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">required_consecutive</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">))</span>
+            <span class="ow">or</span> <span class="n">required_consecutive</span> <span class="o">&lt;</span> <span class="mi">1</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"required_consecutive must be a positive integer."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">power_atol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">power_atol</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>
+
+        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">power_atol</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"W"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"power_atol"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">nonnegative</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="n">medium</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="p">)</span>
+
+        <span class="n">source</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
+
+        <span class="n">solver</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">)</span>
+
+        <span class="n">detectors</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="p">)</span>
+
+        <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">_finite_materials_at</span><span class="p">(</span>
+            <span class="n">medium</span><span class="o">=</span><span class="n">medium</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">detectors</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">detector</span><span class="o">.</span><span class="n">_validate_sample</span><span class="p">(</span>
+                <span class="n">sample_origin</span><span class="o">=</span><span class="n">medium</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="n">sample_size</span><span class="o">=</span><span class="n">medium</span><span class="o">.</span><span class="n">size</span>
+            <span class="p">)</span>
+
+        <span class="n">meshes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span>
+            <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="o">.</span><span class="n">from_sample</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="n">medium</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="n">shape</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">shape</span> <span class="ow">in</span> <span class="n">mesh_shapes</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">meshes</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Supply at least two mesh_shapes from coarse to fine."</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">previous</span><span class="p">,</span> <span class="n">current</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">meshes</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">meshes</span><span class="p">[</span><span class="mi">1</span><span class="p">:]):</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">current</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">previous</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+                <span class="ow">or</span> <span class="n">current</span><span class="o">.</span><span class="n">shape</span> <span class="o">==</span> <span class="n">previous</span><span class="o">.</span><span class="n">shape</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"Each mesh must refine at least one axis and coarsen none."</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SurfaceSourceGroup</span><span class="p">):</span>
+            <span class="n">source_geometric_area</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">member</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span> <span class="k">for</span> <span class="n">member</span> <span class="ow">in</span> <span class="n">source</span><span class="o">.</span><span class="n">sources</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SurfaceSource</span><span class="p">):</span>
+            <span class="n">source_geometric_area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">source</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="s2">"xyz"</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">face</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+            <span class="n">source_geometric_area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span>
+                <span class="n">medium</span><span class="o">.</span><span class="n">size</span><span class="p">[[</span><span class="n">index</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="n">axis</span><span class="p">]]</span>
+            <span class="p">)</span>
+
+        <span class="n">results</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">level_errors</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">meshes</span><span class="p">:</span>
+            <span class="n">candidate</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+            <span class="n">candidate</span><span class="o">.</span><span class="n">medium</span> <span class="o">=</span> <span class="n">medium</span>
+
+            <span class="n">candidate</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">source</span>
+
+            <span class="n">candidate</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="n">mesh</span>
+
+            <span class="n">candidate</span><span class="o">.</span><span class="n">solver</span> <span class="o">=</span> <span class="n">solver</span>
+
+            <span class="n">candidate</span><span class="o">.</span><span class="n">detectors</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="n">errors</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">result</span> <span class="o">=</span> <span class="n">candidate</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="k">except</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">SourceResolutionError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+                <span class="n">level_errors</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">"source"</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)})</span>
+
+                <span class="k">continue</span>
+
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">detectors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">measurement</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="n">result</span><span class="p">)</span>
+                <span class="k">except</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">DetectorResolutionError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                    <span class="n">errors</span><span class="p">[</span><span class="sa">f</span><span class="s2">"detector:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+
+                    <span class="k">continue</span>
+
+                <span class="n">result</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">measurement</span>
+
+                <span class="k">if</span> <span class="n">measurement</span><span class="o">.</span><span class="n">minimum_escaping_irradiance</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">errors</span><span class="p">[</span><span class="sa">f</span><span class="s2">"detector:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="s2">"Negative escaping irradiance in the aperture."</span>
+                    <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">cast</span><span class="p">(</span><span class="n">Quantity</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">diagnostics</span><span class="p">[</span><span class="s2">"minimum_fluence"</span><span class="p">])</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">errors</span><span class="p">[</span><span class="s2">"fluence"</span><span class="p">]</span> <span class="o">=</span> <span class="s2">"Negative nodal fluence."</span>
+
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+            <span class="n">level_errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">DetectorConvergenceResult</span><span class="p">(</span>
+            <span class="n">meshes</span><span class="o">=</span><span class="n">meshes</span><span class="p">,</span>
+            <span class="n">results</span><span class="o">=</span><span class="n">results</span><span class="p">,</span>
+            <span class="n">detectors</span><span class="o">=</span><span class="n">detectors</span><span class="p">,</span>
+            <span class="n">source_geometric_area</span><span class="o">=</span><span class="n">source_geometric_area</span><span class="p">,</span>
+            <span class="n">wavelength</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span>
+            <span class="n">level_errors</span><span class="o">=</span><span class="n">level_errors</span><span class="p">,</span>
+            <span class="n">power_rtol</span><span class="o">=</span><span class="n">power_rtol</span><span class="p">,</span>
+            <span class="n">area_rtol</span><span class="o">=</span><span class="n">area_rtol</span><span class="p">,</span>
+            <span class="n">power_atol</span><span class="o">=</span><span class="n">power_atol</span><span class="p">,</span>
+            <span class="n">required_consecutive</span><span class="o">=</span><span class="n">required_consecutive</span><span class="p">,</span>
+        <span class="p">)</span>
 
 <div class="viewcode-block" id="Simulation.plot_system">
 <a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.plot_system">[docs]</a>
@@ -874,10 +1468,7 @@
 
         <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">_add_overlays</span><span class="p">(</span>
             <span class="n">figure</span><span class="o">=</span><span class="n">figure</span><span class="p">,</span>
-            <span class="n">overlays</span><span class="o">=</span><span class="p">{</span>
-                <span class="sa">f</span><span class="s2">"Detector: </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">:</span> <span class="n">detector</span>
-                <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">detector</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
-            <span class="p">},</span>
+            <span class="n">overlays</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
             <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span>
         <span class="p">)</span>
 

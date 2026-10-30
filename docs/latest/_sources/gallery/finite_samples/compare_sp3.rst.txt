@@ -26,16 +26,14 @@ sample with matched-index boundary conditions and incoming diffuse light.
 This comparison illustrates model differences; it does not establish which
 model matches radiative transfer for a particular sensor.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-22
+.. GENERATED FROM PYTHON SOURCE LINES 10-20
 
 .. code-block:: Python
 
 
 
     import os
-
     import numpy as np
-
     import MomentRT
 
     ureg = MomentRT.ureg
@@ -49,14 +47,14 @@ model matches radiative transfer for a particular sensor.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-28
+.. GENERATED FROM PYTHON SOURCE LINES 22-26
 
 Define the sample and instrument
 --------------------------------
 Both models receive the same material, source, detector, mesh, and faces.
 SP3 additionally uses each material's Henyey–Greenstein anisotropy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-66
+.. GENERATED FROM PYTHON SOURCE LINES 26-64
 
 .. code-block:: Python
 
@@ -70,8 +68,8 @@ SP3 additionally uses each material's Henyey–Greenstein anisotropy.
     )
 
     sample = MomentRT.StructuredMedium(
-        origin=np.array([-4, -4, 0]) * ureg.millimeter,
-        size=np.array([8, 8, 4]) * ureg.millimeter,
+        origin=(-4, -4, 0) * ureg.millimeter,
+        size=(8, 8, 4) * ureg.millimeter,
     )
 
     sample.add_background(material=material)
@@ -105,14 +103,14 @@ SP3 additionally uses each material's Henyey–Greenstein anisotropy.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-71
+.. GENERATED FROM PYTHON SOURCE LINES 65-69
 
 Run both approximations
 -----------------------
 A zero-reflectance Robin face means a matched-index boundary for this SP3
 formulation. The illumination is isotropic in the incoming hemisphere.
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-100
+.. GENERATED FROM PYTHON SOURCE LINES 69-98
 
 .. code-block:: Python
 
@@ -159,7 +157,7 @@ formulation. The illumination is isotropic in the incoming hemisphere.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-106
+.. GENERATED FROM PYTHON SOURCE LINES 99-104
 
 Inspect the SP3 fluence
 -----------------------
@@ -167,7 +165,7 @@ The displayed fluence combines both SP3 moments. Refine the mesh and
 compare against an independent transport reference before interpreting a
 particular source–detector configuration.
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-115
+.. GENERATED FROM PYTHON SOURCE LINES 104-113
 
 .. code-block:: Python
 
@@ -191,13 +189,13 @@ particular source–detector configuration.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 116-119
+.. GENERATED FROM PYTHON SOURCE LINES 114-117
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-121
+.. GENERATED FROM PYTHON SOURCE LINES 117-119
 
 .. code-block:: Python
 
@@ -217,7 +215,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.215 seconds)
+   **Total running time of the script:** (0 minutes 0.223 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_compare_sp3.py:

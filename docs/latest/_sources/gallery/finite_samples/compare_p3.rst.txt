@@ -27,16 +27,14 @@ Full P3 retains the three-dimensional spherical-harmonic moments through
 order three. The supplied values are illustrative, and agreement between the
 models does not establish accuracy against radiative transfer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 11-23
+.. GENERATED FROM PYTHON SOURCE LINES 11-21
 
 .. code-block:: Python
 
 
 
     import os
-
     import numpy as np
-
     import MomentRT
 
     ureg = MomentRT.ureg
@@ -50,7 +48,7 @@ models does not establish accuracy against radiative transfer.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 25-31
+.. GENERATED FROM PYTHON SOURCE LINES 23-29
 
 Define the common physical configuration
 ----------------------------------------
@@ -59,7 +57,7 @@ models share matched-index faces, six diffuse sources, mesh, and aperture.
 The finite mesh samples the layer interface at tetrahedron centroids, so
 the interface geometry and disk footprints also require mesh refinement.
 
-.. GENERATED FROM PYTHON SOURCE LINES 31-94
+.. GENERATED FROM PYTHON SOURCE LINES 29-94
 
 .. code-block:: Python
 
@@ -81,8 +79,8 @@ the interface geometry and disk footprints also require mesh refinement.
     )
 
     sample = MomentRT.StructuredMedium(
-        origin=np.array([-4, -4, 0]) * ureg.millimeter,
-        size=np.array([8, 8, 4]) * ureg.millimeter,
+        origin=(-4, -4, 0) * ureg.millimeter,
+        size=(8, 8, 4) * ureg.millimeter,
     )
 
     sample.add_background(material=dermis)
@@ -107,6 +105,7 @@ the interface geometry and disk footprints also require mesh refinement.
             radius=0.8 * ureg.millimeter,
             wavelength=850 * ureg.nanometer,
             optical_power=(1 / 6) * ureg.milliwatt,
+            name=f"Illumination fiber {fiber_number + 1}",
         )
 
         sources.append(source)
@@ -118,6 +117,7 @@ the interface geometry and disk footprints also require mesh refinement.
         radius=0.8 * ureg.millimeter,
         acceptance_angle=90 * ureg.degree,
         orientation="outward_normal",
+        name="Collection fiber",
     )
 
     mesh = MomentRT.CartesianMesh.from_sample(sample=sample, shape=(9, 9, 7))
@@ -236,9 +236,9 @@ model optical interference, fiber modes, or Fresnel entry losses.
     SP3 energy residual: -8.944667923005412e-19 W
     SP3 sampled detector area: 1.6666666666666665 mm²
     SP3 geometric detector area: 2.0106192982974678 mm²
-    P3 collected power: 0.057942312774944035 mW
-    P3 minimum fluence: -1.6575186027265634 W/m²
-    P3 energy residual: 6.2341624917916505×10⁻¹⁹ W
+    P3 collected power: 0.05794231277494402 mW
+    P3 minimum fluence: -1.6575186027265618 W/m²
+    P3 energy residual: 1.2739375526704677×10⁻¹⁸ W
     P3 sampled detector area: 1.6666666666666665 mm²
     P3 geometric detector area: 2.0106192982974678 mm²
 
@@ -254,18 +254,12 @@ approximation. Refine the mesh and compare against an independent transport
 reference before interpreting the result for a particular sensor. The
 gallery preview is captured from this same combined P3 volume.
 
-.. GENERATED FROM PYTHON SOURCE LINES 174-191
+.. GENERATED FROM PYTHON SOURCE LINES 174-185
 
 .. code-block:: Python
 
 
-    overlays = {
-        **{
-            f"Illumination fiber {number}": source
-            for number, source in enumerate(sources, start=1)
-        },
-        "Collection fiber": detector,
-    }
+    overlays = [*sources, detector]
 
     fluence_figure = combined_fields["P3"].plot(
         view="volume",
@@ -286,13 +280,13 @@ gallery preview is captured from this same combined P3 volume.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 192-195
+.. GENERATED FROM PYTHON SOURCE LINES 186-189
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 195-197
+.. GENERATED FROM PYTHON SOURCE LINES 189-191
 
 .. code-block:: Python
 
@@ -312,7 +306,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.209 seconds)
+   **Total running time of the script:** (0 minutes 2.340 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_compare_p3.py:

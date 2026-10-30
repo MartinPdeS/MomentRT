@@ -124,7 +124,7 @@ easy to inspect.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Build a contact fiber bundle with six circular illumination footprints surrounding a central collection aperture. The epidermis and dermis optical properties and fiber dimensions are illustrative, not measured skin or probe parameters.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Build a contact fiber bundle with six circular illumination footprints surrounding a central collection aperture. The three layer optical properties and fiber dimensions are illustrative, not measured probe parameters.">
 
 .. only:: html
 
@@ -135,7 +135,7 @@ easy to inspect.
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Seven-fiber bundle on a two-layer skin sample</div>
+      <div class="sphx-glr-thumbnail-title">Seven-fiber bundle on a three-layer skin sample</div>
     </div>
 
 

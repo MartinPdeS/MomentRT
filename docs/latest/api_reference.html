@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Public API reference &#8212; MomentRT 0.6.0 documentation</title>
+    <title>Public API reference &#8212; MomentRT 0.7.1 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="_static/documentation_options.js?v=1027fec7"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.0" />
+  <meta name="docsearch:version" content="0.7.1" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -555,6 +555,17 @@ existing layer.</p>
 insertion order are preserved on the resolved copy. Property sampling and
 display methods accept an explicit <code class="docutils literal notranslate"><span class="pre">wavelength</span></code> for spectral samples.
 See <a class="reference internal" href="spectral.html"><span class="doc">Wavelength-dependent materials and sweeps</span></a>.</p>
+<p>Parameterized materials are available as <code class="docutils literal notranslate"><span class="pre">MomentRT.Intralipid(concentration=,</span>
+<span class="pre">wavelength=,</span> <span class="pre">refractive_index=)</span></code>, <code class="docutils literal notranslate"><span class="pre">MomentRT.Epidermis(melanin_fraction=,</span>
+<span class="pre">wavelength=,</span> <span class="pre">refractive_index=)</span></code>, <code class="docutils literal notranslate"><span class="pre">MomentRT.Dermis(hydration=,</span> <span class="pre">wavelength=,</span>
+<span class="pre">refractive_index=)</span></code>, and <code class="docutils literal notranslate"><span class="pre">MomentRT.Water(wavelength=,</span> <span class="pre">refractive_index=)</span></code>.
+Intralipid concentration is particle volume fraction in percent: 22.7 is
+undiluted 20% stock. Its empirical equation has a wavelength-dependent validity
+limit. The simple skin models put melanin in the epidermis; the dermis model
+mixes water and a baseline absorber and omits blood-vessel structure. These
+literature parameterizations are starting points, not patient-specific
+properties. Pure water’s very low scattering also makes it outside the useful
+regime of MomentRT’s diffusion solvers.</p>
 </section>
 <section id="sources">
 <h2>Sources<a class="headerlink" href="#sources" title="Link to this heading">#</a></h2>
@@ -565,7 +576,11 @@ positive <code class="docutils literal notranslate"><span class="pre">radius</sp
 circular top-hat and must fit fully on the face. <code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code>
 requires a face, wavelength, and optical power, and illuminates the complete
 face. Both finite-source classes specify power already coupled into the
-sample.</p>
+sample. <code class="docutils literal notranslate"><span class="pre">SurfaceSourceGroup(sources=[...])</span></code> combines circular surface
+sources on the same face and wavelength into one simultaneous incoming profile
+and one transport solve. Passing an iterable of <code class="docutils literal notranslate"><span class="pre">SurfaceSource</span></code> objects as
+<code class="docutils literal notranslate"><span class="pre">Simulation(source=...)</span></code> creates this group automatically. Each member disk
+is normalized to its own optical power.</p>
 </section>
 <section id="detectors">
 <h2>Detectors<a class="headerlink" href="#detectors" title="Link to this heading">#</a></h2>
@@ -588,8 +603,8 @@ unit-bearing vector <code class="docutils literal notranslate"><span class="pre"
 <p><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> evaluates the analytical P1 Green function for a
 <code class="docutils literal notranslate"><span class="pre">HomogeneousMedium</span></code> and <code class="docutils literal notranslate"><span class="pre">PointSource</span></code>. <code class="docutils literal notranslate"><span class="pre">Diffusion</span></code> requires a mapping
 that configures exactly six faces with <code class="docutils literal notranslate"><span class="pre">RobinBoundary</span></code> or
-<code class="docutils literal notranslate"><span class="pre">ReflectingBoundary</span></code> objects. The finite solver accepts <code class="docutils literal notranslate"><span class="pre">SurfaceSource</span></code> or
-<code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">ReflectingBoundary</span></code> objects. The finite solver accepts <code class="docutils literal notranslate"><span class="pre">SurfaceSource</span></code>,
+<code class="docutils literal notranslate"><span class="pre">SurfaceSourceGroup</span></code>, or <code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">SP3</span></code> solves two coupled moment equations on the same finite sample and
 uses each material’s explicit <a class="reference internal" href="phase_functions.html"><span class="doc">phase function</span></a>. The
 Henyey–Greenstein function requires material <code class="docutils literal notranslate"><span class="pre">anisotropy</span></code>. It supports reflecting
@@ -663,8 +678,9 @@ and isosurface views while leaving their default counts intact when omitted
 (it only applies to those views); and <code class="docutils literal notranslate"><span class="pre">show</span></code> controls whether the figure is
 immediately opened.
 The optional <code class="docutils literal notranslate"><span class="pre">overlays</span></code> argument adds sources and detectors to any scalar
-field’s 3D view. Supply a sequence of objects or a mapping from legend labels
-to objects. Their spatial coordinates are converted to <code class="docutils literal notranslate"><span class="pre">length_unit</span></code>.
+field’s 3D view. Supply a sequence of source and detector objects; their
+<code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">color</span></code> attributes control legend labels and plot colors. Their
+spatial coordinates are converted to <code class="docutils literal notranslate"><span class="pre">length_unit</span></code>.
 Full-face sources require the physical sample bounds saved by the finite
 solver. See <a class="reference internal" href="results.html"><span class="doc">Results and visualization</span></a> for examples.
 <code class="docutils literal notranslate"><span class="pre">VectorField.plot(...)</span></code> returns a Plotly cone plot and accepts
@@ -747,7 +763,7 @@ without inheriting from it.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.6.0/docs/source/api_reference.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.7.1/docs/source/api_reference.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

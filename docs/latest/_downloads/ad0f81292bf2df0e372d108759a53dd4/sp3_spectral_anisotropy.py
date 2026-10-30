@@ -10,9 +10,7 @@ is monochromatic; the sweep is not a broadband integration.
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/sp3_spectral_anisotropy.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg
@@ -47,8 +45,8 @@ epidermis = MomentRT.SpectralMaterial(
 )
 
 sample = MomentRT.StructuredMedium(
-    origin=np.array([-4, -4, 0]) * ureg.millimeter,
-    size=np.array([8, 8, 4]) * ureg.millimeter,
+    origin=(-4, -4, 0) * ureg.millimeter,
+    size=(8, 8, 4) * ureg.millimeter,
 )
 
 sample.add_background(material=dermis)
@@ -137,7 +135,7 @@ spectral_figure = spectrum.plot(
 fluence_figure = spectrum.results[2].fluence.plot(
     view="volume",
     scale="linear",
-    overlays={"Source": source, "Contact detector": detector},
+    overlays=[source, detector],
     show=show_figures,
 )
 

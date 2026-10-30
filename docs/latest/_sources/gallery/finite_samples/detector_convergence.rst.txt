@@ -26,15 +26,13 @@ over four explicit meshes. The study preserves the physical sample and
 instrument geometry. Its recommendation is a numerical resolution check for
 these observables, not validation of P1 against radiative transfer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-30
+.. GENERATED FROM PYTHON SOURCE LINES 10-28
 
 .. code-block:: Python
 
 
     import os
-
     import numpy as np
-
     import MomentRT
     from MomentRT import (
         CartesianMesh,
@@ -57,14 +55,14 @@ these observables, not validation of P1 against radiative transfer.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-36
+.. GENERATED FROM PYTHON SOURCE LINES 30-34
 
 Fix the sample and optical configuration
 ----------------------------------------
 These coefficients describe an illustrative homogeneous phantom at 800 nm.
 The disk source and the separated reflection aperture lie on the top face.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-89
+.. GENERATED FROM PYTHON SOURCE LINES 34-87
 
 .. code-block:: Python
 
@@ -77,8 +75,8 @@ The disk source and the separated reflection aperture lie on the top face.
     )
 
     sample = StructuredMedium(
-        origin=np.array([-4, -3, 0]) * ureg.mm,
-        size=np.array([8, 6, 4]) * ureg.mm,
+        origin=(-4, -3, 0) * ureg.mm,
+        size=(8, 6, 4) * ureg.mm,
     )
 
     sample.add_background(material=material)
@@ -128,7 +126,7 @@ The disk source and the separated reflection aperture lie on the top face.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-100
+.. GENERATED FROM PYTHON SOURCE LINES 88-98
 
 Compare explicit mesh levels
 ----------------------------
@@ -141,7 +139,7 @@ Node-count ticks identify the exact tested mesh levels.
 A missing recommendation means more refinement or different tolerances
 need investigation, rather than automatic acceptance of the last mesh.
 
-.. GENERATED FROM PYTHON SOURCE LINES 100-132
+.. GENERATED FROM PYTHON SOURCE LINES 98-130
 
 .. code-block:: Python
 
@@ -210,7 +208,7 @@ need investigation, rather than automatic acceptance of the last mesh.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 133-138
+.. GENERATED FROM PYTHON SOURCE LINES 131-136
 
 Inspect the finest field with the same instrument overlays
 ----------------------------------------------------------
@@ -218,7 +216,7 @@ The study retains each result. A source footprint with no quadrature points
 is recorded with result=None; this example's meshes resolve the source.
 The original simulation.mesh remains unchanged.
 
-.. GENERATED FROM PYTHON SOURCE LINES 138-149
+.. GENERATED FROM PYTHON SOURCE LINES 136-147
 
 .. code-block:: Python
 
@@ -228,7 +226,7 @@ The original simulation.mesh remains unchanged.
     fluence_figure = finest_result.fluence.plot(
         view="volume",
         scale="log",
-        overlays={"Illumination": source, "Reflection detector": detector},
+        overlays=[source, detector],
         show=show_figures,
     )
 
@@ -244,13 +242,13 @@ The original simulation.mesh remains unchanged.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 150-153
+.. GENERATED FROM PYTHON SOURCE LINES 148-151
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 153-155
+.. GENERATED FROM PYTHON SOURCE LINES 151-153
 
 .. code-block:: Python
 

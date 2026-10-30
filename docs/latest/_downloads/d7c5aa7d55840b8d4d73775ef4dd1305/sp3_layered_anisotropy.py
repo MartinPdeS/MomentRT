@@ -10,9 +10,7 @@ uses the Henyey–Greenstein phase function for each material.
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/sp3_layered_anisotropy.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg
@@ -43,8 +41,8 @@ epidermis = MomentRT.Material(
 )
 
 sample = MomentRT.StructuredMedium(
-    origin=np.array([-4, -4, 0]) * ureg.millimeter,
-    size=np.array([8, 8, 4]) * ureg.millimeter,
+    origin=(-4, -4, 0) * ureg.millimeter,
+    size=(8, 8, 4) * ureg.millimeter,
 )
 
 sample.add_background(material=dermis)
@@ -131,7 +129,7 @@ print(result.summary())
 fluence_figure = result.fluence.plot(
     view="volume",
     scale="linear",
-    overlays={"Source": source, "Contact detector": detector},
+    overlays=[source, detector],
     show=show_figures,
 )
 

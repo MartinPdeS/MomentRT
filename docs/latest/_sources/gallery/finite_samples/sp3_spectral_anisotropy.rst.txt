@@ -25,16 +25,14 @@ Specify different spectral anisotropy tables for two layers and evaluate an
 SP3 sensor at several wavelengths. The numbers are illustrative. Each result
 is monochromatic; the sweep is not a broadband integration.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-21
+.. GENERATED FROM PYTHON SOURCE LINES 9-19
 
 .. code-block:: Python
 
 
 
     import os
-
     import numpy as np
-
     import MomentRT
 
     ureg = MomentRT.ureg
@@ -48,7 +46,7 @@ is monochromatic; the sweep is not a broadband integration.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-28
+.. GENERATED FROM PYTHON SOURCE LINES 21-26
 
 Give each material its own spectral table
 -----------------------------------------
@@ -56,7 +54,7 @@ Anisotropy can be a plain scalar or a vector matching the wavelength grid.
 MomentRT linearly interpolates the vector without extrapolation. SP3 uses
 the interpolated value with a Henyey–Greenstein phase function.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-62
+.. GENERATED FROM PYTHON SOURCE LINES 26-60
 
 .. code-block:: Python
 
@@ -82,8 +80,8 @@ the interpolated value with a Henyey–Greenstein phase function.
     )
 
     sample = MomentRT.StructuredMedium(
-        origin=np.array([-4, -4, 0]) * ureg.millimeter,
-        size=np.array([8, 8, 4]) * ureg.millimeter,
+        origin=(-4, -4, 0) * ureg.millimeter,
+        size=(8, 8, 4) * ureg.millimeter,
     )
 
     sample.add_background(material=dermis)
@@ -101,14 +99,14 @@ the interpolated value with a Henyey–Greenstein phase function.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-67
+.. GENERATED FROM PYTHON SOURCE LINES 61-65
 
 Keep the instrument geometry fixed
 ----------------------------------
 Every wavelength uses the same source footprint and detector aperture. The
 zero-reflectance faces select the matched-index SP3 boundary condition.
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-103
+.. GENERATED FROM PYTHON SOURCE LINES 65-101
 
 .. code-block:: Python
 
@@ -155,14 +153,14 @@ zero-reflectance faces select the matched-index SP3 boundary condition.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-108
+.. GENERATED FROM PYTHON SOURCE LINES 102-106
 
 Interpolate anisotropy and solve each wavelength
 -------------------------------------------------
 The 750 nm value lies halfway between the first two tabulated values.
 Geometry and boundary quadrature are prepared once for the sweep.
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-130
+.. GENERATED FROM PYTHON SOURCE LINES 106-128
 
 .. code-block:: Python
 
@@ -209,7 +207,7 @@ Geometry and boundary quadrature are prepared once for the sweep.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 131-136
+.. GENERATED FROM PYTHON SOURCE LINES 129-134
 
 View a monochromatic fluence volume
 ------------------------------------
@@ -217,7 +215,7 @@ The 800 nm solution uses the third entry in the sweep. The detector uses a
 separate Lambertian angular-acceptance approximation. Check mesh convergence
 and compare with a transport reference for the intended application.
 
-.. GENERATED FROM PYTHON SOURCE LINES 136-145
+.. GENERATED FROM PYTHON SOURCE LINES 134-143
 
 .. code-block:: Python
 
@@ -225,7 +223,7 @@ and compare with a transport reference for the intended application.
     fluence_figure = spectrum.results[2].fluence.plot(
         view="volume",
         scale="linear",
-        overlays={"Source": source, "Contact detector": detector},
+        overlays=[source, detector],
         show=show_figures,
     )
 
@@ -241,13 +239,13 @@ and compare with a transport reference for the intended application.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 146-149
+.. GENERATED FROM PYTHON SOURCE LINES 144-147
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 149-151
+.. GENERATED FROM PYTHON SOURCE LINES 147-149
 
 .. code-block:: Python
 
@@ -267,7 +265,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.925 seconds)
+   **Total running time of the script:** (0 minutes 0.926 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_sp3_spectral_anisotropy.py:

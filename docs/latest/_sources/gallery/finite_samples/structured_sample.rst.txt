@@ -26,15 +26,13 @@ and a box-shaped heterogeneity. Its materials are illustrative and assumed at
 one wavelength. Positive z points into the sample. Then illuminate the sample
 and inspect the finite-sample P1 fluence volume.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-31
+.. GENERATED FROM PYTHON SOURCE LINES 10-29
 
 .. code-block:: Python
 
 
     import os
-
     import numpy as np
-
     import MomentRT
     from MomentRT import (
         Box,
@@ -58,13 +56,13 @@ and inspect the finite-sample P1 fluence volume.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-36
+.. GENERATED FROM PYTHON SOURCE LINES 31-34
 
 Optical materials
 -----------------
 Use explicit unit-bearing optical coefficients. These values are illustrative.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-86
+.. GENERATED FROM PYTHON SOURCE LINES 34-84
 
 .. code-block:: Python
 
@@ -125,20 +123,20 @@ Use explicit unit-bearing optical coefficients. These values are illustrative.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 87-90
+.. GENERATED FROM PYTHON SOURCE LINES 85-88
 
 Finite sample extent
 --------------------
 Set the lower corner and full dimensions. Positive z points into the sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 90-100
+.. GENERATED FROM PYTHON SOURCE LINES 88-98
 
 .. code-block:: Python
 
 
     sample = StructuredMedium(
-        origin=np.array([-5, -5, 0]) * ureg.millimeter,
-        size=np.array([10, 10, 5]) * ureg.millimeter,
+        origin=(-5, -5, 0) * ureg.millimeter,
+        size=(10, 10, 5) * ureg.millimeter,
     )
 
     sample.add_background(
@@ -152,14 +150,14 @@ Set the lower corner and full dimensions. Positive z points into the sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 101-105
+.. GENERATED FROM PYTHON SOURCE LINES 99-103
 
 Stack background layers
 -----------------------
 Each layer starts below the preceding one. The remaining depth keeps the
 explicitly configured background material.
 
-.. GENERATED FROM PYTHON SOURCE LINES 105-118
+.. GENERATED FROM PYTHON SOURCE LINES 103-116
 
 .. code-block:: Python
 
@@ -183,14 +181,14 @@ explicitly configured background material.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 119-123
+.. GENERATED FROM PYTHON SOURCE LINES 117-121
 
 Add a deeper layer and three localized regions
 ----------------------------------------------
 The two spheres overlap layer interfaces. The box intersects the y=0 section.
 Batch insertion makes the region replacement order explicit.
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-157
+.. GENERATED FROM PYTHON SOURCE LINES 121-155
 
 .. code-block:: Python
 
@@ -217,8 +215,8 @@ Batch insertion makes the region replacement order explicit.
 
     rectangular_region = Box(
         name="Rectangular heterogeneity",
-        origin=np.array([-4, -1.25, 3.3]) * ureg.millimeter,
-        size=np.array([1.5, 2.5, 0.9]) * ureg.millimeter,
+        origin=(-4, -1.25, 3.3) * ureg.millimeter,
+        size=(1.5, 2.5, 0.9) * ureg.millimeter,
         material=box_material,
     )
 
@@ -235,14 +233,14 @@ Batch insertion makes the region replacement order explicit.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 158-162
+.. GENERATED FROM PYTHON SOURCE LINES 156-160
 
 Explore the sample in 3D
 ------------------------
 Rotate the geometry and toggle regions in the legend. Transparent surfaces
 show primitive boundaries; the section below resolves overlaps.
 
-.. GENERATED FROM PYTHON SOURCE LINES 162-167
+.. GENERATED FROM PYTHON SOURCE LINES 160-165
 
 .. code-block:: Python
 
@@ -262,14 +260,14 @@ show primitive boundaries; the section below resolves overlaps.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 168-172
+.. GENERATED FROM PYTHON SOURCE LINES 166-170
 
 Configure a finite-sample solve
 ---------------------------------
 Use equal refractive indices across all regions because internal refraction
 at refractive-index jumps is outside the current continuous-fluence FEM model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 172-206
+.. GENERATED FROM PYTHON SOURCE LINES 170-204
 
 .. code-block:: Python
 
@@ -314,14 +312,14 @@ at refractive-index jumps is outside the current continuous-fluence FEM model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 207-211
+.. GENERATED FROM PYTHON SOURCE LINES 205-209
 
 Solve and inspect fluence in 3D
 ----------------------------------
 The logarithmic volume displays the nodal fluence rate throughout the sample.
 The mesh gives a useful visualization; refine it to assess interface accuracy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 211-221
+.. GENERATED FROM PYTHON SOURCE LINES 209-219
 
 .. code-block:: Python
 
@@ -346,14 +344,14 @@ The mesh gives a useful visualization; refine it to assess interface accuracy.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 222-226
+.. GENERATED FROM PYTHON SOURCE LINES 220-224
 
 Inspect the resolved cross-section
 ----------------------------------
 Unlike transparent construction surfaces, this map resolves material
 replacement. The y=0 plane intersects both spheres and the box.
 
-.. GENERATED FROM PYTHON SOURCE LINES 226-234
+.. GENERATED FROM PYTHON SOURCE LINES 224-232
 
 .. code-block:: Python
 
@@ -376,13 +374,13 @@ replacement. The y=0 plane intersects both spheres and the box.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 235-238
+.. GENERATED FROM PYTHON SOURCE LINES 233-236
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 238-240
+.. GENERATED FROM PYTHON SOURCE LINES 236-238
 
 .. code-block:: Python
 
@@ -402,7 +400,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.912 seconds)
+   **Total running time of the script:** (0 minutes 0.918 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_structured_sample.py:

@@ -25,16 +25,14 @@ Compare isotropic and unpolarized Rayleigh scattering in the same finite
 sample. Both have zero mean scattering cosine, but their second angular
 moments differ. All optical properties are illustrative.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-21
+.. GENERATED FROM PYTHON SOURCE LINES 9-19
 
 .. code-block:: Python
 
 
 
     import os
-
     import numpy as np
-
     import MomentRT
 
     ureg = MomentRT.ureg
@@ -48,7 +46,7 @@ moments differ. All optical properties are illustrative.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-29
+.. GENERATED FROM PYTHON SOURCE LINES 21-27
 
 Choose phase functions
 ----------------------
@@ -57,7 +55,7 @@ Isotropic and Rayleigh both have g₁ = 0, while g₂ is 0 and 0.1 respectively.
 The existing Henyey–Greenstein model instead takes anisotropy from its
 material; tabulated functions can be supplied on a cosine grid.
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-38
+.. GENERATED FROM PYTHON SOURCE LINES 27-36
 
 .. code-block:: Python
 
@@ -84,7 +82,7 @@ material; tabulated functions can be supplied on a cosine grid.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-44
+.. GENERATED FROM PYTHON SOURCE LINES 37-42
 
 Configure the common sample and instrument
 ------------------------------------------
@@ -92,14 +90,14 @@ The sample is solved twice with equal absorption and reduced scattering.
 SP3 uses the selected phase function's higher moments. P1 only uses the
 reduced scattering coefficient and would therefore give the same result.
 
-.. GENERATED FROM PYTHON SOURCE LINES 44-111
+.. GENERATED FROM PYTHON SOURCE LINES 42-109
 
 .. code-block:: Python
 
 
     sample = MomentRT.StructuredMedium(
-        origin=np.array([-4, -4, 0]) * ureg.millimeter,
-        size=np.array([8, 8, 4]) * ureg.millimeter,
+        origin=(-4, -4, 0) * ureg.millimeter,
+        size=(8, 8, 4) * ureg.millimeter,
     )
 
     source = MomentRT.SurfaceSource.on_face(
@@ -177,7 +175,7 @@ reduced scattering coefficient and would therefore give the same result.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 112-118
+.. GENERATED FROM PYTHON SOURCE LINES 110-116
 
 Visualize the Rayleigh solution
 -------------------------------
@@ -186,7 +184,7 @@ function. Source and detector overlays use their physical contact positions.
 Verify mesh convergence and compare with a transport reference for the
 intended application; the contact detector assumes Lambertian escape.
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-126
+.. GENERATED FROM PYTHON SOURCE LINES 116-124
 
 .. code-block:: Python
 
@@ -194,7 +192,7 @@ intended application; the contact detector assumes Lambertian escape.
     fluence_figure = results["Rayleigh"].fluence.plot(
         view="volume",
         scale="linear",
-        overlays={"Source": source, "Detector": detector},
+        overlays=[source, detector],
         show=show_figures,
     )
 
@@ -209,20 +207,20 @@ intended application; the contact detector assumes Lambertian escape.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-131
+.. GENERATED FROM PYTHON SOURCE LINES 125-129
 
 Preview the sample and instrument geometry
 ------------------------------------------
 Keep the physical geometry as the final figure so the gallery thumbnail
 shows the sample, source, and detector rather than the phase-function result.
 
-.. GENERATED FROM PYTHON SOURCE LINES 131-136
+.. GENERATED FROM PYTHON SOURCE LINES 129-134
 
 .. code-block:: Python
 
 
     gallery_system_figure = sample.plot(
-        overlays={"Source": source, "Detector": detector},
+        overlays=[source, detector],
         show=show_figures,
     )
 
@@ -239,7 +237,7 @@ shows the sample, source, and detector rather than the phase-function result.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.184 seconds)
+   **Total running time of the script:** (0 minutes 0.192 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_phase_functions.py:

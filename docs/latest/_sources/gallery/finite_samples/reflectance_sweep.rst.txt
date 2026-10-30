@@ -26,16 +26,14 @@ The centerline fluence increases as less diffuse current escapes through the
 sample boundary. The parameter is not a Fresnel reflectance. Inputs are
 illustrative.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-30
+.. GENERATED FROM PYTHON SOURCE LINES 10-28
 
 .. code-block:: Python
 
 
     import os
-
     import matplotlib.pyplot as plt
     import numpy as np
-
     import MomentRT
     from MomentRT import (
         CartesianMesh,
@@ -57,14 +55,14 @@ illustrative.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-36
+.. GENERATED FROM PYTHON SOURCE LINES 30-34
 
 Define a homogeneous finite sample
 ----------------------------------
 The sample is illuminated through its upper z face and uses a common
 refractive index throughout.
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-66
+.. GENERATED FROM PYTHON SOURCE LINES 34-64
 
 .. code-block:: Python
 
@@ -77,8 +75,8 @@ refractive index throughout.
     )
 
     sample = StructuredMedium(
-        origin=np.array([-4, -4, 0]) * ureg.millimeter,
-        size=np.array([8, 8, 4]) * ureg.millimeter,
+        origin=(-4, -4, 0) * ureg.millimeter,
+        size=(8, 8, 4) * ureg.millimeter,
     )
 
     sample.add_background(
@@ -105,14 +103,14 @@ refractive index throughout.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-71
+.. GENERATED FROM PYTHON SOURCE LINES 65-69
 
 Reuse the same inputs while varying R
 -------------------------------------
 Compare a more open diffuse boundary with progressively stronger internal
 diffuse reflection.
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-119
+.. GENERATED FROM PYTHON SOURCE LINES 69-117
 
 .. code-block:: Python
 
@@ -171,13 +169,13 @@ diffuse reflection.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 120-123
+.. GENERATED FROM PYTHON SOURCE LINES 118-121
 
 Plot fluence through the center of the sample
 ---------------------------------------------
 Each curve shares the same material, source power, spot, and mesh.
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-142
+.. GENERATED FROM PYTHON SOURCE LINES 121-140
 
 .. code-block:: Python
 
@@ -212,13 +210,13 @@ Each curve shares the same material, source power, spot, and mesh.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-146
+.. GENERATED FROM PYTHON SOURCE LINES 141-144
 
 Check energy accounting for each case
 -------------------------------------
 The reported escape is transmitted power integrated over all sample faces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 146-161
+.. GENERATED FROM PYTHON SOURCE LINES 144-159
 
 .. code-block:: Python
 
@@ -252,13 +250,13 @@ The reported escape is transmitted power integrated over all sample faces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 162-165
+.. GENERATED FROM PYTHON SOURCE LINES 160-163
 
 Inspect the intermediate-reflectance volume
 -------------------------------------------
 The middle solution uses R = 0.5 and retains the same source and geometry.
 
-.. GENERATED FROM PYTHON SOURCE LINES 165-174
+.. GENERATED FROM PYTHON SOURCE LINES 163-172
 
 .. code-block:: Python
 
@@ -282,13 +280,13 @@ The middle solution uses R = 0.5 and retains the same source and geometry.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 175-178
+.. GENERATED FROM PYTHON SOURCE LINES 173-176
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-180
+.. GENERATED FROM PYTHON SOURCE LINES 176-178
 
 .. code-block:: Python
 
@@ -308,7 +306,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.393 seconds)
+   **Total running time of the script:** (0 minutes 0.396 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_reflectance_sweep.py:

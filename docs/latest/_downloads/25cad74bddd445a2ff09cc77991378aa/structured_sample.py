@@ -10,9 +10,7 @@ and inspect the finite-sample P1 fluence volume.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/structured_sample.png'
 import os
-
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     Box,
@@ -89,8 +87,8 @@ box_material = Material(
 # Set the lower corner and full dimensions. Positive z points into the sample.
 
 sample = StructuredMedium(
-    origin=np.array([-5, -5, 0]) * ureg.millimeter,
-    size=np.array([10, 10, 5]) * ureg.millimeter,
+    origin=(-5, -5, 0) * ureg.millimeter,
+    size=(10, 10, 5) * ureg.millimeter,
 )
 
 sample.add_background(
@@ -143,8 +141,8 @@ scattering_inclusion = Sphere(
 
 rectangular_region = Box(
     name="Rectangular heterogeneity",
-    origin=np.array([-4, -1.25, 3.3]) * ureg.millimeter,
-    size=np.array([1.5, 2.5, 0.9]) * ureg.millimeter,
+    origin=(-4, -1.25, 3.3) * ureg.millimeter,
+    size=(1.5, 2.5, 0.9) * ureg.millimeter,
     material=box_material,
 )
 

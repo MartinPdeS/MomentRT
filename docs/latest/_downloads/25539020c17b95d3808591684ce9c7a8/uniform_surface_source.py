@@ -9,10 +9,8 @@ fluence field. The input power is already coupled into the sample.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/uniform_surface_source.png'
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,
@@ -40,8 +38,8 @@ material = Material(
 )
 
 sample = StructuredMedium(
-    origin=np.array([-4, -4, 0]) * ureg.millimeter,
-    size=np.array([8, 8, 4]) * ureg.millimeter,
+    origin=(-4, -4, 0) * ureg.millimeter,
+    size=(8, 8, 4) * ureg.millimeter,
 )
 
 sample.add_background(

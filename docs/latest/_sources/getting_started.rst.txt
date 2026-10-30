@@ -142,8 +142,8 @@ of operations; the gallery example contains a complete runnable configuration.
 .. code-block:: python
 
    sample = StructuredMedium(
-       origin=np.array([-4, -4, 0]) * ureg.millimeter,
-       size=np.array([8, 8, 4]) * ureg.millimeter,
+       origin=(-4, -4, 0) * ureg.millimeter,
+       size=(8, 8, 4) * ureg.millimeter,
    )
 
    sample.add_background(material=background)

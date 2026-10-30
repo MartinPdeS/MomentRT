@@ -25,16 +25,14 @@ Assign a scattering anisotropy to each material and solve a layered sample
 with SP3. The values are illustrative, not measured skin properties. SP3
 uses the Henyey–Greenstein phase function for each material.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-21
+.. GENERATED FROM PYTHON SOURCE LINES 9-19
 
 .. code-block:: Python
 
 
 
     import os
-
     import numpy as np
-
     import MomentRT
 
     ureg = MomentRT.ureg
@@ -48,7 +46,7 @@ uses the Henyey–Greenstein phase function for each material.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 23-28
+.. GENERATED FROM PYTHON SOURCE LINES 21-26
 
 Set optical properties for each layer
 -------------------------------------
@@ -56,7 +54,7 @@ Anisotropy belongs to the material, not the solver. SP3 requires a value
 for every region, including the background. This model assumes the same
 refractive index across internal interfaces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 28-58
+.. GENERATED FROM PYTHON SOURCE LINES 26-56
 
 .. code-block:: Python
 
@@ -78,8 +76,8 @@ refractive index across internal interfaces.
     )
 
     sample = MomentRT.StructuredMedium(
-        origin=np.array([-4, -4, 0]) * ureg.millimeter,
-        size=np.array([8, 8, 4]) * ureg.millimeter,
+        origin=(-4, -4, 0) * ureg.millimeter,
+        size=(8, 8, 4) * ureg.millimeter,
     )
 
     sample.add_background(material=dermis)
@@ -97,14 +95,14 @@ refractive index across internal interfaces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-63
+.. GENERATED FROM PYTHON SOURCE LINES 57-61
 
 Configure the source, detector, and solver
 ------------------------------------------
 The incoming source is diffuse and isotropic over the inward hemisphere.
 A zero-reflectance Robin face selects the matched-index SP3 boundary model.
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-101
+.. GENERATED FROM PYTHON SOURCE LINES 61-99
 
 .. code-block:: Python
 
@@ -153,14 +151,14 @@ A zero-reflectance Robin face selects the matched-index SP3 boundary model.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 102-106
+.. GENERATED FROM PYTHON SOURCE LINES 100-104
 
 Inspect geometry and solve the sample
 -------------------------------------
 Regions have different absorption, reduced scattering, and anisotropy.
 The displayed surfaces show the geometry used to construct the sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 106-124
+.. GENERATED FROM PYTHON SOURCE LINES 104-122
 
 .. code-block:: Python
 
@@ -217,7 +215,7 @@ The displayed surfaces show the geometry used to construct the sample.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 125-130
+.. GENERATED FROM PYTHON SOURCE LINES 123-128
 
 View the physical fluence in three dimensions
 ----------------------------------------------
@@ -225,7 +223,7 @@ The source and detector are overlaid on the solved fluence volume. Refine
 the mesh to assess both footprint sampling and the detector signal; SP3 is
 an approximation and this plot does not establish transport accuracy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-139
+.. GENERATED FROM PYTHON SOURCE LINES 128-137
 
 .. code-block:: Python
 
@@ -233,7 +231,7 @@ an approximation and this plot does not establish transport accuracy.
     fluence_figure = result.fluence.plot(
         view="volume",
         scale="linear",
-        overlays={"Source": source, "Contact detector": detector},
+        overlays=[source, detector],
         show=show_figures,
     )
 
@@ -249,13 +247,13 @@ an approximation and this plot does not establish transport accuracy.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 140-143
+.. GENERATED FROM PYTHON SOURCE LINES 138-141
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 143-145
+.. GENERATED FROM PYTHON SOURCE LINES 141-143
 
 .. code-block:: Python
 
@@ -275,7 +273,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.368 seconds)
+   **Total running time of the script:** (0 minutes 0.375 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_sp3_layered_anisotropy.py:

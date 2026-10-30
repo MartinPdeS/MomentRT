@@ -9,10 +9,8 @@ are equal: refracting internal interfaces are outside this solver's scope.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/surface_diffusion.png'
 import os
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,
@@ -53,8 +51,8 @@ upper_material = Material(
 # Create a finite rectangular sample and add a one-millimeter upper layer.
 
 sample = StructuredMedium(
-    origin=np.array([-4, -4, 0]) * ureg.millimeter,
-    size=np.array([8, 8, 4]) * ureg.millimeter,
+    origin=(-4, -4, 0) * ureg.millimeter,
+    size=(8, 8, 4) * ureg.millimeter,
 )
 
 sample.add_background(

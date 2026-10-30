@@ -10,9 +10,7 @@ these observables, not validation of P1 against radiative transfer.
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/detector_convergence.png'
 import os
-
 import numpy as np
-
 import MomentRT
 from MomentRT import (
     CartesianMesh,
@@ -42,8 +40,8 @@ material = Material(
 )
 
 sample = StructuredMedium(
-    origin=np.array([-4, -3, 0]) * ureg.mm,
-    size=np.array([8, 6, 4]) * ureg.mm,
+    origin=(-4, -3, 0) * ureg.mm,
+    size=(8, 6, 4) * ureg.mm,
 )
 
 sample.add_background(material=material)
@@ -141,7 +139,7 @@ finest_result = study.results[-1]
 fluence_figure = finest_result.fluence.plot(
     view="volume",
     scale="log",
-    overlays={"Illumination": source, "Reflection detector": detector},
+    overlays=[source, detector],
     show=show_figures,
 )
 

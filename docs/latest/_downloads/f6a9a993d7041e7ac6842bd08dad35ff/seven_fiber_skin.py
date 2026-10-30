@@ -1,19 +1,27 @@
 """
-Seven-fiber bundle on a two-layer skin sample
+Seven-fiber bundle on a three-layer skin sample
 ================================================
 
 Build a contact fiber bundle with six circular illumination footprints
-surrounding a central collection aperture. The epidermis and dermis optical
-properties and fiber dimensions are illustrative, not measured skin or probe
-parameters.
+surrounding a central collection aperture. The three layer optical properties
+and fiber dimensions are illustrative, not measured probe parameters.
+
+The layer boundaries follow a published three-layer skin model. Optical
+coefficients are linearly interpolated to 850 nm from ex vivo measurements at
+800 and 980 nm; they represent one Asian skin dataset, not universal skin
+properties. The model uses a shared refractive index to satisfy the current
+SP3 solver's matched-index interface assumption.
+
+References
+----------
+Shimojo, Y. et al. (2020), *Journal of Biomedical Optics*, 25(4), 045002.
+https://doi.org/10.1117/1.JBO.25.4.045002
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/seven_fiber_skin.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg
@@ -21,46 +29,60 @@ ureg = MomentRT.ureg
 show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 # %%
-# Define the two tissue layers
-# ----------------------------
-# The lower dermis fills the background; the epidermis spans the top of the
-# sample. SP3 currently requires equal refractive indices across internal
-# interfaces and a material-specific Henyey–Greenstein anisotropy.
+# Define the three tissue layers
+# ------------------------------
+# Positive z points into the sample, so add the epidermis, dermis, then
+# hypodermis. The 4 mm sample spans 0.15 mm epidermis, 1.5 mm dermis, and
+# 2.35 mm subcutaneous fat. Optical coefficients are approximate 850 nm values.
+# SP3 currently requires equal refractive indices across internal interfaces.
 
-dermis = MomentRT.Material(
-    absorption=0.025 / ureg.millimeter,
-    reduced_scattering=1.0 / ureg.millimeter,
+epidermis = MomentRT.Material(
+    absorption=0.329 / ureg.millimeter,
+    reduced_scattering=3.75 / ureg.millimeter,
     refractive_index=1.4,
-    anisotropy=0.8,
+    anisotropy=0.9,
     phase_function=MomentRT.phase_function.HenyeyGreenstein(),
 )
 
-epidermis = MomentRT.Material(
-    absorption=0.06 / ureg.millimeter,
-    reduced_scattering=1.6 / ureg.millimeter,
+dermis = MomentRT.Material(
+    absorption=0.055 / ureg.millimeter,
+    reduced_scattering=1.85 / ureg.millimeter,
     refractive_index=1.4,
-    anisotropy=0.7,
+    anisotropy=0.9,
+    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
+)
+
+hypodermis = MomentRT.Material(
+    absorption=0.04 / ureg.millimeter,
+    reduced_scattering=1.33 / ureg.millimeter,
+    refractive_index=1.4,
+    anisotropy=0.9,
     phase_function=MomentRT.phase_function.HenyeyGreenstein(),
 )
 
 sample = MomentRT.StructuredMedium(
-    origin=np.array([-4, -4, 0]) * ureg.millimeter,
-    size=np.array([8, 8, 4]) * ureg.millimeter,
+    origin=(-4, -4, 0) * ureg.millimeter,
+    size=(8, 8, 4) * ureg.millimeter,
 )
 
-sample.add_background(material=dermis)
+sample.add_background(material=hypodermis)
 
+sample.add_layer(
+    name="Epidermis",
+    thickness=0.15 * ureg.millimeter,
+    material=epidermis,
+)
 
 sample.add_layer(
     name="Dermis",
-    thickness=3.2 * ureg.millimeter,
+    thickness=1.5 * ureg.millimeter,
     material=dermis,
 )
 
 sample.add_layer(
-    name="Epidermis",
-    thickness=0.8 * ureg.millimeter,
-    material=epidermis,
+    name="Hypodermis (subcutaneous fat)",
+    thickness=2.35 * ureg.millimeter,
+    material=hypodermis,
 )
 
 # %%
@@ -93,6 +115,7 @@ for fiber_number in range(6):
         radius=fiber_radius,
         wavelength=wavelength,
         optical_power=total_power / 6,
+        name=f"Source {fiber_number + 1}",
     )
 
     sources.append(source)
@@ -104,11 +127,12 @@ detector = MomentRT.SurfaceDetector.on_face(
     radius=fiber_radius,
     orientation="outward_normal",
     acceptance_angle=30 * ureg.degree,
+    name="Collection",
 )
 
 mesh = MomentRT.CartesianMesh.from_sample(
     sample=sample,
-    shape=(21, 21, 11),
+    shape=(31, 21, 21),
 )
 
 boundary = MomentRT.RobinBoundary(effective_reflectance=0)
@@ -118,72 +142,44 @@ boundaries = MomentRT.Boundaries.uniform(condition=boundary)
 # %%
 # Inspect the tissue geometry
 # ---------------------------
-# The transparent surfaces show the epidermis layer and dermis background;
-# the resolved fluence and seven fiber contacts are shown together below.
+# The transparent surfaces show the epidermis, dermis, and hypodermis in
+# surface-to-depth order; the resolved fluence and seven fiber contacts follow.
 
 sample_figure = sample.plot(show=show_figures)
 
 # %%
-# Solve the six illumination fibers with SP3
-# -------------------------------------------
-# MomentRT currently accepts one surface source per simulation. SP3 is
-# linear for this fixed sample and boundary configuration, so six independent
-# monochromatic solves can be summed to obtain the simultaneous diffuse
-# fluence and collected power. This is incoherent power superposition, not a
-# coherent optical field calculation. SP3 is not the full 3D P3 system.
+# Solve all six illumination fibers together with SP3
+# ---------------------------------------------------
+# Simulation converts the source list to a SurfaceSourceGroup and adds the six
+# disk profiles into one boundary load, so the transport system is solved once.
+# This is simultaneous diffuse power illumination, not coherent interference.
+# SP3 is not the full 3D P3 system.
 
 solver = MomentRT.SP3(boundaries=boundaries)
 
-results = []
-
-for fiber_number, source in enumerate(sources, start=1):
-    simulation = MomentRT.Simulation(
-        medium=sample,
-        source=source,
-        mesh=mesh,
-        solver=solver,
-        detectors={"collection": detector},
-    )
-
-    report = simulation.validate()
-
-    if not report.valid:
-        raise ValueError(f"Fiber {fiber_number} configuration: {report.summary()}")
-
-    result = simulation.run()
-
-    results.append(result)
-
-    print(
-        f"Fiber {fiber_number}: sampled source area "
-        f"{result.source_sampled_area.to('mm^2'):~P}; "
-        f"geometric area {result.source_geometric_area.to('mm^2'):~P}"
-    )
-
-# %%
-# Combine the fluence and collection signals
-# ------------------------------------------
-# The detector is passive and is evaluated for each source independently.
-# Its accepted power is therefore additive under this diffuse linear model.
-# The angular acceptance uses a Lambertian escape assumption; this is not a
-# model of guided fiber modes, numerical aperture coupling, or Fresnel loss.
-
-fluence_values = sum(result.fluence.values for result in results)
-
-combined_fluence = MomentRT.ScalarField(
-    mesh=results[0].fluence.mesh,
-    values=fluence_values,
-    name="Combined SP3 fluence rate",
-    metadata={
-        **results[0].fluence.metadata,
-        "source_count": len(sources),
-        "superposition": "six independent diffuse sources",
-    },
+simulation = MomentRT.Simulation(
+    medium=sample,
+    source=sources,
+    mesh=mesh,
+    solver=solver,
+    detectors={"collection": detector},
 )
 
-collected_power = sum(result.detector_power["collection"] for result in results)
+report = simulation.validate()
 
-detector_result = results[0].detectors["collection"]
+if not report.valid:
+    raise ValueError(f"Seven-fiber configuration: {report.summary()}")
+
+result = simulation.run()
+
+print(
+    f"Combined sampled source area: {result.source_sampled_area.to('mm^2'):~P}; "
+    f"geometric area: {result.source_geometric_area.to('mm^2'):~P}"
+)
+
+collected_power = result.detector_power["collection"]
+
+detector_result = result.detectors["collection"]
 
 print(f"Total coupled illumination power: {total_power:~P}")
 
@@ -202,15 +198,9 @@ print(f"Collection geometric area: {detector_result.geometric_area.to('mm^2'):~P
 # before interpreting a result; the approximations themselves also require
 # validation against a suitable radiative-transfer or Monte Carlo reference.
 
-overlays = {
-    **{
-        f"Illumination fiber {number}": source
-        for number, source in enumerate(sources, start=1)
-    },
-    "Central collection fiber": detector,
-}
+overlays = [*sources, detector, *sample.structures]
 
-fluence_figure = combined_fluence.plot(
+fluence_figure = result.fluence.plot(
     view="volume",
     scale="linear",
     overlays=overlays,

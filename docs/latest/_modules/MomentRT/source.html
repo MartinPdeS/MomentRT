@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.source &#8212; MomentRT 0.6.0 documentation</title>
+    <title>MomentRT.source &#8212; MomentRT 0.7.1 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=dda85ae5"></script>
+    <script src="../../_static/documentation_options.js?v=1027fec7"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.6.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.7.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.6.0" />
+  <meta name="docsearch:version" content="0.7.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -498,13 +498,11 @@
 <span></span><span class="sd">"""Ideal isotropic point illumination inside an infinite medium."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">html</span><span class="w"> </span><span class="kn">import</span> <span class="n">escape</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
 
 
@@ -525,6 +523,10 @@
 <span class="sd">        Positive scalar vacuum wavelength, with length units.</span>
 <span class="sd">    optical_power : pint.Quantity</span>
 <span class="sd">        Positive scalar optical power with power units.</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Legend label. Default is ``"Point source"``.</span>
+<span class="sd">    color : str, optional</span>
+<span class="sd">        Plotly-compatible color. Default is ``"crimson"``.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -533,7 +535,13 @@
 <span class="sd">    """</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">optical_power</span><span class="p">:</span> <span class="n">Quantity</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">position</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">optical_power</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Point source"</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"crimson"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Initialize the PointSource configuration.</span>
 
@@ -545,6 +553,10 @@
 <span class="sd">            Positive scalar vacuum wavelength, with length units.</span>
 <span class="sd">        optical_power : pint.Quantity</span>
 <span class="sd">            Positive scalar optical power with power units.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            Nonempty legend label.</span>
+<span class="sd">        color : str, optional</span>
+<span class="sd">            Nonempty Plotly-compatible color string.</span>
 <span class="sd">        """</span>
 
         <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
@@ -559,11 +571,21 @@
             <span class="n">value</span><span class="o">=</span><span class="n">optical_power</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"W"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"optical_power"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"name must be a nonempty string."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">color</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"color must be a nonempty Plotly color string."</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="n">position</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">optical_power</span> <span class="o">=</span> <span class="n">optical_power</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_figure</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">figure</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
@@ -588,8 +610,8 @@
                 <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
                 <span class="n">z</span><span class="o">=</span><span class="p">[</span><span class="n">position</span><span class="p">[</span><span class="mi">2</span><span class="p">]],</span>
                 <span class="n">mode</span><span class="o">=</span><span class="s2">"markers"</span><span class="p">,</span>
-                <span class="n">marker</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="s2">"crimson"</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"Point source"</span><span class="p">,</span>
+                <span class="n">marker</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s2">"size"</span><span class="p">:</span> <span class="mi">7</span><span class="p">},</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">context</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
                 <span class="n">legendgroup</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"legendgroup"</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="p">)</span></div>
@@ -613,6 +635,10 @@
 <span class="sd">        Positive scalar vacuum wavelength, with length units.</span>
 <span class="sd">    optical_power : pint.Quantity</span>
 <span class="sd">        Positive scalar optical power with power units.</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Legend label. Default is ``"Full-face illumination"``.</span>
+<span class="sd">    color : str, optional</span>
+<span class="sd">        Plotly-compatible color. Default is ``"crimson"``.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -627,6 +653,8 @@
         <span class="n">face</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">Face</span><span class="p">,</span>
         <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">optical_power</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Full-face illumination"</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"crimson"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Initialize the UniformSurfaceSource configuration.</span>
 
@@ -638,6 +666,10 @@
 <span class="sd">            Positive scalar vacuum wavelength, with length units.</span>
 <span class="sd">        optical_power : pint.Quantity</span>
 <span class="sd">            Positive scalar optical power with power units.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            Nonempty legend label.</span>
+<span class="sd">        color : str, optional</span>
+<span class="sd">            Nonempty Plotly-compatible color string.</span>
 <span class="sd">        """</span>
 
         <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">FACES</span><span class="p">:</span>
@@ -651,11 +683,21 @@
             <span class="n">value</span><span class="o">=</span><span class="n">optical_power</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"W"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"optical_power"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
 
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"name must be a nonempty string."</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">color</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">color</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"color must be a nonempty Plotly color string."</span><span class="p">)</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">face</span> <span class="o">=</span> <span class="n">face</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">optical_power</span> <span class="o">=</span> <span class="n">optical_power</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_figure</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">figure</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
@@ -711,11 +753,11 @@
                 <span class="n">y</span><span class="o">=</span><span class="n">surface</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
                 <span class="n">z</span><span class="o">=</span><span class="n">surface</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
                 <span class="n">surfacecolor</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span>
-                <span class="n">colorscale</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="s2">"crimson"</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s2">"crimson"</span><span class="p">]],</span>
+                <span class="n">colorscale</span><span class="o">=</span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">]],</span>
                 <span class="n">opacity</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
                 <span class="n">showscale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">showlegend</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"Full-face illumination"</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">context</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
                 <span class="n">legendgroup</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"legendgroup"</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -731,8 +773,8 @@
             <span class="n">start</span><span class="o">=</span><span class="n">position</span> <span class="o">-</span> <span class="n">length</span> <span class="o">*</span> <span class="n">direction</span><span class="p">,</span>
             <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span>
             <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">"crimson"</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">"Inward normal (diffuse illumination)"</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Inward normal: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="n">legendgroup</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"legendgroup"</span><span class="p">),</span>
         <span class="p">)</span></div>
 
@@ -760,6 +802,10 @@
 <span class="sd">        Positive scalar vacuum wavelength, with length units.</span>
 <span class="sd">    optical_power : pint.Quantity</span>
 <span class="sd">        Positive scalar optical power with power units.</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Legend label. Default is ``"Illumination spot"``.</span>
+<span class="sd">    color : str, optional</span>
+<span class="sd">        Plotly-compatible color. Default is ``"crimson"``.</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
@@ -776,6 +822,8 @@
         <span class="n">radius</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">optical_power</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Illumination spot"</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"crimson"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Initialize the SurfaceSource configuration.</span>
 
@@ -791,9 +839,19 @@
 <span class="sd">            Positive scalar vacuum wavelength, with length units.</span>
 <span class="sd">        optical_power : pint.Quantity</span>
 <span class="sd">            Positive scalar optical power with power units.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            Nonempty legend label.</span>
+<span class="sd">        color : str, optional</span>
+<span class="sd">            Nonempty Plotly-compatible color string.</span>
 <span class="sd">        """</span>
 
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">face</span><span class="o">=</span><span class="n">face</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">optical_power</span><span class="o">=</span><span class="n">optical_power</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">face</span><span class="o">=</span><span class="n">face</span><span class="p">,</span>
+            <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+            <span class="n">optical_power</span><span class="o">=</span><span class="n">optical_power</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+        <span class="p">)</span>
 
         <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
             <span class="n">value</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"position"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,)</span>
@@ -819,6 +877,8 @@
         <span class="n">radius</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">optical_power</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Illumination spot"</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"crimson"</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SurfaceSource</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Place a circular source using absolute coordinates in a sample face.</span>
 
@@ -837,6 +897,10 @@
 <span class="sd">            Positive vacuum wavelength with length units.</span>
 <span class="sd">        optical_power : pint.Quantity</span>
 <span class="sd">            Incoming diffuse power already coupled into the sample.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            Legend label. Default is ``"Illumination spot"``.</span>
+<span class="sd">        color : str, optional</span>
+<span class="sd">            Plotly-compatible color. Default is ``"crimson"``.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -853,6 +917,8 @@
             <span class="n">radius</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
             <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
             <span class="n">optical_power</span><span class="o">=</span><span class="n">optical_power</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">_validate_face_disk</span><span class="p">(</span>
@@ -891,8 +957,8 @@
                 <span class="n">y</span><span class="o">=</span><span class="n">ring</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
                 <span class="n">z</span><span class="o">=</span><span class="n">ring</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
                 <span class="n">mode</span><span class="o">=</span><span class="s2">"lines"</span><span class="p">,</span>
-                <span class="n">line</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="s2">"crimson"</span><span class="p">,</span> <span class="s2">"width"</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
-                <span class="n">name</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">"Illumination spot"</span><span class="p">,</span>
+                <span class="n">line</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span> <span class="s2">"width"</span><span class="p">:</span> <span class="mi">5</span><span class="p">},</span>
+                <span class="n">name</span><span class="o">=</span><span class="n">context</span><span class="p">[</span><span class="s2">"name"</span><span class="p">],</span>
                 <span class="n">legendgroup</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"legendgroup"</span><span class="p">),</span>
             <span class="p">)</span>
         <span class="p">)</span>
@@ -901,7 +967,7 @@
             <span class="n">figure</span><span class="o">=</span><span class="n">figure</span><span class="p">,</span>
             <span class="n">position</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
             <span class="n">ring</span><span class="o">=</span><span class="n">ring</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">"crimson"</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
             <span class="n">legendgroup</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"legendgroup"</span><span class="p">),</span>
         <span class="p">)</span>
 
@@ -916,11 +982,107 @@
             <span class="n">start</span><span class="o">=</span><span class="n">position</span> <span class="o">-</span> <span class="n">length</span> <span class="o">*</span> <span class="n">direction</span><span class="p">,</span>
             <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span>
             <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span>
-            <span class="n">color</span><span class="o">=</span><span class="s2">"crimson"</span><span class="p">,</span>
-            <span class="n">label</span><span class="o">=</span><span class="s2">"Inward normal (diffuse illumination)"</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">color</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Inward normal: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
             <span class="n">legendgroup</span><span class="o">=</span><span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"legendgroup"</span><span class="p">),</span>
         <span class="p">)</span></div>
 
+
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SurfaceSourceGroup</span><span class="p">(</span><span class="n">UniformSurfaceSource</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Simultaneous illumination from multiple circular surface footprints.</span>
+
+<span class="sd">    Each member disk is normalized independently to its configured optical</span>
+<span class="sd">    power. All disks must share a face and wavelength. The solver assembles</span>
+<span class="sd">    their summed incoming profile into one right-hand side.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sources : iterable of SurfaceSource</span>
+<span class="sd">        Nonempty set of disk sources sharing one face and wavelength.</span>
+<span class="sd">    name : str, optional</span>
+<span class="sd">        Group name. Default is ``"Surface source group"``.</span>
+<span class="sd">    color : str, optional</span>
+<span class="sd">        Fallback Plotly color for the group. Member colors are used for plots.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">sources</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">SurfaceSource</span><span class="p">],</span>
+        <span class="n">name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"Surface source group"</span><span class="p">,</span>
+        <span class="n">color</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"crimson"</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Initialize a set of simultaneously active surface sources.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        sources : iterable of SurfaceSource</span>
+<span class="sd">            Nonempty set of disk sources sharing one face and wavelength.</span>
+<span class="sd">        name : str, optional</span>
+<span class="sd">            Nonempty group name used for simulation provenance.</span>
+<span class="sd">        color : str, optional</span>
+<span class="sd">            Nonempty Plotly-compatible fallback color.</span>
+<span class="sd">        """</span>
+
+        <span class="n">sources</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">sources</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">sources</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">SurfaceSource</span><span class="p">)</span> <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"sources must contain at least one SurfaceSource."</span><span class="p">)</span>
+
+        <span class="n">first</span> <span class="o">=</span> <span class="n">sources</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="n">source</span><span class="o">.</span><span class="n">face</span> <span class="o">!=</span> <span class="n">first</span><span class="o">.</span><span class="n">face</span>
+            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span>
+                <span class="n">source</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="n">first</span><span class="o">.</span><span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-12</span><span class="p">,</span>
+                <span class="n">atol</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"All grouped sources must share a face and wavelength."</span><span class="p">)</span>
+
+        <span class="n">optical_power</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">optical_power</span> <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="n">sources</span><span class="p">),</span>
+            <span class="mi">0</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">face</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">face</span><span class="p">,</span>
+            <span class="n">wavelength</span><span class="o">=</span><span class="n">first</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span>
+            <span class="n">optical_power</span><span class="o">=</span><span class="n">optical_power</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sources</span> <span class="o">=</span> <span class="n">sources</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_to_figure</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">figure</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">,</span> <span class="n">context</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Draw every member footprint with its own label and color.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        figure : plotly.graph_objects.Figure</span>
+<span class="sd">            Figure to modify in place.</span>
+<span class="sd">        context : mapping of str to object</span>
+<span class="sd">            Coordinate units, sample bounds, and legend grouping.</span>
+<span class="sd">        """</span>
+
+        <span class="k">for</span> <span class="n">source</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">:</span>
+            <span class="n">source</span><span class="o">.</span><span class="n">_add_to_figure</span><span class="p">(</span>
+                <span class="n">figure</span><span class="o">=</span><span class="n">figure</span><span class="p">,</span>
+                <span class="n">context</span><span class="o">=</span><span class="p">{</span>
+                    <span class="o">**</span><span class="n">context</span><span class="p">,</span>
+                    <span class="s2">"name"</span><span class="p">:</span> <span class="n">escape</span><span class="p">(</span><span class="n">source</span><span class="o">.</span><span class="n">name</span><span class="p">),</span>
+                    <span class="s2">"legendgroup"</span><span class="p">:</span> <span class="n">context</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"legendgroup"</span><span class="p">),</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
 </pre></div>
 
                 </article>

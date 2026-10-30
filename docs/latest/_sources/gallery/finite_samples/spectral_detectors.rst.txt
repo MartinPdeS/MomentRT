@@ -26,15 +26,13 @@ fixed, and compare collected power at five wavelengths. All coefficients are
 illustrative. The sweep runs independent monochromatic P1 solves; it is not
 a broadband source integration or a validated tissue spectrum.
 
-.. GENERATED FROM PYTHON SOURCE LINES 10-30
+.. GENERATED FROM PYTHON SOURCE LINES 10-28
 
 .. code-block:: Python
 
 
     import os
-
     import numpy as np
-
     import MomentRT
     from MomentRT import (
         CartesianMesh,
@@ -57,7 +55,7 @@ a broadband source integration or a validated tissue spectrum.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-37
+.. GENERATED FROM PYTHON SOURCE LINES 30-35
 
 Define tabulated optical properties
 ------------------------------------
@@ -65,7 +63,7 @@ Tables are linearly interpolated. Out-of-range wavelengths are rejected.
 The refractive index is constant across the internal interface at every
 wavelength, as required by the current continuous-fluence solver.
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-69
+.. GENERATED FROM PYTHON SOURCE LINES 35-67
 
 .. code-block:: Python
 
@@ -89,8 +87,8 @@ wavelength, as required by the current continuous-fluence solver.
     )
 
     sample = StructuredMedium(
-        origin=np.array([-4, -3, 0]) * ureg.mm,
-        size=np.array([8, 6, 4]) * ureg.mm,
+        origin=(-4, -3, 0) * ureg.mm,
+        size=(8, 6, 4) * ureg.mm,
     )
 
     sample.add_background(material=background)
@@ -108,7 +106,7 @@ wavelength, as required by the current continuous-fluence solver.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 70-75
+.. GENERATED FROM PYTHON SOURCE LINES 68-73
 
 Configure the source, mesh, boundaries, and detectors once
 ----------------------------------------------------------
@@ -116,7 +114,7 @@ Power is already coupled into the sample. The sweep retains that same
 optical power at every wavelength unless a power vector is supplied.
 Boundary effective reflectance and detector acceptance also stay fixed.
 
-.. GENERATED FROM PYTHON SOURCE LINES 75-129
+.. GENERATED FROM PYTHON SOURCE LINES 73-127
 
 .. code-block:: Python
 
@@ -185,14 +183,14 @@ Boundary effective reflectance and detector acceptance also stay fixed.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-134
+.. GENERATED FROM PYTHON SOURCE LINES 128-132
 
 Run the ordered wavelength sweep
 ----------------------------------
 Each result keeps its own fields, wavelength, and detector measurements.
 The original sample, source wavelength, and detector geometry are retained.
 
-.. GENERATED FROM PYTHON SOURCE LINES 134-156
+.. GENERATED FROM PYTHON SOURCE LINES 132-154
 
 .. code-block:: Python
 
@@ -231,8 +229,8 @@ The original sample, source wavelength, and detector geometry are retained.
  .. code-block:: none
 
     Geometry preparations: 1
-    Preparation time: 0.07555617100000234 s
-    Per-wavelength run times: [0.04521553399999334 0.04234491200000434 0.043058854999998175 0.04393726600000036 0.04375074700000425] s
+    Preparation time: 0.07577288900000667 s
+    Per-wavelength run times: [0.04531804700000208 0.04255603800000074 0.042605700000002855 0.04309025799999944 0.0428503890000016] s
     Reflection at 700 nm: 0.0019590985219869353 mW
     Reflection at 750 nm: 0.002272609112024002 mW
     Reflection at 800 nm: 0.002367707455554829 mW
@@ -242,7 +240,7 @@ The original sample, source wavelength, and detector geometry are retained.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-164
+.. GENERATED FROM PYTHON SOURCE LINES 155-162
 
 Inspect one monochromatic fluence volume
 -----------------------------------------
@@ -252,7 +250,7 @@ Overlays place the instrument on the spatial field; the spectrum above keeps
 its wavelength and power axes.
 Named overlays give the two apertures distinct legend entries.
 
-.. GENERATED FROM PYTHON SOURCE LINES 164-177
+.. GENERATED FROM PYTHON SOURCE LINES 162-171
 
 .. code-block:: Python
 
@@ -260,11 +258,7 @@ Named overlays give the two apertures distinct legend entries.
     fluence_figure = spectrum.results[2].fluence.plot(
         view="volume",
         scale="log",
-        overlays={
-            "Illumination": source,
-            "Reflection detector": reflection_detector,
-            "Transmission detector": transmission_detector,
-        },
+        overlays=[source, reflection_detector, transmission_detector],
         show=show_figures,
     )
 
@@ -280,13 +274,13 @@ Named overlays give the two apertures distinct legend entries.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 178-181
+.. GENERATED FROM PYTHON SOURCE LINES 172-175
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 181-183
+.. GENERATED FROM PYTHON SOURCE LINES 175-177
 
 .. code-block:: Python
 
@@ -306,7 +300,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.429 seconds)
+   **Total running time of the script:** (0 minutes 0.426 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_spectral_detectors.py:

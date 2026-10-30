@@ -11,9 +11,7 @@ model matches radiative transfer for a particular sensor.
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/compare_sp3.png'
 
 import os
-
 import numpy as np
-
 import MomentRT
 
 ureg = MomentRT.ureg
@@ -35,8 +33,8 @@ material = MomentRT.Material(
 )
 
 sample = MomentRT.StructuredMedium(
-    origin=np.array([-4, -4, 0]) * ureg.millimeter,
-    size=np.array([8, 8, 4]) * ureg.millimeter,
+    origin=(-4, -4, 0) * ureg.millimeter,
+    size=(8, 8, 4) * ureg.millimeter,
 )
 
 sample.add_background(material=material)

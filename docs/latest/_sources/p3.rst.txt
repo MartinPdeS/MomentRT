@@ -159,7 +159,7 @@ dependencies. These are single-run macOS measurements, not performance
 guarantees. Larger meshes can change both ratios and factorization memory
 substantially.
 
-See :doc:`gallery/finite_samples/compare_p3` for a runnable comparison. For
+See :doc:`gallery/transport_models/compare_p3` for a runnable comparison. For
 the finite-element P\ :sub:`N` approach in optical tomography, see
 `Mohan et al., Journal of Computational Physics 230 (2011), 7364–7383
 <https://doi.org/10.1016/j.jcp.2011.06.004>`_.

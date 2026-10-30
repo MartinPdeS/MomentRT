@@ -7,7 +7,7 @@ wavelength before calculating a monochromatic field. ``Simulation.sweep``
 repeats that workflow while preserving geometry and instrument configuration.
 
 See the :doc:`spectral detector example
-<gallery/finite_samples/spectral_detectors>` for a layered phantom, two
+<gallery/sources_detectors/spectral_detectors>` for a layered phantom, two
 contact apertures, collected-power spectra, and a 3D fluence volume.
 
 Supplying a material table

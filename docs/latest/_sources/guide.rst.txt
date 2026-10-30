@@ -23,7 +23,7 @@ with an explicitly modeled illuminated boundary.
       conditions on all six sample faces.
 
    .. grid-item-card:: Build the sample
-      :link: /gallery/finite_samples/structured_sample
+      :link: /gallery/getting_started/structured_sample
       :link-type: doc
 
       Define layers and inclusions, inspect geometry, and resolve material

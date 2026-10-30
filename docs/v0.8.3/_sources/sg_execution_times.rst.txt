@@ -1,0 +1,82 @@
+
+:orphan:
+
+.. _sphx_glr_sg_execution_times:
+
+
+Computation times
+=================
+**00:17.007** total execution time for 16 files **from all galleries**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_gallery_sources_detectors_seven_fiber_skin.py` (``../examples/sources_detectors/seven_fiber_skin.py``)
+     - 00:06.882
+     - 0.0
+   * - :ref:`sphx_glr_gallery_transport_models_compare_p3.py` (``../examples/transport_models/compare_p3.py``)
+     - 00:02.181
+     - 0.0
+   * - :ref:`sphx_glr_gallery_getting_started_infinite_diffusion.py` (``../examples/getting_started/infinite_diffusion.py``)
+     - 00:01.254
+     - 0.0
+   * - :ref:`sphx_glr_gallery_getting_started_surface_diffusion.py` (``../examples/getting_started/surface_diffusion.py``)
+     - 00:01.125
+     - 0.0
+   * - :ref:`sphx_glr_gallery_sources_detectors_detector_convergence.py` (``../examples/sources_detectors/detector_convergence.py``)
+     - 00:00.999
+     - 0.0
+   * - :ref:`sphx_glr_gallery_sweeps_convergence_sp3_spectral_anisotropy.py` (``../examples/sweeps_convergence/sp3_spectral_anisotropy.py``)
+     - 00:00.931
+     - 0.0
+   * - :ref:`sphx_glr_gallery_getting_started_structured_sample.py` (``../examples/getting_started/structured_sample.py``)
+     - 00:00.917
+     - 0.0
+   * - :ref:`sphx_glr_gallery_sources_detectors_spectral_detectors.py` (``../examples/sources_detectors/spectral_detectors.py``)
+     - 00:00.435
+     - 0.0
+   * - :ref:`sphx_glr_gallery_sweeps_convergence_reflectance_sweep.py` (``../examples/sweeps_convergence/reflectance_sweep.py``)
+     - 00:00.405
+     - 0.0
+   * - :ref:`sphx_glr_gallery_sweeps_convergence_mesh_refinement.py` (``../examples/sweeps_convergence/mesh_refinement.py``)
+     - 00:00.389
+     - 0.0
+   * - :ref:`sphx_glr_gallery_transport_models_sp3_layered_anisotropy.py` (``../examples/transport_models/sp3_layered_anisotropy.py``)
+     - 00:00.372
+     - 0.0
+   * - :ref:`sphx_glr_gallery_getting_started_uniform_surface_source.py` (``../examples/getting_started/uniform_surface_source.py``)
+     - 00:00.260
+     - 0.0
+   * - :ref:`sphx_glr_gallery_sources_detectors_surface_detector.py` (``../examples/sources_detectors/surface_detector.py``)
+     - 00:00.226
+     - 0.0
+   * - :ref:`sphx_glr_gallery_transport_models_compare_sp3.py` (``../examples/transport_models/compare_sp3.py``)
+     - 00:00.221
+     - 0.0
+   * - :ref:`sphx_glr_gallery_sweeps_convergence_absorption_sweep.py` (``../examples/sweeps_convergence/absorption_sweep.py``)
+     - 00:00.219
+     - 0.0
+   * - :ref:`sphx_glr_gallery_transport_models_phase_functions.py` (``../examples/transport_models/phase_functions.py``)
+     - 00:00.191
+     - 0.0

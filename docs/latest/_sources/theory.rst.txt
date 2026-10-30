@@ -388,7 +388,7 @@ The exponential sets the attenuation length :math:`1/\kappa`; the factor
 :math:`4\pi r^2`. Together they show the model's two length scales:
 directional randomization through :math:`\ell_{\mathrm{tr}}` and absorption
 through :math:`1/\kappa`. The :doc:`absorption sweep example
-<gallery/fundamentals/absorption_sweep>` compares the resulting radial profiles
+<gallery/sweeps_convergence/absorption_sweep>` compares the resulting radial profiles
 while holding reduced scattering and source power fixed.
 
 .. figure:: _static/images/infinite-fluence-volume.png

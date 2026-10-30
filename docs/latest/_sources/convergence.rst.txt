@@ -6,7 +6,7 @@ sampling across explicit finite meshes. It keeps the sample, source,
 detector apertures, wavelength, and boundaries fixed, returning a
 ``DetectorConvergenceResult`` without changing the original configuration.
 See the :doc:`worked refinement example
-<gallery/finite_samples/detector_convergence>` for comparison plots and a
+<gallery/sources_detectors/detector_convergence>` for comparison plots and a
 fluence volume with instrument overlays.
 
 Running a study

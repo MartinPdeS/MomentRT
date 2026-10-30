@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MomentRT.results &#8212; MomentRT 0.8.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/martinpdes_layout.css?v=a8cc01cd" />
+    <link rel="stylesheet" type="text/css" href="../../_static/layout.css?v=1307682e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+
+    <script src="../../_static/documentation_options.js?v=cce5339e"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/MomentRT/results';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.8.0" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="dark">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="../../_static/logo-dark.svg" class="logo__image only-dark" alt="MomentRT deterministic light transport"/>
+    <img src="../../_static/logo-light.svg" class="logo__image only-light pst-js-only" alt="MomentRT deterministic light transport"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Start
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../guide.html">
+    Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../theory/index.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../reference/index.html">
+    Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/MomentRT" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/MomentRT/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/MomentRT" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../getting_started.html">
+    Start
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../guide.html">
+    Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../theory/index.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../reference/index.html">
+    Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/MomentRT" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/MomentRT/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/MomentRT" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">MomentRT.results</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for MomentRT.results</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""Results retain physical fields and their provenance."""</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">cast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_energy_accounting</span><span class="p">(</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">incoming_power</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+    <span class="n">absorbed_watts</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+    <span class="n">escaping_watts</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">Face</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">],</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">"""Package finite-solver power accounting without changing signed outputs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    incoming_power : pint.Quantity</span>
+<span class="sd">        Incoming coupled power, with power units.</span>
+<span class="sd">    absorbed_watts : float</span>
+<span class="sd">        Integrated absorption in watts.</span>
+<span class="sd">    escaping_watts : mapping of str to float</span>
+<span class="sd">        Signed escaping power by face in watts.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple of dict</span>
+<span class="sd">        Energy balance and per-face escaping powers, both with power units.</span>
+<span class="sd">    """</span>
+    <span class="n">watt</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>
+
+    <span class="n">escaping_total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">escaping_watts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+    <span class="n">balance</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">"incoming_power"</span><span class="p">:</span> <span class="n">incoming_power</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
+        <span class="s2">"absorbed_power"</span><span class="p">:</span> <span class="n">absorbed_watts</span> <span class="o">*</span> <span class="n">watt</span><span class="p">,</span>
+        <span class="s2">"escaping_power"</span><span class="p">:</span> <span class="n">escaping_total</span> <span class="o">*</span> <span class="n">watt</span><span class="p">,</span>
+        <span class="s2">"residual_power"</span><span class="p">:</span> <span class="p">(</span>
+            <span class="n">incoming_power</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"W"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">-</span> <span class="n">absorbed_watts</span> <span class="o">-</span> <span class="n">escaping_total</span>
+        <span class="p">)</span>
+        <span class="o">*</span> <span class="n">watt</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">by_face</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">face</span><span class="p">:</span> <span class="n">value</span> <span class="o">*</span> <span class="n">watt</span> <span class="k">for</span> <span class="n">face</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">escaping_watts</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">return</span> <span class="n">balance</span><span class="p">,</span> <span class="n">by_face</span>
+
+
+<div class="viewcode-block" id="SimulationResult">
+<a class="viewcode-back" href="../../python_api.html#MomentRT.SimulationResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SimulationResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Monochromatic transport fields, energy accounting, and measurements.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fluence : ScalarField</span>
+<span class="sd">        Nodal fluence rate, with power-per-area units.</span>
+<span class="sd">    flux : VectorField or None, optional</span>
+<span class="sd">        Element-centered diffuse current density, with power-per-area units.</span>
+<span class="sd">        Default is None.</span>
+<span class="sd">    moments : mapping of str to ScalarField, or None, optional</span>
+<span class="sd">        Additional solver-specific nodal moment fields.</span>
+<span class="sd">    energy_balance : mapping of str to pint.Quantity, or None, optional</span>
+<span class="sd">        Incoming, absorbed, net outward, and residual power accounting.</span>
+<span class="sd">        Default is None.</span>
+<span class="sd">    outgoing_power_by_face : mapping of str to pint.Quantity, or None, optional</span>
+<span class="sd">        Escaping transmitted power per complete sample face; not a finite</span>
+<span class="sd">        aperture measurement.</span>
+<span class="sd">        Default is None.</span>
+<span class="sd">    diagnostics : mapping of str to object, or None, optional</span>
+<span class="sd">        Numerical provenance, residuals, geometry statistics, or timing quantities.</span>
+<span class="sd">        Default is None.</span>
+<span class="sd">    boundary_fields : mapping of str to BoundaryField, or None, optional</span>
+<span class="sd">        Per-face snapshots of escaping-irradiance quadrature samples.</span>
+<span class="sd">        Default is None.</span>
+<span class="sd">    detectors : mapping of str to DetectorResult, or None, optional</span>
+<span class="sd">        Named finite-aperture measurements already evaluated on this solution.</span>
+<span class="sd">        Default is None.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    fluence : ScalarField</span>
+<span class="sd">        Nodal fluence rate with power-per-area units.</span>
+<span class="sd">    flux : VectorField or None</span>
+<span class="sd">        Element-centered current density, absent for the infinite Green function.</span>
+<span class="sd">    boundary_fields : dict of str to BoundaryField</span>
+<span class="sd">        Quadrature snapshots for finite-sample contact measurements.</span>
+<span class="sd">    detectors : dict of str to DetectorResult</span>
+<span class="sd">        Evaluated measurements, keyed by detector name.</span>
+<span class="sd">    diagnostics : dict of str to object</span>
+<span class="sd">        Solver provenance, residuals, and resolution statistics.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">fluence</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">ScalarField</span><span class="p">,</span>
+        <span class="n">flux</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">VectorField</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">moments</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">ScalarField</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">energy_balance</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">outgoing_power_by_face</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">diagnostics</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">boundary_fields</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">BoundaryField</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">detectors</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">DetectorResult</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Initialize the SimulationResult configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fluence : ScalarField</span>
+<span class="sd">            Nodal fluence rate, with power-per-area units.</span>
+<span class="sd">        flux : VectorField or None, optional</span>
+<span class="sd">            Element-centered diffuse current density, with power-per-area units.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        moments : mapping of str to ScalarField, or None, optional</span>
+<span class="sd">            Additional solver-specific nodal moment fields.</span>
+<span class="sd">        energy_balance : mapping of str to pint.Quantity, or None, optional</span>
+<span class="sd">            Incoming, absorbed, net outward, and residual power accounting.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        outgoing_power_by_face : mapping of str to pint.Quantity, or None, optional</span>
+<span class="sd">            Escaping transmitted power per complete sample face; not a finite</span>
+<span class="sd">            aperture measurement.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        diagnostics : mapping of str to object, or None, optional</span>
+<span class="sd">            Numerical provenance, residuals, geometry statistics, or timing quantities.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        boundary_fields : mapping of str to BoundaryField, or None, optional</span>
+<span class="sd">            Per-face snapshots of escaping-irradiance quadrature samples.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        detectors : mapping of str to DetectorResult, or None, optional</span>
+<span class="sd">            Named finite-aperture measurements already evaluated on this solution.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        """</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluence</span> <span class="o">=</span> <span class="n">fluence</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">flux</span> <span class="o">=</span> <span class="n">flux</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">moments</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">moments</span> <span class="ow">or</span> <span class="p">{})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">energy_balance</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">energy_balance</span> <span class="ow">or</span> <span class="p">{})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">outgoing_power_by_face</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">outgoing_power_by_face</span> <span class="ow">or</span> <span class="p">{})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">diagnostics</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">diagnostics</span> <span class="ow">or</span> <span class="p">{})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">boundary_fields</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">boundary_fields</span> <span class="ow">or</span> <span class="p">{})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">detectors</span> <span class="ow">or</span> <span class="p">{})</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">source_sampled_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the sampled source footprint area, when available.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pint.Quantity or None</span>
+<span class="sd">            Sampled area with physical units, or None for an infinite solution.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"source_quadrature_area"</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">source_geometric_area</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the exact source footprint area, when available.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pint.Quantity or None</span>
+<span class="sd">            Geometric area with physical units, or None for an infinite solution.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"source_geometric_area"</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">linear_relative_residual</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the relative linear-system residual, when available.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        float or None</span>
+<span class="sd">            Relative residual, or None for an analytical solution.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"linear_relative_residual"</span><span class="p">))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">minimum_fluence</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the minimum nodal fluence, when recorded by the solver.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        pint.Quantity or None</span>
+<span class="sd">            Minimum fluence rate; negative values are not clipped.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">diagnostics</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"minimum_fluence"</span><span class="p">))</span>
+
+<div class="viewcode-block" id="SimulationResult.summary">
+<a class="viewcode-back" href="../../python_api.html#MomentRT.SimulationResult.summary">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">summary</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">convergence</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">DetectorConvergenceResult</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Format detector powers, sampling, energy balance, and diagnostics.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        convergence : DetectorConvergenceResult or None, optional</span>
+<span class="sd">            Separately supplied convergence study to summarize. The caller must</span>
+<span class="sd">            verify it applies to this result; None means none was supplied.</span>
+<span class="sd">            Default is None.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        str</span>
+<span class="sd">            Human-readable result summary with the stored physical units.</span>
+<span class="sd">        """</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"Transport result"</span><span class="p">]</span>
+
+        <span class="n">transport</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"transport"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">transport</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Model: </span><span class="si">{</span><span class="n">transport</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="n">wavelength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">metadata</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"wavelength"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">):</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Wavelength: </span><span class="si">{</span><span class="n">wavelength</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mesh shape: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">convergence</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="s2">"Convergence study: not supplied; convergence is not established."</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Supplied convergence study: </span><span class="si">{</span><span class="s1">'converged'</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="n">convergence</span><span class="o">.</span><span class="n">converged</span><span class="w"> </span><span class="k">else</span><span class="w"> </span><span class="s1">'not converged'</span><span class="si">}</span><span class="s2">; "</span>
+                <span class="sa">f</span><span class="s2">"recommended mesh: </span><span class="si">{</span><span class="n">convergence</span><span class="o">.</span><span class="n">recommended_shape</span><span class="si">}</span><span class="s2">. "</span>
+                <span class="s2">"Verify that the study applies to this result."</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Detector </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">measurement</span><span class="o">.</span><span class="n">collected_power</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2"> (sampled area </span><span class="si">{</span><span class="n">measurement</span><span class="o">.</span><span class="n">sampled_area</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">; geometric area </span><span class="si">{</span><span class="n">measurement</span><span class="o">.</span><span class="n">geometric_area</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">)"</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">measurement</span><span class="o">.</span><span class="n">minimum_escaping_irradiance</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Warning: detector </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> samples negative escaping irradiance."</span>
+                <span class="p">)</span>
+
+            <span class="n">area_error</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">measurement</span><span class="o">.</span><span class="n">sampled_area</span> <span class="o">/</span> <span class="n">measurement</span><span class="o">.</span><span class="n">geometric_area</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                <span class="o">-</span> <span class="mi">1</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">area_error</span> <span class="o">&gt;</span> <span class="mf">0.02</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Warning: detector </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> sampled area differs from geometric area by </span><span class="si">{</span><span class="n">area_error</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">source_sampled_area</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+            <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_geometric_area</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="p">):</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Source sampled area: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source_sampled_area</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">; geometric area: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">source_geometric_area</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+
+            <span class="n">area_error</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_sampled_area</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_geometric_area</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                <span class="o">-</span> <span class="mi">1</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">area_error</span> <span class="o">&gt;</span> <span class="mf">0.02</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"Warning: source sampled area differs from geometric area by </span><span class="si">{</span><span class="n">area_error</span><span class="si">:</span><span class="s2">.1%</span><span class="si">}</span><span class="s2">."</span>
+                <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">power</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy_balance</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'_'</span><span class="p">,</span><span class="w"> </span><span class="s1">' '</span><span class="p">)</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">power</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">linear_relative_residual</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Linear relative residual: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">linear_relative_residual</span><span class="si">:</span><span class="s2">.3g</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum_fluence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum_fluence</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Warning: minimum fluence is negative: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum_fluence</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">detector_power</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return collected powers keyed by detector name.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict of str to pint.Quantity</span>
+<span class="sd">            Collected optical powers keyed by detector name.</span>
+<span class="sd">        """</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="n">measurement</span><span class="o">.</span><span class="n">collected_power</span>
+            <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">measurement</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="DetectorResult">
+<a class="viewcode-back" href="../../python_api.html#MomentRT.DetectorResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DetectorResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Finite-aperture diffuse collection and quadrature provenance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    collected_power : pint.Quantity</span>
+<span class="sd">        Integrated accepted diffuse optical power, with power units.</span>
+<span class="sd">    sampled_area : pint.Quantity</span>
+<span class="sd">        Aperture area represented by selected quadrature weights.</span>
+<span class="sd">        It is not normalized to the geometric area.</span>
+<span class="sd">    geometric_area : pint.Quantity</span>
+<span class="sd">        Exact circular aperture area, with area units.</span>
+<span class="sd">    angular_fraction : float</span>
+<span class="sd">        Fraction of Lambertian escaping irradiance accepted by the cone.</span>
+<span class="sd">    wavelength : pint.Quantity</span>
+<span class="sd">        Positive scalar vacuum wavelength, with length units.</span>
+<span class="sd">    minimum_escaping_irradiance : pint.Quantity</span>
+<span class="sd">        Smallest sampled escaping irradiance inside the aperture.</span>
+<span class="sd">        Negative values flag discretization artifacts and remain unchanged.</span>
+<span class="sd">    detector : SurfaceDetector</span>
+<span class="sd">        Snapshot of the aperture and angular collection configuration.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">collected_power</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">sampled_area</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">geometric_area</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">angular_fraction</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">minimum_escaping_irradiance</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">detector</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">SurfaceDetector</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Initialize the DetectorResult configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        collected_power : pint.Quantity</span>
+<span class="sd">            Integrated accepted diffuse optical power, with power units.</span>
+<span class="sd">        sampled_area : pint.Quantity</span>
+<span class="sd">            Aperture area represented by selected quadrature weights.</span>
+<span class="sd">            It is not normalized to the geometric area.</span>
+<span class="sd">        geometric_area : pint.Quantity</span>
+<span class="sd">            Exact circular aperture area, with area units.</span>
+<span class="sd">        angular_fraction : float</span>
+<span class="sd">            Fraction of Lambertian escaping irradiance accepted by the cone.</span>
+<span class="sd">        wavelength : pint.Quantity</span>
+<span class="sd">            Positive scalar vacuum wavelength, with length units.</span>
+<span class="sd">        minimum_escaping_irradiance : pint.Quantity</span>
+<span class="sd">            Smallest sampled escaping irradiance inside the aperture.</span>
+<span class="sd">            Negative values flag discretization artifacts and remain unchanged.</span>
+<span class="sd">        detector : SurfaceDetector</span>
+<span class="sd">            Snapshot of the aperture and angular collection configuration.</span>
+<span class="sd">        """</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">collected_power</span> <span class="o">=</span> <span class="n">collected_power</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sampled_area</span> <span class="o">=</span> <span class="n">sampled_area</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">geometric_area</span> <span class="o">=</span> <span class="n">geometric_area</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">angular_fraction</span> <span class="o">=</span> <span class="n">angular_fraction</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">minimum_escaping_irradiance</span> <span class="o">=</span> <span class="n">minimum_escaping_irradiance</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">detector</span> <span class="o">=</span> <span class="n">detector</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">angular_model</span> <span class="o">=</span> <span class="s2">"Lambertian escaping radiance"</span></div>
+
+
+
+<div class="viewcode-block" id="DetectorConvergenceResult">
+<a class="viewcode-back" href="../../python_api.html#MomentRT.DetectorConvergenceResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">DetectorConvergenceResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Detector signals and footprint sampling on successively refined meshes.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    meshes : sequence of CartesianMesh</span>
+<span class="sd">        Coarse-to-fine meshes used in the study.</span>
+<span class="sd">    results : sequence of SimulationResult or None</span>
+<span class="sd">        Per-level solutions; None records an unresolved source footprint.</span>
+<span class="sd">    detectors : mapping of str to SurfaceDetector</span>
+<span class="sd">        Named passive contact detectors.</span>
+<span class="sd">    source_geometric_area : pint.Quantity</span>
+<span class="sd">        Exact source footprint area, with area units.</span>
+<span class="sd">    wavelength : pint.Quantity</span>
+<span class="sd">        Positive scalar vacuum wavelength, with length units.</span>
+<span class="sd">    level_errors : sequence of mapping of str to str</span>
+<span class="sd">        Per-level resolution failures and negative-field diagnostics.</span>
+<span class="sd">    power_rtol : float</span>
+<span class="sd">        Nonnegative relative power tolerance against adjacent and finest meshes.</span>
+<span class="sd">    area_rtol : float</span>
+<span class="sd">        Nonnegative relative tolerance of sampled source and detector areas</span>
+<span class="sd">        against their geometric areas.</span>
+<span class="sd">    power_atol : pint.Quantity</span>
+<span class="sd">        Nonnegative absolute power tolerance, with power units.</span>
+<span class="sd">    required_consecutive : int</span>
+<span class="sd">        Positive number of consecutive passing refinements required at the</span>
+<span class="sd">        fine end of the mesh sequence.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    node_counts : numpy.ndarray of int</span>
+<span class="sd">        Number of nodes at each refinement level.</span>
+<span class="sd">    tetrahedron_counts : numpy.ndarray of int</span>
+<span class="sd">        Number of tetrahedra at each refinement level.</span>
+<span class="sd">    source_sampled_area : pint.Quantity</span>
+<span class="sd">        Sampled illumination areas in square meters, one per level.</span>
+<span class="sd">    source_area_relative_error : numpy.ndarray of float</span>
+<span class="sd">        Absolute relative errors against the exact source footprint area.</span>
+<span class="sd">    detector_power : dict of str to pint.Quantity</span>
+<span class="sd">        Per-detector collected power vectors in watts. Unavailable powers are NaN.</span>
+<span class="sd">    detector_sampled_area : dict of str to pint.Quantity</span>
+<span class="sd">        Per-detector sampled aperture areas in square meters. Unsampled apertures</span>
+<span class="sd">        have zero sampled area; unresolved sources produce NaN.</span>
+<span class="sd">    detector_geometric_area : dict of str to pint.Quantity</span>
+<span class="sd">        Exact aperture area for each detector.</span>
+<span class="sd">    detector_area_relative_error : dict of str to numpy.ndarray</span>
+<span class="sd">        Absolute relative aperture-area errors at each mesh level.</span>
+<span class="sd">    power_relative_change : dict of str to numpy.ndarray</span>
+<span class="sd">        Relative power differences against the preceding level. The first</span>
+<span class="sd">        difference and unavailable values are NaN.</span>
+<span class="sd">    power_relative_to_finest : dict of str to numpy.ndarray</span>
+<span class="sd">        Relative power differences against the finest level; unavailable</span>
+<span class="sd">        values are NaN.</span>
+<span class="sd">    meets_tolerances : numpy.ndarray of bool</span>
+<span class="sd">        Per-level power, area, and resolution checks.</span>
+<span class="sd">    stable_refinements : numpy.ndarray of int</span>
+<span class="sd">        Number of consecutive passing refinements ending at each level.</span>
+<span class="sd">    recommended_index : int or None</span>
+<span class="sd">        Index of the recommended mesh; None if the final sequence fails.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Only a stable final sequence can support a recommendation. Sampled</span>
+<span class="sd">    source and detector areas must approximate their exact geometric areas,</span>
+<span class="sd">    and powers must meet adjacent-level and finest-level tolerances.</span>
+<span class="sd">    Unresolved levels and negative fields remain visible; passing these</span>
+<span class="sd">    checks is not proof of accuracy of the P1 approximation.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">meshes</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">],</span>
+        <span class="n">results</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span> <span class="o">|</span> <span class="kc">None</span><span class="p">],</span>
+        <span class="n">detectors</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">detector</span><span class="o">.</span><span class="n">SurfaceDetector</span><span class="p">],</span>
+        <span class="n">source_geometric_area</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">level_errors</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+        <span class="n">power_rtol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">area_rtol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">power_atol</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">required_consecutive</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Initialize the DetectorConvergenceResult configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        meshes : sequence of CartesianMesh</span>
+<span class="sd">            Coarse-to-fine meshes used in the study.</span>
+<span class="sd">        results : sequence of SimulationResult or None</span>
+<span class="sd">            Per-level solutions; None records an unresolved source footprint.</span>
+<span class="sd">        detectors : mapping of str to SurfaceDetector</span>
+<span class="sd">            Named passive contact detectors.</span>
+<span class="sd">        source_geometric_area : pint.Quantity</span>
+<span class="sd">            Exact source footprint area, with area units.</span>
+<span class="sd">        wavelength : pint.Quantity</span>
+<span class="sd">            Positive scalar vacuum wavelength, with length units.</span>
+<span class="sd">        level_errors : sequence of mapping of str to str</span>
+<span class="sd">            Per-level resolution failures and negative-field diagnostics.</span>
+<span class="sd">        power_rtol : float</span>
+<span class="sd">            Nonnegative relative power tolerance against adjacent and finest meshes.</span>
+<span class="sd">        area_rtol : float</span>
+<span class="sd">            Nonnegative relative tolerance of sampled source and detector areas</span>
+<span class="sd">            against their geometric areas.</span>
+<span class="sd">        power_atol : pint.Quantity</span>
+<span class="sd">            Nonnegative absolute power tolerance, with power units.</span>
+<span class="sd">        required_consecutive : int</span>
+<span class="sd">            Positive number of consecutive passing refinements required at the</span>
+<span class="sd">            fine end of the mesh sequence.</span>
+<span class="sd">        """</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">meshes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">meshes</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mesh_shapes</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span> <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">meshes</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">detectors</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">wavelength</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">level_errors</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span> <span class="k">for</span> <span class="n">errors</span> <span class="ow">in</span> <span class="n">level_errors</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">power_rtol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">power_rtol</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">area_rtol</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">area_rtol</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">power_atol</span> <span class="o">=</span> <span class="n">power_atol</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">required_consecutive</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">required_consecutive</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">node_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">meshes</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tetrahedron_counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[</span><span class="mi">6</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">prod</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">mesh</span> <span class="ow">in</span> <span class="n">meshes</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_geometric_area</span> <span class="o">=</span> <span class="n">source_geometric_area</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_sampled_area</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="mi">0</span>
+                    <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span>
+                    <span class="k">else</span> <span class="n">cast</span><span class="p">(</span><span class="n">Quantity</span><span class="p">,</span> <span class="n">result</span><span class="o">.</span><span class="n">diagnostics</span><span class="p">[</span><span class="s2">"source_quadrature_area"</span><span class="p">])</span>
+                    <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m^2"</span><span class="p">)</span>
+                    <span class="o">.</span><span class="n">magnitude</span>
+                    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">source_area_relative_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
+            <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_sampled_area</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_geometric_area</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">detector_power</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">detector_sampled_area</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">detector_geometric_area</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">detector_area_relative_error</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">power_relative_change</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">power_within_tolerance</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">power_relative_to_finest</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="n">within_finest_tolerance</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">detector</span> <span class="ow">in</span> <span class="n">detectors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">measurements</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="kc">None</span> <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">result</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span>
+            <span class="p">]</span>
+
+            <span class="n">powers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">value</span><span class="o">.</span><span class="n">collected_power</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"W"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">measurements</span>
+                <span class="p">],</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">detector_power</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">powers</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">detector_sampled_area</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+                        <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="kc">None</span>
+                        <span class="k">else</span> <span class="p">(</span>
+                            <span class="mi">0</span>
+                            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span>
+                            <span class="k">else</span> <span class="n">value</span><span class="o">.</span><span class="n">sampled_area</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m^2"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                        <span class="p">)</span>
+                        <span class="k">for</span> <span class="n">result</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">measurements</span><span class="p">)</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+                <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span>
+            <span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">detector_geometric_area</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">detector</span><span class="o">.</span><span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">detector_area_relative_error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span>
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">detector_sampled_area</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector_geometric_area</span><span class="p">[</span><span class="n">name</span><span class="p">])</span>
+                <span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">""</span><span class="p">)</span>
+                <span class="o">.</span><span class="n">magnitude</span>
+                <span class="o">-</span> <span class="mi">1</span>
+            <span class="p">)</span>
+
+            <span class="n">difference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">powers</span><span class="p">))</span>
+
+            <span class="n">denominator</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">powers</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+            <span class="n">finite_pair</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">powers</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">powers</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="n">relative</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
+                <span class="n">difference</span><span class="p">,</span>
+                <span class="n">denominator</span><span class="p">,</span>
+                <span class="n">out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">difference</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span>
+                <span class="n">where</span><span class="o">=</span><span class="n">denominator</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">relative</span><span class="p">[(</span><span class="n">denominator</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">difference</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">relative</span><span class="p">[</span><span class="o">~</span><span class="n">finite_pair</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">power_relative_change</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(([</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="n">relative</span><span class="p">))</span>
+
+            <span class="n">limit</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_atol</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"W"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_rtol</span> <span class="o">*</span> <span class="n">denominator</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">power_within_tolerance</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span>
+                <span class="p">([</span><span class="kc">False</span><span class="p">],</span> <span class="n">finite_pair</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">difference</span> <span class="o">&lt;=</span> <span class="n">limit</span><span class="p">))</span>
+            <span class="p">)</span>
+
+            <span class="n">finest_difference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">powers</span> <span class="o">-</span> <span class="n">powers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="n">reference</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">powers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+            <span class="n">finest_relative</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span>
+                <span class="n">finest_difference</span><span class="p">,</span>
+                <span class="n">reference</span><span class="p">,</span>
+                <span class="n">out</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">powers</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">),</span>
+                <span class="n">where</span><span class="o">=</span><span class="n">reference</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">finest_relative</span><span class="p">[(</span><span class="n">reference</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">finest_difference</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+
+            <span class="n">finest_relative</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">powers</span><span class="p">)</span> <span class="o">|</span> <span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">reference</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">power_relative_to_finest</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">finest_relative</span>
+
+            <span class="n">within_finest_tolerance</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">powers</span><span class="p">)</span>
+                <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">reference</span><span class="p">)</span>
+                <span class="o">&amp;</span> <span class="p">(</span>
+                    <span class="n">finest_difference</span>
+                    <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_atol</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"W"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">power_rtol</span> <span class="o">*</span> <span class="n">reference</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">acceptable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source_area_relative_error</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">source_area_relative_error</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">area_rtol</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">detectors</span><span class="p">:</span>
+            <span class="n">area_error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector_area_relative_error</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+            <span class="n">acceptable</span> <span class="o">&amp;=</span> <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">power_within_tolerance</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+                <span class="o">&amp;</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">area_error</span><span class="p">)</span>
+                <span class="o">&amp;</span> <span class="p">(</span><span class="n">area_error</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">area_rtol</span><span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">acceptable</span> <span class="o">&amp;=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="ow">not</span> <span class="n">errors</span> <span class="k">for</span> <span class="n">errors</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">level_errors</span><span class="p">])</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">meets_tolerances</span> <span class="o">=</span> <span class="n">acceptable</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">stable_refinements</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">meshes</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">recommended_index</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">passed</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">acceptable</span><span class="p">):</span>
+            <span class="n">previous</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_refinements</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">index</span> <span class="k">else</span> <span class="mi">0</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">stable_refinements</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">previous</span> <span class="o">+</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">passed</span> <span class="k">else</span> <span class="mi">0</span>
+
+        <span class="c1"># Only recommend from the final uninterrupted sequence of passing checks.</span>
+        <span class="c1"># A later failure invalidates an apparent plateau on coarser meshes.</span>
+        <span class="n">final_streak</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stable_refinements</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">final_streak</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">required_consecutive</span><span class="p">:</span>
+            <span class="n">first_candidate</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">meshes</span><span class="p">)</span> <span class="o">-</span> <span class="n">final_streak</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">required_consecutive</span> <span class="o">-</span> <span class="mi">1</span>
+
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">first_candidate</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">meshes</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="n">within_finest_tolerance</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">detectors</span><span class="p">):</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">recommended_index</span> <span class="o">=</span> <span class="n">index</span>
+
+                    <span class="k">break</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">converged</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Report whether the final refinement sequence supports a mesh recommendation.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        bool</span>
+<span class="sd">            Whether the final stable refinement sequence supports a recommendation.</span>
+<span class="sd">        """</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">recommended_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">recommended_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the recommended mesh when the convergence criteria are met.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        CartesianMesh or None</span>
+<span class="sd">            Recommended existing mesh, or None when criteria are not met.</span>
+<span class="sd">        """</span>
+
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="kc">None</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recommended_index</span> <span class="ow">is</span> <span class="kc">None</span>
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">meshes</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">recommended_index</span><span class="p">]</span>
+        <span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">recommended_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the node shape of the recommended mesh, if any.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple of int or None</span>
+<span class="sd">            Recommended node counts, or None when no mesh is recommended.</span>
+<span class="sd">        """</span>
+
+        <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">recommended_mesh</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">recommended_mesh</span><span class="o">.</span><span class="n">shape</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">records</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Return per-level records with quantities intact and explicit failure flags.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of dict</span>
+<span class="sd">            Per-level quantities, detector diagnostics, and explicit failure flags.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">[</span>
+            <span class="p">{</span>
+                <span class="s2">"mesh_shape"</span><span class="p">:</span> <span class="n">shape</span><span class="p">,</span>
+                <span class="s2">"node_count"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">node_counts</span><span class="p">[</span><span class="n">index</span><span class="p">]),</span>
+                <span class="s2">"source_sampled_area"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_sampled_area</span><span class="p">[</span><span class="n">index</span><span class="p">],</span>
+                <span class="s2">"source_area_relative_error"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">source_area_relative_error</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="p">),</span>
+                <span class="s2">"detectors"</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="n">name</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">"collected_power"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector_power</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">index</span><span class="p">],</span>
+                        <span class="s2">"sampled_area"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector_sampled_area</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">index</span><span class="p">],</span>
+                        <span class="s2">"area_relative_error"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">detector_area_relative_error</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+                        <span class="p">),</span>
+                        <span class="s2">"power_relative_change"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">power_relative_change</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+                        <span class="p">),</span>
+                        <span class="s2">"power_relative_to_finest"</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">power_relative_to_finest</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="n">index</span><span class="p">]</span>
+                        <span class="p">),</span>
+                    <span class="p">}</span>
+                    <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span>
+                <span class="p">},</span>
+                <span class="s2">"meets_tolerances"</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meets_tolerances</span><span class="p">[</span><span class="n">index</span><span class="p">]),</span>
+                <span class="s2">"stable_refinements"</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stable_refinements</span><span class="p">[</span><span class="n">index</span><span class="p">]),</span>
+                <span class="s2">"errors"</span><span class="p">:</span> <span class="nb">dict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">level_errors</span><span class="p">[</span><span class="n">index</span><span class="p">]),</span>
+            <span class="p">}</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">shape</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh_shapes</span><span class="p">)</span>
+        <span class="p">]</span>
+
+<div class="viewcode-block" id="DetectorConvergenceResult.plot">
+<a class="viewcode-back" href="../../python_api.html#MomentRT.DetectorConvergenceResult.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">power_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mW"</span><span class="p">,</span> <span class="n">area_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm^2"</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Compare powers, aperture areas, and source area against mesh node count.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        power_unit : str, optional</span>
+<span class="sd">            Power unit used for plotted detector signals.</span>
+<span class="sd">            Default is 'mW'.</span>
+<span class="sd">        area_unit : str, optional</span>
+<span class="sd">            Area unit used for plotted sampled and geometric areas.</span>
+<span class="sd">            Default is 'mm^2'.</span>
+<span class="sd">        show : bool, optional</span>
+<span class="sd">            Whether to display the figure immediately. The figure is always returned.</span>
+<span class="sd">            Default is True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        plotly.graph_objects.Figure</span>
+<span class="sd">            Composable interactive figure, also displayed when show is True.</span>
+<span class="sd">        """</span>
+
+        <span class="n">go</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">require_plotly</span><span class="p">()</span>
+
+        <span class="n">figure</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">make_subplots</span><span class="p">(</span>
+            <span class="n">rows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+            <span class="n">cols</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">subplot_titles</span><span class="o">=</span><span class="p">(</span>
+                <span class="s2">"Collected power"</span><span class="p">,</span>
+                <span class="s2">"Detector sampled area"</span><span class="p">,</span>
+                <span class="s2">"Source sampled area"</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">number</span><span class="p">,</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="p">):</span>
+            <span class="n">color</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">qualitative</span><span class="o">.</span><span class="n">Plotly</span><span class="p">[</span>
+                <span class="n">number</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">qualitative</span><span class="o">.</span><span class="n">Plotly</span><span class="p">)</span>
+            <span class="p">]</span>
+
+            <span class="k">for</span> <span class="n">column</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="p">(</span>
+                <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector_power</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">power_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">),</span>
+                <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector_sampled_area</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">area_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">),</span>
+            <span class="p">):</span>
+                <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                    <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                        <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_counts</span><span class="p">,</span>
+                        <span class="n">y</span><span class="o">=</span><span class="n">values</span><span class="p">,</span>
+                        <span class="n">mode</span><span class="o">=</span><span class="s2">"lines+markers"</span><span class="p">,</span>
+                        <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                        <span class="n">legendgroup</span><span class="o">=</span><span class="sa">f</span><span class="s2">"detector:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                        <span class="n">showlegend</span><span class="o">=</span><span class="n">column</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+                        <span class="n">line</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="n">color</span><span class="p">},</span>
+                    <span class="p">),</span>
+                    <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                    <span class="n">col</span><span class="o">=</span><span class="n">column</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_counts</span><span class="p">,</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+                        <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meshes</span><span class="p">),</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">detector_geometric_area</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">area_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                    <span class="p">),</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">"lines"</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> geometric area"</span><span class="p">,</span>
+                    <span class="n">legendgroup</span><span class="o">=</span><span class="sa">f</span><span class="s2">"detector:</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                    <span class="n">showlegend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">line</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="n">color</span><span class="p">,</span> <span class="s2">"dash"</span><span class="p">:</span> <span class="s2">"dash"</span><span class="p">},</span>
+                <span class="p">),</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">dash</span> <span class="ow">in</span> <span class="p">(</span>
+            <span class="p">(</span>
+                <span class="s2">"Source sampled area"</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">source_sampled_area</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">area_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                <span class="s2">"solid"</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="p">(</span>
+                <span class="s2">"Source geometric area"</span><span class="p">,</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span>
+                    <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meshes</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">source_geometric_area</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">area_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                <span class="p">),</span>
+                <span class="s2">"dash"</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">):</span>
+            <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_counts</span><span class="p">,</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">values</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">"lines+markers"</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
+                    <span class="n">legendgroup</span><span class="o">=</span><span class="s2">"source"</span><span class="p">,</span>
+                    <span class="n">showlegend</span><span class="o">=</span><span class="n">dash</span> <span class="o">==</span> <span class="s2">"solid"</span><span class="p">,</span>
+                    <span class="n">line</span><span class="o">=</span><span class="p">{</span><span class="s2">"color"</span><span class="p">:</span> <span class="s2">"crimson"</span><span class="p">,</span> <span class="s2">"dash"</span><span class="p">:</span> <span class="n">dash</span><span class="p">},</span>
+                <span class="p">),</span>
+                <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                <span class="n">col</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">figure</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span>
+            <span class="n">title_text</span><span class="o">=</span><span class="s2">"Mesh nodes"</span><span class="p">,</span>
+            <span class="nb">type</span><span class="o">=</span><span class="s2">"log"</span><span class="p">,</span>
+            <span class="n">tickmode</span><span class="o">=</span><span class="s2">"array"</span><span class="p">,</span>
+            <span class="n">tickvals</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">node_counts</span><span class="p">,</span>
+            <span class="n">ticktext</span><span class="o">=</span><span class="p">[</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">int</span><span class="p">(</span><span class="n">count</span><span class="p">)</span><span class="si">:</span><span class="s2">,</span><span class="si">}</span><span class="s2">"</span> <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">node_counts</span><span class="p">],</span>
+            <span class="n">tickangle</span><span class="o">=-</span><span class="mi">35</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">figure</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">title_text</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Power [</span><span class="si">{</span><span class="n">power_unit</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">figure</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">title_text</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Area [</span><span class="si">{</span><span class="n">area_unit</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="n">figure</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">title_text</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Area [</span><span class="si">{</span><span class="n">area_unit</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span> <span class="n">row</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="n">recommendation</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"no mesh meets the criteria"</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">converged</span>
+            <span class="k">else</span> <span class="sa">f</span><span class="s2">"recommended </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">recommended_shape</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">)</span>
+
+        <span class="n">figure</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+            <span class="n">template</span><span class="o">=</span><span class="s2">"plotly_white"</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">"text"</span><span class="p">:</span> <span class="sa">f</span><span class="s2">"Detector refinement at </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2"> — </span><span class="si">{</span><span class="n">recommendation</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                <span class="s2">"y"</span><span class="p">:</span> <span class="mf">0.98</span><span class="p">,</span>
+                <span class="s2">"yanchor"</span><span class="p">:</span> <span class="s2">"top"</span><span class="p">,</span>
+                <span class="s2">"x"</span><span class="p">:</span> <span class="mf">0.06</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">legend</span><span class="o">=</span><span class="p">{</span>
+                <span class="s2">"orientation"</span><span class="p">:</span> <span class="s2">"h"</span><span class="p">,</span>
+                <span class="s2">"y"</span><span class="p">:</span> <span class="mf">1.08</span><span class="p">,</span>
+                <span class="s2">"yanchor"</span><span class="p">:</span> <span class="s2">"bottom"</span><span class="p">,</span>
+                <span class="s2">"x"</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="n">margin</span><span class="o">=</span><span class="p">{</span><span class="s2">"t"</span><span class="p">:</span> <span class="mi">120</span><span class="p">},</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">figure</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">figure</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="SpectralSimulationResult">
+<a class="viewcode-back" href="../../python_api.html#MomentRT.SpectralSimulationResult">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">SpectralSimulationResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Ordered independent monochromatic solves on one instrument geometry.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    wavelengths : pint.Quantity</span>
+<span class="sd">        Nonempty one-dimensional vector of positive vacuum wavelengths.</span>
+<span class="sd">    results : sequence of SimulationResult</span>
+<span class="sd">        One solution for each wavelength, in the same order. All solutions</span>
+<span class="sd">        must contain the same detector names.</span>
+<span class="sd">    diagnostics : mapping of str to object, or None, optional</span>
+<span class="sd">        Numerical provenance, residuals, geometry statistics, or timing quantities.</span>
+<span class="sd">        Default is None.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    wavelengths : pint.Quantity</span>
+<span class="sd">        Supplied vacuum wavelengths in their original units and order.</span>
+<span class="sd">    results : tuple of SimulationResult</span>
+<span class="sd">        One independent solution at each wavelength.</span>
+<span class="sd">    diagnostics : dict of str to object</span>
+<span class="sd">        Sweep preparation count and unit-bearing preparation, solve, and total</span>
+<span class="sd">        timings when created by Simulation.sweep.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
+        <span class="n">results</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span><span class="p">],</span>
+        <span class="n">diagnostics</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Initialize the SpectralSimulationResult configuration.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wavelengths : pint.Quantity</span>
+<span class="sd">            Nonempty one-dimensional vector of positive vacuum wavelengths.</span>
+<span class="sd">        results : sequence of SimulationResult</span>
+<span class="sd">            One solution for each wavelength, in the same order. All solutions</span>
+<span class="sd">            must contain the same detector names.</span>
+<span class="sd">        diagnostics : mapping of str to object, or None, optional</span>
+<span class="sd">            Numerical provenance, residuals, geometry statistics, or timing quantities.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        """</span>
+
+        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"wavelengths"</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">wavelengths</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavelengths must be a nonempty vector."</span><span class="p">)</span>
+
+        <span class="n">results</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">any</span><span class="p">(</span>
+            <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">SimulationResult</span><span class="p">)</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Supply one SimulationResult for each wavelength."</span><span class="p">)</span>
+
+        <span class="n">names</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detectors</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">detectors</span><span class="p">)</span> <span class="o">!=</span> <span class="n">names</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"All spectral results must contain the same detector names."</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span> <span class="o">=</span> <span class="n">wavelengths</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">results</span> <span class="o">=</span> <span class="n">results</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">diagnostics</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">diagnostics</span> <span class="ow">or</span> <span class="p">{})</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">detectors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">DetectorResult</span><span class="p">,</span> <span class="o">...</span><span class="p">]]:</span>
+<span class="w">        </span><span class="sd">"""Return each detector's measurements in supplied wavelength order.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict of str to tuple of DetectorResult</span>
+<span class="sd">            Detector names mapped to monochromatic measurements, including</span>
+<span class="sd">            collected power and sampled and geometric aperture areas. These</span>
+<span class="sd">            are independent solves, not a broadband integral.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detectors</span>
+        <span class="p">}</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">detector_power</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Quantity</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Return collected powers keyed by detector name.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        dict of str to pint.Quantity</span>
+<span class="sd">            Collected optical powers keyed by detector name.</span>
+<span class="sd">        """</span>
+
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="n">name</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="p">[</span>
+                    <span class="n">result</span><span class="o">.</span><span class="n">detector_power</span><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"W"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+                    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span>
+                <span class="p">]</span>
+            <span class="p">)</span>
+            <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">detectors</span>
+        <span class="p">}</span>
+
+<div class="viewcode-block" id="SpectralSimulationResult.plot">
+<a class="viewcode-back" href="../../python_api.html#MomentRT.SpectralSimulationResult.plot">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">wavelength_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"nm"</span><span class="p">,</span> <span class="n">power_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mW"</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Plot collected power for each detector; no spectral integration is applied.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wavelength_unit : str, optional</span>
+<span class="sd">            Length unit used for plotted vacuum wavelengths.</span>
+<span class="sd">            Default is 'nm'.</span>
+<span class="sd">        power_unit : str, optional</span>
+<span class="sd">            Power unit used for plotted detector signals.</span>
+<span class="sd">            Default is 'mW'.</span>
+<span class="sd">        show : bool, optional</span>
+<span class="sd">            Whether to display the figure immediately. The figure is always returned.</span>
+<span class="sd">            Default is True.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        plotly.graph_objects.Figure</span>
+<span class="sd">            Composable interactive figure, also displayed when show is True.</span>
+<span class="sd">        """</span>
+
+        <span class="n">powers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector_power</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">powers</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Configure detectors to plot a collected-power spectrum."</span><span class="p">)</span>
+
+        <span class="n">go</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">require_plotly</span><span class="p">()</span>
+
+        <span class="n">figure</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">power</span> <span class="ow">in</span> <span class="n">powers</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+                <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+                    <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">wavelength_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                    <span class="n">y</span><span class="o">=</span><span class="n">power</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">power_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                    <span class="n">mode</span><span class="o">=</span><span class="s2">"lines+markers"</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+
+        <span class="n">figure</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+            <span class="n">template</span><span class="o">=</span><span class="s2">"plotly_white"</span><span class="p">,</span>
+            <span class="n">title</span><span class="o">=</span><span class="s2">"Collected power across wavelengths"</span><span class="p">,</span>
+            <span class="n">xaxis_title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Wavelength [</span><span class="si">{</span><span class="n">wavelength_unit</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span>
+            <span class="n">yaxis_title</span><span class="o">=</span><span class="sa">f</span><span class="s2">"Collected power [</span><span class="si">{</span><span class="n">power_unit</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">figure</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">figure</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

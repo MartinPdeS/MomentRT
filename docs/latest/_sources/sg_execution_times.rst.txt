@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:17.242** total execution time for 16 files **from all galleries**:
+**00:17.206** total execution time for 16 files **from all galleries**:
 
 .. container::
 
@@ -33,49 +33,49 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_finite_samples_seven_fiber_skin.py` (``../examples/finite_samples/seven_fiber_skin.py``)
-     - 00:06.999
+     - 00:06.965
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_compare_p3.py` (``../examples/finite_samples/compare_p3.py``)
-     - 00:02.340
+     - 00:02.219
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_surface_diffusion.py` (``../examples/finite_samples/surface_diffusion.py``)
-     - 00:01.149
+     - 00:01.160
      - 0.0
    * - :ref:`sphx_glr_gallery_fundamentals_absorption_sweep.py` (``../examples/fundamentals/absorption_sweep.py``)
-     - 00:01.087
+     - 00:01.128
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_detector_convergence.py` (``../examples/finite_samples/detector_convergence.py``)
-     - 00:01.005
+     - 00:01.065
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_sp3_spectral_anisotropy.py` (``../examples/finite_samples/sp3_spectral_anisotropy.py``)
-     - 00:00.926
+     - 00:00.933
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_structured_sample.py` (``../examples/finite_samples/structured_sample.py``)
-     - 00:00.918
+     - 00:00.920
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_spectral_detectors.py` (``../examples/finite_samples/spectral_detectors.py``)
-     - 00:00.426
+     - 00:00.430
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_reflectance_sweep.py` (``../examples/finite_samples/reflectance_sweep.py``)
-     - 00:00.396
+     - 00:00.413
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_mesh_refinement.py` (``../examples/finite_samples/mesh_refinement.py``)
-     - 00:00.395
+     - 00:00.396
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_sp3_layered_anisotropy.py` (``../examples/finite_samples/sp3_layered_anisotropy.py``)
-     - 00:00.375
+     - 00:00.379
      - 0.0
    * - :ref:`sphx_glr_gallery_fundamentals_infinite_diffusion.py` (``../examples/fundamentals/infinite_diffusion.py``)
-     - 00:00.335
+     - 00:00.297
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_uniform_surface_source.py` (``../examples/finite_samples/uniform_surface_source.py``)
-     - 00:00.253
+     - 00:00.257
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_surface_detector.py` (``../examples/finite_samples/surface_detector.py``)
-     - 00:00.224
+     - 00:00.227
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_compare_sp3.py` (``../examples/finite_samples/compare_sp3.py``)
-     - 00:00.223
+     - 00:00.225
      - 0.0
    * - :ref:`sphx_glr_gallery_finite_samples_phase_functions.py` (``../examples/finite_samples/phase_functions.py``)
      - 00:00.192

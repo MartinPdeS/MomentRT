@@ -246,7 +246,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.224 seconds)
+   **Total running time of the script:** (0 minutes 0.227 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_surface_detector.py:

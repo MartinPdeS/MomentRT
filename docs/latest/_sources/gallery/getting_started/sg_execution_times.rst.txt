@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:03.555** total execution time for 4 files **from gallery/getting_started**:
+**00:03.558** total execution time for 4 files **from gallery/getting_started**:
 
 .. container::
 
@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_getting_started_infinite_diffusion.py` (``infinite_diffusion.py``)
-     - 00:01.254
+     - 00:01.216
      - 0.0
    * - :ref:`sphx_glr_gallery_getting_started_surface_diffusion.py` (``surface_diffusion.py``)
-     - 00:01.125
+     - 00:01.138
      - 0.0
    * - :ref:`sphx_glr_gallery_getting_started_structured_sample.py` (``structured_sample.py``)
-     - 00:00.917
+     - 00:00.975
      - 0.0
    * - :ref:`sphx_glr_gallery_getting_started_uniform_surface_source.py` (``uniform_surface_source.py``)
-     - 00:00.260
+     - 00:00.228
      - 0.0

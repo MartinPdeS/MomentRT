@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:02.964** total execution time for 4 files **from gallery/transport_models**:
+**00:02.824** total execution time for 4 files **from gallery/transport_models**:
 
 .. container::
 
@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_transport_models_compare_p3.py` (``compare_p3.py``)
-     - 00:02.181
+     - 00:02.067
      - 0.0
    * - :ref:`sphx_glr_gallery_transport_models_sp3_layered_anisotropy.py` (``sp3_layered_anisotropy.py``)
-     - 00:00.372
+     - 00:00.361
      - 0.0
    * - :ref:`sphx_glr_gallery_transport_models_compare_sp3.py` (``compare_sp3.py``)
-     - 00:00.221
+     - 00:00.215
      - 0.0
    * - :ref:`sphx_glr_gallery_transport_models_phase_functions.py` (``phase_functions.py``)
-     - 00:00.191
+     - 00:00.181
      - 0.0

@@ -3,9 +3,10 @@ Check finite-element mesh refinement
 ====================================
 
 Repeat one finite-sample solve on three meshes and compare the centerline
-fluence profiles. A stable curve is evidence about discretization for this
-setup; it does not validate the P1 approximation against radiative transfer.
-All inputs are illustrative.
+fluence profiles, then inspect a recorded P1 FEM performance benchmark. A
+stable curve is evidence about discretization for this setup; it does not
+validate the P1 approximation against radiative transfer. Sample inputs are
+illustrative.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/mesh_refinement.png'
@@ -159,6 +160,61 @@ for shape, result in zip(mesh_shapes, results):
         f"linear residual = {residual:.3e}, "
         f"energy residual = {energy_residual:.3e}"
     )
+
+# %%
+# Recorded FEM timing benchmark
+# -----------------------------
+# The table separates geometry preparation, sparse matrix combination, LU
+# factorization, and the production ``spsolve`` call. It records one P1 solve
+# per mesh on an Apple M3 (arm64), macOS 26.6.2, Python 3.14.7, NumPy 2.5.4,
+# and SciPy 1.18.1. The benchmark used a homogeneous 4 mm cube with
+# absorption 0.02 mm⁻¹, reduced scattering 1 mm⁻¹, anisotropy 0.8, refractive
+# index 1.4, and effective reflectance 0.2. A 1 mW uniform source illuminated
+# one face at 850 nm. Preparation includes tetrahedral geometry, material
+# labels, element stiffness and mass assembly, boundary quadrature, and source
+# load. The combination column only times adding the prepared region matrices.
+# Assembly and factorization are medians of three repetitions; ``spsolve`` is
+# one wall-time measurement. Harness RSS includes the Python and SciPy runtime
+# and retained LU factors while another factorization is measured; it is not
+# the peak memory of a single production solve. Timings are machine-specific
+# and are not solver accuracy claims.
+
+benchmark_rows = [
+    ("9³", "729", "0.016", "0.11", "0.003", "0.003", "164"),
+    ("13³", "2,197", "0.034", "0.16", "0.016", "0.016", "184"),
+    ("17³", "4,913", "0.081", "0.30", "0.078", "0.080", "246"),
+    ("21³", "9,261", "0.159", "0.48", "0.272", "0.275", "373"),
+    ("25³", "15,625", "0.283", "0.90", "0.951", "0.951", "605"),
+]
+
+benchmark_figure, benchmark_axes = plt.subplots(figsize=(11, 3.2))
+
+benchmark_axes.axis("off")
+
+benchmark_table = benchmark_axes.table(
+    cellText=benchmark_rows,
+    colLabels=(
+        "Cubic mesh",
+        "Nodes",
+        "Prepare (s)",
+        "Combine (ms)",
+        "LU (s)",
+        "spsolve (s)",
+        "Harness RSS (MiB)",
+    ),
+    cellLoc="center",
+    loc="center",
+)
+
+benchmark_table.auto_set_font_size(False)
+
+benchmark_table.set_fontsize(8)
+
+benchmark_table.scale(1, 1.5)
+
+benchmark_axes.set_title("Recorded P1 FEM benchmark", pad=16)
+
+benchmark_figure.tight_layout()
 
 if show_figures:
     plt.show()

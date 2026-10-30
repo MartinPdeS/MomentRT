@@ -134,9 +134,20 @@ detector = MomentRT.SurfaceDetector.on_face(
     name="Collection",
 )
 
-mesh = MomentRT.CartesianMesh.from_sample(
+mesh = MomentRT.TetrahedralMesh.from_sample(
     sample=sample,
-    shape=(31 * 1, 21 * 1, 21 * 1),
+    resolution=0.2 * ureg.millimeter,
+)
+
+mesh.refine_region(
+    name="Epidermis",
+    resolution=0.06 * ureg.millimeter,
+)
+
+mesh.refine_near(
+    objects=[*sources, detector],
+    resolution=0.08 * ureg.millimeter,
+    distance=0.1 * ureg.millimeter,
 )
 
 boundary = MomentRT.RobinBoundary(effective_reflectance=0)
@@ -202,11 +213,12 @@ print(f"Collection geometric area: {detector_result.geometric_area.to('mm^2'):~P
 # before interpreting a result; the approximations themselves also require
 # validation against a suitable radiative-transfer or Monte Carlo reference.
 
-overlays = [*sources, detector, *sample.structures]
+overlays = [mesh, *sources, detector, *sample.structures]
 
 fluence_figure = result.fluence.plot(
     view="volume",
     scale="linear",
+    display_resolution=0.1 * ureg.millimeter,
     overlays=overlays,
     show=show_figures,
 )

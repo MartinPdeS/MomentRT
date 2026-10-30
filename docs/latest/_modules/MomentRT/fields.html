@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.fields &#8212; MomentRT 0.8.3 documentation</title>
+    <title>MomentRT.fields &#8212; MomentRT 0.8.4 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=ec54a975"></script>
+    <script src="../../_static/documentation_options.js?v=0477e8c5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.3" />
+  <meta name="docsearch:version" content="0.8.4" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -498,6 +498,7 @@
 <span></span><span class="sd">"""Unit-bearing nodal scalar fields with mesh-aware visualization."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
@@ -509,14 +510,15 @@
 <div class="viewcode-block" id="ScalarField">
 <a class="viewcode-back" href="../../python_api.html#MomentRT.ScalarField">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ScalarField</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">"""Unit-bearing scalar samples at Cartesian mesh nodes.</span>
+<span class="w">    </span><span class="sd">"""Unit-bearing scalar samples at Cartesian or unstructured mesh nodes.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    mesh : CartesianMesh</span>
-<span class="sd">        Cartesian nodes used for sampling or finite-element discretization.</span>
+<span class="sd">    mesh : CartesianMesh or TetrahedralMesh</span>
+<span class="sd">        Nodal coordinates for sampling or finite-element discretization.</span>
 <span class="sd">    values : pint.Quantity</span>
-<span class="sd">        Finite nodal scalar values with shape equal to mesh.shape.</span>
+<span class="sd">        Finite nodal scalar values with shape equal to mesh.shape: Cartesian</span>
+<span class="sd">        axis counts or (N,) for an unstructured mesh.</span>
 <span class="sd">        The supplied physical units are retained.</span>
 <span class="sd">    name : str</span>
 <span class="sd">        Nonempty name identifying this object.</span>
@@ -528,7 +530,7 @@
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">,</span>
+        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">,</span>
         <span class="n">values</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span>
         <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
         <span class="n">metadata</span><span class="p">:</span> <span class="n">Mapping</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">object</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -537,8 +539,8 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        mesh : CartesianMesh</span>
-<span class="sd">            Cartesian nodes used for sampling or finite-element discretization.</span>
+<span class="sd">        mesh : CartesianMesh or TetrahedralMesh</span>
+<span class="sd">            Nodal coordinates for sampling or finite-element discretization.</span>
 <span class="sd">        values : pint.Quantity</span>
 <span class="sd">            Finite nodal scalar values with shape equal to mesh.shape.</span>
 <span class="sd">            The supplied physical units are retained.</span>
@@ -565,8 +567,8 @@
 
 <div class="viewcode-block" id="ScalarField.to_pyvista">
 <a class="viewcode-back" href="../../python_api.html#MomentRT.ScalarField.to_pyvista">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_pyvista</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">ImageData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Convert Cartesian data to a PyVista image grid.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">to_pyvista</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">DataSet</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Convert nodal values to the matching optional PyVista grid.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -576,8 +578,9 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        pyvista.ImageData</span>
-<span class="sd">            Cartesian VTK grid with coordinates converted to length_unit.</span>
+<span class="sd">        pyvista.ImageData or pyvista.UnstructuredGrid</span>
+<span class="sd">            Original Cartesian nodes or tetrahedral connectivity, with</span>
+<span class="sd">            coordinates converted to length_unit.</span>
 <span class="sd">        """</span>
 
         <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">to_pyvista</span><span class="p">(</span><span class="n">length_unit</span><span class="o">=</span><span class="n">length_unit</span><span class="p">)</span>
@@ -604,18 +607,67 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        path : str or pathlib.Path</span>
-<span class="sd">            Destination filename ending in .vti. Existing files may be overwritten.</span>
+<span class="sd">            Destination ending in .vti for Cartesian fields or .vtu for</span>
+<span class="sd">            tetrahedral fields. Existing files may be overwritten.</span>
 <span class="sd">        length_unit : str, optional</span>
 <span class="sd">            Length unit used for displayed or exported coordinates.</span>
 <span class="sd">            Default is 'mm'.</span>
 <span class="sd">        """</span>
 
-        <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span> <span class="o">!=</span> <span class="s2">".vti"</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Cartesian fields must be exported with a .vti extension."</span><span class="p">)</span>
+        <span class="n">extension</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">".vtu"</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">)</span> <span class="k">else</span> <span class="s2">".vti"</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">suffix</span> <span class="o">!=</span> <span class="n">extension</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"This mesh requires a </span><span class="si">{</span><span class="n">extension</span><span class="si">}</span><span class="s2"> extension."</span><span class="p">)</span>
 
         <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_pyvista</span><span class="p">(</span><span class="n">length_unit</span><span class="o">=</span><span class="n">length_unit</span><span class="p">)</span>
 
         <span class="n">grid</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ScalarField.resample">
+<a class="viewcode-back" href="../../python_api.html#MomentRT.ScalarField.resample">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">resample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">resolution</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">ScalarField</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Interpolate a tetrahedral nodal field onto a Cartesian display grid.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        resolution : pint.Quantity</span>
+<span class="sd">            Positive scalar or (3,) length specifying maximum display spacing.</span>
+<span class="sd">            This controls interpolation sampling, not FEM accuracy.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ScalarField</span>
+<span class="sd">            Independent Cartesian field with interpolation provenance. Values</span>
+<span class="sd">            use linear basis functions from the original tetrahedra; the</span>
+<span class="sd">            source field and unsmoothed element flux are unchanged.</span>
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"resample currently requires a tetrahedral nodal field."</span><span class="p">)</span>
+
+        <span class="n">lower</span><span class="p">,</span> <span class="n">upper</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">bounds</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">(</span><span class="n">origin</span><span class="o">=</span><span class="n">lower</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">upper</span> <span class="o">-</span> <span class="n">lower</span><span class="p">)</span>
+        <span class="n">mesh</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="o">.</span><span class="n">from_sample</span><span class="p">(</span>
+            <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
+            <span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">_interpolate</span><span class="p">(</span>
+            <span class="n">points</span><span class="o">=</span><span class="n">mesh</span><span class="o">.</span><span class="n">points</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="p">)</span>
+        <span class="n">metadata</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">"display_interpolation"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="s2">"linear basis functions on original tetrahedra"</span>
+        <span class="p">)</span>
+        <span class="n">metadata</span><span class="p">[</span><span class="s2">"original_node_count"</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">ScalarField</span><span class="p">(</span>
+            <span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span>
+            <span class="n">values</span><span class="o">=</span><span class="n">values</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+            <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+        <span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="ScalarField.plot">
@@ -628,14 +680,15 @@
         <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span><span class="p">,</span>
         <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">isosurface_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">display_resolution</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">overlays</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Plot the scalar field with optional source and detector geometry.</span>
+<span class="w">        </span><span class="sd">"""Plot the scalar field with optional physical geometry overlays.</span>
 
-<span class="sd">        Sources, detectors, and layers can be overlaid. Each object's ``name``</span>
-<span class="sd">        sets its legend label. Full-face sources and layers require physical</span>
-<span class="sd">        sample bounds recorded by the finite solver.</span>
+<span class="sd">        Meshes, sources, detectors, and layers can be overlaid. Each object's</span>
+<span class="sd">        ``name`` sets its legend label. Full-face sources and layers require</span>
+<span class="sd">        physical sample bounds recorded by the finite solver.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -657,10 +710,14 @@
 <span class="sd">            rendering. Both views expose a density slider. None uses 8 for</span>
 <span class="sd">            volume and 6 for isosurfaces; invalid for slices.</span>
 <span class="sd">            Default is None.</span>
+<span class="sd">        display_resolution : pint.Quantity or None, optional</span>
+<span class="sd">            Required maximum display spacing for tetrahedral fields, as a</span>
+<span class="sd">            scalar or (3,) length. The interpolated grid is for visualization</span>
+<span class="sd">            only. Default is None; Cartesian fields already have a grid.</span>
 <span class="sd">        overlays : iterable of objects or None, optional</span>
-<span class="sd">            Sources, detectors, or layers implementing the plotting hook.</span>
-<span class="sd">            Their ``name`` sets the legend label. Full-face sources and layers</span>
-<span class="sd">            require finite-sample bounds.</span>
+<span class="sd">            Meshes, sources, detectors, or layers implementing the plotting</span>
+<span class="sd">            hook. Their ``name`` sets the legend label. Full-face sources and</span>
+<span class="sd">            layers require finite-sample bounds.</span>
 <span class="sd">            Default is None.</span>
 <span class="sd">        show : bool, optional</span>
 <span class="sd">            Whether to display the figure immediately. The figure is always returned.</span>
@@ -679,8 +736,25 @@
 <span class="sd">        physical sample.</span>
 <span class="sd">        """</span>
 
+        <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">scale</span> <span class="o">==</span> <span class="s2">"log"</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"Log display requires strictly positive original nodal values."</span>
+                <span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">display_resolution</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">"Tetrahedral plots require an explicit display_resolution."</span>
+                <span class="p">)</span>
+
+            <span class="n">field</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="n">display_resolution</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">display_resolution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"display_resolution applies only to tetrahedral fields."</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">plot_field</span><span class="p">(</span>
-            <span class="n">field</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span>
+            <span class="n">field</span><span class="o">=</span><span class="n">field</span><span class="p">,</span>
             <span class="n">view</span><span class="o">=</span><span class="n">view</span><span class="p">,</span>
             <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
             <span class="n">length_unit</span><span class="o">=</span><span class="n">length_unit</span><span class="p">,</span>

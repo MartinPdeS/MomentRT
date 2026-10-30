@@ -227,18 +227,18 @@ model optical interference, fiber modes, or Fresnel entry losses.
     Fiber 5 source area: sampled 2.1666666666666665 mm², geometric 2.0106192982974678 mm²
     Fiber 6 source area: sampled 2.0 mm², geometric 2.0106192982974678 mm²
     P1 collected power: 0.06642209718791982 mW
-    P1 minimum fluence: -1.3068580830308083 W/m²
+    P1 minimum fluence: -1.3068580830308076 W/m²
     P1 energy residual: -1.3552527156068805e-18 W
     P1 sampled detector area: 1.6666666666666665 mm²
     P1 geometric detector area: 2.0106192982974678 mm²
     SP3 collected power: 0.06471650491678295 mW
-    SP3 minimum fluence: -1.0599514053421157 W/m²
-    SP3 energy residual: -8.944667923005412e-19 W
+    SP3 minimum fluence: -1.059951405342116 W/m²
+    SP3 energy residual: -8.673617379884035e-19 W
     SP3 sampled detector area: 1.6666666666666665 mm²
     SP3 geometric detector area: 2.0106192982974678 mm²
-    P3 collected power: 0.05794231277494402 mW
-    P3 minimum fluence: -1.6575186027265618 W/m²
-    P3 energy residual: 1.2739375526704677×10⁻¹⁸ W
+    P3 collected power: 0.057942312774943945 mW
+    P3 minimum fluence: -1.6575186027265552 W/m²
+    P3 energy residual: 1.111307226797642×10⁻¹⁸ W
     P3 sampled detector area: 1.6666666666666665 mm²
     P3 geometric detector area: 2.0106192982974678 mm²
 
@@ -306,7 +306,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.181 seconds)
+   **Total running time of the script:** (0 minutes 2.067 seconds)
 
 
 .. _sphx_glr_download_gallery_transport_models_compare_p3.py:

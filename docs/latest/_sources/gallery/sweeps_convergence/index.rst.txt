@@ -38,7 +38,7 @@ trends from numerical convergence checks.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Repeat one finite-sample solve on three meshes and compare the centerline fluence profiles. A stable curve is evidence about discretization for this setup; it does not validate the P1 approximation against radiative transfer. All inputs are illustrative.">
+    <div class="sphx-glr-thumbcontainer" tooltip="Repeat one finite-sample solve on three meshes and compare the centerline fluence profiles, then inspect a recorded P1 FEM performance benchmark. A stable curve is evidence about discretization for this setup; it does not validate the P1 approximation against radiative transfer. Sample inputs are illustrative.">
 
 .. only:: html
 

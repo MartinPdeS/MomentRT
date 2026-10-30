@@ -140,7 +140,7 @@ fiber. Each source supplies one sixth of the total coupled optical power.
 Disk footprints represent diffuse light already coupled into the tissue;
 fiber propagation, entry losses, and coherent interference are not modeled.
 
-.. GENERATED FROM PYTHON SOURCE LINES 99-146
+.. GENERATED FROM PYTHON SOURCE LINES 99-157
 
 .. code-block:: Python
 
@@ -182,9 +182,20 @@ fiber propagation, entry losses, and coherent interference are not modeled.
         name="Collection",
     )
 
-    mesh = MomentRT.CartesianMesh.from_sample(
+    mesh = MomentRT.TetrahedralMesh.from_sample(
         sample=sample,
-        shape=(31 * 1, 21 * 1, 21 * 1),
+        resolution=0.2 * ureg.millimeter,
+    )
+
+    mesh.refine_region(
+        name="Epidermis",
+        resolution=0.06 * ureg.millimeter,
+    )
+
+    mesh.refine_near(
+        objects=[*sources, detector],
+        resolution=0.08 * ureg.millimeter,
+        distance=0.1 * ureg.millimeter,
     )
 
     boundary = MomentRT.RobinBoundary(effective_reflectance=0)
@@ -198,14 +209,14 @@ fiber propagation, entry losses, and coherent interference are not modeled.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 147-151
+.. GENERATED FROM PYTHON SOURCE LINES 158-162
 
 Inspect the tissue geometry
 ---------------------------
 The transparent surfaces show the epidermis, dermis, and hypodermis in
 surface-to-depth order; the resolved fluence and seven fiber contacts follow.
 
-.. GENERATED FROM PYTHON SOURCE LINES 151-154
+.. GENERATED FROM PYTHON SOURCE LINES 162-165
 
 .. code-block:: Python
 
@@ -223,7 +234,7 @@ surface-to-depth order; the resolved fluence and seven fiber contacts follow.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 155-161
+.. GENERATED FROM PYTHON SOURCE LINES 166-172
 
 Solve all six illumination fibers together with SP3
 ---------------------------------------------------
@@ -232,7 +243,7 @@ disk profiles into one boundary load, so the transport system is solved once.
 This is simultaneous diffuse power illumination, not coherent interference.
 SP3 is not the full 3D P3 system.
 
-.. GENERATED FROM PYTHON SOURCE LINES 161-196
+.. GENERATED FROM PYTHON SOURCE LINES 172-207
 
 .. code-block:: Python
 
@@ -279,16 +290,16 @@ SP3 is not the full 3D P3 system.
 
  .. code-block:: none
 
-    Combined sampled source area: 0.18719999999999998 mm²; geometric area: 0.18849555921538758 mm²
+    Combined sampled source area: 0.17841146976034716 mm²; geometric area: 0.18849555921538758 mm²
     Total coupled illumination power: 1 mW
-    Central fiber collected power: 0.01227229730768403 mW
-    Collection sampled area: 0.030399999999999993 mm²
+    Central fiber collected power: 0.009094797876313263 mW
+    Collection sampled area: 0.029735244960057857 mm²
     Collection geometric area: 0.031415926535897934 mm²
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 197-204
+.. GENERATED FROM PYTHON SOURCE LINES 208-215
 
 Visualize the combined fluence and seven contacts
 -------------------------------------------------
@@ -298,16 +309,17 @@ circular areas. Refine the mesh and compare the combined detector signal
 before interpreting a result; the approximations themselves also require
 validation against a suitable radiative-transfer or Monte Carlo reference.
 
-.. GENERATED FROM PYTHON SOURCE LINES 204-215
+.. GENERATED FROM PYTHON SOURCE LINES 215-227
 
 .. code-block:: Python
 
 
-    overlays = [*sources, detector, *sample.structures]
+    overlays = [mesh, *sources, detector, *sample.structures]
 
     fluence_figure = result.fluence.plot(
         view="volume",
         scale="linear",
+        display_resolution=0.1 * ureg.millimeter,
         overlays=overlays,
         show=show_figures,
     )
@@ -318,19 +330,19 @@ validation against a suitable radiative-transfer or Monte Carlo reference.
 
 .. raw:: html
 
-   <iframe src="../../_static/gallery/seven_fiber_skin-2.html" title="Fluence rate — volume (linear scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+   <iframe src="../../_static/gallery/seven_fiber_skin-2.html" title="Fluence rate — volume (linear scale) — interpolated display" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 216-219
+.. GENERATED FROM PYTHON SOURCE LINES 228-231
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 219-221
+.. GENERATED FROM PYTHON SOURCE LINES 231-233
 
 .. code-block:: Python
 
@@ -350,7 +362,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.882 seconds)
+   **Total running time of the script:** (0 minutes 1.499 seconds)
 
 
 .. _sphx_glr_download_gallery_sources_detectors_seven_fiber_skin.py:

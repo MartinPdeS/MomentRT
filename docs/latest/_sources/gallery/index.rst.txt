@@ -51,6 +51,47 @@ finite samples and surface illumination.
       Use ``UniformSurfaceSource`` to illuminate an entire sample face and
       render the resulting field in 3D.
 
+Meshes
+------
+
+Create Cartesian and tetrahedral meshes, then inspect their regular spacing,
+global element size, and local refinement.
+
+.. grid:: 1 2 2 2
+   :gutter: 3
+
+   .. grid-item-card:: Cartesian mesh from node counts
+      :link: meshes/cartesian_shape
+      :link-type: doc
+      :img-top: meshes/images/thumb/sphx_glr_cartesian_shape_thumb.png
+      :img-alt: Regular Cartesian grid shown inside its sample bounds
+
+      Set explicit node counts for a regular grid and plot its cell edges.
+
+   .. grid-item-card:: Cartesian mesh from physical resolution
+      :link: meshes/cartesian_resolution
+      :link-type: doc
+      :img-top: meshes/images/thumb/sphx_glr_cartesian_resolution_thumb.png
+      :img-alt: Cartesian grid with different spacing by axis
+
+      Request spacing in physical units, including anisotropic spacing by axis.
+
+   .. grid-item-card:: Uniform tetrahedral mesh
+      :link: meshes/tetrahedral_global
+      :link-type: doc
+      :img-top: meshes/images/thumb/sphx_glr_tetrahedral_global_thumb.png
+      :img-alt: Tetrahedral elements inside the sample boundary
+
+      Generate and plot an unstructured tetrahedral mesh at a global target size.
+
+   .. grid-item-card:: Locally refined tetrahedral mesh
+      :link: meshes/tetrahedral_local
+      :link-type: doc
+      :img-top: meshes/images/thumb/sphx_glr_tetrahedral_local_thumb.png
+      :img-alt: Tetrahedral mesh refined around a skin layer and fiber contacts
+
+      Refine a named layer and the neighborhoods around a source and detector.
+
 Sources and detectors
 ---------------------
 
@@ -156,14 +197,14 @@ affects calculated fields and observables.
       Compare fluence profiles while holding reduced scattering and source
       configuration fixed.
 
-   .. grid-item-card:: Check finite-element mesh refinement
+   .. grid-item-card:: Mesh refinement and FEM timings
       :link: sweeps_convergence/mesh_refinement
       :link-type: doc
       :img-top: sweeps_convergence/images/thumb/sphx_glr_mesh_refinement_thumb.png
       :img-alt: Finite-sample fluence on the finest mesh
 
-      Compare a fixed sample and source over three grids to assess sensitivity
-      to discretization.
+      Compare fluence over three grids and inspect recorded FEM preparation,
+      assembly, factorization, and solve timings.
 
    .. grid-item-card:: Change boundary reflectance
       :link: sweeps_convergence/reflectance_sweep

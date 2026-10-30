@@ -76,6 +76,7 @@ with an explicitly modeled illuminated boundary.
 .. toctree::
    :hidden:
 
+   Meshes and local refinement <meshes>
    Finite-aperture detectors <detectors>
    SP3 transport <sp3>
    Full P3 transport <p3>

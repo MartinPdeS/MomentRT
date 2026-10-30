@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.transport.p3 &#8212; MomentRT 0.8.3 documentation</title>
+    <title>MomentRT.transport.p3 &#8212; MomentRT 0.8.4 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=ec54a975"></script>
+    <script src="../../../_static/documentation_options.js?v=0477e8c5"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.3" />
+  <meta name="docsearch:version" content="0.8.4" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -684,7 +684,7 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">medium</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">,</span>
         <span class="n">source</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">,</span>
-        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">,</span>
+        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">_PreparedP3</span><span class="p">:</span>
         <span class="n">validated</span> <span class="o">=</span> <span class="n">P3</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boundaries</span><span class="p">)</span>
 
@@ -699,7 +699,7 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">medium</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">,</span>
         <span class="n">source</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">,</span>
-        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">,</span>
+        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Solve the P3 moment equations at the source wavelength.</span>
 
@@ -709,7 +709,7 @@
 <span class="sd">            Finite sample with explicitly configured material anisotropies.</span>
 <span class="sd">        source : UniformSurfaceSource or SurfaceSource</span>
 <span class="sd">            Incoming isotropic diffuse source on a sample face.</span>
-<span class="sd">        mesh : CartesianMesh</span>
+<span class="sd">        mesh : CartesianMesh or TetrahedralMesh</span>
 <span class="sd">            Nodes spanning the sample.</span>
 
 <span class="sd">        Returns</span>
@@ -733,7 +733,7 @@
         <span class="o">*</span><span class="p">,</span>
         <span class="n">medium</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">,</span>
         <span class="n">source</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">,</span>
-        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">,</span>
+        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span><span class="p">:</span>
         <span class="n">materials</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">_finite_materials_at</span><span class="p">(</span>
             <span class="n">medium</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span>
@@ -945,11 +945,7 @@
                 <span class="n">wavelength</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span>
             <span class="p">)</span>
 
-        <span class="n">result_mesh</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">(</span>
-            <span class="n">shape</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
-            <span class="n">spacing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">spacing</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
-            <span class="n">origin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span>
-        <span class="p">)</span>
+        <span class="n">result_mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
         <span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">"transport"</span><span class="p">:</span> <span class="s2">"steady-state full P3 even-parity FEM"</span><span class="p">,</span>

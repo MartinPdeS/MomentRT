@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Python class reference &#8212; MomentRT 0.8.3 documentation</title>
+    <title>Python class reference &#8212; MomentRT 0.8.4 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=ec54a975"></script>
+    <script src="_static/documentation_options.js?v=0477e8c5"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.3" />
+  <meta name="docsearch:version" content="0.8.4" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -1115,7 +1115,7 @@ query lies outside the finite sample.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a>) – Cartesian nodes used for sampling or finite-element discretization.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a><em> or </em><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><em>TetrahedralMesh</em></a>) – Cartesian nodes used for sampling or finite-element discretization.</p></li>
 <li><p><strong>wavelength</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Vacuum wavelength used to resolve spectral materials. Required when
 any material is spectral; None retains fixed coefficients.
 Default is None.</p></li>
@@ -1140,7 +1140,7 @@ precedence follows insertion order, not optical mixing or CSG subtraction.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Optional compatibility argument; construction surfaces use the
+<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a><em>, </em><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><em>TetrahedralMesh</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Optional compatibility argument; construction surfaces use the
 physical sample bounds and do not depend on a numerical mesh.
 Default is None.</p></li>
 <li><p><strong>wavelength</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Vacuum wavelength used to resolve spectral materials. Required when
@@ -1550,7 +1550,7 @@ it does not alter the transport boundary or model refraction and lenses.</p>
 <li><p><strong>face</strong> (<em>{'x_min'</em><em>, </em><em>'x_max'</em><em>, </em><em>'y_min'</em><em>, </em><em>'y_max'</em><em>, </em><em>'z_min'</em><em>, </em><em>'z_max'}</em>) – Axis-aligned sample face; min and max refer to outward boundaries.</p></li>
 <li><p><strong>position</strong> (<em>pint.Quantity</em>) – Absolute Cartesian position, shape (3,), with length units.</p></li>
 <li><p><strong>radius</strong> (<em>pint.Quantity</em>) – Positive scalar radius with length units.</p></li>
-<li><p><strong>collection_axis</strong> (<em>array_like</em><em> of </em><em>float</em><em>, </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em>) – Nonzero dimensionless direction along accepted outgoing rays.
+<li><p><strong>collection_axis</strong> (<em>array_like</em><em> of </em><em>float</em><em>, </em><a class="reference internal" href="#MomentRT.TetrahedralMesh.shape" title="MomentRT.TetrahedralMesh.shape"><em>shape</em></a><em> (</em><em>3</em><em>,</em><em>)</em>) – Nonzero dimensionless direction along accepted outgoing rays.
 It is normalized internally and must point into the outward hemisphere.</p></li>
 <li><p><strong>acceptance_angle</strong> (<em>pint.Quantity</em>) – Acceptance-cone half-angle, from 0 to 90 degrees, with angular units.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Legend label. Default is <code class="docutils literal notranslate"><span class="pre">&quot;Surface</span> <span class="pre">detector&quot;</span></code>.</p></li>
@@ -1794,6 +1794,99 @@ This is not the normal-incidence Fresnel reflectance.</p>
 </pre></div>
 </div>
 <dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.CartesianMesh.bounds">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">bounds</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></span><a class="headerlink" href="#MomentRT.CartesianMesh.bounds" title="Link to this definition">#</a></dt>
+<dd><p>Return the lower and upper node coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Cartesian bounds with shape (2, 3) and length units.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.CartesianMesh.name">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#MomentRT.CartesianMesh.name" title="Link to this definition">#</a></dt>
+<dd><p>Return the default overlay name for this mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Display name used in plot legends.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.CartesianMesh.color">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">color</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#MomentRT.CartesianMesh.color" title="Link to this definition">#</a></dt>
+<dd><p>Return the default color used when this mesh is an overlay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Slate color used for mesh edges.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.CartesianMesh.resolution">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">resolution</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#MomentRT.CartesianMesh.resolution" title="Link to this definition">#</a></dt>
+<dd><p>Return the requested maximum spacing, when supplied to from_sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Independent copy of the requested scalar or (3,) length quantity.
+None when the mesh was configured using explicit node counts.
+Actual node separations are available through spacing.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.CartesianMesh.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#CartesianMesh.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.CartesianMesh.copy" title="Link to this definition">#</a></dt>
+<dd><p>Copy the mesh coordinates and requested resolution independently.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Independent mesh snapshot with identical nodes and resolution.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh">CartesianMesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.CartesianMesh.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#CartesianMesh.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.CartesianMesh.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the Cartesian grid and its translucent bounding surface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Coordinate unit. Default is ‘mm’.</p></li>
+<li><p><strong>max_edges</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum number of evenly selected grid edges. Default is 20000.</p></li>
+<li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – Display immediately when True. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Composable grid plot with physical coordinates and depth direction.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>plotly.graph_objects.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="MomentRT.CartesianMesh.points">
 <span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">points</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></span><a class="headerlink" href="#MomentRT.CartesianMesh.points" title="Link to this definition">#</a></dt>
 <dd><p>Generate Cartesian node coordinates using ij array ordering.</p>
@@ -1827,13 +1920,19 @@ Default is ‘mm’.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.CartesianMesh.from_sample">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#CartesianMesh.from_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.CartesianMesh.from_sample" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#CartesianMesh.from_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.CartesianMesh.from_sample" title="Link to this definition">#</a></dt>
 <dd><p>Create nodes spanning every face of the finite rectangular sample.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>sample</strong> (<a class="reference internal" href="#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><em>StructuredMedium</em></a>) – Finite rectangular sample with an explicit background.</p></li>
-<li><p><strong>shape</strong> (<em>tuple</em><em> of </em><em>int</em>) – Node counts (nx, ny, nz), each at least two.</p></li>
+<li><p><strong>resolution</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Positive maximum node spacing with length units. A scalar applies
+to all axes; a quantity of shape (3,) specifies (rx, ry, rz).
+Actual uniform spacing on each axis is adjusted downward to fit
+the sample exactly, within floating-point precision. Default is
+None. Supply exactly one of resolution and shape.</p></li>
+<li><p><strong>shape</strong> (<em>tuple</em><em> of </em><em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Node counts (nx, ny, nz), each at least two. Default is None.
+Supply exactly one of resolution and shape.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1841,6 +1940,254 @@ Default is ‘mm’.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh">CartesianMesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">TetrahedralMesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">points</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tetrahedra</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#TetrahedralMesh"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.TetrahedralMesh" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Conforming linear tetrahedra filling a finite rectangular sample.</p>
+<p>Generation and local refinement use the required Gmsh dependency.
+Imported connectivity and numerical solves do not require Gmsh. Resolution
+is a target element size, not a guaranteed upper bound on every edge.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<em>pint.Quantity</em>) – Node positions with shape (N, 3) and length units.</p></li>
+<li><p><strong>tetrahedra</strong> (<em>array_like</em><em> of </em><em>int</em>) – Tetrahedral node indices with shape (T, 4). Cells must fill the bounding
+rectangle without cavities, duplicate cells, or nonmanifold faces.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.points">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">points</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></span><a class="headerlink" href="#MomentRT.TetrahedralMesh.points" title="Link to this definition">#</a></dt>
+<dd><p>Return an independent copy of the unstructured node positions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Positions with shape (N, 3) and length units.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.name">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#MomentRT.TetrahedralMesh.name" title="Link to this definition">#</a></dt>
+<dd><p>Return the default overlay name for this mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Display name used in plot legends.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.color">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">color</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></span><a class="headerlink" href="#MomentRT.TetrahedralMesh.color" title="Link to this definition">#</a></dt>
+<dd><p>Return the default color used when this mesh is an overlay.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Slate color used for mesh edges.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.tetrahedra">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">tetrahedra</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">int64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#MomentRT.TetrahedralMesh.tetrahedra" title="Link to this definition">#</a></dt>
+<dd><p>Return an independent copy of element connectivity.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Tetrahedral node indices with shape (T, 4).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.faces">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">faces</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'x_min'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'x_max'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'y_min'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'y_max'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'z_min'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'z_max'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">int64</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#MomentRT.TetrahedralMesh.faces" title="Link to this definition">#</a></dt>
+<dd><p>Return exterior triangles grouped by the six physical sample faces.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Independent triangle connectivity arrays with shape (F, 3).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of str to ndarray of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.shape">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">shape</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#MomentRT.TetrahedralMesh.shape" title="Link to this definition">#</a></dt>
+<dd><p>Return the storage shape of an unstructured nodal scalar field.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>(N,), where N is the number of nodes; these are not grid axes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.bounds">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">bounds</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></span><a class="headerlink" href="#MomentRT.TetrahedralMesh.bounds" title="Link to this definition">#</a></dt>
+<dd><p>Return the physical lower and upper node coordinates.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bounds with shape (2, 3) and length units.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.resolution">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">resolution</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#MomentRT.TetrahedralMesh.resolution" title="Link to this definition">#</a></dt>
+<dd><p>Return the requested global target element size, when generated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Scalar length quantity, or None for imported connectivity. Actual
+edges may exceed the target; local rules can request smaller sizes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#TetrahedralMesh.copy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.TetrahedralMesh.copy" title="Link to this definition">#</a></dt>
+<dd><p>Copy geometry and refinement rules without invoking the mesher.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Independent snapshot unaffected by subsequent refinement.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh">TetrahedralMesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.from_sample">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#TetrahedralMesh.from_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.TetrahedralMesh.from_sample" title="Link to this definition">#</a></dt>
+<dd><p>Generate a mesh conforming to the sample and all region interfaces.</p>
+<p>Box, layer, and sphere surfaces are fragmented together by Gmsh. Final
+material assignment retains the sample’s insertion precedence.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sample</strong> (<a class="reference internal" href="#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><em>StructuredMedium</em></a>) – Finite rectangular geometry. A snapshot is retained for refinement.</p></li>
+<li><p><strong>resolution</strong> (<em>pint.Quantity</em>) – Positive scalar length setting the global target element size.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Generated linear tetrahedra with shared nodes at region interfaces.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh">TetrahedralMesh</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.refine_region">
+<span class="sig-name descname"><span class="pre">refine_region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#TetrahedralMesh.refine_region"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.TetrahedralMesh.refine_region" title="Link to this definition">#</a></dt>
+<dd><p>Regenerate with a smaller target size in a named region; return None.</p>
+<p>The rule covers the region’s geometric support, including parts later
+overridden by other regions. Generation succeeds before mutation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of a Box, Sphere, or Layer in the original sample snapshot.</p></li>
+<li><p><strong>resolution</strong> (<em>pint.Quantity</em>) – Positive scalar target length no larger than the global resolution.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.refine_near">
+<span class="sig-name descname"><span class="pre">refine_near</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">objects</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">distance</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#TetrahedralMesh.refine_near"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.TetrahedralMesh.refine_near" title="Link to this definition">#</a></dt>
+<dd><p>Regenerate with refinement near physical contact footprints.</p>
+<p>The fine target applies within distance of each disk, including its
+interior and radius. It transitions to the global size over another
+distance. This changes the mesh, not source or detector quadrature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>objects</strong> (<em>iterable</em><em> of </em><em>objects</em>) – SurfaceSource, SurfaceSourceGroup, or SurfaceDetector objects.
+Geometry is snapshotted; contacts must fit on their sample face.</p></li>
+<li><p><strong>resolution</strong> (<em>pint.Quantity</em>) – Positive scalar target length no larger than the global resolution.</p></li>
+<li><p><strong>distance</strong> (<em>pint.Quantity</em>) – Positive scalar length of the fine neighborhood and transition band.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_edges</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#TetrahedralMesh.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.TetrahedralMesh.plot" title="Link to this definition">#</a></dt>
+<dd><p>Display tetrahedral edges to inspect local mesh resolution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>length_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Coordinate unit. Default is ‘mm’.</p></li>
+<li><p><strong>max_edges</strong> (<em>int</em><em>, </em><em>optional</em>) – Maximum number of evenly selected edges. Default is 20000.
+The title reports when only a subset is displayed.</p></li>
+<li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – Display immediately when True. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Composable edge plot with physical coordinates and depth direction.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>plotly.graph_objects.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.to_pyvista">
+<span class="sig-name descname"><span class="pre">to_pyvista</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#TetrahedralMesh.to_pyvista"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.TetrahedralMesh.to_pyvista" title="Link to this definition">#</a></dt>
+<dd><p>Convert the actual tetrahedra to an optional PyVista grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>length_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Coordinate unit. Default is ‘mm’.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Linear tetrahedra with original node ordering and connectivity.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pyvista.UnstructuredGrid</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1917,7 +2264,7 @@ solve or sweep, with no persistent cache.</p>
 <li><p><strong>medium</strong> (<a class="reference internal" href="#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><em>StructuredMedium</em></a>) – Finite sample with a background and no internal refractive-index jumps.</p></li>
 <li><p><strong>source</strong> (<a class="reference internal" href="#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><em>UniformSurfaceSource</em></a><em> or </em><a class="reference internal" href="#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><em>SurfaceSource</em></a>) – Incoming diffuse illumination on a Robin face; optical power is
 already coupled into the sample.</p></li>
-<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a>) – Cartesian nodes used for sampling or finite-element discretization.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a><em> or </em><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><em>TetrahedralMesh</em></a>) – Nodal coordinates for sampling or finite-element discretization.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1969,7 +2316,7 @@ not establish accuracy against radiative transfer for a particular sensor.</p>
 <li><p><strong>medium</strong> (<a class="reference internal" href="#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><em>StructuredMedium</em></a>) – Finite sample with a background and equal internal indices.</p></li>
 <li><p><strong>source</strong> (<a class="reference internal" href="#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><em>UniformSurfaceSource</em></a><em> or </em><a class="reference internal" href="#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><em>SurfaceSource</em></a>) – Incoming diffuse power, uniformly distributed over the inward
 hemisphere at each point of the illuminated footprint.</p></li>
-<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a>) – Nodes spanning the finite sample.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a><em> or </em><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><em>TetrahedralMesh</em></a>) – Nodes spanning the finite sample.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2010,7 +2357,7 @@ validation for the intended configuration.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>medium</strong> (<a class="reference internal" href="#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><em>StructuredMedium</em></a>) – Finite sample with explicitly configured material anisotropies.</p></li>
 <li><p><strong>source</strong> (<a class="reference internal" href="#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><em>UniformSurfaceSource</em></a><em> or </em><a class="reference internal" href="#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><em>SurfaceSource</em></a>) – Incoming isotropic diffuse source on a sample face.</p></li>
-<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a>) – Nodes spanning the sample.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a><em> or </em><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><em>TetrahedralMesh</em></a>) – Nodes spanning the sample.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2035,14 +2382,14 @@ those configurations at runtime. No inheritance from this protocol is needed.</p
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.TransportSolver.solve">
 <span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/simulation.html#TransportSolver.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.TransportSolver.solve" title="Link to this definition">#</a></dt>
-<dd><p>Solve the transport problem on the supplied Cartesian mesh.</p>
+<dd><p>Solve the transport problem on a mesh supported by the implementation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>medium</strong> (<a class="reference internal" href="#MomentRT.HomogeneousMedium" title="MomentRT.HomogeneousMedium"><em>HomogeneousMedium</em></a><em> or </em><a class="reference internal" href="#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><em>StructuredMedium</em></a>) – Physical configuration supported by the implementation.</p></li>
 <li><p><strong>source</strong> (<a class="reference internal" href="#MomentRT.PointSource" title="MomentRT.PointSource"><em>PointSource</em></a><em> or </em><a class="reference internal" href="#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><em>UniformSurfaceSource</em></a>) – Illumination supported by the implementation, including groups of
 simultaneous surface sources.</p></li>
-<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a>) – Sampling nodes or finite-element grid.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a><em> or </em><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><em>TetrahedralMesh</em></a>) – Sampling nodes or finite-element grid.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -2067,7 +2414,7 @@ simultaneous surface sources.</p></li>
 <li><p><strong>medium</strong> (<a class="reference internal" href="#MomentRT.HomogeneousMedium" title="MomentRT.HomogeneousMedium"><em>HomogeneousMedium</em></a><em> or </em><a class="reference internal" href="#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><em>StructuredMedium</em></a>) – Physical material configuration, compatible with the chosen solver.</p></li>
 <li><p><strong>source</strong> (<a class="reference internal" href="#MomentRT.PointSource" title="MomentRT.PointSource"><em>PointSource</em></a><em>, </em><a class="reference internal" href="#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><em>UniformSurfaceSource</em></a><em>, or </em><em>iterable</em><em> of </em><a class="reference internal" href="#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><em>SurfaceSource</em></a>) – Illumination configuration. An iterable of disk sources is converted
 automatically to a SurfaceSourceGroup for one simultaneous solve.</p></li>
-<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a>) – Cartesian nodes used for sampling or finite-element discretization.</p></li>
+<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a><em> or </em><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><em>TetrahedralMesh</em></a>) – Nodal coordinates for sampling or finite-element discretization.</p></li>
 <li><p><strong>solver</strong> (<a class="reference internal" href="#MomentRT.TransportSolver" title="MomentRT.TransportSolver"><em>TransportSolver</em></a>) – Transport model implementing the keyword-only solve protocol.</p></li>
 <li><p><strong>detectors</strong> (<em>mapping</em><em> of </em><em>str to SurfaceDetector</em><em>, or </em><em>None</em><em>, </em><em>optional</em>) – Nonempty names mapped to passive contact detectors. None disables
 detector measurements.
@@ -2249,12 +2596,13 @@ accuracy. This report is a snapshot and never caches a prepared operator.</p>
 <dt class="sig sig-object py" id="MomentRT.ScalarField">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ScalarField</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metadata</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/fields.html#ScalarField"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.ScalarField" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Unit-bearing scalar samples at Cartesian mesh nodes.</p>
+<p>Unit-bearing scalar samples at Cartesian or unstructured mesh nodes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a>) – Cartesian nodes used for sampling or finite-element discretization.</p></li>
-<li><p><strong>values</strong> (<em>pint.Quantity</em>) – Finite nodal scalar values with shape equal to mesh.shape.
+<li><p><strong>mesh</strong> (<a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a><em> or </em><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><em>TetrahedralMesh</em></a>) – Nodal coordinates for sampling or finite-element discretization.</p></li>
+<li><p><strong>values</strong> (<em>pint.Quantity</em>) – Finite nodal scalar values with shape equal to mesh.shape: Cartesian
+axis counts or (N,) for an unstructured mesh.
 The supplied physical units are retained.</p></li>
 <li><p><strong>name</strong> (<em>str</em>) – Nonempty name identifying this object.</p></li>
 <li><p><strong>metadata</strong> (<em>mapping</em><em> of </em><em>str to object</em><em>, or </em><em>None</em><em>, </em><em>optional</em>) – Field provenance and optional physical sample bounds.
@@ -2265,17 +2613,18 @@ Default is None.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.ScalarField.to_pyvista">
 <span class="sig-name descname"><span class="pre">to_pyvista</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/fields.html#ScalarField.to_pyvista"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.ScalarField.to_pyvista" title="Link to this definition">#</a></dt>
-<dd><p>Convert Cartesian data to a PyVista image grid.</p>
+<dd><p>Convert nodal values to the matching optional PyVista grid.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>length_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Length unit used for displayed or exported coordinates.
 Default is ‘mm’.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Cartesian VTK grid with coordinates converted to length_unit.</p>
+<dd class="field-even"><p>Original Cartesian nodes or tetrahedral connectivity, with
+coordinates converted to length_unit.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pyvista.ImageData</p>
+<dd class="field-odd"><p>pyvista.ImageData or pyvista.UnstructuredGrid</p>
 </dd>
 </dl>
 </dd></dl>
@@ -2287,7 +2636,8 @@ Default is ‘mm’.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Destination filename ending in .vti. Existing files may be overwritten.</p></li>
+<li><p><strong>path</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Destination ending in .vti for Cartesian fields or .vtu for
+tetrahedral fields. Existing files may be overwritten.</p></li>
 <li><p><strong>length_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Length unit used for displayed or exported coordinates.
 Default is ‘mm’.</p></li>
 </ul>
@@ -2299,12 +2649,32 @@ Default is ‘mm’.</p></li>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.ScalarField.resample">
+<span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/fields.html#ScalarField.resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.ScalarField.resample" title="Link to this definition">#</a></dt>
+<dd><p>Interpolate a tetrahedral nodal field onto a Cartesian display grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>resolution</strong> (<em>pint.Quantity</em>) – Positive scalar or (3,) length specifying maximum display spacing.
+This controls interpolation sampling, not FEM accuracy.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Independent Cartesian field with interpolation provenance. Values
+use linear basis functions from the original tetrahedra; the
+source field and unsmoothed element flux are unchanged.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#MomentRT.ScalarField" title="MomentRT.ScalarField">ScalarField</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.ScalarField.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'volume'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isosurface_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/fields.html#ScalarField.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.ScalarField.plot" title="Link to this definition">#</a></dt>
-<dd><p>Plot the scalar field with optional source and detector geometry.</p>
-<p>Sources, detectors, and layers can be overlaid. Each object’s <code class="docutils literal notranslate"><span class="pre">name</span></code>
-sets its legend label. Full-face sources and layers require physical
-sample bounds recorded by the finite solver.</p>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">view</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'volume'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opacity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isosurface_count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">display_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/fields.html#ScalarField.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.ScalarField.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the scalar field with optional physical geometry overlays.</p>
+<p>Meshes, sources, detectors, and layers can be overlaid. Each object’s
+<code class="docutils literal notranslate"><span class="pre">name</span></code> sets its legend label. Full-face sources and layers require
+physical sample bounds recorded by the finite solver.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -2321,9 +2691,12 @@ Default is None.</p></li>
 rendering. Both views expose a density slider. None uses 8 for
 volume and 6 for isosurfaces; invalid for slices.
 Default is None.</p></li>
-<li><p><strong>overlays</strong> (<em>iterable</em><em> of </em><em>objects</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Sources, detectors, or layers implementing the plotting hook.
-Their <code class="docutils literal notranslate"><span class="pre">name</span></code> sets the legend label. Full-face sources and layers
-require finite-sample bounds.
+<li><p><strong>display_resolution</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Required maximum display spacing for tetrahedral fields, as a
+scalar or (3,) length. The interpolated grid is for visualization
+only. Default is None; Cartesian fields already have a grid.</p></li>
+<li><p><strong>overlays</strong> (<em>iterable</em><em> of </em><em>objects</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Meshes, sources, detectors, or layers implementing the plotting
+hook. Their <code class="docutils literal notranslate"><span class="pre">name</span></code> sets the legend label. Full-face sources and
+layers require finite-sample bounds.
 Default is None.</p></li>
 <li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the figure immediately. The figure is always returned.
 Default is True.</p></li>
@@ -2942,9 +3315,32 @@ Default is True.</p></li>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meshes-and-transport">Meshes and transport</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh"><code class="docutils literal notranslate"><span class="pre">CartesianMesh</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.bounds"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.bounds</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.name"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.color"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.resolution"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.resolution</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.copy"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.copy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.plot"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.plot()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.points"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.points</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.to_pyvista"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.to_pyvista()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.from_sample"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.from_sample()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.points"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.points</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.name"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.name</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.color"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.color</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.tetrahedra"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.tetrahedra</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.faces"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.faces</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.shape"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.shape</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.bounds"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.bounds</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.resolution"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.resolution</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.copy"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.copy()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.from_sample"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.from_sample()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.refine_region"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.refine_region()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.refine_near"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.refine_near()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.plot"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.to_pyvista"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.to_pyvista()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.InfiniteDiffusion"><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code></a><ul class="nav section-nav flex-column">
@@ -2986,6 +3382,7 @@ Default is True.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.ScalarField"><code class="docutils literal notranslate"><span class="pre">ScalarField</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.ScalarField.to_pyvista"><code class="docutils literal notranslate"><span class="pre">ScalarField.to_pyvista()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.ScalarField.export"><code class="docutils literal notranslate"><span class="pre">ScalarField.export()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.ScalarField.resample"><code class="docutils literal notranslate"><span class="pre">ScalarField.resample()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.ScalarField.plot"><code class="docutils literal notranslate"><span class="pre">ScalarField.plot()</span></code></a></li>
 </ul>
 </li>
@@ -3030,7 +3427,7 @@ Default is True.</p></li>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.8.3/docs/source/python_api.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.8.4/docs/source/python_api.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

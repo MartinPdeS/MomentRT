@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.medium &#8212; MomentRT 0.8.3 documentation</title>
+    <title>MomentRT.medium &#8212; MomentRT 0.8.4 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=ec54a975"></script>
+    <script src="../../_static/documentation_options.js?v=0477e8c5"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.4';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.3" />
+  <meta name="docsearch:version" content="0.8.4" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -875,14 +875,14 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">optical_fields</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">,</span>
+        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">,</span>
         <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">ScalarField</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Sample the material map onto mesh nodes, returning unit-bearing fields.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        mesh : CartesianMesh</span>
+<span class="sd">        mesh : CartesianMesh or TetrahedralMesh</span>
 <span class="sd">            Cartesian nodes used for sampling or finite-element discretization.</span>
 <span class="sd">        wavelength : pint.Quantity or None, optional</span>
 <span class="sd">            Vacuum wavelength used to resolve spectral materials. Required when</span>
@@ -936,7 +936,7 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span><span class="p">,</span>
         <span class="n">opacity</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.45</span><span class="p">,</span>
@@ -950,7 +950,7 @@
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        mesh : CartesianMesh or None, optional</span>
+<span class="sd">        mesh : CartesianMesh, TetrahedralMesh or None, optional</span>
 <span class="sd">            Optional compatibility argument; construction surfaces use the</span>
 <span class="sd">            physical sample bounds and do not depend on a numerical mesh.</span>
 <span class="sd">            Default is None.</span>

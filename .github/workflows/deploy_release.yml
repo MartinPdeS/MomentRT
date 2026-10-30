@@ -21,6 +21,7 @@ jobs:
       documentation_retain_versions: 5
       pypi_package_type: pure
       pypi_python_version: "3.11"
+      pypi_runner: macos-latest
       pypi_test_import: MomentRT
       # A noarch recipe produces one filename on every OS and Python version.
       # Publish one artifact; the CI matrix separately checks Python versions.

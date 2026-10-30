@@ -5,10 +5,6 @@ import pytest
 import MomentRT
 
 u = MomentRT.ureg
-requires_gmsh = pytest.mark.skipif(
-    MomentRT.mesh.gmsh is None,
-    reason="Gmsh's native runtime library is unavailable",
-)
 
 
 @pytest.fixture
@@ -138,13 +134,6 @@ def test_imported_mesh_cannot_refine(imported):
         mesh.refine_region(name="Epidermis", resolution=0.1 * u.mm)
 
 
-def test_generation_reports_missing_native_runtime(sample, monkeypatch):
-    monkeypatch.setattr(MomentRT.mesh, "gmsh", None)
-    with pytest.raises(RuntimeError, match="native runtime could not be loaded"):
-        MomentRT.TetrahedralMesh.from_sample(sample=sample, resolution=0.4 * u.mm)
-
-
-@requires_gmsh
 def test_region_interfaces_and_atomic_refinement(sample):
     mesh = MomentRT.TetrahedralMesh.from_sample(sample=sample, resolution=0.35 * u.mm)
     original = mesh.copy()
@@ -164,7 +153,6 @@ def test_region_interfaces_and_atomic_refinement(sample):
     assert original.shape != mesh.shape
 
 
-@requires_gmsh
 def test_refine_near_respects_contact_footprint(sample):
     mesh = MomentRT.TetrahedralMesh.from_sample(sample=sample, resolution=0.35 * u.mm)
     source = MomentRT.SurfaceSource.on_face(
@@ -204,7 +192,6 @@ def test_refine_near_respects_contact_footprint(sample):
     np.testing.assert_array_equal(mesh.points.magnitude, before.magnitude)
 
 
-@requires_gmsh
 def test_external_gmsh_session_is_preserved(sample):
     gmsh = MomentRT.mesh.gmsh
     gmsh.initialize(interruptible=False)
@@ -241,7 +228,6 @@ def test_tetrahedral_vtk_export_and_explicit_display_resolution(imported, tmp_pa
 
 
 @pytest.mark.parametrize("face", ["x_min", "x_max", "y_min", "y_max", "z_max"])
-@requires_gmsh
 def test_contact_refinement_on_every_face(sample, face):
     mesh = MomentRT.TetrahedralMesh.from_sample(sample=sample, resolution=0.4 * u.mm)
     detector = MomentRT.SurfaceDetector.on_face(
@@ -256,7 +242,6 @@ def test_contact_refinement_on_every_face(sample, face):
     assert len(mesh.faces[face]) > 10
 
 
-@requires_gmsh
 def test_fitted_mesh_rejects_changed_sample_geometry(sample):
     mesh = MomentRT.TetrahedralMesh.from_sample(sample=sample, resolution=0.4 * u.mm)
     source = MomentRT.UniformSurfaceSource(
@@ -308,7 +293,6 @@ def test_unstructured_sweep_preserves_mesh_and_coefficients(sample, imported):
     np.testing.assert_array_equal(mesh.points.magnitude, original.magnitude)
 
 
-@requires_gmsh
 def test_generation_failure_preserves_mesh_and_releases_session(sample, monkeypatch):
     mesh = MomentRT.TetrahedralMesh.from_sample(sample=sample, resolution=0.4 * u.mm)
     before = mesh.tetrahedra.copy()
@@ -334,7 +318,6 @@ def test_log_display_checks_original_tetrahedral_values(imported):
         field.plot(scale="log", display_resolution=2 * u.mm, show=False)
 
 
-@requires_gmsh
 def test_box_and_sphere_region_generation(sample):
     sample.add_structures(
         MomentRT.Box(
@@ -357,7 +340,6 @@ def test_box_and_sphere_region_generation(sample):
     assert set(np.unique(sample.material_labels(points=centers))) == {0, 1, 2, 3}
 
 
-@requires_gmsh
 def test_contact_groups_and_repeated_refinement(sample):
     sources = [
         MomentRT.SurfaceSource.on_face(

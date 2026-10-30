@@ -59,6 +59,7 @@ or boundary behavior.
 
    Start <getting_started>
    Guide <guide>
+   Choose a transport model <model_selection>
    Examples <gallery/index>
    Theory <theory/index>
    Reference <reference/index>

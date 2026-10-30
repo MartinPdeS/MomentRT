@@ -23,6 +23,12 @@ class InfiniteDiffusion:
     is applied. The observation window does not truncate the medium.
     """
 
+    model_notes: tuple[str, ...] = (
+        "InfiniteDiffusion is an analytical steady-state P1 Green function for an embedded isotropic point source in a homogeneous, unbounded medium.",
+        "The point-source singularity is excluded; boundaries, finite source footprints, and refractive interfaces are not modeled.",
+        "P1 diffusion is least reliable close to the source and where scattering does not dominate absorption.",
+    )
+
     def solve(
         self,
         *,
@@ -168,6 +174,13 @@ class Diffusion:
     errors require mesh refinement. Geometry preparation is scoped to a
     solve or sweep, with no persistent cache.
     """
+
+    model_notes: tuple[str, ...] = (
+        "Diffusion is a steady-state P1 approximation on a finite sample, using linear tetrahedra and centroid-sampled material coefficients.",
+        "Fluence is continuous across internal interfaces; refractive-index jumps are unsupported, while absorption and reduced scattering may vary.",
+        "P1 diffusion is least reliable close to illumination and in weakly scattering regions; mesh refinement does not remove this model error.",
+        "Robin effective_reflectance is supplied explicitly and is not inferred from refractive index.",
+    )
 
     def __init__(
         self,

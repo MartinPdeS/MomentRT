@@ -18,6 +18,8 @@ class ValidationReport:
         Boundary quadrature area sampled by the source, when available.
     detector_sampled_areas : mapping of str to pint.Quantity
         Boundary quadrature area sampled by each valid detector.
+    model_notes : tuple of str
+        Assumptions and known limits of the configured transport solver.
 
     Notes
     -----
@@ -32,6 +34,7 @@ class ValidationReport:
         warnings: tuple[str, ...],
         source_sampled_area: Quantity | None,
         detector_sampled_areas: Mapping[str, Quantity],
+        model_notes: tuple[str, ...] = (),
     ) -> None:
         """Store the independently collected validation findings.
 
@@ -45,6 +48,9 @@ class ValidationReport:
             Boundary quadrature area sampled by the source, when available.
         detector_sampled_areas : mapping of str to pint.Quantity
             Sampled boundary quadrature areas for valid detectors.
+        model_notes : tuple of str, optional
+            Assumptions and known limits of the configured transport solver.
+            Default is an empty tuple.
         """
         self.errors = errors
 
@@ -53,6 +59,8 @@ class ValidationReport:
         self.source_sampled_area = source_sampled_area
 
         self.detector_sampled_areas = dict(detector_sampled_areas)
+
+        self.model_notes = tuple(model_notes)
 
     @property
     def valid(self) -> bool:
@@ -78,6 +86,8 @@ class ValidationReport:
         lines.extend(f"Error: {error}" for error in self.errors)
 
         lines.extend(f"Warning: {warning}" for warning in self.warnings)
+
+        lines.extend(f"Model note: {note}" for note in self.model_notes)
 
         if self.source_sampled_area is not None:
             lines.append(f"Source sampled area: {self.source_sampled_area:~P}")

@@ -27,6 +27,12 @@ class P3:
     validation for the intended configuration.
     """
 
+    model_notes: tuple[str, ...] = (
+        "P3 is a steady-state full three-dimensional angular-moment approximation through degree 3, not a solution of the full radiative transfer equation.",
+        "P3 assumes isotropic incoming diffuse radiance and supports only zero-reflectance Robin faces with equal refractive index throughout; reflecting faces and index jumps are unsupported.",
+        "Detector angular acceptance uses a Lambertian approximation; validate the selected model against an independent reference for the intended use.",
+    )
+
     _EVEN = [
         (degree, order) for degree in (0, 2) for order in range(-degree, degree + 1)
     ]

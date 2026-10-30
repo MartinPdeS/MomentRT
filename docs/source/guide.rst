@@ -73,10 +73,15 @@ with an explicitly modeled illuminated boundary.
    parameters from refractive index or replaces validation against transport
    references for the geometry of interest.
 
+   Run ``simulation.validate()`` after assembling a configuration to see
+   solver-specific assumptions and limits alongside unsupported configurations
+   and mesh cautions. See :doc:`model_selection` for a comparison of the models.
+
 .. toctree::
    :hidden:
 
    Meshes and local refinement <meshes>
+   Choose a transport model <model_selection>
    Finite-aperture detectors <detectors>
    SP3 transport <sp3>
    Full P3 transport <p3>

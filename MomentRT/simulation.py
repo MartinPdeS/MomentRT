@@ -150,8 +150,9 @@ class Simulation:
         Returns
         -------
         ValidationReport
-            Independent errors, cautions, and sampled source and detector areas.
-            Validation does not solve transport or establish mesh convergence.
+            Independent errors, cautions, solver assumptions and limits, and
+            sampled source and detector areas. Validation does not solve
+            transport or establish mesh convergence.
         """
         return self._validate_configuration(wavelengths=wavelengths)
 
@@ -538,6 +539,7 @@ class Simulation:
             warnings=tuple(warnings),
             source_sampled_area=source_area,
             detector_sampled_areas=detector_areas,
+            model_notes=tuple(getattr(solver, "model_notes", ())),
         )
 
     def run(self) -> MomentRT.results.SimulationResult:

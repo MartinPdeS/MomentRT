@@ -29,6 +29,13 @@ class SP3:
     not establish accuracy against radiative transfer for a particular sensor.
     """
 
+    model_notes: tuple[str, ...] = (
+        "SP3 is a steady-state simplified P3 angular-moment approximation; it uses each material's normalized phase-function moments through degree 3.",
+        "SP3 assumes isotropic incoming diffuse radiance, requires zero-reflectance Robin conditions on illuminated faces, permits reflecting unilluminated faces, and requires equal internal refractive indices.",
+        "SP3 agreement with a slab reference verifies this implementation for that case, not accuracy for arbitrary geometries or sensors.",
+        "Detector angular acceptance uses a separate Lambertian approximation.",
+    )
+
     def __init__(
         self,
         *,

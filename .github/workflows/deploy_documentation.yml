@@ -15,6 +15,6 @@ jobs:
     with:
       python-version: "3.11"
       package-name: MomentRT
-      apt-package: xvfb jq
+      apt-package: xvfb jq libglu1-mesa
       debug: true
       fail-on-sphinx-warning: true

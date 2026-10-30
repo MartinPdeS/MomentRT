@@ -22,6 +22,7 @@ jobs:
       pypi_package_type: pure
       pypi_python_version: "3.11"
       pypi_test_import: MomentRT
+      pypi_apt_package: libglu1-mesa
       # A noarch recipe produces one filename on every OS and Python version.
       # Publish one artifact; the CI matrix separately checks Python versions.
       conda_python_versions: '["3.11"]'
@@ -30,9 +31,11 @@ jobs:
       conda_recipe_path: conda.recipe
       conda_test_import: MomentRT
       conda_channels: conda-forge
+      conda_apt_package: libglu1-mesa
       release_validation_command: >-
         python -m pip install "martinpdes-maintenance==0.2.2" &&
         python -m martinpdes_maintenance.cli check --version "${GITHUB_REF_NAME#v}"
+      documentation_apt_package: libglu1-mesa
     secrets:
       PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
       ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}

@@ -15,6 +15,9 @@ jobs:
     name: Run tests and generate coverage data
     runs-on: ubuntu-latest
     steps:
+      - name: Install Gmsh runtime library
+        run: sudo apt-get update && sudo apt-get install -y libglu1-mesa
+
       - name: Set up Python and CI dependencies
         uses: MartinPdeS/MPSActions/actions/setup-python@v2
         with:

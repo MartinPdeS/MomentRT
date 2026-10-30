@@ -3,7 +3,6 @@
 import os
 import sys
 from pathlib import Path
-
 from martinpdes_docs import configure
 
 package_name = "MomentRT"

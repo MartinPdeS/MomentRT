@@ -66,6 +66,7 @@ ValidationReport = MomentRT.validation.ValidationReport
 PointSource = MomentRT.source.PointSource
 SourceResolutionError = MomentRT.source.SourceResolutionError
 SurfaceSource = MomentRT.source.SurfaceSource
+SurfaceSourceGroup = MomentRT.source.SurfaceSourceGroup
 UniformSurfaceSource = MomentRT.source.UniformSurfaceSource
 ureg = MomentRT.units.ureg
 
@@ -92,6 +93,7 @@ __all__ = [
     "RobinBoundary",
     "ReflectingBoundary",
     "SurfaceSource",
+    "SurfaceSourceGroup",
     "UniformSurfaceSource",
     "VectorField",
     "Box",

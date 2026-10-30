@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 import copy
-from collections.abc import Iterable, Mapping
+from collections.abc import Iterable
 from typing import Literal, cast
 import numpy as np
 from numpy.typing import NDArray
@@ -415,7 +415,7 @@ class StructuredMedium:
         wavelength: Quantity | None = None,
         length_unit: str = "mm",
         opacity: float = 0.45,
-        overlays: Iterable[object] | Mapping[str, object] | None = None,
+        overlays: Iterable[object] | None = None,
         show: bool = True,
     ) -> MomentRT.plotting.Figure:
         """Plot named region surfaces; mesh is optional and does not define geometry.
@@ -439,9 +439,9 @@ class StructuredMedium:
         opacity : float, optional
             Construction-surface opacity in [0, 1].
             Default is 0.45.
-        overlays : iterable or mapping of str to object, or None, optional
-            Sources and detectors to draw on top of the sample geometry.
-            Mapping keys become legend labels. Objects must implement the
+        overlays : iterable of objects or None, optional
+            Sources, detectors, and layers to draw on top of the sample
+            geometry. Objects must implement the
             internal plotting hook used by the field visualizations.
             Default is None.
         show : bool, optional

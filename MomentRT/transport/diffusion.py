@@ -359,7 +359,31 @@ class _PreparedDiffusion:
 
         in_plane = [index for index in range(3) if index != axis]
 
-        if isinstance(self.source, MomentRT.source.SurfaceSource):
+        if isinstance(self.source, MomentRT.source.SurfaceSourceGroup):
+            for source in self.source.sources:
+                position = source.position.to("m").magnitude
+
+                face_coordinate = (
+                    lower[axis] if source.face.endswith("min") else upper[axis]
+                )
+
+                if not np.isclose(
+                    position[axis], face_coordinate, rtol=1e-12, atol=1e-15
+                ):
+                    raise ValueError("Source position must lie on its configured face.")
+
+                MomentRT.boundary._validate_face_disk(
+                    sample=self.medium,
+                    face=source.face,
+                    position=source.position,
+                    radius=source.radius,
+                )
+
+            self.source_geometric_area = sum(
+                np.pi * source.radius.to("m").magnitude ** 2
+                for source in self.source.sources
+            )
+        elif isinstance(self.source, MomentRT.source.SurfaceSource):
             position = self.source.position.to("m").magnitude
 
             face_coordinate = (

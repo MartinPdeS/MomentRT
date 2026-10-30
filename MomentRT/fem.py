@@ -214,6 +214,23 @@ def source_irradiance(
 
     selected = np.ones(quadrature.shape[:2], dtype=bool)
 
+    if isinstance(source, MomentRT.source.SurfaceSourceGroup):
+        irradiance = np.zeros(quadrature.shape[:2])
+        sampled_area = 0.0
+
+        for member in source.sources:
+            member_irradiance, member_area = source_irradiance(
+                quadrature=quadrature,
+                weights=weights,
+                source=member,
+            )
+
+            irradiance += member_irradiance
+
+            sampled_area += member_area
+
+        return irradiance, float(sampled_area)
+
     if isinstance(source, MomentRT.source.SurfaceSource):
         axis = "xyz".index(source.face[0])
 

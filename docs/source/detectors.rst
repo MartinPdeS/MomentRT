@@ -91,8 +91,8 @@ separate system figure:
        show=False,
    )
 
-Use a mapping such as ``overlays={"Reflection aperture": detector}`` to
-choose legend labels. Adding an overlay is visual composition and does not
+Set ``name`` and ``color`` on the detector to choose its legend label and
+plot color. Adding an overlay is visual composition and does not
 attach a new detector measurement to the result.
 
 Escaping flux and angular acceptance

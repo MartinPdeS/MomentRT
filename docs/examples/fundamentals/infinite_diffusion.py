@@ -48,7 +48,7 @@ medium = HomogeneousMedium(
 mesh = CartesianMesh(
     shape=(50, 50, 50),
     spacing=np.array([0.4, 0.4, 0.4]) * ureg.millimeter,
-    origin=np.array([-9.8, -9.8, -9.8]) * ureg.millimeter,
+    origin=(-9.8, -9.8, -9.8) * ureg.millimeter,
 )
 
 # %%

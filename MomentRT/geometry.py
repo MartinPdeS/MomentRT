@@ -1,6 +1,8 @@
 """Material-bearing geometry for finite samples; z increases into the sample."""
 
 from __future__ import annotations
+from collections.abc import Mapping
+from typing import Any
 import numpy as np
 from numpy.typing import NDArray
 from pint import Quantity
@@ -256,3 +258,46 @@ class Layer:
         upper = (self.depth + self.thickness).to("m").magnitude
 
         return (z >= lower) & (z <= upper)
+
+    def _add_to_figure(
+        self, *, figure: MomentRT.plotting.Figure, context: Mapping[str, Any]
+    ) -> None:
+        """Draw this layer as a transparent box over a scalar-field plot.
+
+        Parameters
+        ----------
+        figure : plotly.graph_objects.Figure
+            Figure to modify in place.
+        context : mapping of str to object
+            Coordinate units, finite sample bounds, legend label, and overlay
+            color supplied by the plotting system.
+        """
+
+        sample_origin = context.get("sample_origin")
+        sample_size = context.get("sample_size")
+
+        if sample_origin is None or sample_size is None:
+            raise ValueError(
+                "Layer overlays require finite-sample bounds saved by the solver."
+            )
+
+        length_unit = context["length_unit"]
+        origin = np.asarray(sample_origin.to(length_unit).magnitude, dtype=float)
+        size = np.asarray(sample_size.to(length_unit).magnitude, dtype=float)
+        origin[2] = self.depth.to(length_unit).magnitude
+        size[2] = self.thickness.to(length_unit).magnitude
+        hover = (
+            f"{self.name}<br>Depth: {self.depth.to(length_unit):~P}"
+            f"<br>Thickness: {self.thickness.to(length_unit):~P}<extra></extra>"
+        )
+
+        figure.add_trace(
+            MomentRT.plotting._box_surface(
+                origin=origin,
+                size=size,
+                name=context["name"],
+                color=context["overlay_color"],
+                opacity=0.12,
+                hover=hover,
+            )
+        )

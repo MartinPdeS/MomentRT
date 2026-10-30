@@ -36,6 +36,10 @@ class SurfaceDetector:
         It is normalized internally and must point into the outward hemisphere.
     acceptance_angle : pint.Quantity
         Acceptance-cone half-angle, from 0 to 90 degrees, with angular units.
+    name : str, optional
+        Legend label. Default is ``"Surface detector"``.
+    color : str, optional
+        Plotly-compatible color. Default is ``"royalblue"``.
 
     Notes
     -----
@@ -54,6 +58,8 @@ class SurfaceDetector:
         radius: Quantity,
         collection_axis: ArrayLike,
         acceptance_angle: Quantity,
+        name: str = "Surface detector",
+        color: str = "royalblue",
     ) -> None:
         """Initialize the SurfaceDetector configuration.
 
@@ -70,6 +76,10 @@ class SurfaceDetector:
             It is normalized internally and must point into the outward hemisphere.
         acceptance_angle : pint.Quantity
             Acceptance-cone half-angle, from 0 to 90 degrees, with angular units.
+        name : str, optional
+            Nonempty legend label.
+        color : str, optional
+            Nonempty Plotly-compatible color string.
         """
 
         if face not in MomentRT.boundary.FACES:
@@ -120,6 +130,12 @@ class SurfaceDetector:
         if np.dot(direction, normal) <= 0:
             raise ValueError("collection_axis must point into the outward hemisphere.")
 
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("name must be a nonempty string.")
+
+        if not isinstance(color, str) or not color.strip():
+            raise ValueError("color must be a nonempty Plotly color string.")
+
         self.face = face
 
         self.position = position.copy()
@@ -129,6 +145,10 @@ class SurfaceDetector:
         self.collection_axis = direction.copy()
 
         self.acceptance_angle = acceptance_angle.copy()
+
+        self.name = name
+
+        self.color = color
 
     @classmethod
     def on_face(
@@ -140,6 +160,8 @@ class SurfaceDetector:
         radius: Quantity,
         acceptance_angle: Quantity,
         orientation: str,
+        name: str = "Surface detector",
+        color: str = "royalblue",
     ) -> SurfaceDetector:
         """Place a detector on a face with an explicitly selected outward normal.
 
@@ -159,6 +181,10 @@ class SurfaceDetector:
         orientation : {'outward_normal'}
             Explicitly select the outward face normal as the collection axis.
             Use the main constructor for a tilted collection axis.
+        name : str, optional
+            Legend label. Default is ``"Surface detector"``.
+        color : str, optional
+            Plotly-compatible color. Default is ``"royalblue"``.
 
         Returns
         -------
@@ -182,6 +208,8 @@ class SurfaceDetector:
             radius=radius,
             collection_axis=axis,
             acceptance_angle=acceptance_angle,
+            name=name,
+            color=color,
         )
 
         detector._validate_sample(sample_origin=sample.origin, sample_size=sample.size)
@@ -196,6 +224,8 @@ class SurfaceDetector:
         face: MomentRT.boundary.Face,
         coordinates: Quantity,
         radius: Quantity,
+        name: str = "Surface detector",
+        color: str = "royalblue",
     ) -> SurfaceDetector:
         """Collect all escaping irradiance across a circular contact aperture.
 
@@ -210,6 +240,10 @@ class SurfaceDetector:
             by Cartesian axis.
         radius : pint.Quantity
             Positive aperture radius with length units.
+        name : str, optional
+            Legend label. Default is ``"Surface detector"``.
+        color : str, optional
+            Plotly-compatible color. Default is ``"royalblue"``.
 
         Returns
         -------
@@ -228,6 +262,8 @@ class SurfaceDetector:
             radius=radius,
             acceptance_angle=90 * MomentRT.units.ureg.degree,
             orientation="outward_normal",
+            name=name,
+            color=color,
         )
 
     @property
@@ -306,7 +342,7 @@ class SurfaceDetector:
             position=position, radius=radius, face=self.face
         )
 
-        name = context.get("name") or "Surface detector"
+        name = context["name"]
 
         figure.add_trace(
             go.Scatter3d(
@@ -314,7 +350,7 @@ class SurfaceDetector:
                 y=ring[:, 1],
                 z=ring[:, 2],
                 mode="lines",
-                line={"color": "royalblue", "width": 5},
+                line={"color": self.color, "width": 5},
                 name=name,
                 legendgroup=context.get("legendgroup"),
             )
@@ -324,7 +360,7 @@ class SurfaceDetector:
             figure=figure,
             position=position,
             ring=ring,
-            color="royalblue",
+            color=self.color,
             legendgroup=context.get("legendgroup"),
         )
 
@@ -333,7 +369,7 @@ class SurfaceDetector:
             start=position,
             direction=self.collection_axis,
             length=2 * radius,
-            color="royalblue",
+            color=self.color,
             label=f"Collection axis: {name}",
             legendgroup=context.get("legendgroup"),
         )

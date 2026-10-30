@@ -3,7 +3,6 @@
 import html
 import os
 from pathlib import Path
-
 from plotly import graph_objects as go
 
 

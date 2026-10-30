@@ -44,8 +44,8 @@ epidermis = MomentRT.Material(
 )
 
 sample = MomentRT.StructuredMedium(
-    origin=np.array([-4, -4, 0]) * ureg.millimeter,
-    size=np.array([8, 8, 4]) * ureg.millimeter,
+    origin=(-4, -4, 0) * ureg.millimeter,
+    size=(8, 8, 4) * ureg.millimeter,
 )
 
 sample.add_background(material=dermis)
@@ -70,6 +70,7 @@ for fiber_number in range(6):
         radius=0.8 * ureg.millimeter,
         wavelength=850 * ureg.nanometer,
         optical_power=(1 / 6) * ureg.milliwatt,
+        name=f"Illumination fiber {fiber_number + 1}",
     )
 
     sources.append(source)
@@ -81,6 +82,7 @@ detector = MomentRT.SurfaceDetector.on_face(
     radius=0.8 * ureg.millimeter,
     acceptance_angle=90 * ureg.degree,
     orientation="outward_normal",
+    name="Collection fiber",
 )
 
 mesh = MomentRT.CartesianMesh.from_sample(sample=sample, shape=(9, 9, 7))
@@ -170,13 +172,7 @@ for name, solver in solvers.items():
 # reference before interpreting the result for a particular sensor. The
 # gallery preview is captured from this same combined P3 volume.
 
-overlays = {
-    **{
-        f"Illumination fiber {number}": source
-        for number, source in enumerate(sources, start=1)
-    },
-    "Collection fiber": detector,
-}
+overlays = [*sources, detector]
 
 fluence_figure = combined_fields["P3"].plot(
     view="volume",

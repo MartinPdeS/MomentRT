@@ -1,7 +1,8 @@
 """Ideal isotropic point illumination inside an infinite medium."""
 
 from __future__ import annotations
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
+from html import escape
 from typing import Any
 import numpy as np
 from pint import Quantity
@@ -23,6 +24,10 @@ class PointSource:
         Positive scalar vacuum wavelength, with length units.
     optical_power : pint.Quantity
         Positive scalar optical power with power units.
+    name : str, optional
+        Legend label. Default is ``"Point source"``.
+    color : str, optional
+        Plotly-compatible color. Default is ``"crimson"``.
 
     Notes
     -----
@@ -31,7 +36,13 @@ class PointSource:
     """
 
     def __init__(
-        self, *, position: Quantity, wavelength: Quantity, optical_power: Quantity
+        self,
+        *,
+        position: Quantity,
+        wavelength: Quantity,
+        optical_power: Quantity,
+        name: str = "Point source",
+        color: str = "crimson",
     ) -> None:
         """Initialize the PointSource configuration.
 
@@ -43,6 +54,10 @@ class PointSource:
             Positive scalar vacuum wavelength, with length units.
         optical_power : pint.Quantity
             Positive scalar optical power with power units.
+        name : str, optional
+            Nonempty legend label.
+        color : str, optional
+            Nonempty Plotly-compatible color string.
         """
 
         MomentRT.units.validate_units(
@@ -57,11 +72,21 @@ class PointSource:
             value=optical_power, unit="W", name="optical_power", shape=(), positive=True
         )
 
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("name must be a nonempty string.")
+
+        if not isinstance(color, str) or not color.strip():
+            raise ValueError("color must be a nonempty Plotly color string.")
+
         self.position = position
 
         self.wavelength = wavelength
 
         self.optical_power = optical_power
+
+        self.name = name
+
+        self.color = color
 
     def _add_to_figure(
         self, *, figure: MomentRT.plotting.Figure, context: Mapping[str, Any]
@@ -86,8 +111,8 @@ class PointSource:
                 y=[position[1]],
                 z=[position[2]],
                 mode="markers",
-                marker={"color": "crimson", "size": 7},
-                name=context.get("name") or "Point source",
+                marker={"color": self.color, "size": 7},
+                name=context["name"],
                 legendgroup=context.get("legendgroup"),
             )
         )
@@ -108,6 +133,10 @@ class UniformSurfaceSource:
         Positive scalar vacuum wavelength, with length units.
     optical_power : pint.Quantity
         Positive scalar optical power with power units.
+    name : str, optional
+        Legend label. Default is ``"Full-face illumination"``.
+    color : str, optional
+        Plotly-compatible color. Default is ``"crimson"``.
 
     Notes
     -----
@@ -122,6 +151,8 @@ class UniformSurfaceSource:
         face: MomentRT.boundary.Face,
         wavelength: Quantity,
         optical_power: Quantity,
+        name: str = "Full-face illumination",
+        color: str = "crimson",
     ) -> None:
         """Initialize the UniformSurfaceSource configuration.
 
@@ -133,6 +164,10 @@ class UniformSurfaceSource:
             Positive scalar vacuum wavelength, with length units.
         optical_power : pint.Quantity
             Positive scalar optical power with power units.
+        name : str, optional
+            Nonempty legend label.
+        color : str, optional
+            Nonempty Plotly-compatible color string.
         """
 
         if face not in MomentRT.boundary.FACES:
@@ -146,11 +181,21 @@ class UniformSurfaceSource:
             value=optical_power, unit="W", name="optical_power", shape=(), positive=True
         )
 
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("name must be a nonempty string.")
+
+        if not isinstance(color, str) or not color.strip():
+            raise ValueError("color must be a nonempty Plotly color string.")
+
         self.face = face
 
         self.wavelength = wavelength
 
         self.optical_power = optical_power
+
+        self.name = name
+
+        self.color = color
 
     def _add_to_figure(
         self, *, figure: MomentRT.plotting.Figure, context: Mapping[str, Any]
@@ -206,11 +251,11 @@ class UniformSurfaceSource:
                 y=surface[..., 1],
                 z=surface[..., 2],
                 surfacecolor=np.zeros((2, 2)),
-                colorscale=[[0, "crimson"], [1, "crimson"]],
+                colorscale=[[0, self.color], [1, self.color]],
                 opacity=0.4,
                 showscale=False,
                 showlegend=True,
-                name=context.get("name") or "Full-face illumination",
+                name=context["name"],
                 legendgroup=context.get("legendgroup"),
             )
         )
@@ -226,8 +271,8 @@ class UniformSurfaceSource:
             start=position - length * direction,
             direction=direction,
             length=length,
-            color="crimson",
-            label="Inward normal (diffuse illumination)",
+            color=self.color,
+            label=f"Inward normal: {self.name}",
             legendgroup=context.get("legendgroup"),
         )
 
@@ -252,6 +297,10 @@ class SurfaceSource(UniformSurfaceSource):
         Positive scalar vacuum wavelength, with length units.
     optical_power : pint.Quantity
         Positive scalar optical power with power units.
+    name : str, optional
+        Legend label. Default is ``"Illumination spot"``.
+    color : str, optional
+        Plotly-compatible color. Default is ``"crimson"``.
 
     Notes
     -----
@@ -268,6 +317,8 @@ class SurfaceSource(UniformSurfaceSource):
         radius: Quantity,
         wavelength: Quantity,
         optical_power: Quantity,
+        name: str = "Illumination spot",
+        color: str = "crimson",
     ) -> None:
         """Initialize the SurfaceSource configuration.
 
@@ -283,9 +334,19 @@ class SurfaceSource(UniformSurfaceSource):
             Positive scalar vacuum wavelength, with length units.
         optical_power : pint.Quantity
             Positive scalar optical power with power units.
+        name : str, optional
+            Nonempty legend label.
+        color : str, optional
+            Nonempty Plotly-compatible color string.
         """
 
-        super().__init__(face=face, wavelength=wavelength, optical_power=optical_power)
+        super().__init__(
+            face=face,
+            wavelength=wavelength,
+            optical_power=optical_power,
+            name=name,
+            color=color,
+        )
 
         MomentRT.units.validate_units(
             value=position, unit="m", name="position", shape=(3,)
@@ -309,6 +370,8 @@ class SurfaceSource(UniformSurfaceSource):
         radius: Quantity,
         wavelength: Quantity,
         optical_power: Quantity,
+        name: str = "Illumination spot",
+        color: str = "crimson",
     ) -> SurfaceSource:
         """Place a circular source using absolute coordinates in a sample face.
 
@@ -327,6 +390,10 @@ class SurfaceSource(UniformSurfaceSource):
             Positive vacuum wavelength with length units.
         optical_power : pint.Quantity
             Incoming diffuse power already coupled into the sample.
+        name : str, optional
+            Legend label. Default is ``"Illumination spot"``.
+        color : str, optional
+            Plotly-compatible color. Default is ``"crimson"``.
 
         Returns
         -------
@@ -343,6 +410,8 @@ class SurfaceSource(UniformSurfaceSource):
             radius=radius,
             wavelength=wavelength,
             optical_power=optical_power,
+            name=name,
+            color=color,
         )
 
         MomentRT.boundary._validate_face_disk(
@@ -380,8 +449,8 @@ class SurfaceSource(UniformSurfaceSource):
                 y=ring[:, 1],
                 z=ring[:, 2],
                 mode="lines",
-                line={"color": "crimson", "width": 5},
-                name=context.get("name") or "Illumination spot",
+                line={"color": self.color, "width": 5},
+                name=context["name"],
                 legendgroup=context.get("legendgroup"),
             )
         )
@@ -390,7 +459,7 @@ class SurfaceSource(UniformSurfaceSource):
             figure=figure,
             position=position,
             ring=ring,
-            color="crimson",
+            color=self.color,
             legendgroup=context.get("legendgroup"),
         )
 
@@ -405,7 +474,103 @@ class SurfaceSource(UniformSurfaceSource):
             start=position - length * direction,
             direction=direction,
             length=length,
-            color="crimson",
-            label="Inward normal (diffuse illumination)",
+            color=self.color,
+            label=f"Inward normal: {self.name}",
             legendgroup=context.get("legendgroup"),
         )
+
+
+class SurfaceSourceGroup(UniformSurfaceSource):
+    """Simultaneous illumination from multiple circular surface footprints.
+
+    Each member disk is normalized independently to its configured optical
+    power. All disks must share a face and wavelength. The solver assembles
+    their summed incoming profile into one right-hand side.
+
+    Parameters
+    ----------
+    sources : iterable of SurfaceSource
+        Nonempty set of disk sources sharing one face and wavelength.
+    name : str, optional
+        Group name. Default is ``"Surface source group"``.
+    color : str, optional
+        Fallback Plotly color for the group. Member colors are used for plots.
+    """
+
+    def __init__(
+        self,
+        *,
+        sources: Iterable[SurfaceSource],
+        name: str = "Surface source group",
+        color: str = "crimson",
+    ) -> None:
+        """Initialize a set of simultaneously active surface sources.
+
+        Parameters
+        ----------
+        sources : iterable of SurfaceSource
+            Nonempty set of disk sources sharing one face and wavelength.
+        name : str, optional
+            Nonempty group name used for simulation provenance.
+        color : str, optional
+            Nonempty Plotly-compatible fallback color.
+        """
+
+        sources = tuple(sources)
+
+        if not sources or any(
+            not isinstance(source, SurfaceSource) for source in sources
+        ):
+            raise ValueError("sources must contain at least one SurfaceSource.")
+
+        first = sources[0]
+
+        if any(
+            source.face != first.face
+            or not np.isclose(
+                source.wavelength.to("m").magnitude,
+                first.wavelength.to("m").magnitude,
+                rtol=1e-12,
+                atol=0,
+            )
+            for source in sources[1:]
+        ):
+            raise ValueError("All grouped sources must share a face and wavelength.")
+
+        optical_power = sum(
+            (source.optical_power for source in sources),
+            0 * MomentRT.units.ureg.watt,
+        )
+
+        super().__init__(
+            face=first.face,
+            wavelength=first.wavelength,
+            optical_power=optical_power,
+            name=name,
+            color=color,
+        )
+
+        self.sources = sources
+
+    def _add_to_figure(
+        self, *, figure: MomentRT.plotting.Figure, context: Mapping[str, Any]
+    ) -> None:
+        """Draw every member footprint with its own label and color.
+
+        Parameters
+        ----------
+        figure : plotly.graph_objects.Figure
+            Figure to modify in place.
+        context : mapping of str to object
+            Coordinate units, sample bounds, and legend grouping.
+        """
+
+        for source in self.sources:
+            source._add_to_figure(
+                figure=figure,
+                context={
+                    **context,
+                    "name": escape(source.name),
+                    "legendgroup": context.get("legendgroup"),
+                },
+            )

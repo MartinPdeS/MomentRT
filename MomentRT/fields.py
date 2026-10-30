@@ -121,13 +121,13 @@ class ScalarField:
         length_unit: str = "mm",
         opacity: float | None = None,
         isosurface_count: int | None = None,
-        overlays: Iterable[object] | Mapping[str, object] | None = None,
+        overlays: Iterable[object] | None = None,
         show: bool = True,
     ) -> MomentRT.plotting.Figure:
         """Plot the scalar field with optional source and detector geometry.
 
-        overlays accepts an iterable of drawable objects or a mapping from
-        legend labels to objects. Full-face sources require the physical
+        Sources, detectors, and layers can be overlaid. Each object's ``name``
+        sets its legend label. Full-face sources and layers require physical
         sample bounds recorded by the finite solver.
 
         Parameters
@@ -149,9 +149,10 @@ class ScalarField:
             Positive number of iso levels for volume or isosurface rendering.
             None uses 8 for volume and 6 for isosurfaces; invalid for slices.
             Default is None.
-        overlays : iterable or mapping of str to object, or None, optional
-            Sources or detectors implementing the plotting hook. Mapping keys
-            become legend labels. Full-face sources require finite-sample bounds.
+        overlays : iterable of objects or None, optional
+            Sources, detectors, or layers implementing the plotting hook.
+            Their ``name`` sets the legend label. Full-face sources and layers
+            require finite-sample bounds.
             Default is None.
         show : bool, optional
             Whether to display the figure immediately. The figure is always returned.
@@ -165,8 +166,9 @@ class ScalarField:
         Notes
         -----
         Logarithmic rendering rejects nonpositive data rather than clipping it.
-        Full-face source overlays require physical sample bounds saved by the
-        finite solver; an infinite observation window is not a physical sample.
+        Full-face source and layer overlays require physical sample bounds
+        saved by the finite solver; an infinite observation window is not a
+        physical sample.
         """
 
         return MomentRT.plotting.plot_field(

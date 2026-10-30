@@ -52,8 +52,8 @@ upper_material = SpectralMaterial(
 )
 
 sample = StructuredMedium(
-    origin=np.array([-4, -3, 0]) * ureg.mm,
-    size=np.array([8, 6, 4]) * ureg.mm,
+    origin=(-4, -3, 0) * ureg.mm,
+    size=(8, 6, 4) * ureg.mm,
 )
 
 sample.add_background(material=background)
@@ -163,11 +163,7 @@ for wavelength, power in zip(wavelengths, spectrum.detector_power["reflection"])
 fluence_figure = spectrum.results[2].fluence.plot(
     view="volume",
     scale="log",
-    overlays={
-        "Illumination": source,
-        "Reflection detector": reflection_detector,
-        "Transmission detector": transmission_detector,
-    },
+    overlays=[source, reflection_detector, transmission_detector],
     show=show_figures,
 )
 

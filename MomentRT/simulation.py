@@ -31,7 +31,8 @@ class TransportSolver(Protocol):
         medium : HomogeneousMedium or StructuredMedium
             Physical configuration supported by the implementation.
         source : PointSource or UniformSurfaceSource
-            Illumination supported by the implementation.
+            Illumination supported by the implementation, including groups of
+            simultaneous surface sources.
         mesh : CartesianMesh
             Sampling nodes or finite-element grid.
 
@@ -50,8 +51,9 @@ class Simulation:
     ----------
     medium : HomogeneousMedium or StructuredMedium
         Physical material configuration, compatible with the chosen solver.
-    source : PointSource or UniformSurfaceSource
-        Illumination configuration; SurfaceSource is a finite disk subclass.
+    source : PointSource, UniformSurfaceSource, or iterable of SurfaceSource
+        Illumination configuration. An iterable of disk sources is converted
+        automatically to a SurfaceSourceGroup for one simultaneous solve.
     mesh : CartesianMesh
         Cartesian nodes used for sampling or finite-element discretization.
     solver : TransportSolver
@@ -66,7 +68,11 @@ class Simulation:
         self,
         *,
         medium: MomentRT.medium.HomogeneousMedium | MomentRT.medium.StructuredMedium,
-        source: MomentRT.source.PointSource | MomentRT.source.UniformSurfaceSource,
+        source: (
+            MomentRT.source.PointSource
+            | MomentRT.source.UniformSurfaceSource
+            | Iterable[MomentRT.source.SurfaceSource]
+        ),
         mesh: MomentRT.mesh.CartesianMesh,
         solver: MomentRT.simulation.TransportSolver,
         detectors: Mapping[str, MomentRT.detector.SurfaceDetector] | None = None,
@@ -77,8 +83,9 @@ class Simulation:
         ----------
         medium : HomogeneousMedium or StructuredMedium
             Physical material configuration, compatible with the chosen solver.
-        source : PointSource or UniformSurfaceSource
-            Illumination configuration; SurfaceSource is a finite disk subclass.
+        source : PointSource, UniformSurfaceSource, or iterable of SurfaceSource
+            Illumination configuration. An iterable of disk sources is
+            converted automatically to a SurfaceSourceGroup.
         mesh : CartesianMesh
             Cartesian nodes used for sampling or finite-element discretization.
         solver : TransportSolver
@@ -91,6 +98,21 @@ class Simulation:
 
         if detectors is not None and not isinstance(detectors, Mapping):
             raise TypeError("detectors must map names to SurfaceDetector objects.")
+
+        if not isinstance(
+            source, (MomentRT.source.PointSource, MomentRT.source.UniformSurfaceSource)
+        ):
+            if isinstance(source, (str, bytes, Mapping)):
+                raise TypeError(
+                    "source must be a source object or an iterable of SurfaceSource objects."
+                )
+
+            try:
+                source = MomentRT.source.SurfaceSourceGroup(sources=source)
+            except TypeError as error:
+                raise TypeError(
+                    "source must be a source object or an iterable of SurfaceSource objects."
+                ) from error
 
         detectors = dict(detectors or {})
 
@@ -354,7 +376,37 @@ class Simulation:
 
             source_valid = isinstance(source, MomentRT.source.UniformSurfaceSource)
 
-            if isinstance(source, MomentRT.source.SurfaceSource):
+            if isinstance(source, MomentRT.source.SurfaceSourceGroup):
+                for member in source.sources:
+                    try:
+                        axis = "xyz".index(member.face[0])
+
+                        face_coordinate = (
+                            lower[axis] if member.face.endswith("min") else upper[axis]
+                        )
+
+                        if not np.isclose(
+                            member.position.to("m").magnitude[axis],
+                            face_coordinate,
+                            rtol=1e-12,
+                            atol=1e-15,
+                        ):
+                            raise ValueError(
+                                "Source position must lie on its configured face."
+                            )
+
+                        MomentRT.boundary._validate_face_disk(
+                            sample=medium,
+                            face=member.face,
+                            position=member.position,
+                            radius=member.radius,
+                        )
+                    except (ValueError, TypeError) as error:
+                        source_valid = False
+
+                        errors.append(f"Source {member.name!r}: {error}")
+
+            elif isinstance(source, MomentRT.source.SurfaceSource):
                 try:
                     axis = "xyz".index(source.face[0])
 
@@ -400,15 +452,18 @@ class Simulation:
 
                         axis = "xyz".index(source.face[0])
 
-                        geometric = (
-                            np.pi * source.radius**2
-                            if isinstance(source, MomentRT.source.SurfaceSource)
-                            else np.prod(
+                        if isinstance(source, MomentRT.source.SurfaceSourceGroup):
+                            geometric = sum(
+                                np.pi * member.radius**2 for member in source.sources
+                            )
+                        elif isinstance(source, MomentRT.source.SurfaceSource):
+                            geometric = np.pi * source.radius**2
+                        else:
+                            geometric = np.prod(
                                 medium.size[
                                     [index for index in range(3) if index != axis]
                                 ]
                             )
-                        )
 
                         if abs((source_area / geometric).to("").magnitude - 1) > 0.02:
                             warnings.append(
@@ -579,10 +634,24 @@ class Simulation:
 
             source.wavelength = wavelength.copy()
 
+            if isinstance(source, MomentRT.source.SurfaceSourceGroup):
+                original_power = source.optical_power.copy()
+
+                source.sources = tuple(copy.copy(member) for member in source.sources)
+
+                for member in source.sources:
+                    member.wavelength = wavelength.copy()
+
             if optical_power is not None:
                 source.optical_power = (
                     optical_power if optical_power.shape == () else optical_power[index]
                 ).copy()
+
+                if isinstance(source, MomentRT.source.SurfaceSourceGroup):
+                    ratio = source.optical_power / original_power
+
+                    for member in source.sources:
+                        member.optical_power *= ratio
 
             simulation = Simulation(
                 medium=self.medium,
@@ -766,7 +835,11 @@ class Simulation:
                     "Each mesh must refine at least one axis and coarsen none."
                 )
 
-        if isinstance(source, MomentRT.source.SurfaceSource):
+        if isinstance(source, MomentRT.source.SurfaceSourceGroup):
+            source_geometric_area = sum(
+                np.pi * member.radius**2 for member in source.sources
+            )
+        elif isinstance(source, MomentRT.source.SurfaceSource):
             source_geometric_area = np.pi * source.radius**2
         else:
             axis = "xyz".index(source.face[0])
@@ -876,10 +949,7 @@ class Simulation:
 
         MomentRT.plotting._add_overlays(
             figure=figure,
-            overlays={
-                f"Detector: {name}": detector
-                for name, detector in self.detectors.items()
-            },
+            overlays=list(self.detectors.values()),
             context=context,
         )
 

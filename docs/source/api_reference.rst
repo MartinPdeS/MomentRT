@@ -58,7 +58,11 @@ positive ``radius``, ``wavelength``, and ``optical_power``. The spot is a
 circular top-hat and must fit fully on the face. ``UniformSurfaceSource``
 requires a face, wavelength, and optical power, and illuminates the complete
 face. Both finite-source classes specify power already coupled into the
-sample.
+sample. ``SurfaceSourceGroup(sources=[...])`` combines circular surface
+sources on the same face and wavelength into one simultaneous incoming profile
+and one transport solve. Passing an iterable of ``SurfaceSource`` objects as
+``Simulation(source=...)`` creates this group automatically. Each member disk
+is normalized to its own optical power.
 
 Detectors
 ---------
@@ -85,8 +89,8 @@ shape=...)`` creates a grid spanning every sample face.
 ``InfiniteDiffusion`` evaluates the analytical P1 Green function for a
 ``HomogeneousMedium`` and ``PointSource``. ``Diffusion`` requires a mapping
 that configures exactly six faces with ``RobinBoundary`` or
-``ReflectingBoundary`` objects. The finite solver accepts ``SurfaceSource`` or
-``UniformSurfaceSource``.
+``ReflectingBoundary`` objects. The finite solver accepts ``SurfaceSource``,
+``SurfaceSourceGroup``, or ``UniformSurfaceSource``.
 
 ``SP3`` solves two coupled moment equations on the same finite sample and
 uses each material's explicit :doc:`phase function <phase_functions>`. The
@@ -171,8 +175,9 @@ and isosurface views while leaving their default counts intact when omitted
 (it only applies to those views); and ``show`` controls whether the figure is
 immediately opened.
 The optional ``overlays`` argument adds sources and detectors to any scalar
-field's 3D view. Supply a sequence of objects or a mapping from legend labels
-to objects. Their spatial coordinates are converted to ``length_unit``.
+field's 3D view. Supply a sequence of source and detector objects; their
+``name`` and ``color`` attributes control legend labels and plot colors. Their
+spatial coordinates are converted to ``length_unit``.
 Full-face sources require the physical sample bounds saved by the finite
 solver. See :doc:`results` for examples.
 ``VectorField.plot(...)`` returns a Plotly cone plot and accepts

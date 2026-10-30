@@ -90,16 +90,13 @@ For example:
        show=False,
    )
 
-The sequence order determines drawing and legend order. To choose labels,
-supply a mapping instead:
+The sequence order determines drawing and legend order. Set ``name`` and
+``color`` on each source or detector to control its legend entry and color:
 
 .. code-block:: python
 
    figure = result.fluence.plot(
-       overlays={
-           "Illumination": source,
-           "Reflection aperture": reflection_detector,
-       },
+       overlays=[source, reflection_detector],
        length_unit="mm",
        show=False,
    )

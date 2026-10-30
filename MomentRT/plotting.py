@@ -216,7 +216,7 @@ def plot_medium(
 def _add_overlays(
     *,
     figure: MomentRT.plotting.Figure,
-    overlays: Iterable[object] | Mapping[str, object] | None,
+    overlays: Iterable[object] | None,
     context: Mapping[str, Any],
 ) -> None:
     """Add each object's spatial traces using a shared plotting context.
@@ -225,9 +225,10 @@ def _add_overlays(
     ----------
     figure : plotly.graph_objects.Figure
         Figure to modify in place.
-    overlays : iterable or mapping of str to object, or None
-        Sources or detectors implementing the plotting hook. Mapping keys
-        become legend labels. Full-face sources require finite-sample bounds.
+    overlays : iterable of objects or None
+        Sources, detectors, or layers implementing the plotting hook. Each
+        object's name sets its legend label; drawable colors come from the
+        object when available, otherwise from the overlay palette.
     context : mapping of str to object
         Coordinate units, legend labels, and physical sample bounds.
     """
@@ -235,23 +236,15 @@ def _add_overlays(
     if overlays is None:
         return
 
-    if isinstance(overlays, Mapping):
-        entries = tuple(overlays.items())
+    if isinstance(overlays, (str, bytes, Mapping)):
+        raise TypeError("overlays must be an iterable of drawable objects.")
 
-        if any(not isinstance(name, str) or not name.strip() for name, _ in entries):
-            raise ValueError("Overlay labels must be nonempty strings.")
-    else:
-        if isinstance(overlays, (str, bytes)):
-            raise TypeError("overlays must be an iterable of drawable objects.")
+    try:
+        entries: tuple[object, ...] = tuple(cast(Any, overlays))
+    except TypeError as error:
+        raise TypeError("overlays must be an iterable of drawable objects.") from error
 
-        try:
-            entries = tuple((None, item) for item in overlays)
-        except TypeError as error:
-            raise TypeError(
-                "overlays must be an iterable of drawable objects."
-            ) from error
-
-    for _, item in entries:
+    for item in entries:
         if not callable(getattr(item, "_add_to_figure", None)):
             raise TypeError(
                 "Each overlay must implement _add_to_figure(figure=..., context=...)."
@@ -259,12 +252,21 @@ def _add_overlays(
 
     group_offset = len(figure.data)
 
-    for number, (name, item) in enumerate(entries):
-        item._add_to_figure(
+    for number, item in enumerate(entries):
+        name = getattr(item, "name", None)
+
+        if not isinstance(name, str) or not name.strip():
+            raise ValueError("Each overlay must have a nonempty name.")
+
+        overlay_colors = ["#E5AD79", "#CB7582", "#EDCC71", "#65B3AD", "#7C93C3"]
+
+        cast(Any, item)._add_to_figure(
             figure=figure,
             context={
                 **context,
-                "name": None if name is None else escape(name),
+                "name": escape(name),
+                "overlay_color": getattr(item, "color", None)
+                or overlay_colors[number % len(overlay_colors)],
                 "legendgroup": f"momentrt-overlay-{group_offset}-{number}",
             },
         )
@@ -421,7 +423,7 @@ def plot_field(
     opacity: float | None,
     isosurface_count: int | None,
     show: bool,
-    overlays: Iterable[object] | Mapping[str, object] | None = None,
+    overlays: Iterable[object] | None = None,
 ) -> MomentRT.plotting.Figure:
     """Visualize a scalar field with physical hover values and spatial overlays.
 
@@ -443,9 +445,9 @@ def plot_field(
         None uses 8 for volume and 6 for isosurfaces; invalid for slices.
     show : bool
         Whether to display the figure immediately. The figure is always returned.
-    overlays : iterable or mapping of str to object, or None, optional
-        Sources or detectors implementing the plotting hook. Mapping keys
-        become legend labels. Full-face sources require finite-sample bounds.
+    overlays : iterable of objects or None, optional
+        Sources, detectors, or layers implementing the plotting hook. Full-face
+        sources and layers require finite-sample bounds.
         Default is None.
 
     Returns
@@ -730,7 +732,7 @@ def plot_sample(
     sample: MomentRT.medium.StructuredMedium,
     length_unit: str,
     opacity: float,
-    overlays: Iterable[object] | Mapping[str, object] | None,
+    overlays: Iterable[object] | None,
     show: bool,
 ) -> MomentRT.plotting.Figure:
     """Render construction surfaces with stable colors and material hover labels.
@@ -743,9 +745,9 @@ def plot_sample(
         Length unit used for displayed or exported coordinates.
     opacity : float
         Construction-surface opacity in [0, 1].
-    overlays : iterable or mapping of str to object, or None, optional
-        Sources and detectors to draw on top of the sample geometry.
-        Mapping keys become legend labels.
+    overlays : iterable of objects or None, optional
+        Sources and detectors to draw on top of the sample geometry. Their
+        ``name`` and ``color`` attributes set legend labels and plotting colors.
     show : bool
         Whether to display the figure immediately. The figure is always returned.
 
@@ -762,9 +764,9 @@ def plot_sample(
 
     figure = make_figure(length_unit=length_unit)
 
-    origin = sample.origin.to(length_unit).magnitude
+    origin = np.asarray(sample.origin.to(length_unit).magnitude, dtype=float)
 
-    size = sample.size.to(length_unit).magnitude
+    size = np.asarray(sample.size.to(length_unit).magnitude, dtype=float)
 
     colors = ["#E5AD79", "#CB7582", "#EDCC71", "#65B3AD", "#7C93C3"]
 

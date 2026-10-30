@@ -59,7 +59,7 @@ def test_named_overlays_convert_units_and_preserve_field_and_opacity_control(fie
     original = field.values.copy()
 
     figure = field.plot(
-        overlays={"Illumination": source, "Collection": detector},
+        overlays=[source, detector],
         length_unit="um",
         show=False,
     )

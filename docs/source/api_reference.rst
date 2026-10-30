@@ -82,9 +82,35 @@ assumption. See :doc:`detectors` for the integral, conventions, and limits.
 Meshes and solvers
 ------------------
 
-``CartesianMesh`` requires ``shape``, unit-bearing vector ``spacing``, and
-unit-bearing vector ``origin``. ``CartesianMesh.from_sample(sample=...,
-shape=...)`` creates a grid spanning every sample face.
+For interface-fitted tetrahedra and local region/contact refinement, see
+:doc:`meshes`. ``TetrahedralMesh`` uses a scalar target resolution and stores
+nodal fields as ``(N,)`` arrays; all finite transport models accept it.
+
+``CartesianMesh.from_sample`` accepts a physical ``resolution``: a scalar
+length applies to all three axes, and a length vector specifies x/y/z spacing.
+Resolution is a maximum spacing; each axis is divided into enough uniform
+intervals to fit the sample exactly without exceeding that spacing, within
+floating-point precision. For example, a 1 mm extent with a requested
+0.3 mm resolution has four intervals of 0.25 mm and five nodes.
+
+.. code-block:: python
+
+   mesh = MomentRT.CartesianMesh.from_sample(
+       sample=sample,
+       resolution=100 * MomentRT.ureg.um,
+   )
+
+   mesh = MomentRT.CartesianMesh.from_sample(
+       sample=sample,
+       resolution=(50, 50, 200) * MomentRT.ureg.um,
+   )
+
+``mesh.resolution`` retains the requested scalar or vector quantity,
+``mesh.spacing`` reports actual node separations, and ``mesh.shape`` gives
+node counts. Supply exactly one of ``resolution`` or ``shape`` to
+``from_sample``. Existing ``shape=...`` configurations remain supported and
+have ``mesh.resolution is None``. The low-level ``CartesianMesh`` constructor
+continues to accept explicit ``shape``, ``spacing``, and ``origin``.
 
 ``InfiniteDiffusion`` evaluates the analytical P1 Green function for a
 ``HomogeneousMedium`` and ``PointSource``. ``Diffusion`` requires a mapping

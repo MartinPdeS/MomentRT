@@ -353,14 +353,14 @@ class StructuredMedium:
     def optical_fields(
         self,
         *,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
         wavelength: Quantity | None = None,
     ) -> dict[str, MomentRT.fields.ScalarField]:
         """Sample the material map onto mesh nodes, returning unit-bearing fields.
 
         Parameters
         ----------
-        mesh : CartesianMesh
+        mesh : CartesianMesh or TetrahedralMesh
             Cartesian nodes used for sampling or finite-element discretization.
         wavelength : pint.Quantity or None, optional
             Vacuum wavelength used to resolve spectral materials. Required when
@@ -411,7 +411,7 @@ class StructuredMedium:
     def plot(
         self,
         *,
-        mesh: MomentRT.mesh.CartesianMesh | None = None,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh | None = None,
         wavelength: Quantity | None = None,
         length_unit: str = "mm",
         opacity: float = 0.45,
@@ -425,7 +425,7 @@ class StructuredMedium:
 
         Parameters
         ----------
-        mesh : CartesianMesh or None, optional
+        mesh : CartesianMesh, TetrahedralMesh or None, optional
             Optional compatibility argument; construction surfaces use the
             physical sample bounds and do not depend on a numerical mesh.
             Default is None.

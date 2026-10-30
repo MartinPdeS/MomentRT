@@ -66,7 +66,7 @@ class SP3:
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> _PreparedSP3:
         validated = SP3(boundaries=self.boundaries)
 
@@ -82,7 +82,7 @@ class SP3:
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> MomentRT.results.SimulationResult:
         """Solve the finite sample for one source wavelength.
 
@@ -93,7 +93,7 @@ class SP3:
         source : UniformSurfaceSource or SurfaceSource
             Incoming diffuse power, uniformly distributed over the inward
             hemisphere at each point of the illuminated footprint.
-        mesh : CartesianMesh
+        mesh : CartesianMesh or TetrahedralMesh
             Nodes spanning the finite sample.
 
         Returns
@@ -115,7 +115,7 @@ class _PreparedSP3(MomentRT.transport.diffusion._PreparedDiffusion):
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
         boundaries: Mapping[
             MomentRT.boundary.Face,
             MomentRT.boundary.RobinBoundary | MomentRT.boundary.ReflectingBoundary,
@@ -128,7 +128,7 @@ class _PreparedSP3(MomentRT.transport.diffusion._PreparedDiffusion):
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> MomentRT.results.SimulationResult:
         MomentRT.units.validate_units(
             value=source.optical_power,
@@ -235,11 +235,7 @@ class _PreparedSP3(MomentRT.transport.diffusion._PreparedDiffusion):
             "sample_size": self.medium.size.copy(),
         }
 
-        result_mesh = MomentRT.mesh.CartesianMesh(
-            shape=self.mesh.shape,
-            spacing=self.mesh.spacing.copy(),
-            origin=self.mesh.origin.copy(),
-        )
+        result_mesh = self.mesh.copy()
 
         def field(*, values: np.ndarray, name: str) -> MomentRT.fields.ScalarField:
             return MomentRT.fields.ScalarField(

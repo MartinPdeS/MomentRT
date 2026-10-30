@@ -1,4 +1,4 @@
-"""Linear tetrahedral FEM kernels on a conforming Cartesian subdivision."""
+"""Linear tetrahedral FEM kernels for structured and unstructured meshes."""
 
 from __future__ import annotations
 from itertools import permutations
@@ -295,20 +295,26 @@ def source_load(
 
 
 class _MeshGeometry:
-    """Numerical geometry prepared once for a fixed finite Cartesian mesh."""
+    """Numerical geometry prepared once for a fixed finite tetrahedral mesh."""
 
-    def __init__(self, *, mesh: MomentRT.mesh.CartesianMesh) -> None:
+    def __init__(
+        self, *, mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh
+    ) -> None:
         """Initialize the _MeshGeometry configuration.
 
         Parameters
         ----------
-        mesh : CartesianMesh
-            Cartesian nodes used for sampling or finite-element discretization.
+        mesh : CartesianMesh or TetrahedralMesh
+            Nodes and tetrahedra used for finite-element discretization.
         """
 
         self.points = mesh.points.to("m").magnitude.reshape(-1, 3)
 
-        self.tetrahedra = tetrahedralize(mesh=mesh)
+        self.tetrahedra = (
+            mesh.tetrahedra
+            if isinstance(mesh, MomentRT.mesh.TetrahedralMesh)
+            else tetrahedralize(mesh=mesh)
+        )
 
         self.volumes, self.gradients = element_geometry(
             points=self.points,
@@ -317,9 +323,10 @@ class _MeshGeometry:
 
         self.centers = self.points[self.tetrahedra].mean(axis=1)
 
-        self.faces = boundary_triangles(
-            tetrahedra=self.tetrahedra,
-            shape=mesh.shape,
+        self.faces = (
+            mesh.faces
+            if isinstance(mesh, MomentRT.mesh.TetrahedralMesh)
+            else boundary_triangles(tetrahedra=self.tetrahedra, shape=mesh.shape)
         )
 
         self.quadrature = {

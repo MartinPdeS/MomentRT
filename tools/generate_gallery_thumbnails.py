@@ -45,6 +45,9 @@ def main() -> None:
             manifest = gallery / f"{name}-preview.txt"
 
             if not manifest.exists():
+                if (output / "gallery_systems" / f"{name}.png").is_file():
+                    continue
+
                 raise FileNotFoundError(
                     f"Missing preview selection for {name}; run make docs first."
                 )

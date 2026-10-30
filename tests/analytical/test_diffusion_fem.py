@@ -189,3 +189,26 @@ def test_nonabsorbing_slab_has_exact_linear_fluence():
     assert result.energy_balance["escaping_power"].to("mW").magnitude == pytest.approx(
         1
     )
+
+
+@pytest.mark.parametrize("layered", [False, True])
+def test_unstructured_slab_converges_to_transfer_solution(layered):
+    simulation, _ = slab(count=3, reflectance=0.5, layered=layered)
+    errors = []
+
+    for resolution in (1.0, 0.5, 0.25):
+        simulation.mesh = MomentRT.TetrahedralMesh.from_sample(
+            sample=simulation.medium,
+            resolution=resolution * ureg.mm,
+        )
+        result = simulation.run()
+        depths = simulation.mesh.points.to("m").magnitude[:, 2]
+        reference = exact_slab(z=depths, reflectance=0.5, layered=layered)
+        errors.append(
+            np.linalg.norm(result.fluence.values.magnitude - reference)
+            / np.linalg.norm(reference)
+        )
+        assert abs(result.energy_balance["residual_power"].to("W").magnitude) < 1e-12
+
+    assert errors[-1] < errors[1] < errors[0]
+    assert errors[-1] < 0.01

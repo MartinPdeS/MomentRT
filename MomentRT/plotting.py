@@ -27,11 +27,15 @@ except ImportError:
 if TYPE_CHECKING:
     from plotly.graph_objects import Figure as Figure
     from plotly.graph_objects import Mesh3d as Mesh3d
+    from pyvista import DataSet as DataSet
     from pyvista import ImageData as ImageData
+    from pyvista import UnstructuredGrid as UnstructuredGrid
 else:
     Figure = None if go is None else go.Figure
     Mesh3d = None if go is None else go.Mesh3d
     ImageData = None if pv is None else pv.ImageData
+    UnstructuredGrid = None if pv is None else pv.UnstructuredGrid
+    DataSet = None if pv is None else pv.DataSet
 
 
 def require_plotly() -> ModuleType:
@@ -226,9 +230,9 @@ def _add_overlays(
     figure : plotly.graph_objects.Figure
         Figure to modify in place.
     overlays : iterable of objects or None
-        Sources, detectors, or layers implementing the plotting hook. Each
-        object's name sets its legend label; drawable colors come from the
-        object when available, otherwise from the overlay palette.
+        Meshes, sources, detectors, or layers implementing the plotting hook.
+        Each object's name sets its legend label; drawable colors come from
+        the object when available, otherwise from the overlay palette.
     context : mapping of str to object
         Coordinate units, legend labels, and physical sample bounds.
     """
@@ -448,8 +452,8 @@ def plot_field(
     show : bool
         Whether to display the figure immediately. The figure is always returned.
     overlays : iterable of objects or None, optional
-        Sources, detectors, or layers implementing the plotting hook. Full-face
-        sources and layers require finite-sample bounds.
+        Meshes, sources, detectors, or layers implementing the plotting hook.
+        Full-face sources and layers require finite-sample bounds.
         Default is None.
 
     Returns
@@ -513,8 +517,13 @@ def plot_field(
 
     figure = make_figure(length_unit=length_unit)
 
+    title = f"{field.name} — {view} ({scale} scale)"
+
+    if "display_interpolation" in field.metadata:
+        title += " — interpolated display"
+
     figure.update_layout(
-        title=f"{field.name} — {view} ({scale} scale)",
+        title=title,
         scene_zaxis={"autorange": "reversed"},
     )
 

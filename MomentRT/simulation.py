@@ -22,9 +22,9 @@ class TransportSolver(Protocol):
         *,
         medium: Any,
         source: Any,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> MomentRT.results.SimulationResult | MomentRT.fields.ScalarField:
-        """Solve the transport problem on the supplied Cartesian mesh.
+        """Solve the transport problem on a mesh supported by the implementation.
 
         Parameters
         ----------
@@ -33,7 +33,7 @@ class TransportSolver(Protocol):
         source : PointSource or UniformSurfaceSource
             Illumination supported by the implementation, including groups of
             simultaneous surface sources.
-        mesh : CartesianMesh
+        mesh : CartesianMesh or TetrahedralMesh
             Sampling nodes or finite-element grid.
 
         Returns
@@ -54,8 +54,8 @@ class Simulation:
     source : PointSource, UniformSurfaceSource, or iterable of SurfaceSource
         Illumination configuration. An iterable of disk sources is converted
         automatically to a SurfaceSourceGroup for one simultaneous solve.
-    mesh : CartesianMesh
-        Cartesian nodes used for sampling or finite-element discretization.
+    mesh : CartesianMesh or TetrahedralMesh
+        Nodal coordinates for sampling or finite-element discretization.
     solver : TransportSolver
         Transport model implementing the keyword-only solve protocol.
     detectors : mapping of str to SurfaceDetector, or None, optional
@@ -73,7 +73,7 @@ class Simulation:
             | MomentRT.source.UniformSurfaceSource
             | Iterable[MomentRT.source.SurfaceSource]
         ),
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
         solver: MomentRT.simulation.TransportSolver,
         detectors: Mapping[str, MomentRT.detector.SurfaceDetector] | None = None,
     ) -> None:
@@ -86,8 +86,8 @@ class Simulation:
         source : PointSource, UniformSurfaceSource, or iterable of SurfaceSource
             Illumination configuration. An iterable of disk sources is
             converted automatically to a SurfaceSourceGroup.
-        mesh : CartesianMesh
-            Cartesian nodes used for sampling or finite-element discretization.
+        mesh : CartesianMesh or TetrahedralMesh
+            Nodal coordinates for sampling or finite-element discretization.
         solver : TransportSolver
             Transport model implementing the keyword-only solve protocol.
         detectors : mapping of str to SurfaceDetector, or None, optional
@@ -208,8 +208,13 @@ class Simulation:
         if infinite and self.detectors:
             errors.append("Contact detectors require finite-sample boundary fields.")
 
-        if not isinstance(mesh, MomentRT.mesh.CartesianMesh):
-            errors.append("mesh must be a CartesianMesh.")
+        if not isinstance(
+            mesh, (MomentRT.mesh.CartesianMesh, MomentRT.mesh.TetrahedralMesh)
+        ):
+            errors.append("mesh must be a CartesianMesh or TetrahedralMesh.")
+
+        if infinite and not isinstance(mesh, MomentRT.mesh.CartesianMesh):
+            errors.append("InfiniteDiffusion requires a Cartesian observation mesh.")
 
         if isinstance(
             source, (MomentRT.source.PointSource, MomentRT.source.UniformSurfaceSource)
@@ -342,14 +347,11 @@ class Simulation:
         if (
             finite
             and isinstance(medium, MomentRT.medium.StructuredMedium)
-            and isinstance(mesh, MomentRT.mesh.CartesianMesh)
-        ):
-            mesh_lower = mesh.origin.to("m").magnitude
-
-            mesh_upper = (
-                mesh_lower
-                + (np.asarray(mesh.shape) - 1) * mesh.spacing.to("m").magnitude
+            and isinstance(
+                mesh, (MomentRT.mesh.CartesianMesh, MomentRT.mesh.TetrahedralMesh)
             )
+        ):
+            mesh_lower, mesh_upper = mesh.bounds.to("m").magnitude
 
             lower = medium.origin.to("m").magnitude
 
@@ -361,6 +363,13 @@ class Simulation:
 
             if not mesh_valid:
                 errors.append("The mesh must span the finite sample.")
+
+            if isinstance(mesh, MomentRT.mesh.TetrahedralMesh):
+                try:
+                    mesh._validate_sample(sample=medium)
+                except ValueError as error:
+                    errors.append(str(error))
+                    mesh_valid = False
 
             valid_detectors = {}
 
@@ -933,7 +942,20 @@ class Simulation:
 
         medium = self.medium.at(wavelength=self.source.wavelength)
 
-        figure = medium.plot(mesh=self.mesh, length_unit=length_unit, show=False)
+        if isinstance(medium, MomentRT.medium.HomogeneousMedium) and not isinstance(
+            self.mesh, MomentRT.mesh.CartesianMesh
+        ):
+            raise TypeError("Infinite observation windows require a Cartesian mesh.")
+
+        figure = (
+            medium.plot(mesh=self.mesh, length_unit=length_unit, show=False)
+            if isinstance(medium, MomentRT.medium.StructuredMedium)
+            else medium.plot(
+                mesh=cast(MomentRT.mesh.CartesianMesh, self.mesh),
+                length_unit=length_unit,
+                show=False,
+            )
+        )
 
         context = {
             "length_unit": length_unit,

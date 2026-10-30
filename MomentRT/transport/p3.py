@@ -185,7 +185,7 @@ class P3:
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> _PreparedP3:
         validated = P3(boundaries=self.boundaries)
 
@@ -198,7 +198,7 @@ class P3:
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> MomentRT.results.SimulationResult:
         """Solve the P3 moment equations at the source wavelength.
 
@@ -208,7 +208,7 @@ class P3:
             Finite sample with explicitly configured material anisotropies.
         source : UniformSurfaceSource or SurfaceSource
             Incoming isotropic diffuse source on a sample face.
-        mesh : CartesianMesh
+        mesh : CartesianMesh or TetrahedralMesh
             Nodes spanning the sample.
 
         Returns
@@ -230,7 +230,7 @@ class _PreparedP3(MomentRT.transport.diffusion._PreparedDiffusion):
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> MomentRT.results.SimulationResult:
         materials = MomentRT.transport.diffusion._finite_materials_at(
             medium=self.medium, wavelength=source.wavelength
@@ -442,11 +442,7 @@ class _PreparedP3(MomentRT.transport.diffusion._PreparedDiffusion):
                 wavelength=source.wavelength,
             )
 
-        result_mesh = MomentRT.mesh.CartesianMesh(
-            shape=self.mesh.shape,
-            spacing=self.mesh.spacing.copy(),
-            origin=self.mesh.origin.copy(),
-        )
+        result_mesh = self.mesh.copy()
 
         metadata = {
             "transport": "steady-state full P3 even-parity FEM",

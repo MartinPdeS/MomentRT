@@ -28,6 +28,7 @@ globals().update(
         prefer_installed_package=True,
         gallery_sections=[
             "getting_started",
+            "meshes",
             "sources_detectors",
             "transport_models",
             "sweeps_convergence",

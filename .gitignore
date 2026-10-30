@@ -24,6 +24,7 @@ coverage.xml
 htmlcov/
 
 docs/source/gallery/getting_started/
+docs/source/gallery/meshes/
 docs/source/gallery/sources_detectors/
 docs/source/gallery/transport_models/
 docs/source/gallery/sweeps_convergence/

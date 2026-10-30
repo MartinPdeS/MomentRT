@@ -117,6 +117,10 @@ Meshes and transport
    :members:
    :member-order: bysource
 
+.. autoclass:: MomentRT.TetrahedralMesh
+   :members:
+   :member-order: bysource
+
 .. autoclass:: MomentRT.InfiniteDiffusion
    :members:
    :member-order: bysource

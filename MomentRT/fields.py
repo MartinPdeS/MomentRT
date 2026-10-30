@@ -1,6 +1,7 @@
 """Unit-bearing nodal scalar fields with mesh-aware visualization."""
 
 from __future__ import annotations
+import copy
 from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Literal
@@ -10,14 +11,15 @@ import MomentRT
 
 
 class ScalarField:
-    """Unit-bearing scalar samples at Cartesian mesh nodes.
+    """Unit-bearing scalar samples at Cartesian or unstructured mesh nodes.
 
     Parameters
     ----------
-    mesh : CartesianMesh
-        Cartesian nodes used for sampling or finite-element discretization.
+    mesh : CartesianMesh or TetrahedralMesh
+        Nodal coordinates for sampling or finite-element discretization.
     values : pint.Quantity
-        Finite nodal scalar values with shape equal to mesh.shape.
+        Finite nodal scalar values with shape equal to mesh.shape: Cartesian
+        axis counts or (N,) for an unstructured mesh.
         The supplied physical units are retained.
     name : str
         Nonempty name identifying this object.
@@ -29,7 +31,7 @@ class ScalarField:
     def __init__(
         self,
         *,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
         values: Quantity,
         name: str,
         metadata: Mapping[str, object] | None = None,
@@ -38,8 +40,8 @@ class ScalarField:
 
         Parameters
         ----------
-        mesh : CartesianMesh
-            Cartesian nodes used for sampling or finite-element discretization.
+        mesh : CartesianMesh or TetrahedralMesh
+            Nodal coordinates for sampling or finite-element discretization.
         values : pint.Quantity
             Finite nodal scalar values with shape equal to mesh.shape.
             The supplied physical units are retained.
@@ -64,8 +66,8 @@ class ScalarField:
 
         self.metadata = dict(metadata or {})
 
-    def to_pyvista(self, *, length_unit: str = "mm") -> MomentRT.plotting.ImageData:
-        """Convert Cartesian data to a PyVista image grid.
+    def to_pyvista(self, *, length_unit: str = "mm") -> MomentRT.plotting.DataSet:
+        """Convert nodal values to the matching optional PyVista grid.
 
         Parameters
         ----------
@@ -75,8 +77,9 @@ class ScalarField:
 
         Returns
         -------
-        pyvista.ImageData
-            Cartesian VTK grid with coordinates converted to length_unit.
+        pyvista.ImageData or pyvista.UnstructuredGrid
+            Original Cartesian nodes or tetrahedral connectivity, with
+            coordinates converted to length_unit.
         """
 
         grid = self.mesh.to_pyvista(length_unit=length_unit)
@@ -100,18 +103,64 @@ class ScalarField:
         Parameters
         ----------
         path : str or pathlib.Path
-            Destination filename ending in .vti. Existing files may be overwritten.
+            Destination ending in .vti for Cartesian fields or .vtu for
+            tetrahedral fields. Existing files may be overwritten.
         length_unit : str, optional
             Length unit used for displayed or exported coordinates.
             Default is 'mm'.
         """
 
-        if Path(path).suffix != ".vti":
-            raise ValueError("Cartesian fields must be exported with a .vti extension.")
+        extension = (
+            ".vtu" if isinstance(self.mesh, MomentRT.mesh.TetrahedralMesh) else ".vti"
+        )
+
+        if Path(path).suffix != extension:
+            raise ValueError(f"This mesh requires a {extension} extension.")
 
         grid = self.to_pyvista(length_unit=length_unit)
 
         grid.save(path)
+
+    def resample(self, *, resolution: Quantity) -> MomentRT.fields.ScalarField:
+        """Interpolate a tetrahedral nodal field onto a Cartesian display grid.
+
+        Parameters
+        ----------
+        resolution : pint.Quantity
+            Positive scalar or (3,) length specifying maximum display spacing.
+            This controls interpolation sampling, not FEM accuracy.
+
+        Returns
+        -------
+        ScalarField
+            Independent Cartesian field with interpolation provenance. Values
+            use linear basis functions from the original tetrahedra; the
+            source field and unsmoothed element flux are unchanged.
+        """
+        if not isinstance(self.mesh, MomentRT.mesh.TetrahedralMesh):
+            raise TypeError("resample currently requires a tetrahedral nodal field.")
+
+        lower, upper = self.mesh.bounds
+        sample = MomentRT.medium.StructuredMedium(origin=lower, size=upper - lower)
+        mesh = MomentRT.mesh.CartesianMesh.from_sample(
+            sample=sample,
+            resolution=resolution,
+        )
+        values = self.mesh._interpolate(
+            points=mesh.points, values=self.values.magnitude
+        )
+        metadata = copy.deepcopy(self.metadata)
+        metadata["display_interpolation"] = (
+            "linear basis functions on original tetrahedra"
+        )
+        metadata["original_node_count"] = self.mesh.shape[0]
+
+        return MomentRT.fields.ScalarField(
+            mesh=mesh,
+            values=values * self.values.units,
+            name=self.name,
+            metadata=metadata,
+        )
 
     def plot(
         self,
@@ -121,14 +170,15 @@ class ScalarField:
         length_unit: str = "mm",
         opacity: float | None = None,
         isosurface_count: int | None = None,
+        display_resolution: Quantity | None = None,
         overlays: Iterable[object] | None = None,
         show: bool = True,
     ) -> MomentRT.plotting.Figure:
-        """Plot the scalar field with optional source and detector geometry.
+        """Plot the scalar field with optional physical geometry overlays.
 
-        Sources, detectors, and layers can be overlaid. Each object's ``name``
-        sets its legend label. Full-face sources and layers require physical
-        sample bounds recorded by the finite solver.
+        Meshes, sources, detectors, and layers can be overlaid. Each object's
+        ``name`` sets its legend label. Full-face sources and layers require
+        physical sample bounds recorded by the finite solver.
 
         Parameters
         ----------
@@ -150,10 +200,14 @@ class ScalarField:
             rendering. Both views expose a density slider. None uses 8 for
             volume and 6 for isosurfaces; invalid for slices.
             Default is None.
+        display_resolution : pint.Quantity or None, optional
+            Required maximum display spacing for tetrahedral fields, as a
+            scalar or (3,) length. The interpolated grid is for visualization
+            only. Default is None; Cartesian fields already have a grid.
         overlays : iterable of objects or None, optional
-            Sources, detectors, or layers implementing the plotting hook.
-            Their ``name`` sets the legend label. Full-face sources and layers
-            require finite-sample bounds.
+            Meshes, sources, detectors, or layers implementing the plotting
+            hook. Their ``name`` sets the legend label. Full-face sources and
+            layers require finite-sample bounds.
             Default is None.
         show : bool, optional
             Whether to display the figure immediately. The figure is always returned.
@@ -172,8 +226,25 @@ class ScalarField:
         physical sample.
         """
 
+        field = self
+
+        if isinstance(self.mesh, MomentRT.mesh.TetrahedralMesh):
+            if scale == "log" and np.any(self.values.magnitude <= 0):
+                raise ValueError(
+                    "Log display requires strictly positive original nodal values."
+                )
+
+            if display_resolution is None:
+                raise ValueError(
+                    "Tetrahedral plots require an explicit display_resolution."
+                )
+
+            field = self.resample(resolution=display_resolution)
+        elif display_resolution is not None:
+            raise ValueError("display_resolution applies only to tetrahedral fields.")
+
         return MomentRT.plotting.plot_field(
-            field=self,
+            field=field,
             view=view,
             scale=scale,
             length_unit=length_unit,

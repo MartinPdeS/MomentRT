@@ -28,7 +28,7 @@ class InfiniteDiffusion:
         *,
         medium: MomentRT.medium.HomogeneousMedium,
         source: MomentRT.source.PointSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> MomentRT.fields.ScalarField:
         """Solve the transport equation for the supplied physical configuration.
 
@@ -63,6 +63,9 @@ class InfiniteDiffusion:
             raise TypeError(
                 "InfiniteDiffusion requires an embedded PointSource, not surface illumination."
             )
+
+        if not isinstance(mesh, MomentRT.mesh.CartesianMesh):
+            raise TypeError("InfiniteDiffusion requires a Cartesian observation mesh.")
 
         medium = medium.at(wavelength=source.wavelength)
 
@@ -204,7 +207,7 @@ class Diffusion:
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> _PreparedDiffusion:
         """Prepare frozen finite-element geometry and source sampling.
 
@@ -215,8 +218,8 @@ class Diffusion:
         source : UniformSurfaceSource or SurfaceSource
             Incoming diffuse illumination on a Robin face; optical power is
             already coupled into the sample.
-        mesh : CartesianMesh
-            Cartesian nodes used for sampling or finite-element discretization.
+        mesh : CartesianMesh or TetrahedralMesh
+            Nodal coordinates for sampling or finite-element discretization.
 
         Returns
         -------
@@ -236,7 +239,7 @@ class Diffusion:
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> MomentRT.results.SimulationResult:
         """Solve the transport equation for the supplied physical configuration.
 
@@ -247,8 +250,8 @@ class Diffusion:
         source : UniformSurfaceSource or SurfaceSource
             Incoming diffuse illumination on a Robin face; optical power is
             already coupled into the sample.
-        mesh : CartesianMesh
-            Cartesian nodes used for sampling or finite-element discretization.
+        mesh : CartesianMesh or TetrahedralMesh
+            Nodal coordinates for sampling or finite-element discretization.
 
         Returns
         -------
@@ -279,7 +282,7 @@ class _PreparedDiffusion:
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
         boundaries: Mapping[
             MomentRT.boundary.Face,
             MomentRT.boundary.RobinBoundary | MomentRT.boundary.ReflectingBoundary,
@@ -294,8 +297,8 @@ class _PreparedDiffusion:
         source : UniformSurfaceSource or SurfaceSource
             Incoming diffuse illumination on a Robin face; optical power is
             already coupled into the sample.
-        mesh : CartesianMesh
-            Cartesian nodes used for sampling or finite-element discretization.
+        mesh : CartesianMesh or TetrahedralMesh
+            Nodal coordinates for sampling or finite-element discretization.
         boundaries : mapping of str to RobinBoundary or ReflectingBoundary
             Conditions for exactly all six sample faces. Reflecting faces cannot
             carry illumination.
@@ -309,6 +312,9 @@ class _PreparedDiffusion:
 
         if medium.background is None:
             raise ValueError("Configure the sample background before solving.")
+
+        if isinstance(mesh, MomentRT.mesh.TetrahedralMesh):
+            mesh._validate_sample(sample=medium)
 
         MomentRT.units.validate_units(
             value=source.optical_power,
@@ -324,28 +330,19 @@ class _PreparedDiffusion:
 
         self.boundaries = copy.deepcopy(boundaries)
 
-        self.mesh = MomentRT.mesh.CartesianMesh(
-            shape=mesh.shape,
-            spacing=mesh.spacing.copy(),
-            origin=mesh.origin.copy(),
-        )
+        self.mesh = mesh.copy()
 
         lower = self.medium.origin.to("m").magnitude
 
         upper = (self.medium.origin + self.medium.size).to("m").magnitude
 
-        mesh_lower = self.mesh.origin.to("m").magnitude
-
-        mesh_upper = (
-            mesh_lower
-            + (np.asarray(self.mesh.shape) - 1) * self.mesh.spacing.to("m").magnitude
-        )
+        mesh_lower, mesh_upper = self.mesh.bounds.to("m").magnitude
 
         if not np.allclose(
             mesh_lower, lower, rtol=1e-12, atol=1e-15
         ) or not np.allclose(mesh_upper, upper, rtol=1e-12, atol=1e-15):
             raise ValueError(
-                "The mesh must span exactly the finite sample; use CartesianMesh.from_sample()."
+                "The mesh must span exactly the finite sample; use a mesh from_sample()."
             )
 
         condition = self.boundaries[self.source.face]
@@ -492,7 +489,7 @@ class _PreparedDiffusion:
         *,
         medium: MomentRT.medium.StructuredMedium,
         source: MomentRT.source.UniformSurfaceSource,
-        mesh: MomentRT.mesh.CartesianMesh,
+        mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> MomentRT.results.SimulationResult:
         """Solve the transport equation for the supplied physical configuration.
 
@@ -503,8 +500,8 @@ class _PreparedDiffusion:
         source : UniformSurfaceSource or SurfaceSource
             Incoming diffuse illumination on a Robin face; optical power is
             already coupled into the sample.
-        mesh : CartesianMesh
-            Cartesian nodes used for sampling or finite-element discretization.
+        mesh : CartesianMesh or TetrahedralMesh
+            Nodal coordinates for sampling or finite-element discretization.
 
         Returns
         -------
@@ -608,11 +605,7 @@ class _PreparedDiffusion:
         )
 
         fluence = MomentRT.fields.ScalarField(
-            mesh=MomentRT.mesh.CartesianMesh(
-                shape=self.mesh.shape,
-                spacing=self.mesh.spacing.copy(),
-                origin=self.mesh.origin.copy(),
-            ),
+            mesh=self.mesh.copy(),
             values=values.reshape(self.mesh.shape)
             * MomentRT.units.ureg.watt
             / MomentRT.units.ureg.meter**2,

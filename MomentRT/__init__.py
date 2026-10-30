@@ -48,6 +48,7 @@ Dermis = MomentRT.materials.skin.Dermis
 HomogeneousMedium = MomentRT.medium.HomogeneousMedium
 StructuredMedium = MomentRT.medium.StructuredMedium
 CartesianMesh = MomentRT.mesh.CartesianMesh
+TetrahedralMesh = MomentRT.mesh.TetrahedralMesh
 DetectorConvergenceResult = MomentRT.results.DetectorConvergenceResult
 DetectorResult = MomentRT.results.DetectorResult
 SimulationResult = MomentRT.results.SimulationResult
@@ -101,6 +102,7 @@ __all__ = [
     "Sphere",
     "StructuredMedium",
     "CartesianMesh",
+    "TetrahedralMesh",
     "HomogeneousMedium",
     "InfiniteDiffusion",
     "Material",

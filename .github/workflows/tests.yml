@@ -14,6 +14,7 @@ jobs:
     uses: MartinPdeS/MPSActions/.github/workflows/run_tests.yml@v2
     with:
       python-versions: '["3.11", "3.12", "3.13", "3.14"]'
+      apt-package: libglu1-mesa
       install-command: >-
         python -m pip install --upgrade pip && python -m pip install -e ".[testing,viz,vtk]"
       test-command: python -m pytest -q

@@ -24,6 +24,7 @@ requirements:
     - pint >=0.24
     - matplotlib >=3.8
     - gmsh >=4.13,<5
+    - python-gmsh >=4.13,<5
 
 test:
   imports:

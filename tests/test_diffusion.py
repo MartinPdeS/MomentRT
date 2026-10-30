@@ -131,6 +131,8 @@ def test_plotly_fields(view, tmp_path):
         == {"slices": "surface", "volume": "volume", "isosurfaces": "isosurface"}[view]
     )
 
+    assert figure.layout.scene.zaxis.autorange == "reversed"
+
     np.testing.assert_array_equal(field.values.magnitude, original)
 
     if view == "slices":

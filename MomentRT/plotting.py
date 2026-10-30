@@ -513,7 +513,10 @@ def plot_field(
 
     figure = make_figure(length_unit=length_unit)
 
-    figure.update_layout(title=f"{field.name} — {view} ({scale} scale)")
+    figure.update_layout(
+        title=f"{field.name} — {view} ({scale} scale)",
+        scene_zaxis={"autorange": "reversed"},
+    )
 
     common = {
         "colorscale": "Inferno",

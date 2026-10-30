@@ -195,6 +195,10 @@ def test_nonabsorbing_slab_has_exact_linear_fluence():
     )
 
 
+@pytest.mark.skipif(
+    MomentRT.mesh.gmsh is None,
+    reason="Gmsh's native runtime library is unavailable",
+)
 @pytest.mark.parametrize("layered", [False, True])
 def test_unstructured_slab_converges_to_transfer_solution(layered):
     simulation, _ = slab(count=3, reflectance=0.5, layered=layered)

@@ -22,7 +22,6 @@ jobs:
       pypi_package_type: pure
       pypi_python_version: "3.11"
       pypi_test_import: MomentRT
-      pypi_apt_package: libglu1-mesa
       # A noarch recipe produces one filename on every OS and Python version.
       # Publish one artifact; the CI matrix separately checks Python versions.
       conda_python_versions: '["3.11"]'

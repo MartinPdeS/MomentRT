@@ -135,6 +135,10 @@ def exact_slab(*, z, reflectance, layered):
 
 
 @pytest.mark.parametrize("reflectance", [0, 0.5])
+@pytest.mark.skipif(
+    MomentRT.mesh.gmsh is None,
+    reason="Gmsh's native runtime library is unavailable",
+)
 @pytest.mark.parametrize("layered", [False, True])
 def test_slab_convergence_and_energy_balance(reflectance, layered):
     errors = []

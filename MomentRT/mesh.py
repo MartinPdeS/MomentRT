@@ -6,11 +6,18 @@ from collections.abc import Iterable, Mapping
 from threading import RLock
 from typing import Any, cast
 from uuid import uuid4
-import gmsh
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 from pint import Quantity
 import MomentRT
+
+_gmsh_import_error: OSError | None = None
+
+try:
+    import gmsh
+except OSError as error:
+    gmsh = None
+    _gmsh_import_error = error
 
 
 class CartesianMesh:
@@ -906,6 +913,13 @@ class TetrahedralMesh:
 
     def _generate(self) -> None:
         """Build a private Gmsh model and adopt its validated connectivity."""
+        if gmsh is None:
+            raise RuntimeError(
+                "Gmsh is installed, but its native runtime could not be loaded. "
+                "Install the system OpenGL utility library (libGLU; "
+                "libglu1-mesa on Ubuntu)."
+            ) from _gmsh_import_error
+
         assert self._sample is not None and self._resolution is not None
         lower = self._sample.origin.to("m").magnitude
         size = self._sample.size.to("m").magnitude

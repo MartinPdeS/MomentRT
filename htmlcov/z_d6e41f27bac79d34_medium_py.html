@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_d6e41f27bac79d34_mesh_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.17.0">coverage.py v7.17.0</a>,
-            created at 2026-10-30 13:51 +0000
+            created at 2026-10-30 22:16 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -437,14 +437,14 @@
     <p class="run"><span class="n"><a id="t353" href="#t353">353</a></span><span class="t">    <span class="key">def</span> <span class="nam">optical_fields</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t354" href="#t354">354</a></span><span class="t">        <span class="nam">self</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t355" href="#t355">355</a></span><span class="t">        <span class="op">*</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run run2"><span class="n"><a id="t356" href="#t356">356</a></span><span class="t">        <span class="nam">mesh</span><span class="op">:</span> <span class="nam">MomentRT</span><span class="op">.</span><span class="nam">mesh</span><span class="op">.</span><span class="nam">CartesianMesh</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t356" href="#t356">356</a></span><span class="t">        <span class="nam">mesh</span><span class="op">:</span> <span class="nam">MomentRT</span><span class="op">.</span><span class="nam">mesh</span><span class="op">.</span><span class="nam">CartesianMesh</span> <span class="op">|</span> <span class="nam">MomentRT</span><span class="op">.</span><span class="nam">mesh</span><span class="op">.</span><span class="nam">TetrahedralMesh</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t357" href="#t357">357</a></span><span class="t">        <span class="nam">wavelength</span><span class="op">:</span> <span class="nam">Quantity</span> <span class="op">|</span> <span class="key">None</span> <span class="op">=</span> <span class="key">None</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t358" href="#t358">358</a></span><span class="t">    <span class="op">)</span> <span class="op">-&gt;</span> <span class="nam">dict</span><span class="op">[</span><span class="nam">str</span><span class="op">,</span> <span class="nam">MomentRT</span><span class="op">.</span><span class="nam">fields</span><span class="op">.</span><span class="nam">ScalarField</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t359" href="#t359">359</a></span><span class="t">        <span class="str">&quot;&quot;&quot;Sample the material map onto mesh nodes, returning unit-bearing fields.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t360" href="#t360">360</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t361" href="#t361">361</a></span><span class="t"><span class="str">        Parameters</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t362" href="#t362">362</a></span><span class="t"><span class="str">        ----------</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t363" href="#t363">363</a></span><span class="t"><span class="str">        mesh : CartesianMesh</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t363" href="#t363">363</a></span><span class="t"><span class="str">        mesh : CartesianMesh or TetrahedralMesh</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t364" href="#t364">364</a></span><span class="t"><span class="str">            Cartesian nodes used for sampling or finite-element discretization.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t365" href="#t365">365</a></span><span class="t"><span class="str">        wavelength : pint.Quantity or None, optional</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t366" href="#t366">366</a></span><span class="t"><span class="str">            Vacuum wavelength used to resolve spectral materials. Required when</span>&nbsp;</span><span class="r"></span></p>
@@ -495,7 +495,7 @@
     <p class="run"><span class="n"><a id="t411" href="#t411">411</a></span><span class="t">    <span class="key">def</span> <span class="nam">plot</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t412" href="#t412">412</a></span><span class="t">        <span class="nam">self</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t413" href="#t413">413</a></span><span class="t">        <span class="op">*</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run run2"><span class="n"><a id="t414" href="#t414">414</a></span><span class="t">        <span class="nam">mesh</span><span class="op">:</span> <span class="nam">MomentRT</span><span class="op">.</span><span class="nam">mesh</span><span class="op">.</span><span class="nam">CartesianMesh</span> <span class="op">|</span> <span class="key">None</span> <span class="op">=</span> <span class="key">None</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run run2"><span class="n"><a id="t414" href="#t414">414</a></span><span class="t">        <span class="nam">mesh</span><span class="op">:</span> <span class="nam">MomentRT</span><span class="op">.</span><span class="nam">mesh</span><span class="op">.</span><span class="nam">CartesianMesh</span> <span class="op">|</span> <span class="nam">MomentRT</span><span class="op">.</span><span class="nam">mesh</span><span class="op">.</span><span class="nam">TetrahedralMesh</span> <span class="op">|</span> <span class="key">None</span> <span class="op">=</span> <span class="key">None</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t415" href="#t415">415</a></span><span class="t">        <span class="nam">wavelength</span><span class="op">:</span> <span class="nam">Quantity</span> <span class="op">|</span> <span class="key">None</span> <span class="op">=</span> <span class="key">None</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t416" href="#t416">416</a></span><span class="t">        <span class="nam">length_unit</span><span class="op">:</span> <span class="nam">str</span> <span class="op">=</span> <span class="str">&quot;mm&quot;</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="run run2"><span class="n"><a id="t417" href="#t417">417</a></span><span class="t">        <span class="nam">opacity</span><span class="op">:</span> <span class="nam">float</span> <span class="op">=</span> <span class="num">0.45</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
@@ -509,7 +509,7 @@
     <p class="pln"><span class="n"><a id="t425" href="#t425">425</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t426" href="#t426">426</a></span><span class="t"><span class="str">        Parameters</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t427" href="#t427">427</a></span><span class="t"><span class="str">        ----------</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t428" href="#t428">428</a></span><span class="t"><span class="str">        mesh : CartesianMesh or None, optional</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t428" href="#t428">428</a></span><span class="t"><span class="str">        mesh : CartesianMesh, TetrahedralMesh or None, optional</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t429" href="#t429">429</a></span><span class="t"><span class="str">            Optional compatibility argument; construction surfaces use the</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t430" href="#t430">430</a></span><span class="t"><span class="str">            physical sample bounds and do not depend on a numerical mesh.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t431" href="#t431">431</a></span><span class="t"><span class="str">            Default is None.</span>&nbsp;</span><span class="r"></span></p>
@@ -735,7 +735,7 @@
             <a class="nav" href="z_d6e41f27bac79d34_mesh_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.17.0">coverage.py v7.17.0</a>,
-            created at 2026-10-30 13:51 +0000
+            created at 2026-10-30 22:16 +0000
         </p>
     </div>
 </footer>

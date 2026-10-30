@@ -164,7 +164,7 @@ def test_unconfigured_sample_and_unsupported_solver():
 def test_example_and_geometry_plot():
     pytest.importorskip("plotly")
 
-    example = runpy.run_path("docs/examples/finite_samples/structured_sample.py")
+    example = runpy.run_path("docs/examples/getting_started/structured_sample.py")
 
     sample = example["sample"]
 

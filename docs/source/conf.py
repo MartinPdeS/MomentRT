@@ -26,7 +26,12 @@ globals().update(
             },
         },
         prefer_installed_package=True,
-        gallery_sections=["fundamentals", "finite_samples"],
+        gallery_sections=[
+            "getting_started",
+            "sources_detectors",
+            "transport_models",
+            "sweeps_convergence",
+        ],
         gallery_default_thumb=str(
             docs_source / "_static" / "images" / "sample-geometry.png"
         ),

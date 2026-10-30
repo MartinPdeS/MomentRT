@@ -178,7 +178,7 @@ For instance, with :math:`R=0.5`, the boundary law becomes
 :math:`\mathbf J\cdot\mathbf n=\Phi/6-(4/3)I_{\mathrm{in}}`. With no
 illumination on that face, the net outward current is one sixth of its local
 fluence rate. The :doc:`reflectance sweep example
-<gallery/finite_samples/reflectance_sweep>` compares finite-sample fluence and
+<gallery/sweeps_convergence/reflectance_sweep>` compares finite-sample fluence and
 escaping power for :math:`R=0`, :math:`0.5`, and :math:`0.9`.
 
 The net current :math:`\mathbf J\cdot\mathbf n` includes both outgoing and
@@ -706,7 +706,7 @@ a fixed location or integrated escaping power on a specified face. Compare
 it across successively refined meshes with the same physical configuration.
 A converged total power can coexist with an unconverged local field.
 The :doc:`mesh-refinement example
-<gallery/finite_samples/mesh_refinement>` demonstrates this workflow for a
+<gallery/sweeps_convergence/mesh_refinement>` demonstrates this workflow for a
 finite diffusion problem.
 
 Limits of this boundary and transport model

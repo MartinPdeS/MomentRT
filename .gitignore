@@ -23,5 +23,7 @@ docs/source/sg_execution_times.rst
 coverage.xml
 htmlcov/
 
-docs/source/gallery/fundamentals/
-docs/source/gallery/finite_samples/
+docs/source/gallery/getting_started/
+docs/source/gallery/sources_detectors/
+docs/source/gallery/transport_models/
+docs/source/gallery/sweeps_convergence/

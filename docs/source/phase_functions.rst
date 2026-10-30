@@ -80,6 +80,6 @@ coefficient. SP3 and P3 additionally use :math:`g_2` and :math:`g_3` through
 Consequently, changing the phase function while holding :math:`\mu_s'` fixed
 can change SP3/P3 even when the first moment is unchanged. Phase-function
 selection does not change the solver's source, boundary, or detector angular
-assumptions. See :doc:`gallery/finite_samples/phase_functions` for a runnable
+assumptions. See :doc:`gallery/transport_models/phase_functions` for a runnable
 comparison and `NIST SCATMECH's phase-function reference
 <https://pages.nist.gov/SCATMECH/docs/phase.htm>`_ for related scalar models.

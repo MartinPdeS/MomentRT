@@ -32,8 +32,9 @@ show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 # Define the three tissue layers
 # ------------------------------
 # Positive z points into the sample, so add the epidermis, dermis, then
-# hypodermis. The 4 mm sample spans 0.15 mm epidermis, 1.5 mm dermis, and
-# 2.35 mm subcutaneous fat. Optical coefficients are approximate 850 nm values.
+# hypodermis. The 4 mm sample contains 0.2 mm epidermis, 1.5 mm dermis, and
+# 2.3 mm of the requested 2.35 mm hypodermis. Optical coefficients are
+# approximate 850 nm values.
 # SP3 currently requires equal refractive indices across internal interfaces.
 
 epidermis = MomentRT.Material(
@@ -62,14 +63,14 @@ hypodermis = MomentRT.Material(
 
 sample = MomentRT.StructuredMedium(
     origin=(-6, -6, 0) * ureg.millimeter / 10,
-    size=(12, 12, 10) * ureg.millimeter / 10,
+    size=(12, 12, 40) * ureg.millimeter / 10,
 )
 
 sample.add_background(material=hypodermis)
 
 sample.add_layer(
     name="Epidermis",
-    thickness=0.15 * ureg.millimeter,
+    thickness=0.20 * ureg.millimeter,
     material=epidermis,
     clip_to_sample=True,
 )

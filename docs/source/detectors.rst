@@ -10,7 +10,7 @@ not modify the boundary conditions or remove power from the simulation.
 This distinguishes a detector signal from ``outgoing_power_by_face``:
 the latter integrates all modeled escaping power across an entire face.
 For a complete runnable configuration and 3D geometry, see the
-:doc:`detector example <gallery/finite_samples/surface_detector>`.
+:doc:`detector example <gallery/sources_detectors/surface_detector>`.
 
 Defining a detector
 --------------------

@@ -125,9 +125,9 @@ not validate SP3 against radiative transfer or biological measurements.
 Check mesh convergence, and compare against Monte Carlo or other transport
 references for the intended sensor distances and tissue properties.
 
-For runnable examples, see :doc:`gallery/finite_samples/sp3_layered_anisotropy`
+For runnable examples, see :doc:`gallery/transport_models/sp3_layered_anisotropy`
 for material-specific anisotropy and
-:doc:`gallery/finite_samples/sp3_spectral_anisotropy` for a wavelength sweep.
+:doc:`gallery/sweeps_convergence/sp3_spectral_anisotropy` for a wavelength sweep.
 
 Reference: H. K. Kim et al., *Frequency-domain optical tomographic image
 reconstruction algorithm with the simplified spherical harmonics (SP3) light

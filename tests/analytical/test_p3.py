@@ -45,10 +45,10 @@ def cube(*, count, source_face="z_min", absorption=1.0, scattering=1e-7):
 
 def test_planar_angular_reduction_has_exact_p3_coefficients():
     """Compare all planar diffusion and boundary coefficients with P3 algebra."""
-    streaming, _, boundary, source = MomentRT.transport.p3._angular_operators()
+    streaming, _, boundary, source = MomentRT.transport.p3.P3._angular_operators()
 
     odd_sigma = np.array(
-        [1 if degree == 1 else 2 for degree, _ in MomentRT.transport.p3._ODD]
+        [1 if degree == 1 else 2 for degree, _ in MomentRT.transport.p3.P3._ODD]
     )
 
     diffusion = streaming[2].T @ np.diag(1 / odd_sigma) @ streaming[2]
@@ -84,7 +84,7 @@ def test_planar_angular_reduction_has_exact_p3_coefficients():
 
 def test_planar_p3_fem_against_independent_transfer_solution():
     """Compare the reduced angular operator to an analytical homogeneous slab."""
-    streaming, _, boundary, source = MomentRT.transport.p3._angular_operators()
+    streaming, _, boundary, source = MomentRT.transport.p3.P3._angular_operators()
 
     mu_a, mu_s1, anisotropy = 20.0, 1000.0, 0.7
 
@@ -95,7 +95,7 @@ def test_planar_p3_fem_against_independent_transfer_solution():
     mu_3 = mu_a + mu_s1 * (1 + anisotropy + anisotropy**2)
 
     odd_sigma = np.array(
-        [mu_1 if degree == 1 else mu_3 for degree, _ in MomentRT.transport.p3._ODD]
+        [mu_1 if degree == 1 else mu_3 for degree, _ in MomentRT.transport.p3.P3._ODD]
     )
 
     indices = [0, 3]

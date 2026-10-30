@@ -41,6 +41,7 @@ def field():
 
 def test_named_overlays_convert_units_and_preserve_field_and_opacity_control(field):
     source = SurfaceSource(
+        name="Illumination",
         face="z_min",
         position=np.array([0, 0, 0]) * ureg.mm,
         radius=0.4 * ureg.mm,
@@ -49,6 +50,7 @@ def test_named_overlays_convert_units_and_preserve_field_and_opacity_control(fie
     )
 
     detector = SurfaceDetector(
+        name="Collection",
         face="z_max",
         position=np.array([0, 0, 4]) * ureg.mm,
         radius=0.5 * ureg.mm,

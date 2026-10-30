@@ -238,8 +238,8 @@ A static section complements the interactive volume with a penetration profile.
  .. code-block:: none
 
     Incoming power: 1 milliwatt
-    Absorbed power: 0.00020454076689282107 watt
-    Escaping power: 0.000795459233107183 watt
+    Absorbed power: 0.00020454076689282105 watt
+    Escaping power: 0.0007954592331071827 watt
 
 
 
@@ -270,7 +270,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.257 seconds)
+   **Total running time of the script:** (0 minutes 0.139 seconds)
 
 
 .. _sphx_glr_download_gallery_finite_samples_uniform_surface_source.py:

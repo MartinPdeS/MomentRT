@@ -98,7 +98,8 @@ def check_install(*, wheel):
             "assert location.is_relative_to(Path(sys.prefix).resolve()), location; "
             "assert all(hasattr(MomentRT, name) for name in "
             "('TetrahedralMesh', 'SurfaceDetector', 'SpectralMaterial', 'SpectralSimulationResult', "
-            "'DetectorConvergenceResult')); "
+            "'DetectorConvergenceResult', 'SourceSpectrum', 'DetectorResponsivity', "
+            "'BroadbandSimulationResult', 'BroadbandDetectorResult', 'SpectralConvergenceResult')); "
             "print(f'Imported MomentRT {MomentRT.__version__} from {location}')"
         )
 

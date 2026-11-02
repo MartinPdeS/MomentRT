@@ -31,6 +31,11 @@ RobinBoundary = MomentRT.boundary.RobinBoundary
 Boundaries = MomentRT.boundary.Boundaries
 DetectorResolutionError = MomentRT.detector.DetectorResolutionError
 SurfaceDetector = MomentRT.detector.SurfaceDetector
+DetectorResponsivity = MomentRT.detector.DetectorResponsivity
+SourceSpectrum = MomentRT.source.SourceSpectrum
+BroadbandDetectorResult = MomentRT.results.BroadbandDetectorResult
+BroadbandSimulationResult = MomentRT.results.BroadbandSimulationResult
+SpectralConvergenceResult = MomentRT.results.SpectralConvergenceResult
 Diffusion = MomentRT.transport.diffusion.Diffusion
 InfiniteDiffusion = MomentRT.transport.diffusion.InfiniteDiffusion
 BoundaryField = MomentRT.fields.BoundaryField
@@ -72,6 +77,11 @@ UniformSurfaceSource = MomentRT.source.UniformSurfaceSource
 ureg = MomentRT.units.ureg
 
 __all__ = [
+    "SpectralConvergenceResult",
+    "SourceSpectrum",
+    "DetectorResponsivity",
+    "BroadbandDetectorResult",
+    "BroadbandSimulationResult",
     "PhaseFunction",
     "HenyeyGreenstein",
     "Isotropic",

@@ -145,7 +145,8 @@ class Simulation:
         ----------
         wavelengths : pint.Quantity or None, optional
             One-dimensional sweep wavelengths with length units. None checks
-            the configured source wavelength.
+            the monochromatic source wavelength or the complete broadband
+            source grid.
 
         Returns
         -------
@@ -154,6 +155,14 @@ class Simulation:
             sampled source and detector areas. Validation does not solve
             transport or establish mesh convergence.
         """
+        if self.source.spectrum is not None:
+            return self._reference_simulation().validate(
+                wavelengths=(
+                    self.source.spectrum.wavelengths
+                    if wavelengths is None
+                    else wavelengths
+                )
+            )
         return self._validate_configuration(wavelengths=wavelengths)
 
     def _validate_configuration(
@@ -249,6 +258,14 @@ class Simulation:
                 selected_wavelengths = list(wavelengths)
             except (ValueError, TypeError) as error:
                 errors.append(f"Wavelengths: {error}")
+
+        for name, detector in self.detectors.items():
+            if detector.responsivity is not None:
+                for wavelength in selected_wavelengths:
+                    try:
+                        detector.responsivity.at(wavelength=wavelength)
+                    except (ValueError, TypeError) as error:
+                        errors.append(f"Detector {name!r} responsivity: {error}")
 
         if isinstance(medium, MomentRT.medium.StructuredMedium):
             materials = [
@@ -542,14 +559,51 @@ class Simulation:
             model_notes=tuple(getattr(solver, "model_notes", ())),
         )
 
-    def run(self) -> MomentRT.results.SimulationResult:
+    def run(
+        self,
+    ) -> MomentRT.results.SimulationResult | MomentRT.results.BroadbandSimulationResult:
         """Solve the configured transport problem and evaluate all named detectors.
 
         Returns
         -------
-        SimulationResult
-            Solved fields, numerical diagnostics, and configured detector measurements.
+        SimulationResult or BroadbandSimulationResult
+            Monochromatic fields and measurements, or broadband detector spectra,
+            trapezoidal optical and electrical integrals, and reference solves.
+            Broadband integration uses exactly the source spectrum's grid and
+            endpoints; refine that grid to assess spectral quadrature error.
         """
+
+        if self.source.spectrum is not None:
+            started = time.perf_counter()
+            spectrum = copy.deepcopy(self.source.spectrum)
+            reference = self._reference_simulation()
+            broadband = MomentRT.results.BroadbandSimulationResult(
+                spectrum=spectrum,
+                reference_results=reference.sweep(wavelengths=spectrum.wavelengths),
+                reference_optical_power=reference.source.optical_power,
+            )
+            broadband.diagnostics["total_time"] = (
+                time.perf_counter() - started
+            ) * MomentRT.units.ureg.second
+            return broadband
+        return self._run_monochromatic()
+
+    def _reference_simulation(self) -> MomentRT.simulation.Simulation:
+        """Copy broadband geometry with explicit one-watt monochromatic emission."""
+        spectrum = self.source.spectrum
+        assert spectrum is not None
+        reference = copy.copy(self)
+        reference.source = copy.copy(self.source)
+        reference.source.spectrum = None
+        reference.source.wavelength = spectrum.wavelengths[0].copy()
+        reference.source.optical_power = 1 * MomentRT.units.ureg.watt
+        return reference
+
+    def _run_monochromatic(self) -> MomentRT.results.SimulationResult:
+        """Solve a monochromatic configuration and measure every detector."""
+        for detector in self.detectors.values():
+            if detector.responsivity is not None:
+                detector.responsivity.at(wavelength=self.source.wavelength)
 
         solution = self.solver.solve(
             medium=self.medium, source=self.source, mesh=self.mesh
@@ -601,6 +655,11 @@ class Simulation:
 
         started = time.perf_counter()
 
+        if self.source.spectrum is not None:
+            raise ValueError(
+                "sweep uses independent monochromatic powers; use run() for a source spectrum."
+            )
+
         MomentRT.units.validate_units(
             value=wavelengths, unit="m", name="wavelengths", positive=True
         )
@@ -623,6 +682,9 @@ class Simulation:
 
         for wavelength in wavelengths:
             self.medium.at(wavelength=wavelength)
+            for detector in self.detectors.values():
+                if detector.responsivity is not None:
+                    detector.responsivity.at(wavelength=wavelength)
 
         prepare = getattr(self.solver, "_prepare", None)
 
@@ -674,7 +736,7 @@ class Simulation:
 
             solve_started = time.perf_counter()
 
-            results.append(simulation.run())
+            results.append(simulation._run_monochromatic())
 
             solve_times.append(time.perf_counter() - solve_started)
 
@@ -690,7 +752,7 @@ class Simulation:
             },
         )
 
-    def convergence_study(
+    def mesh_convergence(
         self,
         *,
         mesh_shapes: Iterable[tuple[int, int, int]] | None = None,
@@ -753,13 +815,80 @@ class Simulation:
             required_consecutive=required_consecutive,
         )
 
+    # Existing callers retain the same signature and behavior.
+    convergence_study = mesh_convergence
+
+    def spectral_convergence(
+        self,
+        *,
+        wavelength_grids: Iterable[Quantity],
+        include_table_knots: bool = True,
+        power_rtol: float = 0.01,
+        photocurrent_rtol: float = 0.01,
+        power_atol: Quantity | None = None,
+        photocurrent_atol: Quantity | None = None,
+        required_consecutive: int = 2,
+    ) -> MomentRT.results.SpectralConvergenceResult:
+        """Check broadband power and current stability across wavelength grids.
+
+        Parameters
+        ----------
+        wavelength_grids : iterable of pint.Quantity
+            At least two nested coarse-to-fine wavelength vectors spanning the
+            original source interval. Source knots are always retained.
+        include_table_knots : bool, optional
+            Include material and responsivity knots inside the interval. The
+            resulting inspectable grids must still add samples. Default is True.
+        power_rtol : float, optional
+            Nonnegative relative optical-power tolerance. Default is 0.01.
+        photocurrent_rtol : float, optional
+            Nonnegative relative current tolerance for detectors with response.
+            Default is 0.01.
+        power_atol : pint.Quantity or None, optional
+            Nonnegative absolute optical-power tolerance. None means zero watts.
+            Default is None.
+        photocurrent_atol : pint.Quantity or None, optional
+            Nonnegative absolute current tolerance. None means zero amperes.
+            Default is None.
+        required_consecutive : int, optional
+            Consecutive passing refinements required at the fine end. Default is 2.
+
+        Returns
+        -------
+        SpectralConvergenceResult
+            Per-level spectra, measurements, changes, and failures. A wavelength
+            grid is recommended only after a stable final refinement sequence.
+
+        Notes
+        -----
+        Geometry, source data, and detector response remain fixed. This checks
+        wavelength integration; assess spatial mesh and model accuracy separately.
+        """
+        return MomentRT.convergence._SpectralConvergenceStudy(simulation=self).run(
+            wavelength_grids=wavelength_grids,
+            include_table_knots=include_table_knots,
+            power_rtol=power_rtol,
+            photocurrent_rtol=photocurrent_rtol,
+            power_atol=power_atol,
+            photocurrent_atol=photocurrent_atol,
+            required_consecutive=required_consecutive,
+        )
+
     def plot_system(
-        self, *, length_unit: str = "mm", show: bool = True
+        self,
+        *,
+        wavelength: Quantity | None = None,
+        length_unit: str = "mm",
+        show: bool = True,
     ) -> MomentRT.plotting.Figure:
         """Display the physical sample, source, and detector geometry in 3D.
 
         Parameters
         ----------
+        wavelength : pint.Quantity or None, optional
+            Display wavelength for material properties. None uses the source
+            wavelength for monochromatic sources. Broadband sources with
+            spectral materials require an explicit display wavelength.
         length_unit : str, optional
             Length unit used for displayed or exported coordinates.
             Default is 'mm'.
@@ -773,7 +902,13 @@ class Simulation:
             Sample construction geometry with source and detector overlays.
         """
 
-        medium = self.medium.at(wavelength=self.source.wavelength)
+        if wavelength is None and self.source.spectrum is None:
+            wavelength = self.source.wavelength
+
+        if wavelength is None:
+            medium = self.medium
+        else:
+            medium = self.medium.at(wavelength=wavelength)
 
         if isinstance(medium, MomentRT.medium.HomogeneousMedium) and not isinstance(
             self.mesh, MomentRT.mesh.CartesianMesh

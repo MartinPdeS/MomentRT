@@ -9,6 +9,185 @@ from pint import Quantity
 import MomentRT
 
 
+class _SpectralConvergenceStudy:
+    """Refine wavelength quadrature for a fixed broadband simulation."""
+
+    def __init__(self, *, simulation: MomentRT.simulation.Simulation) -> None:
+        self.simulation = simulation
+
+    def run(
+        self,
+        *,
+        wavelength_grids: Iterable[Quantity],
+        include_table_knots: bool,
+        power_rtol: float,
+        photocurrent_rtol: float,
+        power_atol: Quantity | None,
+        photocurrent_atol: Quantity | None,
+        required_consecutive: int,
+    ) -> MomentRT.results.SpectralConvergenceResult:
+        """Run nested quadrature grids without changing geometry or source data."""
+        if self.simulation.source.spectrum is None:
+            raise ValueError("Spectral convergence requires a source spectrum.")
+        if not self.simulation.detectors:
+            raise ValueError(
+                "Configure at least one detector for spectral convergence."
+            )
+        for name, value in (
+            ("power_rtol", power_rtol),
+            ("photocurrent_rtol", photocurrent_rtol),
+        ):
+            if (
+                isinstance(value, (bool, np.bool_))
+                or not isinstance(value, (int, float, np.integer, np.floating))
+                or not np.isfinite(value)
+                or value < 0
+            ):
+                raise ValueError(f"{name} must be a finite nonnegative plain number.")
+        if (
+            isinstance(required_consecutive, (bool, np.bool_))
+            or not isinstance(required_consecutive, (int, np.integer))
+            or required_consecutive < 1
+        ):
+            raise ValueError("required_consecutive must be a positive integer.")
+        if not isinstance(include_table_knots, bool):
+            raise TypeError("include_table_knots must be a bool.")
+        power_atol = 0 * MomentRT.units.ureg.watt if power_atol is None else power_atol
+        photocurrent_atol = (
+            0 * MomentRT.units.ureg.ampere
+            if photocurrent_atol is None
+            else photocurrent_atol
+        )
+        for name, absolute_tolerance, unit in (
+            ("power_atol", power_atol, "W"),
+            ("photocurrent_atol", photocurrent_atol, "A"),
+        ):
+            MomentRT.units.validate_units(
+                value=absolute_tolerance,
+                unit=unit,
+                name=name,
+                shape=(),
+                nonnegative=True,
+            )
+
+        configuration = copy.copy(self.simulation)
+        configuration.medium = copy.deepcopy(self.simulation.medium)
+        configuration.source = copy.deepcopy(self.simulation.source)
+        configuration.detectors = copy.deepcopy(self.simulation.detectors)
+        configuration.solver = copy.deepcopy(self.simulation.solver)
+        configuration.mesh = self.simulation.mesh.copy()
+        spectrum = configuration.source.spectrum
+        assert spectrum is not None
+        knots = [spectrum.wavelengths]
+        if include_table_knots:
+            medium = configuration.medium
+            materials = (
+                [medium.material]
+                if isinstance(medium, MomentRT.medium.HomogeneousMedium)
+                else [
+                    medium.background,
+                    *(shape.material for shape in medium.structures),
+                ]
+            )
+            knots.extend(
+                material.wavelengths
+                for material in materials
+                if isinstance(material, MomentRT.material.SpectralMaterial)
+            )
+            knots.extend(
+                detector.responsivity.wavelengths
+                for detector in configuration.detectors.values()
+                if detector.responsivity is not None
+            )
+        grid_unit = spectrum.wavelengths.units
+        lower, upper = spectrum.wavelengths.magnitude[[0, -1]]
+        tolerance = 8 * np.finfo(float).eps * max(abs(lower), abs(upper))
+        fixed_knots = np.concatenate([grid.to(grid_unit).magnitude for grid in knots])
+        fixed_knots = fixed_knots[(fixed_knots >= lower) & (fixed_knots <= upper)]
+        grids: list[Quantity] = []
+        for requested in wavelength_grids:
+            MomentRT.units.validate_units(
+                value=requested, unit="m", name="wavelength grid", positive=True
+            )
+            if requested.ndim != 1 or len(requested) < 2:
+                raise ValueError(
+                    "Each wavelength grid must contain at least two samples."
+                )
+            values = requested.to(grid_unit).magnitude
+            if np.any(np.diff(values) <= 0):
+                raise ValueError("Each wavelength grid must be strictly increasing.")
+            if (
+                abs(values[0] - lower) > tolerance
+                or abs(values[-1] - upper) > tolerance
+            ):
+                raise ValueError("Every grid must span the original source interval.")
+            values = np.sort(np.concatenate((values, fixed_knots)))
+            values = values[np.concatenate(([True], np.diff(values) > tolerance))]
+            values[[0, -1]] = [lower, upper]
+            if grids:
+                previous = grids[-1].magnitude
+                if len(values) <= len(previous) or not np.all(
+                    np.any(
+                        np.abs(previous[:, None] - values[None, :]) <= tolerance, axis=1
+                    )
+                ):
+                    raise ValueError(
+                        "Grids must be nested and add wavelengths after table knots are included."
+                    )
+            grids.append(values * grid_unit)
+        if len(grids) < 2:
+            raise ValueError("Supply at least two coarse-to-fine wavelength grids.")
+
+        results: list[MomentRT.results.BroadbandSimulationResult | None] = []
+        level_errors = []
+        for grid in grids:
+            candidate = copy.copy(configuration)
+            candidate.source = copy.copy(configuration.source)
+            candidate.source.spectrum = spectrum.resample(wavelengths=grid)
+            errors = {}
+            try:
+                result = candidate.run()
+                assert isinstance(result, MomentRT.results.BroadbandSimulationResult)
+                for name, measurement in result.detectors.items():
+                    if measurement.collected_power.magnitude < 0 or (
+                        measurement.photocurrent is not None
+                        and measurement.photocurrent.magnitude < 0
+                    ):
+                        errors[f"detector:{name}"] = (
+                            "Negative integrated detector output."
+                        )
+                for reference in result.reference_results.results:
+                    minimum = reference.minimum_fluence
+                    if minimum is not None and minimum.magnitude < 0:
+                        errors["fluence"] = (
+                            "Negative nodal fluence in a reference solve."
+                        )
+                    for name, reference_measurement in reference.detectors.items():
+                        if (
+                            reference_measurement.minimum_escaping_irradiance.magnitude
+                            < 0
+                        ):
+                            errors[f"detector:{name}"] = (
+                                "Negative escaping irradiance in the aperture."
+                            )
+                results.append(result)
+            except (ValueError, TypeError, RuntimeError) as error:
+                results.append(None)
+                errors["simulation"] = str(error)
+            level_errors.append(errors)
+        return MomentRT.results.SpectralConvergenceResult(
+            wavelength_grids=grids,
+            results=results,
+            detectors=configuration.detectors,
+            level_errors=level_errors,
+            power_rtol=power_rtol,
+            photocurrent_rtol=photocurrent_rtol,
+            power_atol=power_atol,
+            photocurrent_atol=photocurrent_atol,
+            required_consecutive=required_consecutive,
+        )
+
+
 class _DetectorConvergenceStudy:
     """Run a detector convergence study for a simulation snapshot.
 
@@ -126,6 +305,12 @@ class _DetectorConvergenceStudy:
         MomentRT.units.validate_units(
             value=power_atol, unit="W", name="power_atol", shape=(), nonnegative=True
         )
+
+        if self.simulation.source.spectrum is not None:
+            raise ValueError(
+                "Detector convergence studies require a monochromatic source; "
+                "check representative wavelengths before broadband integration."
+            )
 
         medium = copy.deepcopy(self.simulation.medium)
 
@@ -259,7 +444,7 @@ class _DetectorConvergenceStudy:
             errors = {}
 
             try:
-                result = candidate.run()
+                result = cast(MomentRT.results.SimulationResult, candidate.run())
             except MomentRT.source.SourceResolutionError as error:
                 results.append(None)
 

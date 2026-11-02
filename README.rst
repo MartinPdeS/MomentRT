@@ -60,9 +60,12 @@ Features
 * Scalar Henyey–Greenstein, isotropic, Rayleigh, and tabulated scattering
   phase functions for SP3 and P3.
 
+Source spectra and linear detector responsivity support explicit broadband
+optical-power and photocurrent integration.
+
 MomentRT offers P1, SP3, and P3 approximations. It does not currently solve the
 full radiative transfer equation or implement collimated LED
-propagation, free-space detector optics, broadband spectral integration,
+propagation, free-space detector optics,
 time dependence, or inverse estimation. Read the `scientific guide`_ for the equations,
 approximations, validation limits, and complete workflow.
 

@@ -50,6 +50,13 @@ regime of MomentRT's diffusion solvers.
 Sources
 -------
 
+The same source classes accept ``spectrum=SourceSpectrum(...)`` instead of
+the monochromatic ``wavelength`` and ``optical_power`` pair. Density values
+carry W per wavelength units, and ``Simulation.run()`` explicitly integrates
+the resulting collected power over the source grid. Detectors optionally
+accept ``responsivity=DetectorResponsivity(...)`` in A/W for photocurrent.
+See :doc:`spectral` for the complete API, quadrature, and validation limits.
+
 ``PointSource`` requires ``position``, ``wavelength``, and positive
 ``optical_power``. It is supported by ``InfiniteDiffusion`` only.
 
@@ -183,7 +190,7 @@ Finite sweeps prepare geometry, material labels, region matrices, and
 boundary quadrature once per call. Spectral ``diagnostics`` include
 preparation and per-wavelength timing quantities. See :doc:`spectral`.
 
-``simulation.convergence_study(mesh_shapes=...)`` compares explicit Cartesian
+``simulation.mesh_convergence(mesh_shapes=...)`` compares explicit Cartesian
 levels; ``mesh_resolutions=...`` compares interface-fitted tetrahedra and can
 apply local ``contact_resolution`` / ``contact_distance`` refinement. The
 method returns a
@@ -228,3 +235,10 @@ without inheriting from it.
    :maxdepth: 1
 
    python_api
+
+``simulation.spectral_convergence(wavelength_grids=...)`` compares integrated
+optical power and optional photocurrent over nested wavelength grids while
+preserving source table knots and fixed geometry. Its inspectable grids,
+per-level changes, and failures support a recommendation only after a stable
+final sequence. ``convergence_study`` remains an alias for ``mesh_convergence``.
+See :doc:`spectral` for grid merging and spectral tolerance definitions.

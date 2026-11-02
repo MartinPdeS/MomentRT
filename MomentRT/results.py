@@ -1,10 +1,12 @@
 """Results retain physical fields and their provenance."""
 
 from __future__ import annotations
+import copy
 from collections.abc import Mapping, Sequence
 from typing import cast
 import numpy as np
 from pint import Quantity
+from scipy import integrate
 import MomentRT
 
 
@@ -327,6 +329,9 @@ class DetectorResult:
         Negative values flag discretization artifacts and remain unchanged.
     detector : SurfaceDetector
         Snapshot of the aperture and angular collection configuration.
+    photocurrent : pint.Quantity or None, optional
+        Linear electrical current in amperes when responsivity is configured.
+        Default is None.
     """
 
     def __init__(
@@ -339,6 +344,7 @@ class DetectorResult:
         wavelength: Quantity,
         minimum_escaping_irradiance: Quantity,
         detector: MomentRT.detector.SurfaceDetector,
+        photocurrent: Quantity | None = None,
     ) -> None:
         """Initialize the DetectorResult configuration.
 
@@ -360,7 +366,12 @@ class DetectorResult:
             Negative values flag discretization artifacts and remain unchanged.
         detector : SurfaceDetector
             Snapshot of the aperture and angular collection configuration.
+        photocurrent : pint.Quantity or None, optional
+            Linear electrical current in amperes when responsivity is configured.
+            Default is None.
         """
+
+        self.photocurrent = photocurrent
 
         self.collected_power = collected_power
 
@@ -937,6 +948,586 @@ class DetectorConvergenceResult:
             figure.show()
 
         return figure
+
+
+class SpectralConvergenceResult:
+    """Detector power and photocurrent stability on nested wavelength grids.
+
+    Parameters
+    ----------
+    wavelength_grids : sequence of pint.Quantity
+        Increasing-resolution wavelength vectors over one fixed source interval.
+    results : sequence of BroadbandSimulationResult or None
+        Per-level predictions. None retains a failed refinement.
+    detectors : mapping of str to SurfaceDetector
+        Fixed detector geometry and optional electrical response.
+    level_errors : sequence of mapping of str to str
+        Per-level solve failures and negative-field diagnostics.
+    power_rtol : float
+        Nonnegative relative optical-power tolerance.
+    photocurrent_rtol : float
+        Nonnegative relative electrical-current tolerance.
+    power_atol : pint.Quantity
+        Nonnegative absolute optical-power tolerance.
+    photocurrent_atol : pint.Quantity
+        Nonnegative absolute electrical-current tolerance.
+    required_consecutive : int
+        Consecutive passing refinements required at the fine end.
+
+    Attributes
+    ----------
+    wavelength_grids : tuple of pint.Quantity
+        Actual nested integration grids after required table knots are merged.
+    sample_counts : numpy.ndarray of int
+        Number of wavelengths at each level.
+    detector_power : dict of str to pint.Quantity
+        Integrated optical-power vectors in watts, with NaN for failed levels.
+    detector_photocurrent : dict of str to pint.Quantity
+        Integrated current vectors in amperes for detectors with responsivity.
+    power_relative_change : dict of str to numpy.ndarray
+        Adjacent power changes divided by the larger absolute adjacent value.
+    photocurrent_relative_change : dict of str to numpy.ndarray
+        Adjacent current changes using the same normalization as power changes.
+    power_relative_to_finest : dict of str to numpy.ndarray
+        Absolute power differences divided by the finest absolute power.
+    photocurrent_relative_to_finest : dict of str to numpy.ndarray
+        Current differences relative to the finest absolute current.
+    meets_tolerances : numpy.ndarray of bool
+        Per-level stability checks including failures and negative outputs.
+    recommended_index : int or None
+        Recommended grid index, or None after an unresolved final sequence.
+
+    Notes
+    -----
+    A recommendation requires adjacent-level stability and agreement with the
+    finest result for every measured quantity. Failed or negative outputs are
+    retained and prevent a recommendation from a failed final sequence.
+    These criteria concern wavelength integration, not spatial or model accuracy.
+    """
+
+    def __init__(
+        self,
+        *,
+        wavelength_grids: Sequence[Quantity],
+        results: Sequence[MomentRT.results.BroadbandSimulationResult | None],
+        detectors: Mapping[str, MomentRT.detector.SurfaceDetector],
+        level_errors: Sequence[Mapping[str, str]],
+        power_rtol: float,
+        photocurrent_rtol: float,
+        power_atol: Quantity,
+        photocurrent_atol: Quantity,
+        required_consecutive: int,
+    ) -> None:
+        """Collect spectral refinements and evaluate final-sequence stability.
+
+        Parameters
+        ----------
+        wavelength_grids : sequence of pint.Quantity
+            Nested wavelength vectors over one source interval.
+        results : sequence of BroadbandSimulationResult or None
+            Predictions or failed refinement placeholders.
+        detectors : mapping of str to SurfaceDetector
+            Fixed apertures and optional responsivity tables.
+        level_errors : sequence of mapping of str to str
+            Failures and numerical artifacts for each refinement.
+        power_rtol : float
+            Nonnegative relative power tolerance.
+        photocurrent_rtol : float
+            Nonnegative relative current tolerance.
+        power_atol : pint.Quantity
+            Nonnegative absolute optical-power tolerance.
+        photocurrent_atol : pint.Quantity
+            Nonnegative absolute electrical-current tolerance.
+        required_consecutive : int
+            Consecutive passing refinements required at the fine end.
+        """
+        if (
+            len(wavelength_grids) < 2
+            or len(results) != len(wavelength_grids)
+            or len(level_errors) != len(results)
+        ):
+            raise ValueError(
+                "Supply matching grids, results, and errors for at least two levels."
+            )
+        self.wavelength_grids = tuple(grid.copy() for grid in wavelength_grids)
+        self.sample_counts = np.array([len(grid) for grid in wavelength_grids])
+        self.results = tuple(results)
+        self.detectors = copy.deepcopy(dict(detectors))
+        self.level_errors = tuple(dict(errors) for errors in level_errors)
+        self.power_rtol = power_rtol
+        self.photocurrent_rtol = photocurrent_rtol
+        self.power_atol = power_atol.copy()
+        self.photocurrent_atol = photocurrent_atol.copy()
+        self.required_consecutive = required_consecutive
+        self.detector_power: dict[str, Quantity] = {}
+        self.detector_photocurrent: dict[str, Quantity] = {}
+        self.power_relative_change: dict[str, np.ndarray] = {}
+        self.power_relative_to_finest: dict[str, np.ndarray] = {}
+        self.photocurrent_relative_change: dict[str, np.ndarray] = {}
+        self.photocurrent_relative_to_finest: dict[str, np.ndarray] = {}
+        acceptable = np.array([not errors for errors in self.level_errors])
+        finest_checks = []
+        for name, detector in self.detectors.items():
+            power = np.array(
+                [
+                    np.nan
+                    if result is None
+                    else result.detectors[name].collected_power.to("W").magnitude
+                    for result in results
+                ]
+            )
+            self.detector_power[name] = power * MomentRT.units.ureg.watt
+            change, finest, adjacent_ok, finest_ok = self._compare(
+                values=power,
+                rtol=power_rtol,
+                atol=power_atol.to("W").magnitude,
+            )
+            self.power_relative_change[name] = change
+            self.power_relative_to_finest[name] = finest
+            acceptable &= adjacent_ok
+            finest_checks.append(finest_ok)
+            if detector.responsivity is not None:
+                current = np.array(
+                    [
+                        np.nan
+                        if result is None or result.detectors[name].photocurrent is None
+                        else cast(Quantity, result.detectors[name].photocurrent)
+                        .to("A")
+                        .magnitude
+                        for result in results
+                    ]
+                )
+                self.detector_photocurrent[name] = current * MomentRT.units.ureg.ampere
+                change, finest, adjacent_ok, finest_ok = self._compare(
+                    values=current,
+                    rtol=photocurrent_rtol,
+                    atol=photocurrent_atol.to("A").magnitude,
+                )
+                self.photocurrent_relative_change[name] = change
+                self.photocurrent_relative_to_finest[name] = finest
+                acceptable &= adjacent_ok
+                finest_checks.append(finest_ok)
+        self.meets_tolerances = acceptable
+        self.stable_refinements = np.zeros(len(results), dtype=int)
+        self.recommended_index: int | None = None
+        for index, passed in enumerate(acceptable):
+            previous = self.stable_refinements[index - 1] if index else 0
+            self.stable_refinements[index] = previous + 1 if passed else 0
+        final_streak = self.stable_refinements[-1]
+        if final_streak >= required_consecutive:
+            first_candidate = len(results) - final_streak + required_consecutive - 1
+            for index in range(first_candidate, len(results)):
+                if all(check[index] for check in finest_checks):
+                    self.recommended_index = index
+                    break
+
+    @staticmethod
+    def _compare(
+        *,
+        values: np.ndarray,
+        rtol: float,
+        atol: float,
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        """Compare signed finite outputs against adjacent and finest levels."""
+        difference = np.abs(np.diff(values))
+        scale = np.maximum(np.abs(values[:-1]), np.abs(values[1:]))
+        relative = np.divide(
+            difference, scale, out=np.zeros_like(difference), where=scale != 0
+        )
+        valid = np.isfinite(values) & (values >= 0)
+        pair_valid = valid[:-1] & valid[1:]
+        relative[~pair_valid] = np.nan
+        change = np.concatenate(([np.nan], relative))
+        adjacent_ok = np.concatenate(
+            ([False], pair_valid & (difference <= atol + rtol * scale))
+        )
+        finest_difference = np.abs(values - values[-1])
+        finest_scale = abs(values[-1])
+        finest = np.divide(
+            finest_difference,
+            finest_scale,
+            out=np.full_like(values, np.inf),
+            where=finest_scale != 0,
+        )
+        finest[(finest_scale == 0) & (finest_difference == 0)] = 0
+        finest[~valid | ~valid[-1]] = np.nan
+        finest_ok = (
+            valid & valid[-1] & (finest_difference <= atol + rtol * finest_scale)
+        )
+        return change, finest, adjacent_ok, finest_ok
+
+    @property
+    def converged(self) -> bool:
+        """Report whether the final sequence supports a wavelength recommendation.
+
+        Returns
+        -------
+        bool
+            True when all detector quantities meet the final stability criteria.
+        """
+        return self.recommended_index is not None
+
+    @property
+    def recommended_wavelengths(self) -> Quantity | None:
+        """Return a copy of the recommended grid when tolerances are met.
+
+        Returns
+        -------
+        pint.Quantity or None
+            Increasing vacuum wavelengths, or None after an unresolved sequence.
+        """
+        return (
+            None
+            if self.recommended_index is None
+            else self.wavelength_grids[self.recommended_index].copy()
+        )
+
+    @property
+    def records(self) -> list[dict[str, object]]:
+        """Return per-level powers, currents, changes, and explicit failures.
+
+        Returns
+        -------
+        list of dict
+            Records preserving physical units and all failed refinement levels.
+        """
+        return [
+            {
+                "wavelengths": self.wavelength_grids[index].copy(),
+                "sample_count": int(self.sample_counts[index]),
+                "detectors": {
+                    name: {
+                        "collected_power": power[index],
+                        "photocurrent": self.detector_photocurrent[name][index]
+                        if name in self.detector_photocurrent
+                        else None,
+                        "power_relative_change": float(
+                            self.power_relative_change[name][index]
+                        ),
+                        "power_relative_to_finest": float(
+                            self.power_relative_to_finest[name][index]
+                        ),
+                        "photocurrent_relative_change": float(
+                            self.photocurrent_relative_change[name][index]
+                        )
+                        if name in self.detector_photocurrent
+                        else None,
+                        "photocurrent_relative_to_finest": float(
+                            self.photocurrent_relative_to_finest[name][index]
+                        )
+                        if name in self.detector_photocurrent
+                        else None,
+                    }
+                    for name, power in self.detector_power.items()
+                },
+                "meets_tolerances": bool(self.meets_tolerances[index]),
+                "stable_refinements": int(self.stable_refinements[index]),
+                "errors": dict(self.level_errors[index]),
+            }
+            for index in range(len(self.results))
+        ]
+
+    def summary(self) -> str:
+        """Describe wavelength refinement outcomes and the final recommendation.
+
+        Returns
+        -------
+        str
+            Labeled sample counts, passing levels, failures, and recommendation.
+        """
+        lines = []
+        for index, count in enumerate(self.sample_counts):
+            lines.append(
+                f"Level {index}: {count} wavelengths; meets tolerances: {bool(self.meets_tolerances[index])}; errors: {self.level_errors[index]}"
+            )
+            for name, power in self.detector_power.items():
+                line = (
+                    f"  {name}: collected power {power[index]:~P}; "
+                    f"relative change {self.power_relative_change[name][index]:.3g}"
+                )
+                if name in self.detector_photocurrent:
+                    line += (
+                        f"; photocurrent {self.detector_photocurrent[name][index]:~P}; "
+                        f"relative change {self.photocurrent_relative_change[name][index]:.3g}"
+                    )
+                lines.append(line)
+        lines.append(
+            f"Converged: {self.converged}; recommended index: {self.recommended_index}"
+        )
+        return "\n".join(lines)
+
+    def plot(
+        self,
+        *,
+        power_unit: str = "uW",
+        current_unit: str = "uA",
+        show: bool = True,
+    ) -> MomentRT.plotting.Figure:
+        """Plot integrated measurements against wavelength sample count.
+
+        Parameters
+        ----------
+        power_unit : str, optional
+            Optical-power display unit. Default is 'uW'.
+        current_unit : str, optional
+            Electrical-current display unit. Default is 'uA'.
+        show : bool, optional
+            Display immediately when True. Default is True.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            Composable power and optional photocurrent curves with failed gaps.
+        """
+        figure = MomentRT.plotting.make_subplots(
+            rows=1, cols=2 if self.detector_photocurrent else 1
+        )
+        for name, power in self.detector_power.items():
+            figure.add_trace(
+                MomentRT.plotting.go.Scatter(
+                    x=self.sample_counts,
+                    y=power.to(power_unit).magnitude,
+                    mode="lines+markers",
+                    name=f"{name}: optical power",
+                ),
+                row=1,
+                col=1,
+            )
+        figure.update_yaxes(title_text=f"Collected power ({power_unit})", row=1, col=1)
+        for name, current in self.detector_photocurrent.items():
+            figure.add_trace(
+                MomentRT.plotting.go.Scatter(
+                    x=self.sample_counts,
+                    y=current.to(current_unit).magnitude,
+                    mode="lines+markers",
+                    name=f"{name}: photocurrent",
+                ),
+                row=1,
+                col=2,
+            )
+        if self.detector_photocurrent:
+            figure.update_yaxes(
+                title_text=f"Photocurrent ({current_unit})", row=1, col=2
+            )
+        figure.update_xaxes(title_text="Wavelength samples")
+        figure.update_layout(title="Wavelength integration convergence")
+        if show:
+            figure.show()
+        return figure
+
+
+class BroadbandDetectorResult:
+    """Collected spectral density and its explicit wavelength integrals.
+
+    Parameters
+    ----------
+    wavelengths : pint.Quantity
+        Strictly increasing positive vacuum wavelengths, shape (n,), n >= 2.
+    spectral_power : pint.Quantity
+        Collected power density, shape (n,), with W / length units. Negative
+        numerical outputs are retained. Integration uses the supplied endpoints.
+    responsivity : DetectorResponsivity or None, optional
+        Linear electrical response. None leaves photocurrent unavailable.
+        Default is None.
+    reference_measurements : sequence of DetectorResult or None, optional
+        Measurements on the same aperture and mesh, one per wavelength.
+        Supplies the sampled and geometric areas. Default is None.
+
+    Attributes
+    ----------
+    spectral_power : pint.Quantity
+        Signed collected power density in its supplied W / length units.
+    collected_power : pint.Quantity
+        Trapezoidal optical integral in watts.
+    photocurrent : pint.Quantity or None
+        Trapezoidal electrical integral in amperes when responsivity is supplied.
+    responsivity : DetectorResponsivity or None
+        Snapshot of the linear response used for electrical conversion.
+    sampled_area : pint.Quantity or None
+        Shared sampled aperture area. None when no geometry was supplied.
+    geometric_area : pint.Quantity or None
+        Shared exact aperture area. None when no geometry was supplied.
+    """
+
+    def __init__(
+        self,
+        *,
+        wavelengths: Quantity,
+        spectral_power: Quantity,
+        responsivity: MomentRT.detector.DetectorResponsivity | None = None,
+        reference_measurements: Sequence[MomentRT.results.DetectorResult] | None = None,
+    ) -> None:
+        """Integrate collected optical density and optional electrical response.
+
+        Parameters
+        ----------
+        wavelengths : pint.Quantity
+            Strictly increasing positive vacuum wavelengths, shape (n,), n >= 2.
+        spectral_power : pint.Quantity
+            Signed collected spectral power density, shape (n,), in W / length.
+        responsivity : DetectorResponsivity or None, optional
+            Linear spectral electrical response. Default is None.
+        reference_measurements : sequence of DetectorResult or None, optional
+            Same-aperture measurements on the wavelength grid. Default is None.
+        """
+        MomentRT.units.validate_units(
+            value=wavelengths, unit="m", name="wavelengths", positive=True
+        )
+        if wavelengths.ndim != 1 or len(wavelengths) < 2:
+            raise ValueError("wavelengths must contain at least two samples.")
+        grid = wavelengths.to("m").magnitude
+        if np.any(np.diff(grid) <= 0):
+            raise ValueError("wavelengths must be strictly increasing.")
+        MomentRT.units.validate_units(
+            value=spectral_power,
+            unit="W/m",
+            name="spectral_power",
+            shape=wavelengths.shape,
+        )
+        self.wavelengths = wavelengths.copy()
+        self.spectral_power = spectral_power.copy()
+        self.responsivity = copy.deepcopy(responsivity)
+        self.reference_measurements = tuple(copy.deepcopy(reference_measurements or ()))
+        self.sampled_area: Quantity | None = None
+        self.geometric_area: Quantity | None = None
+        self.angular_fraction: float | None = None
+        self.detector: MomentRT.detector.SurfaceDetector | None = None
+        self.angular_model = "Lambertian escaping radiance"
+        if self.reference_measurements:
+            if len(self.reference_measurements) != len(wavelengths):
+                raise ValueError("Supply one reference measurement per wavelength.")
+            first = self.reference_measurements[0]
+            for index, measurement in enumerate(self.reference_measurements):
+                if not np.isclose(
+                    measurement.wavelength.to("m").magnitude,
+                    wavelengths[index].to("m").magnitude,
+                    rtol=1e-12,
+                    atol=0,
+                ):
+                    raise ValueError(
+                        "Reference measurement wavelengths must match the grid."
+                    )
+                if (
+                    not np.isclose(
+                        measurement.sampled_area.to("m^2").magnitude,
+                        first.sampled_area.to("m^2").magnitude,
+                        rtol=1e-12,
+                        atol=0,
+                    )
+                    or not np.isclose(
+                        measurement.geometric_area.to("m^2").magnitude,
+                        first.geometric_area.to("m^2").magnitude,
+                        rtol=1e-12,
+                        atol=0,
+                    )
+                    or measurement.angular_fraction != first.angular_fraction
+                ):
+                    raise ValueError(
+                        "Broadband measurements must use the same aperture quadrature."
+                    )
+            self.sampled_area = first.sampled_area.copy()
+            self.geometric_area = first.geometric_area.copy()
+            self.angular_fraction = first.angular_fraction
+            self.detector = copy.deepcopy(first.detector)
+        self.collected_power = (
+            integrate.trapezoid(spectral_power.to("W/m").magnitude, x=grid)
+            * MomentRT.units.ureg.watt
+        )
+        self.spectral_photocurrent: Quantity | None = None
+        self.photocurrent: Quantity | None = None
+        if self.responsivity is not None:
+            self.spectral_photocurrent = spectral_power * self.responsivity.at(
+                wavelength=wavelengths
+            )
+            self.photocurrent = (
+                integrate.trapezoid(
+                    self.spectral_photocurrent.to("A/m").magnitude,
+                    x=grid,
+                )
+                * MomentRT.units.ureg.ampere
+            )
+
+
+class BroadbandSimulationResult:
+    """Broadband detector predictions and the underlying unit-power solves.
+
+    Parameters
+    ----------
+    spectrum : SourceSpectrum
+        Source spectral density and the integration wavelength grid.
+    reference_results : SpectralSimulationResult
+        Independent monochromatic solves on the source grid, each excited by
+        reference_optical_power. Their fields retain those reference units.
+    reference_optical_power : pint.Quantity
+        Positive scalar optical power used for every reference solve.
+    """
+
+    def __init__(
+        self,
+        *,
+        spectrum: MomentRT.source.SourceSpectrum,
+        reference_results: MomentRT.results.SpectralSimulationResult,
+        reference_optical_power: Quantity,
+    ) -> None:
+        """Scale unit responses by source density and integrate detector outputs.
+
+        Parameters
+        ----------
+        spectrum : SourceSpectrum
+            Incoming source density with increasing vacuum wavelengths.
+        reference_results : SpectralSimulationResult
+            Monochromatic reference-power solutions on exactly the same grid.
+        reference_optical_power : pint.Quantity
+            Positive scalar reference optical power, with power units.
+        """
+        MomentRT.units.validate_units(
+            value=reference_optical_power,
+            unit="W",
+            name="reference_optical_power",
+            shape=(),
+            positive=True,
+        )
+        if (
+            spectrum.wavelengths.shape != reference_results.wavelengths.shape
+            or not np.allclose(
+                spectrum.wavelengths.to("m").magnitude,
+                reference_results.wavelengths.to("m").magnitude,
+                rtol=8 * np.finfo(float).eps,
+                atol=0,
+            )
+        ):
+            raise ValueError("Reference wavelengths must match the source spectrum.")
+        self.wavelengths = spectrum.wavelengths.copy()
+        self.source_spectrum = copy.deepcopy(spectrum)
+        self.reference_results = reference_results
+        self.reference_optical_power = reference_optical_power.copy()
+        self.detectors = {
+            name: BroadbandDetectorResult(
+                wavelengths=self.wavelengths,
+                spectral_power=(power / reference_optical_power)
+                * spectrum.spectral_power,
+                responsivity=reference_results.detectors[name][0].detector.responsivity,
+                reference_measurements=reference_results.detectors[name],
+            )
+            for name, power in reference_results.detector_power.items()
+        }
+        self.diagnostics = {
+            **reference_results.diagnostics,
+            "integration_rule": "trapezoidal wavelength quadrature",
+            "integration_interval": self.wavelengths[[0, -1]].copy(),
+            "incoming_optical_power": spectrum.optical_power,
+        }
+
+    @property
+    def detector_power(self) -> dict[str, Quantity]:
+        """Return the wavelength-integrated optical powers for named detectors.
+
+        Returns
+        -------
+        dict of str to pint.Quantity
+            Accepted broadband optical powers in watts.
+        """
+        return {name: result.collected_power for name, result in self.detectors.items()}
 
 
 class SpectralSimulationResult:

@@ -119,6 +119,15 @@ collection and a multi-fiber contact probe.
       Interpolate material spectra and plot collected power across wavelengths
       with fixed sample and instrument geometry.
 
+   .. grid-item-card:: Integrate source and detector spectra
+      :link: sources_detectors/broadband_detector
+      :link-type: doc
+      :img-top: sources_detectors/images/thumb/sphx_glr_broadband_detector_thumb.png
+      :img-alt: Incoming and collected spectral power and detector photocurrent
+
+      Configure the existing source with a power density and the detector with
+      responsivity, then integrate optical power and electrical current.
+
    .. grid-item-card:: Seven-fiber skin probe
       :link: sources_detectors/seven_fiber_skin
       :link-type: doc
@@ -213,6 +222,24 @@ affects calculated fields and observables.
 
       Compare fluence over three grids and inspect recorded FEM preparation,
       assembly, factorization, and solve timings.
+
+   .. grid-item-card:: Benchmark P1, SP3, and P3 scaling
+      :link: sweeps_convergence/solver_scaling
+      :link-type: doc
+      :img-top: sweeps_convergence/images/thumb/sphx_glr_solver_scaling_thumb.png
+      :img-alt: Solve time and peak process memory versus tetrahedron count
+
+      Measure solve time and peak process memory across tetrahedral mesh sizes,
+      and use the results to decide whether iterative P3 solvers warrant study.
+
+   .. grid-item-card:: Vary layered sensor validation cases
+      :link: sweeps_convergence/sensor_validation_cases
+      :link-type: doc
+      :img-top: sweeps_convergence/images/thumb/sphx_glr_sensor_validation_cases_thumb.png
+      :img-alt: P1, SP3, and P3 detector-power errors across eight sensor cases
+
+      Explore published comparisons while varying layer thickness, optical
+      properties, source size, detector radius, and source-detector separation.
 
    .. grid-item-card:: Change boundary reflectance
       :link: sweeps_convergence/reflectance_sweep

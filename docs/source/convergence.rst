@@ -1,10 +1,12 @@
 Choosing a mesh for detector collection
 ============================================================
 
-``simulation.convergence_study(...)`` compares detector power and footprint
+``simulation.mesh_convergence(...)`` compares detector power and footprint
 sampling across explicit finite meshes. It keeps the sample, source,
 detector apertures, wavelength, and boundaries fixed, returning a
 ``DetectorConvergenceResult`` without changing the original configuration.
+``simulation.convergence_study(...)`` remains a compatibility alias for
+``simulation.mesh_convergence(...)`` with the same arguments and behavior.
 See the :doc:`worked refinement example
 <gallery/sources_detectors/detector_convergence>` for comparison plots and a
 fluence volume with instrument overlays.
@@ -17,7 +19,7 @@ then supply meshes from coarse to fine:
 
 .. code-block:: python
 
-   study = simulation.convergence_study(
+   study = simulation.mesh_convergence(
        mesh_shapes=[
            (9, 7, 7),
            (13, 10, 10),
@@ -50,7 +52,7 @@ source disks and all detector apertures at every level:
 
 .. code-block:: python
 
-   study = simulation.convergence_study(
+   study = simulation.mesh_convergence(
        mesh_resolutions=[
            1.5 * ureg.mm,
            1.0 * ureg.mm,

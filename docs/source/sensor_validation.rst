@@ -2,67 +2,31 @@ Sensor-focused model validation
 ===============================
 
 This benchmark compares P1, SP3, and P3 detector-power predictions with an
-independent Monte Carlo photon-transport reference for two layered samples. It
-varies the source-detector separation and records detector power, Monte Carlo
-uncertainty, mesh size, source and aperture quadrature areas, and runtime. The
-plot reports each moment model's relative detector-power error against the
-Monte Carlo estimate; the shaded band shows the reference's approximate 95%
-sampling uncertainty.
+independent Monte Carlo photon-transport reference across eight layered-sample
+and contact-sensor cases. It varies layer thickness, optical properties,
+source radius, detector radius, and five source-detector separations. The
+complete JSON report records all inputs, random seeds, detector powers,
+Monte Carlo standard errors, mesh sizes, sampled source and aperture areas,
+and runtimes. The :doc:`executable gallery example
+<gallery/sweeps_convergence/sensor_validation_cases>` visualizes these
+published results.
 
-At the finest tested mesh (8,844 tetrahedra, with 96.2% of the exact aperture
-area sampled), relative detector-power errors were:
+Each case uses 850 nm wavelength, 1 mW diffuse source power, 6 mm sample width,
+and a 2 mm total sample thickness. The baseline layer thicknesses are
+``(0.25, 0.65, 1.10) mm``; its source and detector radii are both 0.20 mm.
+Cases vary a single geometry factor around that baseline: top-layer thickness
+is changed to 0.10 or 0.45 mm, source radius to 0.10 or 0.35 mm, and detector
+radius to 0.10 or 0.30 mm. For thickness variants, the bottom layer changes
+to keep total sample thickness at 2 mm. A separate higher-absorption case
+changes the optical coefficients in all three layers. Separations are 0.75,
+1.25, 1.5, 2.0, and 2.5 mm.
 
-.. list-table:: Finest-mesh detector-power error against Monte Carlo
-   :header-rows: 1
-   :widths: 24 18 16 16 16 16
+The heat map compares finest-mesh detector power to Monte Carlo; colors are
+clipped for readability. The separate mesh-study plot shows how the baseline
+and higher-absorption cases change over the three mesh levels. Read both plots
+with the Monte Carlo uncertainty and area diagnostics in the JSON report.
 
-   * - Optical case
-     - Separation (mm)
-     - MC 95% uncertainty
-     - P1 error
-     - SP3 error
-     - P3 error
-   * - Moderate absorption
-     - 0.75
-     - ±2.2%
-     - +105.0%
-     - +92.6%
-     - +24.9%
-   * - Moderate absorption
-     - 1.5
-     - ±4.7%
-     - +59.8%
-     - +55.0%
-     - −1.7%
-   * - Moderate absorption
-     - 2.5
-     - ±9.5%
-     - +47.7%
-     - +47.8%
-     - −3.1%
-   * - Higher absorption
-     - 0.75
-     - ±2.4%
-     - +152.6%
-     - +136.9%
-     - +47.0%
-   * - Higher absorption
-     - 1.5
-     - ±4.7%
-     - +90.5%
-     - +86.9%
-     - −2.6%
-   * - Higher absorption
-     - 2.5
-     - ±9.3%
-     - +77.4%
-     - +82.4%
-     - +1.4%
-
-The errors are signed ``(model − Monte Carlo) / Monte Carlo`` percentages.
-The table is one mesh level, not an extrapolated continuum result; use the
-plotted sequence to assess mesh behavior. The complete data, including each
-mesh level's power and area diagnostics, are available as
+The full reproducible inputs and reference data are available as
 :download:`JSON <_static/images/sensor_validation/sensor_validation.json>`.
 
 .. image:: _static/images/sensor_validation/sensor_validation.png
@@ -71,16 +35,23 @@ mesh level's power and area diagnostics, are available as
    :align: center
    :width: 100%
 
+.. image:: _static/images/sensor_validation/sensor_validation_cases.png
+   :alt: Finest-mesh relative detector-power errors for P1, SP3, and P3 across
+         eight layered optical and contact geometry cases.
+   :align: center
+   :width: 100%
+
 Reproduce the benchmark from the repository root with::
 
    .venv/bin/python tools/validate_sensor_models.py
 
-The command writes ``sensor_validation.json`` and the plot next to each other
-under ``docs/source/_static/images/sensor_validation``. It uses one million
-photon histories per optical-property case and a fixed random seed. Use
-``--photons`` and ``--seed`` to choose another run; use ``--output-dir`` to
-write elsewhere. The JSON file contains the full detector-by-detector mesh
-study and sampled-area diagnostics.
+The command writes the JSON report and both plots under
+``docs/source/_static/images/sensor_validation``. It uses one million photon
+histories per case and deterministic case-specific seeds. Use ``--photons``
+and ``--seed`` to choose another run, ``--cases`` to select named cases, or
+``--output-dir`` to write elsewhere. The committed JSON records each exact
+case configuration alongside the full detector-by-detector mesh study and
+sampled-area diagnostics.
 
 Reference definition and limits
 -------------------------------
@@ -106,6 +77,10 @@ errors together with the Monte Carlo uncertainty and area fractions in the
 JSON; agreement in energy balance or sampled area alone is not evidence of
 transport accuracy.
 
-The benchmark covers illustrative layered cases and a small set of lateral
-separations. It is a diagnostic baseline, not a claim of accuracy for skin,
-all source-detector distances, or every contact-sensor design.
+The cases are illustrative and do not span the full range of tissue structures,
+optical properties, or sensor designs. They are a reproducible diagnostic
+suite, not a claim of accuracy for skin or every source-detector distance.
+At the finest mesh, the small-source and small-detector cases sample about 87%
+of their corresponding geometric footprint areas. Treat those particular
+results as under-resolved; refine the contact mesh before interpreting their
+model errors as transport-approximation error.

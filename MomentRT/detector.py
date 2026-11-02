@@ -1,6 +1,7 @@
 """Contact-aperture detection with an explicit Lambertian escape assumption."""
 
 from __future__ import annotations
+import copy
 from collections.abc import Mapping
 from typing import Any
 import numpy as np
@@ -12,6 +13,128 @@ import MomentRT
 
 class DetectorResolutionError(ValueError):
     """No boundary quadrature point samples the detector aperture."""
+
+
+class DetectorResponsivity:
+    """Tabulated detector responsivity with linear interpolation and no extrapolation.
+
+    Parameters
+    ----------
+    wavelengths : pint.Quantity
+        Strictly increasing positive vacuum wavelengths, shape (n,), n >= 2.
+    responsivity : pint.Quantity
+        Nonnegative electrical responsivity, shape (n,), with A / W units.
+        It describes a linear detector without saturation or electronics gain.
+    """
+
+    def __init__(self, *, wavelengths: Quantity, responsivity: Quantity) -> None:
+        """Validate and snapshot the electrical responsivity table.
+
+        Parameters
+        ----------
+        wavelengths : pint.Quantity
+            Increasing positive vacuum wavelengths, shape (n,), n >= 2.
+        responsivity : pint.Quantity
+            Nonnegative electrical responsivity, shape (n,), with A / W units.
+        """
+        MomentRT.units.validate_units(
+            value=wavelengths, unit="m", name="wavelengths", positive=True
+        )
+        if wavelengths.ndim != 1 or len(wavelengths) < 2:
+            raise ValueError("wavelengths must be a vector of at least two samples.")
+        if np.any(np.diff(wavelengths.to("m").magnitude) <= 0):
+            raise ValueError("wavelengths must be strictly increasing.")
+        MomentRT.units.validate_units(
+            value=responsivity,
+            unit="A/W",
+            name="responsivity",
+            shape=wavelengths.shape,
+            nonnegative=True,
+        )
+        self.wavelengths = wavelengths.copy()
+        self.responsivity = responsivity.copy()
+
+    def at(self, *, wavelength: Quantity) -> Quantity:
+        """Interpolate responsivity within the supplied wavelength interval.
+
+        Parameters
+        ----------
+        wavelength : pint.Quantity
+            Positive scalar or array of vacuum wavelengths with length units.
+
+        Returns
+        -------
+        pint.Quantity
+            Responsivity with A / W units, matching the input shape.
+
+        Raises
+        ------
+        ValueError
+            If any wavelength lies outside the tabulated interval.
+        """
+        MomentRT.units.validate_units(
+            value=wavelength, unit="m", name="wavelength", positive=True
+        )
+        requested = wavelength.to("m").magnitude
+        grid = self.wavelengths.to("m").magnitude
+        tolerance = 8 * np.finfo(float).eps * max(abs(grid[0]), abs(grid[-1]))
+        if np.any(requested < grid[0] - tolerance) or np.any(
+            requested > grid[-1] + tolerance
+        ):
+            raise ValueError("Detector responsivity wavelength is outside its table.")
+        # Allow endpoint unit-conversion roundoff without physical extrapolation.
+        requested = np.clip(requested, grid[0], grid[-1])
+        return (
+            np.interp(
+                requested,
+                grid,
+                self.responsivity.to("A/W").magnitude,
+            )
+            * MomentRT.units.ureg.ampere
+            / MomentRT.units.ureg.watt
+        )
+
+    def plot(
+        self,
+        *,
+        wavelength_unit: str = "nm",
+        responsivity_unit: str = "A/W",
+        show: bool = True,
+    ) -> MomentRT.plotting.Figure:
+        """Plot the tabulated linear electrical response.
+
+        Parameters
+        ----------
+        wavelength_unit : str, optional
+            Display length unit. Default is 'nm'.
+        responsivity_unit : str, optional
+            Display electrical response unit. Default is 'A/W'.
+        show : bool, optional
+            Display the composable figure immediately. Default is True.
+
+        Returns
+        -------
+        plotly.graph_objects.Figure
+            Response curve with physical wavelength and responsivity labels.
+        """
+        figure = MomentRT.plotting.go.Figure(
+            data=[
+                MomentRT.plotting.go.Scatter(
+                    x=self.wavelengths.to(wavelength_unit).magnitude,
+                    y=self.responsivity.to(responsivity_unit).magnitude,
+                    mode="lines+markers",
+                    name="Detector responsivity",
+                )
+            ],
+        )
+        figure.update_layout(
+            title="Detector spectral responsivity",
+            xaxis_title=f"Vacuum wavelength ({wavelength_unit})",
+            yaxis_title=f"Responsivity ({responsivity_unit})",
+        )
+        if show:
+            figure.show()
+        return figure
 
 
 class SurfaceDetector:
@@ -36,6 +159,9 @@ class SurfaceDetector:
         It is normalized internally and must point into the outward hemisphere.
     acceptance_angle : pint.Quantity
         Acceptance-cone half-angle, from 0 to 90 degrees, with angular units.
+    responsivity : DetectorResponsivity or None, optional
+        Linear spectral electrical response in A / W. None reports optical
+        power without photocurrent. Default is None.
     name : str, optional
         Legend label. Default is ``"Surface detector"``.
     color : str, optional
@@ -58,6 +184,7 @@ class SurfaceDetector:
         radius: Quantity,
         collection_axis: ArrayLike,
         acceptance_angle: Quantity,
+        responsivity: DetectorResponsivity | None = None,
         name: str = "Surface detector",
         color: str = "royalblue",
     ) -> None:
@@ -76,6 +203,9 @@ class SurfaceDetector:
             It is normalized internally and must point into the outward hemisphere.
         acceptance_angle : pint.Quantity
             Acceptance-cone half-angle, from 0 to 90 degrees, with angular units.
+        responsivity : DetectorResponsivity or None, optional
+            Linear spectral electrical response in A / W. None reports optical
+            power without photocurrent. Default is None.
         name : str, optional
             Nonempty legend label.
         color : str, optional
@@ -136,6 +266,13 @@ class SurfaceDetector:
         if not isinstance(color, str) or not color.strip():
             raise ValueError("color must be a nonempty Plotly color string.")
 
+        if responsivity is not None and not isinstance(
+            responsivity, DetectorResponsivity
+        ):
+            raise TypeError("responsivity must be a DetectorResponsivity object.")
+
+        self.responsivity = responsivity
+
         self.face = face
 
         self.position = position.copy()
@@ -158,12 +295,14 @@ class SurfaceDetector:
         face: MomentRT.boundary.Face,
         coordinates: Quantity,
         radius: Quantity,
-        acceptance_angle: Quantity,
-        orientation: str,
+        acceptance_angle: Quantity | None = None,
+        orientation: str = "outward_normal",
+        acceptance: str | None = None,
+        responsivity: DetectorResponsivity | None = None,
         name: str = "Surface detector",
         color: str = "royalblue",
     ) -> SurfaceDetector:
-        """Place a detector on a face with an explicitly selected outward normal.
+        """Place an outward-facing detector using absolute in-plane coordinates.
 
         Parameters
         ----------
@@ -176,11 +315,18 @@ class SurfaceDetector:
             (y, z for x faces; x, z for y faces; x, y for z faces).
         radius : pint.Quantity
             Positive aperture radius with length units.
-        acceptance_angle : pint.Quantity
-            Acceptance cone half-angle with angular units, from zero to 90 degrees.
-        orientation : {'outward_normal'}
-            Explicitly select the outward face normal as the collection axis.
+        acceptance_angle : pint.Quantity or None, optional
+            Cone half-angle from zero to 90 degrees. Supply this or acceptance.
+            Default is None.
+        orientation : {'outward_normal'}, optional
+            Select the outward face normal as the collection axis by default.
             Use the main constructor for a tilted collection axis.
+        acceptance : {'full_hemisphere'} or None, optional
+            Explicitly collect the complete outward hemisphere. Supply this or
+            acceptance_angle. Default is None.
+        responsivity : DetectorResponsivity or None, optional
+            Linear spectral electrical response in A / W. None reports optical
+            power without photocurrent. Default is None.
         name : str, optional
             Legend label. Default is ``"Surface detector"``.
         color : str, optional
@@ -193,6 +339,15 @@ class SurfaceDetector:
         """
         if orientation != "outward_normal":
             raise ValueError("orientation must be 'outward_normal'.")
+
+        if acceptance is not None:
+            if acceptance != "full_hemisphere":
+                raise ValueError("acceptance must be 'full_hemisphere'.")
+            if acceptance_angle is not None:
+                raise ValueError("Supply acceptance or acceptance_angle exclusively.")
+            acceptance_angle = 90 * MomentRT.units.ureg.degree
+        elif acceptance_angle is None:
+            raise ValueError("Supply acceptance or acceptance_angle.")
 
         position = MomentRT.boundary._face_position(
             sample=sample, face=face, coordinates=coordinates
@@ -208,6 +363,7 @@ class SurfaceDetector:
             radius=radius,
             collection_axis=axis,
             acceptance_angle=acceptance_angle,
+            responsivity=responsivity,
             name=name,
             color=color,
         )
@@ -224,6 +380,7 @@ class SurfaceDetector:
         face: MomentRT.boundary.Face,
         coordinates: Quantity,
         radius: Quantity,
+        responsivity: DetectorResponsivity | None = None,
         name: str = "Surface detector",
         color: str = "royalblue",
     ) -> SurfaceDetector:
@@ -240,6 +397,9 @@ class SurfaceDetector:
             by Cartesian axis.
         radius : pint.Quantity
             Positive aperture radius with length units.
+        responsivity : DetectorResponsivity or None, optional
+            Linear spectral electrical response in A / W. None reports optical
+            power without photocurrent. Default is None.
         name : str, optional
             Legend label. Default is ``"Surface detector"``.
         color : str, optional
@@ -260,8 +420,8 @@ class SurfaceDetector:
             face=face,
             coordinates=coordinates,
             radius=radius,
-            acceptance_angle=90 * MomentRT.units.ureg.degree,
-            orientation="outward_normal",
+            acceptance="full_hemisphere",
+            responsivity=responsivity,
             name=name,
             color=color,
         )
@@ -487,8 +647,15 @@ class SurfaceDetector:
             field.escaping_irradiance[selected] * field.area_weights[selected]
         ).sum() * fraction
 
+        photocurrent = (
+            None
+            if self.responsivity is None
+            else power * self.responsivity.at(wavelength=field.wavelength)
+        )
+
         return MomentRT.results.DetectorResult(
             collected_power=power,
+            photocurrent=photocurrent,
             sampled_area=sampled_area,
             geometric_area=np.pi * self.radius**2,
             angular_fraction=fraction,
@@ -500,5 +667,8 @@ class SurfaceDetector:
                 radius=self.radius,
                 collection_axis=self.collection_axis,
                 acceptance_angle=self.acceptance_angle,
+                responsivity=copy.deepcopy(self.responsivity),
+                name=self.name,
+                color=self.color,
             ),
         )

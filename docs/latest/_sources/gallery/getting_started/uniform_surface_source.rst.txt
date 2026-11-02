@@ -25,27 +25,25 @@ Illuminate an entire finite sample face with a uniform diffuse partial
 current, solve the P1 finite-element model, and inspect the three-dimensional
 fluence field. The input power is already coupled into the sample.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-27
+.. GENERATED FROM PYTHON SOURCE LINES 9-24
 
 .. code-block:: Python
 
 
-    import os
     import matplotlib.pyplot as plt
     import numpy as np
     import MomentRT
     from MomentRT import (
-        CartesianMesh,
         Diffusion,
         Material,
         RobinBoundary,
         Simulation,
         StructuredMedium,
+        TetrahedralMesh,
         UniformSurfaceSource,
         ureg,
     )
 
-    show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 
 
@@ -53,14 +51,13 @@ fluence field. The input power is already coupled into the sample.
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 29-32
+.. GENERATED FROM PYTHON SOURCE LINES 26-29
 
 Create the homogeneous slab
 ---------------------------
 Set all optical properties and dimensions explicitly for this wavelength.
 
-.. GENERATED FROM PYTHON SOURCE LINES 32-49
+.. GENERATED FROM PYTHON SOURCE LINES 29-46
 
 .. code-block:: Python
 
@@ -88,21 +85,21 @@ Set all optical properties and dimensions explicitly for this wavelength.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-54
+.. GENERATED FROM PYTHON SOURCE LINES 47-51
 
 Configure the mesh, source, and six faces
 -----------------------------------------
 The incoming diffuse power is spread uniformly across the complete z_min
 face. All faces use the same explicit effective diffuse reflectance.
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-81
+.. GENERATED FROM PYTHON SOURCE LINES 51-71
 
 .. code-block:: Python
 
 
-    mesh = CartesianMesh.from_sample(
+    mesh = TetrahedralMesh.from_sample(
         sample=sample,
-        shape=(15, 15, 9),
+        resolution=0.7 * ureg.millimeter,
     )
 
     source = UniformSurfaceSource(
@@ -116,14 +113,7 @@ face. All faces use the same explicit effective diffuse reflectance.
     )
 
     solver = Diffusion(
-        boundaries={
-            "x_min": boundary,
-            "x_max": boundary,
-            "y_min": boundary,
-            "y_max": boundary,
-            "z_min": boundary,
-            "z_max": boundary,
-        },
+        boundaries=MomentRT.Boundaries.uniform(condition=boundary),
     )
 
 
@@ -133,13 +123,13 @@ face. All faces use the same explicit effective diffuse reflectance.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 82-85
+.. GENERATED FROM PYTHON SOURCE LINES 72-75
 
 Solve and view the field
 ------------------------
 The 3D plot is made from the nodal finite-element fluence values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 85-103
+.. GENERATED FROM PYTHON SOURCE LINES 75-94
 
 .. code-block:: Python
 
@@ -157,8 +147,9 @@ The 3D plot is made from the nodal finite-element fluence values.
     figure = result.fluence.plot(
         view="volume",
         scale="log",
+        display_resolution=0.4 * ureg.millimeter,
         overlays=[source],
-        show=show_figures,
+        show=False,
     )
 
 
@@ -166,35 +157,45 @@ The 3D plot is made from the nodal finite-element fluence values.
 
 .. raw:: html
 
-   <iframe src="../../_static/gallery/uniform_surface_source-1.html" title="Fluence rate — volume (log scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+   <iframe src="../../_static/gallery/uniform_surface_source-1.html" title="Fluence rate — volume (log scale) — interpolated display" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 104-107
+.. GENERATED FROM PYTHON SOURCE LINES 95-98
 
 Preview a central plane
 -----------------------
-A static section complements the interactive volume with a penetration profile.
+A static section uses the same interpolated display grid as the volume.
 
-.. GENERATED FROM PYTHON SOURCE LINES 107-149
+.. GENERATED FROM PYTHON SOURCE LINES 98-148
 
 .. code-block:: Python
 
 
-    fluence_values = result.fluence.values.to("watt / meter**2").magnitude
+    display_field = result.fluence.resample(resolution=0.4 * ureg.millimeter)
 
-    center_y = mesh.shape[1] // 2
+    display_mesh = display_field.mesh
+
+    fluence_values = display_field.values.to("watt / meter**2").magnitude
+
+    center_y = display_mesh.shape[1] // 2
 
     x_axis = (
-        (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0])
+        (
+            display_mesh.origin[0]
+            + np.arange(display_mesh.shape[0]) * display_mesh.spacing[0]
+        )
         .to("millimeter")
         .magnitude
     )
 
     z_axis = (
-        (mesh.origin[2] + np.arange(mesh.shape[2]) * mesh.spacing[2])
+        (
+            display_mesh.origin[2]
+            + np.arange(display_mesh.shape[2]) * display_mesh.spacing[2]
+        )
         .to("millimeter")
         .magnitude
     )
@@ -216,8 +217,6 @@ A static section complements the interactive volume with a penetration profile.
     figure_static.colorbar(image, ax=axes, label="log10 fluence rate (W m$^{-2}$)")
     figure_static.tight_layout()
 
-    if show_figures:
-        plt.show()
 
     print(f"Incoming power: {result.energy_balance['incoming_power']}")
     print(f"Absorbed power: {result.energy_balance['absorbed_power']}")
@@ -238,19 +237,19 @@ A static section complements the interactive volume with a penetration profile.
  .. code-block:: none
 
     Incoming power: 1 milliwatt
-    Absorbed power: 0.00020454076689282105 watt
-    Escaping power: 0.0007954592331071827 watt
+    Absorbed power: 0.00020510637958009797 watt
+    Escaping power: 0.0007948936204199019 watt
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 150-153
+.. GENERATED FROM PYTHON SOURCE LINES 149-152
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 153-155
+.. GENERATED FROM PYTHON SOURCE LINES 152-154
 
 .. code-block:: Python
 
@@ -270,7 +269,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.228 seconds)
+   **Total running time of the script:** (0 minutes 0.342 seconds)
 
 
 .. _sphx_glr_download_gallery_getting_started_uniform_surface_source.py:

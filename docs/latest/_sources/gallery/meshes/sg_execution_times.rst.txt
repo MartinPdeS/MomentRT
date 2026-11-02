@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:00.503** total execution time for 4 files **from gallery/meshes**:
+**00:00.349** total execution time for 4 files **from gallery/meshes**:
 
 .. container::
 
@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_meshes_tetrahedral_local.py` (``tetrahedral_local.py``)
-     - 00:00.430
+     - 00:00.298
      - 0.0
    * - :ref:`sphx_glr_gallery_meshes_tetrahedral_global.py` (``tetrahedral_global.py``)
-     - 00:00.032
-     - 0.0
-   * - :ref:`sphx_glr_gallery_meshes_cartesian_resolution.py` (``cartesian_resolution.py``)
      - 00:00.021
      - 0.0
+   * - :ref:`sphx_glr_gallery_meshes_cartesian_resolution.py` (``cartesian_resolution.py``)
+     - 00:00.015
+     - 0.0
    * - :ref:`sphx_glr_gallery_meshes_cartesian_shape.py` (``cartesian_shape.py``)
-     - 00:00.020
+     - 00:00.015
      - 0.0

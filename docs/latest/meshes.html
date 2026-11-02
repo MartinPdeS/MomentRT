@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Meshes and local refinement &#8212; MomentRT 0.8.4 documentation</title>
+    <title>Meshes and local refinement &#8212; MomentRT 0.9.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=0477e8c5"></script>
+    <script src="_static/documentation_options.js?v=a82ae3da"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -62,12 +62,12 @@
     <link rel="icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Finite-aperture surface detectors" href="detectors.html" />
+    <link rel="next" title="Choose a transport model" href="model_selection.html" />
     <link rel="prev" title="Choose a workflow" href="guide.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.4" />
+  <meta name="docsearch:version" content="0.9.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -168,25 +168,49 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="model_selection.html">
+    Choose a transport model
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="sensor_validation.html">
+    Sensor validation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="gallery/index.html">
     Examples
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="theory/index.html">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="theory/index.html">
     Theory
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="reference/index.html">
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
   </a>
 </li>
 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -339,6 +363,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="model_selection.html">
+    Choose a transport model
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="sensor_validation.html">
+    Sensor validation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="gallery/index.html">
     Examples
   </a>
@@ -459,6 +497,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a aria-current="page" class="current reference internal" href="#">Meshes and local refinement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_selection.html">Choose a transport model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="detectors.html">Finite-aperture detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sp3.html">SP3 transport</a></li>
 <li class="toctree-l1"><a class="reference internal" href="p3.html">Full P3 transport</a></li>
@@ -526,10 +565,11 @@
                   
   <section id="meshes-and-local-refinement">
 <h1>Meshes and local refinement<a class="headerlink" href="#meshes-and-local-refinement" title="Link to this heading">#</a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">CartesianMesh</span></code> provides a uniform grid with an explicit physical resolution.
-<code class="docutils literal notranslate"><span class="pre">TetrahedralMesh</span></code> provides unstructured linear tetrahedra with geometric
-refinement rules. P1, SP3, and full P3 accept either finite-sample mesh.
-<code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> continues to use a Cartesian observation window.</p>
+<p>For finite samples, start with <code class="docutils literal notranslate"><span class="pre">TetrahedralMesh</span></code>: it generates unstructured
+linear tetrahedra fitted to material interfaces, with geometric refinement rules.
+P1, SP3, and full P3 also accept <code class="docutils literal notranslate"><span class="pre">CartesianMesh</span></code>, a uniform grid split into
+tetrahedra by the finite-element solvers. <code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> uses a
+Cartesian observation window. Mesh selection remains explicit in simulations.</p>
 <section id="uniform-grids">
 <h2>Uniform grids<a class="headerlink" href="#uniform-grids" title="Link to this heading">#</a></h2>
 <p>Request a maximum spacing in length units. A scalar applies to all axes; a
@@ -550,8 +590,7 @@ configurations remain supported; supply exactly one of shape or resolution.</p>
 <p>Gmsh is installed as a core MomentRT dependency. Its native runtime libraries
 must also be available; on Ubuntu these can require <code class="docutils literal notranslate"><span class="pre">libglu1-mesa</span></code>. Numerical
 calculations with an existing tetrahedral mesh still require the Gmsh package
-to import MomentRT, but do not invoke the mesher. Plotly and PyVista remain
-optional.</p>
+to import MomentRT, but do not invoke the mesher.</p>
 <p>The sample, its layers, boxes, and spheres are meshed together so internal
 interfaces share nodes. Curved interfaces are represented by planar triangles.
 Material assignment retains the sample’s rule that later structures replace
@@ -605,8 +644,8 @@ Compare fluence and detector power across refinements and inspect sampled
 source and detector areas. Fitting a contact outline or satisfying energy
 balance does not establish transport accuracy or mesh convergence.</p>
 </section>
-<section id="inspecting-and-exporting-results">
-<h2>Inspecting and exporting results<a class="headerlink" href="#inspecting-and-exporting-results" title="Link to this heading">#</a></h2>
+<section id="inspecting-results">
+<h2>Inspecting results<a class="headerlink" href="#inspecting-results" title="Link to this heading">#</a></h2>
 <p>Tetrahedral <code class="docutils literal notranslate"><span class="pre">mesh.points</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">3)</span></code>, connectivity
 <code class="docutils literal notranslate"><span class="pre">mesh.tetrahedra</span></code> has shape <code class="docutils literal notranslate"><span class="pre">(T,</span> <span class="pre">4)</span></code>, and <code class="docutils literal notranslate"><span class="pre">mesh.faces</span></code> identifies the six
 sample boundaries. <code class="docutils literal notranslate"><span class="pre">mesh.shape</span></code> is the nodal storage shape <code class="docutils literal notranslate"><span class="pre">(N,)</span></code>.
@@ -615,7 +654,7 @@ and is not smoothed across interfaces.</p>
 <p>Plot the sample’s translucent boundary and the tetrahedral edges to inspect
 the mesh and its local refinement together. The returned Plotly figure is
 composable, and <code class="docutils literal notranslate"><span class="pre">max_edges</span></code> limits large meshes to a representative subset
-of edges. Install Plotly with the <code class="docutils literal notranslate"><span class="pre">viz</span></code> extra if it is not already available:</p>
+of edges:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mesh_figure</span> <span class="o">=</span> <span class="n">mesh</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">length_unit</span><span class="o">=</span><span class="s2">"mm"</span><span class="p">,</span>
     <span class="n">max_edges</span><span class="o">=</span><span class="mi">20000</span><span class="p">,</span>
@@ -641,9 +680,7 @@ does not alter the computed FEM field. A finer display grid cannot improve FEM
 accuracy. Mesh overlays draw a representative subset of tetrahedral or
 Cartesian edges over the field. Log plots retain the requirement for strictly
 positive values.</p>
-<p>With the <code class="docutils literal notranslate"><span class="pre">vtk</span></code> extra, <code class="docutils literal notranslate"><span class="pre">result.fluence.export(path=&quot;fluence.vtu&quot;)</span></code> exports
-the original tetrahedra and nodal values. Cartesian fields continue to use
-<code class="docutils literal notranslate"><span class="pre">.vti</span></code>. External tetrahedral connectivity can be supplied directly through
+<p>External tetrahedral connectivity can be supplied directly through
 <code class="docutils literal notranslate"><span class="pre">TetrahedralMesh(points=...,</span> <span class="pre">tetrahedra=...)</span></code>; it must fill the finite
 rectangular bounds. Imported meshes use centroid-sampled coefficients and
 cannot use the generation refinement methods without an original sample recipe.</p>
@@ -670,11 +707,11 @@ cannot use the generation refinement methods without an original sample recipe.<
       </div>
     </a>
     <a class="right-next"
-       href="detectors.html"
+       href="model_selection.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Finite-aperture surface detectors</p>
+        <p class="prev-next-title">Choose a transport model</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -699,7 +736,7 @@ cannot use the generation refinement methods without an original sample recipe.<
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniform-grids">Uniform grids</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tetrahedral-generation">Tetrahedral generation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-and-exporting-results">Inspecting and exporting results</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-results">Inspecting results</a></li>
 </ul>
   </nav></div>
 
@@ -707,7 +744,7 @@ cannot use the generation refinement methods without an original sample recipe.<
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.8.4/docs/source/meshes.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.0/docs/source/meshes.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

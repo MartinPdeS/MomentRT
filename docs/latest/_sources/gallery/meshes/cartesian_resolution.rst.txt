@@ -117,7 +117,7 @@ actual spacing downward as needed so that the grid reaches every sample face.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.021 seconds)
+   **Total running time of the script:** (0 minutes 0.015 seconds)
 
 
 .. _sphx_glr_download_gallery_meshes_cartesian_resolution.py:

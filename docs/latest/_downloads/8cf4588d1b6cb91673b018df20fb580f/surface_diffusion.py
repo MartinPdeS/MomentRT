@@ -8,22 +8,19 @@ are equal: refracting internal interfaces are outside this solver's scope.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/surface_diffusion.png'
-import os
 import matplotlib.pyplot as plt
 import numpy as np
 import MomentRT
 from MomentRT import (
-    CartesianMesh,
     Diffusion,
     Material,
     RobinBoundary,
     Simulation,
     StructuredMedium,
     SurfaceSource,
+    TetrahedralMesh,
     ureg,
 )
-
-show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 # %%
 # Single-wavelength materials
@@ -68,12 +65,12 @@ sample.add_layer(
 # %%
 # Discretize the sample
 # ---------------------
-# Align the layer interface with mesh planes. Each Cartesian cell is split
-# into six tetrahedra; mesh refinement is necessary to assess spatial accuracy.
+# Generate tetrahedra fitted to the layer interface. Resolution is a target
+# element size; refine the mesh to assess spatial and source-footprint accuracy.
 
-mesh = CartesianMesh.from_sample(
+mesh = TetrahedralMesh.from_sample(
     sample=sample,
-    shape=(25, 25, 17),
+    resolution=0.5 * ureg.millimeter,
 )
 
 # %%
@@ -101,14 +98,7 @@ boundary = RobinBoundary(
 )
 
 solver = Diffusion(
-    boundaries={
-        "x_min": boundary,
-        "x_max": boundary,
-        "y_min": boundary,
-        "y_max": boundary,
-        "z_min": boundary,
-        "z_max": boundary,
-    },
+    boundaries=MomentRT.Boundaries.uniform(condition=boundary),
 )
 
 # %%
@@ -129,7 +119,7 @@ simulation = Simulation(
 # The red circle shows the illumination footprint on the sample surface.
 
 geometry = simulation.plot_system(
-    show=show_figures,
+    show=False,
 )
 
 
@@ -158,7 +148,8 @@ print(f"Energy residual: {result.energy_balance['residual_power'].to('watt')}")
 figure = result.fluence.plot(
     view="volume",
     scale="log",
-    show=show_figures,
+    display_resolution=0.4 * ureg.millimeter,
+    show=False,
 )
 
 # %%
@@ -167,18 +158,28 @@ figure = result.fluence.plot(
 # This static plane complements the interactive volume above; use the Plotly
 # view to rotate the sample and inspect physical hover values.
 
-fluence_values = result.fluence.values.to("watt / meter**2").magnitude
+display_field = result.fluence.resample(resolution=0.4 * ureg.millimeter)
 
-center_y = mesh.shape[1] // 2
+display_mesh = display_field.mesh
+
+fluence_values = display_field.values.to("watt / meter**2").magnitude
+
+center_y = display_mesh.shape[1] // 2
 
 x_axis = (
-    (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0])
+    (
+        display_mesh.origin[0]
+        + np.arange(display_mesh.shape[0]) * display_mesh.spacing[0]
+    )
     .to("millimeter")
     .magnitude
 )
 
 z_axis = (
-    (mesh.origin[2] + np.arange(mesh.shape[2]) * mesh.spacing[2])
+    (
+        display_mesh.origin[2]
+        + np.arange(display_mesh.shape[2]) * display_mesh.spacing[2]
+    )
     .to("millimeter")
     .magnitude
 )
@@ -207,11 +208,8 @@ figure_static.tight_layout()
 # Arrows show element-centered flux without smoothing across interfaces.
 
 flux_figure = result.flux.plot(
-    show=show_figures,
+    show=False,
 )
-
-if show_figures:
-    plt.show()
 
 
 # %%

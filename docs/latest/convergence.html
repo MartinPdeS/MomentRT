@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Choosing a mesh for detector collection &#8212; MomentRT 0.8.4 documentation</title>
+    <title>Choosing a mesh for detector collection &#8212; MomentRT 0.9.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=0477e8c5"></script>
+    <script src="_static/documentation_options.js?v=a82ae3da"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -63,12 +63,12 @@
     <link rel="icon" href="_static/favicon.ico"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples" href="gallery/index.html" />
+    <link rel="next" title="Sensor-focused model validation" href="sensor_validation.html" />
     <link rel="prev" title="Wavelength-dependent materials and sweeps" href="spectral.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.4" />
+  <meta name="docsearch:version" content="0.9.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -169,25 +169,49 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="model_selection.html">
+    Choose a transport model
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="sensor_validation.html">
+    Sensor validation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="gallery/index.html">
     Examples
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="theory/index.html">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="theory/index.html">
     Theory
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="reference/index.html">
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
   </a>
 </li>
 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -340,6 +364,20 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="model_selection.html">
+    Choose a transport model
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="sensor_validation.html">
+    Sensor validation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="gallery/index.html">
     Examples
   </a>
@@ -460,6 +498,7 @@
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="meshes.html">Meshes and local refinement</a></li>
+<li class="toctree-l1"><a class="reference internal" href="model_selection.html">Choose a transport model</a></li>
 <li class="toctree-l1"><a class="reference internal" href="detectors.html">Finite-aperture detectors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sp3.html">SP3 transport</a></li>
 <li class="toctree-l1"><a class="reference internal" href="p3.html">Full P3 transport</a></li>
@@ -564,6 +603,33 @@ must refine at least one axis and coarsen none. At least two levels are
 required, but two consecutive passing refinements need at least three
 resolved levels. The study evaluates all supplied levels rather than
 stopping at the first apparent plateau.</p>
+<p>For interface-fitted tetrahedra, give global target sizes from coarse to fine.
+Optional contact refinement applies the same local element target near the
+source disks and all detector apertures at every level:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">study</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">convergence_study</span><span class="p">(</span>
+    <span class="n">mesh_resolutions</span><span class="o">=</span><span class="p">[</span>
+        <span class="mf">1.5</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span>
+        <span class="mf">1.0</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span>
+        <span class="mf">0.7</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span>
+    <span class="p">],</span>
+    <span class="n">contact_resolution</span><span class="o">=</span><span class="mf">0.25</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span>
+    <span class="n">contact_distance</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span>
+    <span class="n">power_rtol</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span>
+    <span class="n">area_rtol</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Recommended target resolution: </span><span class="si">{</span><span class="n">study</span><span class="o">.</span><span class="n">recommended_resolution</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The global sizes must decrease strictly. A contact target must be no larger
+than any global target and is applied within <code class="docutils literal notranslate"><span class="pre">contact_distance</span></code> of each disk,
+with a gradual transition to the global size. For a uniform full-face source,
+the local rule covers detectors; the source already spans the face. Each level
+is generated from the original sample and its own contact geometry. The report
+continues to compare sampled source and aperture areas with their geometric
+areas and detector power across levels. Target element size is not a strict
+bound on every tetrahedron edge, and satisfying these criteria does not
+establish transport accuracy.</p>
 <p>These tolerances are numerical choices, not claims about transport-model
 error. A study uses the configured source wavelength. Repeat it at demanding
 wavelengths when assessing a spectral experiment.</p>
@@ -615,15 +681,17 @@ detector powers:</p>
 discrepancy with the finest supplied observation. The recommendation is
 evidence from a finite sequence, not a rigorous error bound relative to an
 infinitely refined solution.</p>
-<p><code class="docutils literal notranslate"><span class="pre">recommended_mesh</span></code> and <code class="docutils literal notranslate"><span class="pre">recommended_shape</span></code> are None and <code class="docutils literal notranslate"><span class="pre">converged</span></code>
-is False when the criteria are not met. The final mesh is not automatically
-declared sufficient.</p>
+<p><code class="docutils literal notranslate"><span class="pre">recommended_mesh</span></code> is None and <code class="docutils literal notranslate"><span class="pre">converged</span></code> is False when the criteria are
+not met. <code class="docutils literal notranslate"><span class="pre">recommended_shape</span></code> applies to Cartesian meshes;
+<code class="docutils literal notranslate"><span class="pre">recommended_resolution</span></code> reports the target size for a generated tetrahedral
+mesh. The final mesh is not automatically declared sufficient.</p>
 </section>
 <section id="inspecting-the-report">
 <h2>Inspecting the report<a class="headerlink" href="#inspecting-the-report" title="Link to this heading">#</a></h2>
 <p>The report retains:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">meshes</span></code>, <code class="docutils literal notranslate"><span class="pre">mesh_shapes</span></code>, <code class="docutils literal notranslate"><span class="pre">node_counts</span></code>, and <code class="docutils literal notranslate"><span class="pre">tetrahedron_counts</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">meshes</span></code>, storage <code class="docutils literal notranslate"><span class="pre">mesh_shapes</span></code>, <code class="docutils literal notranslate"><span class="pre">mesh_resolutions</span></code>, <code class="docutils literal notranslate"><span class="pre">node_counts</span></code>,
+and actual <code class="docutils literal notranslate"><span class="pre">tetrahedron_counts</span></code>.</p></li>
 <li><p>Unit-bearing <code class="docutils literal notranslate"><span class="pre">detector_power[name]</span></code>, <code class="docutils literal notranslate"><span class="pre">detector_sampled_area[name]</span></code>,
 and <code class="docutils literal notranslate"><span class="pre">detector_geometric_area[name]</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">source_sampled_area</span></code> and <code class="docutils literal notranslate"><span class="pre">source_geometric_area</span></code>.</p></li>
@@ -681,6 +749,19 @@ and individual solve times, and the peak memory tracked by Python’s
 process start (including imports and setup). Traced memory may exclude native
 solver allocations; peak RSS is unavailable on Windows. Compare runs on the same machine and software
 configuration; these illustrative cases do not establish numerical convergence.</p>
+<p>For isolated tetrahedral mesh and direct-solver scaling, use:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">.venv/bin/python tools/benchmark_scaling.py \</span>
+<span class="go">    --solvers p1 sp3 p3 \</span>
+<span class="go">    --resolutions-mm 2.0 1.5 1.0</span>
+</pre></div>
+</div>
+<p>Each solver and target-size pair runs in a fresh process. The JSON report
+includes mesh generation time, solve time, node and tetrahedron counts, and
+process peak RSS. RSS includes imports, mesh generation, assembly, and solve;
+compare runs on the same machine and software configuration. Target size is
+only a mesher request, so use the reported element counts when comparing
+meshes. The results characterize current direct-solver scaling; they do not
+estimate accuracy or recommend a mesh.</p>
 </section>
 </section>
 
@@ -704,11 +785,11 @@ configuration; these illustrative cases do not establish numerical convergence.<
       </div>
     </a>
     <a class="right-next"
-       href="gallery/index.html"
+       href="sensor_validation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Examples</p>
+        <p class="prev-next-title">Sensor-focused model validation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -744,7 +825,7 @@ configuration; these illustrative cases do not establish numerical convergence.<
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.8.4/docs/source/convergence.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.0/docs/source/convergence.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

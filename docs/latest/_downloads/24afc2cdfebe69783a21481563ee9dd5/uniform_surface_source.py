@@ -8,22 +8,19 @@ fluence field. The input power is already coupled into the sample.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/uniform_surface_source.png'
-import os
 import matplotlib.pyplot as plt
 import numpy as np
 import MomentRT
 from MomentRT import (
-    CartesianMesh,
     Diffusion,
     Material,
     RobinBoundary,
     Simulation,
     StructuredMedium,
+    TetrahedralMesh,
     UniformSurfaceSource,
     ureg,
 )
-
-show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 # %%
 # Create the homogeneous slab
@@ -52,9 +49,9 @@ sample.add_background(
 # The incoming diffuse power is spread uniformly across the complete z_min
 # face. All faces use the same explicit effective diffuse reflectance.
 
-mesh = CartesianMesh.from_sample(
+mesh = TetrahedralMesh.from_sample(
     sample=sample,
-    shape=(15, 15, 9),
+    resolution=0.7 * ureg.millimeter,
 )
 
 source = UniformSurfaceSource(
@@ -68,14 +65,7 @@ boundary = RobinBoundary(
 )
 
 solver = Diffusion(
-    boundaries={
-        "x_min": boundary,
-        "x_max": boundary,
-        "y_min": boundary,
-        "y_max": boundary,
-        "z_min": boundary,
-        "z_max": boundary,
-    },
+    boundaries=MomentRT.Boundaries.uniform(condition=boundary),
 )
 
 # %%
@@ -96,27 +86,38 @@ result = simulation.run()
 figure = result.fluence.plot(
     view="volume",
     scale="log",
+    display_resolution=0.4 * ureg.millimeter,
     overlays=[source],
-    show=show_figures,
+    show=False,
 )
 
 # %%
 # Preview a central plane
 # -----------------------
-# A static section complements the interactive volume with a penetration profile.
+# A static section uses the same interpolated display grid as the volume.
 
-fluence_values = result.fluence.values.to("watt / meter**2").magnitude
+display_field = result.fluence.resample(resolution=0.4 * ureg.millimeter)
 
-center_y = mesh.shape[1] // 2
+display_mesh = display_field.mesh
+
+fluence_values = display_field.values.to("watt / meter**2").magnitude
+
+center_y = display_mesh.shape[1] // 2
 
 x_axis = (
-    (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0])
+    (
+        display_mesh.origin[0]
+        + np.arange(display_mesh.shape[0]) * display_mesh.spacing[0]
+    )
     .to("millimeter")
     .magnitude
 )
 
 z_axis = (
-    (mesh.origin[2] + np.arange(mesh.shape[2]) * mesh.spacing[2])
+    (
+        display_mesh.origin[2]
+        + np.arange(display_mesh.shape[2]) * display_mesh.spacing[2]
+    )
     .to("millimeter")
     .magnitude
 )
@@ -138,8 +139,6 @@ axes.set_title("log10 fluence from uniform face illumination")
 figure_static.colorbar(image, ax=axes, label="log10 fluence rate (W m$^{-2}$)")
 figure_static.tight_layout()
 
-if show_figures:
-    plt.show()
 
 print(f"Incoming power: {result.energy_balance['incoming_power']}")
 print(f"Absorbed power: {result.energy_balance['absorbed_power']}")

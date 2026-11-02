@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:03.151** total execution time for 4 files **from gallery/sources_detectors**:
+**00:02.263** total execution time for 4 files **from gallery/sources_detectors**:
 
 .. container::
 
@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_sources_detectors_seven_fiber_skin.py` (``seven_fiber_skin.py``)
-     - 00:01.499
+     - 00:01.071
      - 0.0
    * - :ref:`sphx_glr_gallery_sources_detectors_detector_convergence.py` (``detector_convergence.py``)
-     - 00:01.014
+     - 00:00.736
      - 0.0
    * - :ref:`sphx_glr_gallery_sources_detectors_spectral_detectors.py` (``spectral_detectors.py``)
-     - 00:00.423
+     - 00:00.305
      - 0.0
    * - :ref:`sphx_glr_gallery_sources_detectors_surface_detector.py` (``surface_detector.py``)
-     - 00:00.215
+     - 00:00.151
      - 0.0

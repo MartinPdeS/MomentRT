@@ -1,10 +1,11 @@
 Meshes and local refinement
 ===========================
 
-``CartesianMesh`` provides a uniform grid with an explicit physical resolution.
-``TetrahedralMesh`` provides unstructured linear tetrahedra with geometric
-refinement rules. P1, SP3, and full P3 accept either finite-sample mesh.
-``InfiniteDiffusion`` continues to use a Cartesian observation window.
+For finite samples, start with ``TetrahedralMesh``: it generates unstructured
+linear tetrahedra fitted to material interfaces, with geometric refinement rules.
+P1, SP3, and full P3 also accept ``CartesianMesh``, a uniform grid split into
+tetrahedra by the finite-element solvers. ``InfiniteDiffusion`` uses a
+Cartesian observation window. Mesh selection remains explicit in simulations.
 
 Uniform grids
 -------------
@@ -30,8 +31,7 @@ Tetrahedral generation
 Gmsh is installed as a core MomentRT dependency. Its native runtime libraries
 must also be available; on Ubuntu these can require ``libglu1-mesa``. Numerical
 calculations with an existing tetrahedral mesh still require the Gmsh package
-to import MomentRT, but do not invoke the mesher. Plotly and PyVista remain
-optional.
+to import MomentRT, but do not invoke the mesher.
 
 The sample, its layers, boxes, and spheres are meshed together so internal
 interfaces share nodes. Curved interfaces are represented by planar triangles.
@@ -92,7 +92,7 @@ Compare fluence and detector power across refinements and inspect sampled
 source and detector areas. Fitting a contact outline or satisfying energy
 balance does not establish transport accuracy or mesh convergence.
 
-Inspecting and exporting results
+Inspecting results
 --------------------------------
 
 Tetrahedral ``mesh.points`` has shape ``(N, 3)``, connectivity
@@ -104,7 +104,7 @@ and is not smoothed across interfaces.
 Plot the sample's translucent boundary and the tetrahedral edges to inspect
 the mesh and its local refinement together. The returned Plotly figure is
 composable, and ``max_edges`` limits large meshes to a representative subset
-of edges. Install Plotly with the ``viz`` extra if it is not already available:
+of edges:
 
 .. code-block:: python
 
@@ -135,9 +135,7 @@ accuracy. Mesh overlays draw a representative subset of tetrahedral or
 Cartesian edges over the field. Log plots retain the requirement for strictly
 positive values.
 
-With the ``vtk`` extra, ``result.fluence.export(path="fluence.vtu")`` exports
-the original tetrahedra and nodal values. Cartesian fields continue to use
-``.vti``. External tetrahedral connectivity can be supplied directly through
+External tetrahedral connectivity can be supplied directly through
 ``TetrahedralMesh(points=..., tetrahedra=...)``; it must fill the finite
 rectangular bounds. Imported meshes use centroid-sampled coefficients and
 cannot use the generation refinement methods without an original sample recipe.

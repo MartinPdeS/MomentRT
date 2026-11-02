@@ -194,6 +194,10 @@ The displayed surfaces show the geometry used to construct the sample.
 
     Configuration valid
     Warning: Footprint sampling alone does not establish mesh convergence or transport accuracy.
+    Model note: SP3 is a steady-state simplified P3 angular-moment approximation; it uses each material's normalized phase-function moments through degree 3.
+    Model note: SP3 assumes isotropic incoming diffuse radiance, requires zero-reflectance Robin conditions on illuminated faces, permits reflecting unilluminated faces, and requires equal internal refractive indices.
+    Model note: SP3 agreement with a slab reference verifies this implementation for that case, not accuracy for arbitrary geometries or sensors.
+    Model note: Detector angular acceptance uses a separate Lambertian approximation.
     Source sampled area: 3.1020408163265303×10⁻⁶ m²
     Detector contact sampled area: 2.01360544217687×10⁻⁶ m²
     Dermis anisotropy: 0.80
@@ -273,7 +277,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.361 seconds)
+   **Total running time of the script:** (0 minutes 0.258 seconds)
 
 
 .. _sphx_glr_download_gallery_transport_models_sp3_layered_anisotropy.py:

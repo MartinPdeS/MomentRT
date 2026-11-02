@@ -110,7 +110,7 @@ Reuse the same inputs while varying R
 Compare a more open diffuse boundary with progressively stronger internal
 diffuse reflection.
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-117
+.. GENERATED FROM PYTHON SOURCE LINES 69-110
 
 .. code-block:: Python
 
@@ -137,14 +137,7 @@ diffuse reflection.
         )
 
         solver = Diffusion(
-            boundaries={
-                "x_min": boundary,
-                "x_max": boundary,
-                "y_min": boundary,
-                "y_max": boundary,
-                "z_min": boundary,
-                "z_max": boundary,
-            },
+            boundaries=MomentRT.Boundaries.uniform(condition=boundary),
         )
 
         simulation = Simulation(
@@ -169,13 +162,13 @@ diffuse reflection.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-121
+.. GENERATED FROM PYTHON SOURCE LINES 111-114
 
 Plot fluence through the center of the sample
 ---------------------------------------------
 Each curve shares the same material, source power, spot, and mesh.
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-140
+.. GENERATED FROM PYTHON SOURCE LINES 114-133
 
 .. code-block:: Python
 
@@ -210,13 +203,13 @@ Each curve shares the same material, source power, spot, and mesh.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-144
+.. GENERATED FROM PYTHON SOURCE LINES 134-137
 
 Check energy accounting for each case
 -------------------------------------
 The reported escape is transmitted power integrated over all sample faces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 144-159
+.. GENERATED FROM PYTHON SOURCE LINES 137-152
 
 .. code-block:: Python
 
@@ -250,13 +243,13 @@ The reported escape is transmitted power integrated over all sample faces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 160-163
+.. GENERATED FROM PYTHON SOURCE LINES 153-156
 
 Inspect the intermediate-reflectance volume
 -------------------------------------------
 The middle solution uses R = 0.5 and retains the same source and geometry.
 
-.. GENERATED FROM PYTHON SOURCE LINES 163-172
+.. GENERATED FROM PYTHON SOURCE LINES 156-165
 
 .. code-block:: Python
 
@@ -280,13 +273,13 @@ The middle solution uses R = 0.5 and retains the same source and geometry.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 173-176
+.. GENERATED FROM PYTHON SOURCE LINES 166-169
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 176-178
+.. GENERATED FROM PYTHON SOURCE LINES 169-171
 
 .. code-block:: Python
 
@@ -306,7 +299,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.360 seconds)
+   **Total running time of the script:** (0 minutes 0.253 seconds)
 
 
 .. _sphx_glr_download_gallery_sweeps_convergence_reflectance_sweep.py:

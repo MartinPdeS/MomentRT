@@ -4,7 +4,9 @@ Transport models
 ================
 
 Compare P1, SP3, and full P3 calculations, then explore how phase-function
-moments and layer-specific anisotropy affect the modeled fluence.
+moments and layer-specific anisotropy affect the modeled fluence. Compare P1
+and SP3 finite-element calculations with independent analytical slab
+references to assess implementation and spatial discretization.
 
 
 .. raw:: html
@@ -71,6 +73,23 @@ moments and layer-specific anisotropy affect the modeled fluence.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare finite-element centerline fluence against two independent 1D solutions: a closed-form P1 diffusion slab and a matrix-exponential SP3 slab. These references check implementation and spatial discretization for this planar setup; they do not establish accuracy against radiative transfer or validate either model for a sensor geometry.">
+
+.. only:: html
+
+  .. image:: /gallery/transport_models/images/thumb/sphx_glr_planar_slab_references_thumb.png
+    :alt:
+
+  :doc:`/gallery/transport_models/planar_slab_references`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compare P1 and SP3 with independent planar slab references</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Assign a scattering anisotropy to each material and solve a layered sample with SP3. The values are illustrative, not measured skin properties. SP3 uses the Henyey–Greenstein phase function for each material.">
 
 .. only:: html
@@ -99,6 +118,7 @@ moments and layer-specific anisotropy affect the modeled fluence.
    /gallery/transport_models/compare_p3
    /gallery/transport_models/compare_sp3
    /gallery/transport_models/phase_functions
+   /gallery/transport_models/planar_slab_references
    /gallery/transport_models/sp3_layered_anisotropy
 
 

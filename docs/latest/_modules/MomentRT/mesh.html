@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.mesh &#8212; MomentRT 0.8.4 documentation</title>
+    <title>MomentRT.mesh &#8212; MomentRT 0.9.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=0477e8c5"></script>
+    <script src="../../_static/documentation_options.js?v=a82ae3da"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.4" />
+  <meta name="docsearch:version" content="0.9.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -165,25 +165,49 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../model_selection.html">
+    Choose a transport model
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../sensor_validation.html">
+    Sensor validation
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="../../gallery/index.html">
     Examples
   </a>
 </li>
 
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../theory/index.html">
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../theory/index.html">
     Theory
   </a>
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../reference/index.html">
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../reference/index.html">
     Reference
   </a>
 </li>
 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -329,6 +353,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../guide.html">
     Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../model_selection.html">
+    Choose a transport model
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../sensor_validation.html">
+    Sensor validation
   </a>
 </li>
 
@@ -736,7 +774,7 @@
                 <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
             <span class="p">]</span>
         <span class="p">)</span>
-        <span class="n">go</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">require_plotly</span><span class="p">()</span>
+        <span class="n">go</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">go</span>
         <span class="n">figure</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">make_figure</span><span class="p">(</span><span class="n">length_unit</span><span class="o">=</span><span class="n">length_unit</span><span class="p">)</span>
         <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
             <span class="n">go</span><span class="o">.</span><span class="n">Mesh3d</span><span class="p">(</span>
@@ -823,7 +861,7 @@
         <span class="n">lines</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span>
         <span class="n">line_points</span> <span class="o">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
-            <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">require_plotly</span><span class="p">()</span><span class="o">.</span><span class="n">Scatter3d</span><span class="p">(</span>
+            <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter3d</span><span class="p">(</span>
                 <span class="n">x</span><span class="o">=</span><span class="n">line_points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
                 <span class="n">y</span><span class="o">=</span><span class="n">line_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
                 <span class="n">z</span><span class="o">=</span><span class="n">line_points</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
@@ -856,32 +894,6 @@
             <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="o">*</span><span class="n">axes</span><span class="p">,</span> <span class="n">indexing</span><span class="o">=</span><span class="s2">"ij"</span><span class="p">),</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
             <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">meter</span>
         <span class="p">)</span>
-
-<div class="viewcode-block" id="CartesianMesh.to_pyvista">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.CartesianMesh.to_pyvista">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_pyvista</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">ImageData</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Convert Cartesian data to a PyVista image grid.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        length_unit : str, optional</span>
-<span class="sd">            Length unit used for displayed or exported coordinates.</span>
-<span class="sd">            Default is 'mm'.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        pyvista.ImageData</span>
-<span class="sd">            Cartesian VTK grid with coordinates converted to length_unit.</span>
-<span class="sd">        """</span>
-
-        <span class="n">pv</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">require_pyvista</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">pv</span><span class="o">.</span><span class="n">ImageData</span><span class="p">(</span>
-            <span class="n">dimensions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
-            <span class="n">spacing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">length_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">origin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">length_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="CartesianMesh.from_sample">
 <a class="viewcode-back" href="../../python_api.html#MomentRT.CartesianMesh.from_sample">[docs]</a>
@@ -1669,7 +1681,7 @@
         <span class="n">lines</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">edges</span><span class="p">[</span><span class="n">selection</span><span class="p">]]</span>
         <span class="n">line_points</span> <span class="o">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="n">boundary_triangles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_faces</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
-        <span class="n">go</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">require_plotly</span><span class="p">()</span>
+        <span class="n">go</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">go</span>
         <span class="n">figure</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">make_figure</span><span class="p">(</span><span class="n">length_unit</span><span class="o">=</span><span class="n">length_unit</span><span class="p">)</span>
         <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
             <span class="n">go</span><span class="o">.</span><span class="n">Mesh3d</span><span class="p">(</span>
@@ -1734,7 +1746,7 @@
         <span class="n">lines</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">coordinates</span><span class="p">[</span><span class="n">edges</span><span class="p">[</span><span class="n">selection</span><span class="p">]]</span>
         <span class="n">line_points</span> <span class="o">=</span> <span class="n">lines</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
         <span class="n">figure</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
-            <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">require_plotly</span><span class="p">()</span><span class="o">.</span><span class="n">Scatter3d</span><span class="p">(</span>
+            <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">go</span><span class="o">.</span><span class="n">Scatter3d</span><span class="p">(</span>
                 <span class="n">x</span><span class="o">=</span><span class="n">line_points</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
                 <span class="n">y</span><span class="o">=</span><span class="n">line_points</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
                 <span class="n">z</span><span class="o">=</span><span class="n">line_points</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span>
@@ -1746,33 +1758,6 @@
                 <span class="n">hoverinfo</span><span class="o">=</span><span class="s2">"skip"</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="p">)</span>
-
-<div class="viewcode-block" id="TetrahedralMesh.to_pyvista">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.TetrahedralMesh.to_pyvista">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_pyvista</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Convert the actual tetrahedra to an optional PyVista grid.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        length_unit : str, optional</span>
-<span class="sd">            Coordinate unit. Default is 'mm'.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        pyvista.UnstructuredGrid</span>
-<span class="sd">            Linear tetrahedra with original node ordering and connectivity.</span>
-<span class="sd">        """</span>
-        <span class="n">pv</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">require_pyvista</span><span class="p">()</span>
-        <span class="n">cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_tetrahedra</span><span class="p">),</span> <span class="mi">4</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tetrahedra</span><span class="p">])</span>
-
-        <span class="k">return</span> <span class="n">pv</span><span class="o">.</span><span class="n">UnstructuredGrid</span><span class="p">(</span>
-            <span class="n">cells</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span>
-            <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">cells</span><span class="p">),</span> <span class="mi">10</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_points</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">length_unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
-        <span class="p">)</span></div>
-
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Interpolate P1 nodal values using the original tetrahedral connectivity."""</span>

@@ -25,27 +25,25 @@ Illustrative single-wavelength properties. Effective reflectance is supplied
 explicitly, not inferred from refractive index. All internal refractive indices
 are equal: refracting internal interfaces are outside this solver's scope.
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-27
+.. GENERATED FROM PYTHON SOURCE LINES 9-24
 
 .. code-block:: Python
 
 
-    import os
     import matplotlib.pyplot as plt
     import numpy as np
     import MomentRT
     from MomentRT import (
-        CartesianMesh,
         Diffusion,
         Material,
         RobinBoundary,
         Simulation,
         StructuredMedium,
         SurfaceSource,
+        TetrahedralMesh,
         ureg,
     )
 
-    show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 
 
@@ -53,15 +51,14 @@ are equal: refracting internal interfaces are outside this solver's scope.
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 29-33
+.. GENERATED FROM PYTHON SOURCE LINES 26-30
 
 Single-wavelength materials
 ---------------------------
 Use equal internal refractive indices: this continuous-fluence FEM model
 does not support refracting internal interfaces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-48
+.. GENERATED FROM PYTHON SOURCE LINES 30-45
 
 .. code-block:: Python
 
@@ -87,13 +84,13 @@ does not support refracting internal interfaces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-52
+.. GENERATED FROM PYTHON SOURCE LINES 46-49
 
 Build the layered sample
 ------------------------
 Create a finite rectangular sample and add a one-millimeter upper layer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-68
+.. GENERATED FROM PYTHON SOURCE LINES 49-65
 
 .. code-block:: Python
 
@@ -120,21 +117,21 @@ Create a finite rectangular sample and add a one-millimeter upper layer.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-73
+.. GENERATED FROM PYTHON SOURCE LINES 66-70
 
 Discretize the sample
 ---------------------
-Align the layer interface with mesh planes. Each Cartesian cell is split
-into six tetrahedra; mesh refinement is necessary to assess spatial accuracy.
+Generate tetrahedra fitted to the layer interface. Resolution is a target
+element size; refine the mesh to assess spatial and source-footprint accuracy.
 
-.. GENERATED FROM PYTHON SOURCE LINES 73-79
+.. GENERATED FROM PYTHON SOURCE LINES 70-76
 
 .. code-block:: Python
 
 
-    mesh = CartesianMesh.from_sample(
+    mesh = TetrahedralMesh.from_sample(
         sample=sample,
-        shape=(25, 25, 17),
+        resolution=0.5 * ureg.millimeter,
     )
 
 
@@ -144,14 +141,14 @@ into six tetrahedra; mesh refinement is necessary to assess spatial accuracy.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 80-84
+.. GENERATED FROM PYTHON SOURCE LINES 77-81
 
 Illuminate the surface
 ----------------------
 Define a finite circular diffuse spot on the upper face. Optical power is
 already coupled into the sample, excluding specular entry losses.
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-93
+.. GENERATED FROM PYTHON SOURCE LINES 81-90
 
 .. code-block:: Python
 
@@ -171,14 +168,14 @@ already coupled into the sample, excluding specular entry losses.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 94-98
+.. GENERATED FROM PYTHON SOURCE LINES 91-95
 
 Configure boundary conditions
 -----------------------------
 Supply the effective diffuse reflectance explicitly on every face. It is
 not the normal-incidence Fresnel reflectance.
 
-.. GENERATED FROM PYTHON SOURCE LINES 98-114
+.. GENERATED FROM PYTHON SOURCE LINES 95-104
 
 .. code-block:: Python
 
@@ -188,14 +185,7 @@ not the normal-incidence Fresnel reflectance.
     )
 
     solver = Diffusion(
-        boundaries={
-            "x_min": boundary,
-            "x_max": boundary,
-            "y_min": boundary,
-            "y_max": boundary,
-            "z_min": boundary,
-            "z_max": boundary,
-        },
+        boundaries=MomentRT.Boundaries.uniform(condition=boundary),
     )
 
 
@@ -205,13 +195,13 @@ not the normal-incidence Fresnel reflectance.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 115-118
+.. GENERATED FROM PYTHON SOURCE LINES 105-108
 
 Compose the simulation
 ----------------------
 Keep sample, mesh, illumination, and solver configuration distinct.
 
-.. GENERATED FROM PYTHON SOURCE LINES 118-126
+.. GENERATED FROM PYTHON SOURCE LINES 108-116
 
 .. code-block:: Python
 
@@ -230,19 +220,19 @@ Keep sample, mesh, illumination, and solver configuration distinct.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 127-130
+.. GENERATED FROM PYTHON SOURCE LINES 117-120
 
 Inspect the illuminated sample
 ------------------------------
 The red circle shows the illumination footprint on the sample surface.
 
-.. GENERATED FROM PYTHON SOURCE LINES 130-136
+.. GENERATED FROM PYTHON SOURCE LINES 120-126
 
 .. code-block:: Python
 
 
     geometry = simulation.plot_system(
-        show=show_figures,
+        show=False,
     )
 
 
@@ -257,14 +247,14 @@ The red circle shows the illumination footprint on the sample surface.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 137-141
+.. GENERATED FROM PYTHON SOURCE LINES 127-131
 
 Solve and check energy balance
 ------------------------------
 Compare incoming, absorbed, and escaping power. Conservation verifies
 numerical accounting, not the accuracy of diffusion against radiative transfer.
 
-.. GENERATED FROM PYTHON SOURCE LINES 141-152
+.. GENERATED FROM PYTHON SOURCE LINES 131-142
 
 .. code-block:: Python
 
@@ -288,21 +278,21 @@ numerical accounting, not the accuracy of diffusion against radiative transfer.
  .. code-block:: none
 
     Incoming power: 1 milliwatt
-    Absorbed power: 0.2423444860639861 milliwatt
-    Escaping power: 0.7576555139360297 milliwatt
-    Energy residual: -1.5720931501039814e-17 watt
+    Absorbed power: 0.24344504993650523 milliwatt
+    Escaping power: 0.7565549500634947 milliwatt
+    Energy residual: 1.0842021724855044e-19 watt
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 153-157
+.. GENERATED FROM PYTHON SOURCE LINES 143-147
 
 Explore fluence in 3D
 ---------------------
 Inspect the fluence volume. The logarithmic colors retain physical hover
 values; neither negative values nor zeros are silently clipped.
 
-.. GENERATED FROM PYTHON SOURCE LINES 157-164
+.. GENERATED FROM PYTHON SOURCE LINES 147-155
 
 .. code-block:: Python
 
@@ -310,7 +300,8 @@ values; neither negative values nor zeros are silently clipped.
     figure = result.fluence.plot(
         view="volume",
         scale="log",
-        show=show_figures,
+        display_resolution=0.4 * ureg.millimeter,
+        show=False,
     )
 
 
@@ -318,36 +309,46 @@ values; neither negative values nor zeros are silently clipped.
 
 .. raw:: html
 
-   <iframe src="../../_static/gallery/surface_diffusion-2.html" title="Fluence rate — volume (log scale)" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
+   <iframe src="../../_static/gallery/surface_diffusion-2.html" title="Fluence rate — volume (log scale) — interpolated display" width="100%" height="600" loading="lazy" style="border:0;"></iframe>
 
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 165-169
+.. GENERATED FROM PYTHON SOURCE LINES 156-160
 
 Save a representative cross-section
 ------------------------------------
 This static plane complements the interactive volume above; use the Plotly
 view to rotate the sample and inspect physical hover values.
 
-.. GENERATED FROM PYTHON SOURCE LINES 169-204
+.. GENERATED FROM PYTHON SOURCE LINES 160-205
 
 .. code-block:: Python
 
 
-    fluence_values = result.fluence.values.to("watt / meter**2").magnitude
+    display_field = result.fluence.resample(resolution=0.4 * ureg.millimeter)
 
-    center_y = mesh.shape[1] // 2
+    display_mesh = display_field.mesh
+
+    fluence_values = display_field.values.to("watt / meter**2").magnitude
+
+    center_y = display_mesh.shape[1] // 2
 
     x_axis = (
-        (mesh.origin[0] + np.arange(mesh.shape[0]) * mesh.spacing[0])
+        (
+            display_mesh.origin[0]
+            + np.arange(display_mesh.shape[0]) * display_mesh.spacing[0]
+        )
         .to("millimeter")
         .magnitude
     )
 
     z_axis = (
-        (mesh.origin[2] + np.arange(mesh.shape[2]) * mesh.spacing[2])
+        (
+            display_mesh.origin[2]
+            + np.arange(display_mesh.shape[2]) * display_mesh.spacing[2]
+        )
         .to("millimeter")
         .magnitude
     )
@@ -382,23 +383,20 @@ view to rotate the sample and inspect physical hover values.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 205-208
+.. GENERATED FROM PYTHON SOURCE LINES 206-209
 
 Inspect diffusive flux
 ----------------------
 Arrows show element-centered flux without smoothing across interfaces.
 
-.. GENERATED FROM PYTHON SOURCE LINES 208-217
+.. GENERATED FROM PYTHON SOURCE LINES 209-215
 
 .. code-block:: Python
 
 
     flux_figure = result.flux.plot(
-        show=show_figures,
+        show=False,
     )
-
-    if show_figures:
-        plt.show()
 
 
 
@@ -412,13 +410,13 @@ Arrows show element-centered flux without smoothing across interfaces.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 218-221
+.. GENERATED FROM PYTHON SOURCE LINES 216-219
 
 Inspect the modeled geometry
 ----------------------------
 This view shows the configured geometry and instrument footprints.
 
-.. GENERATED FROM PYTHON SOURCE LINES 221-223
+.. GENERATED FROM PYTHON SOURCE LINES 219-221
 
 .. code-block:: Python
 
@@ -438,7 +436,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.138 seconds)
+   **Total running time of the script:** (0 minutes 0.733 seconds)
 
 
 .. _sphx_glr_download_gallery_getting_started_surface_diffusion.py:

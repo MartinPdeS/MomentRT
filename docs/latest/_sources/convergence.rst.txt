@@ -44,6 +44,36 @@ required, but two consecutive passing refinements need at least three
 resolved levels. The study evaluates all supplied levels rather than
 stopping at the first apparent plateau.
 
+For interface-fitted tetrahedra, give global target sizes from coarse to fine.
+Optional contact refinement applies the same local element target near the
+source disks and all detector apertures at every level:
+
+.. code-block:: python
+
+   study = simulation.convergence_study(
+       mesh_resolutions=[
+           1.5 * ureg.mm,
+           1.0 * ureg.mm,
+           0.7 * ureg.mm,
+       ],
+       contact_resolution=0.25 * ureg.mm,
+       contact_distance=0.5 * ureg.mm,
+       power_rtol=0.02,
+       area_rtol=0.03,
+   )
+
+   print(f"Recommended target resolution: {study.recommended_resolution}")
+
+The global sizes must decrease strictly. A contact target must be no larger
+than any global target and is applied within ``contact_distance`` of each disk,
+with a gradual transition to the global size. For a uniform full-face source,
+the local rule covers detectors; the source already spans the face. Each level
+is generated from the original sample and its own contact geometry. The report
+continues to compare sampled source and aperture areas with their geometric
+areas and detector power across levels. Target element size is not a strict
+bound on every tetrahedron edge, and satisfying these criteria does not
+establish transport accuracy.
+
 These tolerances are numerical choices, not claims about transport-model
 error. A study uses the configured source wavelength. Repeat it at demanding
 wavelengths when assessing a spectral experiment.
@@ -110,16 +140,18 @@ discrepancy with the finest supplied observation. The recommendation is
 evidence from a finite sequence, not a rigorous error bound relative to an
 infinitely refined solution.
 
-``recommended_mesh`` and ``recommended_shape`` are None and ``converged``
-is False when the criteria are not met. The final mesh is not automatically
-declared sufficient.
+``recommended_mesh`` is None and ``converged`` is False when the criteria are
+not met. ``recommended_shape`` applies to Cartesian meshes;
+``recommended_resolution`` reports the target size for a generated tetrahedral
+mesh. The final mesh is not automatically declared sufficient.
 
 Inspecting the report
 ----------------------
 
 The report retains:
 
-* ``meshes``, ``mesh_shapes``, ``node_counts``, and ``tetrahedron_counts``.
+* ``meshes``, storage ``mesh_shapes``, ``mesh_resolutions``, ``node_counts``,
+  and actual ``tetrahedron_counts``.
 * Unit-bearing ``detector_power[name]``, ``detector_sampled_area[name]``,
   and ``detector_geometric_area[name]``.
 * ``source_sampled_area`` and ``source_geometric_area``.
@@ -184,3 +216,19 @@ and individual solve times, and the peak memory tracked by Python's
 process start (including imports and setup). Traced memory may exclude native
 solver allocations; peak RSS is unavailable on Windows. Compare runs on the same machine and software
 configuration; these illustrative cases do not establish numerical convergence.
+
+For isolated tetrahedral mesh and direct-solver scaling, use:
+
+.. code-block:: console
+
+   .venv/bin/python tools/benchmark_scaling.py \
+       --solvers p1 sp3 p3 \
+       --resolutions-mm 2.0 1.5 1.0
+
+Each solver and target-size pair runs in a fresh process. The JSON report
+includes mesh generation time, solve time, node and tetrahedron counts, and
+process peak RSS. RSS includes imports, mesh generation, assembly, and solve;
+compare runs on the same machine and software configuration. Target size is
+only a mesher request, so use the reported element counts when comparing
+meshes. The results characterize current direct-solver scaling; they do not
+estimate accuracy or recommend a mesh.

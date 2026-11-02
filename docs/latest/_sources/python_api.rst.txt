@@ -3,7 +3,6 @@ Python class reference
 
 All dimensional arguments require quantities from ``MomentRT.ureg``.
 Array shapes and physical conventions are described for each class.
-Plotting methods require the relevant optional visualization extra.
 
 Materials and sample geometry
 -----------------------------

@@ -179,6 +179,14 @@ anisotropy influence model outputs.
 
       Give each material its own scattering anisotropy and solve with SP3.
 
+   .. grid-item-card:: Compare against planar slab references
+      :link: transport_models/planar_slab_references
+      :link-type: doc
+      :img-alt: P1 and SP3 finite-element fluence compared with analytical slab solutions
+
+      Compare P1 diffusion and SP3 FEM profiles with independent closed-form
+      and matrix-exponential slab solutions.
+
 Sweeps and convergence
 ----------------------
 

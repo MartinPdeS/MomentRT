@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Python class reference &#8212; MomentRT 0.8.4 documentation</title>
+    <title>Python class reference &#8212; MomentRT 0.9.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=0477e8c5"></script>
+    <script src="_static/documentation_options.js?v=a82ae3da"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.8.4';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.8.4" />
+  <meta name="docsearch:version" content="0.9.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -168,25 +168,49 @@
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="gallery/index.html">
-    Examples
+  <a class="nav-link nav-internal" href="model_selection.html">
+    Choose a transport model
   </a>
 </li>
 
 
 <li class="nav-item ">
-  <a class="nav-link nav-internal" href="theory/index.html">
+  <a class="nav-link nav-internal" href="sensor_validation.html">
+    Sensor validation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="theory/index.html">
     Theory
   </a>
 </li>
 
 
-<li class="nav-item current active">
-  <a class="nav-link nav-internal" href="reference/index.html">
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
   </a>
 </li>
 
+                </ul>
+            </li>
+            
   </ul>
 </nav></div>
       
@@ -334,6 +358,20 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="guide.html">
     Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="model_selection.html">
+    Choose a transport model
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="sensor_validation.html">
+    Sensor validation
   </a>
 </li>
 
@@ -531,8 +569,7 @@
   <section id="python-class-reference">
 <h1>Python class reference<a class="headerlink" href="#python-class-reference" title="Link to this heading">#</a></h1>
 <p>All dimensional arguments require quantities from <code class="docutils literal notranslate"><span class="pre">MomentRT.ureg</span></code>.
-Array shapes and physical conventions are described for each class.
-Plotting methods require the relevant optional visualization extra.</p>
+Array shapes and physical conventions are described for each class.</p>
 <section id="materials-and-sample-geometry">
 <h2>Materials and sample geometry<a class="headerlink" href="#materials-and-sample-geometry" title="Link to this heading">#</a></h2>
 <dl class="py class">
@@ -1901,24 +1938,6 @@ Actual node separations are available through spacing.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="MomentRT.CartesianMesh.to_pyvista">
-<span class="sig-name descname"><span class="pre">to_pyvista</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#CartesianMesh.to_pyvista"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.CartesianMesh.to_pyvista" title="Link to this definition">#</a></dt>
-<dd><p>Convert Cartesian data to a PyVista image grid.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>length_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Length unit used for displayed or exported coordinates.
-Default is ‘mm’.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Cartesian VTK grid with coordinates converted to length_unit.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pyvista.ImageData</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.CartesianMesh.from_sample">
 <span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#CartesianMesh.from_sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.CartesianMesh.from_sample" title="Link to this definition">#</a></dt>
 <dd><p>Create nodes spanning every face of the finite rectangular sample.</p>
@@ -2175,23 +2194,6 @@ The title reports when only a subset is displayed.</p></li>
 </dl>
 </dd></dl>
 
-<dl class="py method">
-<dt class="sig sig-object py" id="MomentRT.TetrahedralMesh.to_pyvista">
-<span class="sig-name descname"><span class="pre">to_pyvista</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/mesh.html#TetrahedralMesh.to_pyvista"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.TetrahedralMesh.to_pyvista" title="Link to this definition">#</a></dt>
-<dd><p>Convert the actual tetrahedra to an optional PyVista grid.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>length_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Coordinate unit. Default is ‘mm’.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Linear tetrahedra with original node ordering and connectivity.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pyvista.UnstructuredGrid</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -2205,6 +2207,11 @@ The observation window does not truncate the physical medium.</p>
 <p>The Green function is Phi(r) = P exp(-sqrt(mu_a / D) r) / (4 pi D r).
 No physical outer boundary, Fresnel interface, or finite-source correction
 is applied. The observation window does not truncate the medium.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MomentRT.InfiniteDiffusion.model_notes">
+<span class="sig-name descname"><span class="pre">model_notes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('InfiniteDiffusion</span> <span class="pre">is</span> <span class="pre">an</span> <span class="pre">analytical</span> <span class="pre">steady-state</span> <span class="pre">P1</span> <span class="pre">Green</span> <span class="pre">function</span> <span class="pre">for</span> <span class="pre">an</span> <span class="pre">embedded</span> <span class="pre">isotropic</span> <span class="pre">point</span> <span class="pre">source</span> <span class="pre">in</span> <span class="pre">a</span> <span class="pre">homogeneous,</span> <span class="pre">unbounded</span> <span class="pre">medium.',</span> <span class="pre">'The</span> <span class="pre">point-source</span> <span class="pre">singularity</span> <span class="pre">is</span> <span class="pre">excluded;</span> <span class="pre">boundaries,</span> <span class="pre">finite</span> <span class="pre">source</span> <span class="pre">footprints,</span> <span class="pre">and</span> <span class="pre">refractive</span> <span class="pre">interfaces</span> <span class="pre">are</span> <span class="pre">not</span> <span class="pre">modeled.',</span> <span class="pre">'P1</span> <span class="pre">diffusion</span> <span class="pre">is</span> <span class="pre">least</span> <span class="pre">reliable</span> <span class="pre">close</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">source</span> <span class="pre">and</span> <span class="pre">where</span> <span class="pre">scattering</span> <span class="pre">does</span> <span class="pre">not</span> <span class="pre">dominate</span> <span class="pre">absorption.')</span></span><a class="headerlink" href="#MomentRT.InfiniteDiffusion.model_notes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.InfiniteDiffusion.solve">
 <span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/transport/diffusion.html#InfiniteDiffusion.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.InfiniteDiffusion.solve" title="Link to this definition">#</a></dt>
@@ -2254,6 +2261,11 @@ coefficients. Fluence is continuous across interfaces; internal
 refractive-index jumps are unsupported. Footprint and unaligned interface
 errors require mesh refinement. Geometry preparation is scoped to a
 solve or sweep, with no persistent cache.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MomentRT.Diffusion.model_notes">
+<span class="sig-name descname"><span class="pre">model_notes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('Diffusion</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">steady-state</span> <span class="pre">P1</span> <span class="pre">approximation</span> <span class="pre">on</span> <span class="pre">a</span> <span class="pre">finite</span> <span class="pre">sample,</span> <span class="pre">using</span> <span class="pre">linear</span> <span class="pre">tetrahedra</span> <span class="pre">and</span> <span class="pre">centroid-sampled</span> <span class="pre">material</span> <span class="pre">coefficients.',</span> <span class="pre">'Fluence</span> <span class="pre">is</span> <span class="pre">continuous</span> <span class="pre">across</span> <span class="pre">internal</span> <span class="pre">interfaces;</span> <span class="pre">refractive-index</span> <span class="pre">jumps</span> <span class="pre">are</span> <span class="pre">unsupported,</span> <span class="pre">while</span> <span class="pre">absorption</span> <span class="pre">and</span> <span class="pre">reduced</span> <span class="pre">scattering</span> <span class="pre">may</span> <span class="pre">vary.',</span> <span class="pre">'P1</span> <span class="pre">diffusion</span> <span class="pre">is</span> <span class="pre">least</span> <span class="pre">reliable</span> <span class="pre">close</span> <span class="pre">to</span> <span class="pre">illumination</span> <span class="pre">and</span> <span class="pre">in</span> <span class="pre">weakly</span> <span class="pre">scattering</span> <span class="pre">regions;</span> <span class="pre">mesh</span> <span class="pre">refinement</span> <span class="pre">does</span> <span class="pre">not</span> <span class="pre">remove</span> <span class="pre">this</span> <span class="pre">model</span> <span class="pre">error.',</span> <span class="pre">'Robin</span> <span class="pre">effective_reflectance</span> <span class="pre">is</span> <span class="pre">supplied</span> <span class="pre">explicitly</span> <span class="pre">and</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">inferred</span> <span class="pre">from</span> <span class="pre">refractive</span> <span class="pre">index.')</span></span><a class="headerlink" href="#MomentRT.Diffusion.model_notes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.Diffusion.solve">
 <span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/transport/diffusion.html#Diffusion.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.Diffusion.solve" title="Link to this definition">#</a></dt>
@@ -2306,6 +2318,11 @@ zeroth moment, not the first composite unknown. The implementation assumes
 continuous composite moments across internal interfaces and rejects index
 jumps. SP3 is an approximation, and agreement with SP3 slab references does
 not establish accuracy against radiative transfer for a particular sensor.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MomentRT.SP3.model_notes">
+<span class="sig-name descname"><span class="pre">model_notes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&quot;SP3</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">steady-state</span> <span class="pre">simplified</span> <span class="pre">P3</span> <span class="pre">angular-moment</span> <span class="pre">approximation;</span> <span class="pre">it</span> <span class="pre">uses</span> <span class="pre">each</span> <span class="pre">material's</span> <span class="pre">normalized</span> <span class="pre">phase-function</span> <span class="pre">moments</span> <span class="pre">through</span> <span class="pre">degree</span> <span class="pre">3.&quot;,</span> <span class="pre">'SP3</span> <span class="pre">assumes</span> <span class="pre">isotropic</span> <span class="pre">incoming</span> <span class="pre">diffuse</span> <span class="pre">radiance,</span> <span class="pre">requires</span> <span class="pre">zero-reflectance</span> <span class="pre">Robin</span> <span class="pre">conditions</span> <span class="pre">on</span> <span class="pre">illuminated</span> <span class="pre">faces,</span> <span class="pre">permits</span> <span class="pre">reflecting</span> <span class="pre">unilluminated</span> <span class="pre">faces,</span> <span class="pre">and</span> <span class="pre">requires</span> <span class="pre">equal</span> <span class="pre">internal</span> <span class="pre">refractive</span> <span class="pre">indices.',</span> <span class="pre">'SP3</span> <span class="pre">agreement</span> <span class="pre">with</span> <span class="pre">a</span> <span class="pre">slab</span> <span class="pre">reference</span> <span class="pre">verifies</span> <span class="pre">this</span> <span class="pre">implementation</span> <span class="pre">for</span> <span class="pre">that</span> <span class="pre">case,</span> <span class="pre">not</span> <span class="pre">accuracy</span> <span class="pre">for</span> <span class="pre">arbitrary</span> <span class="pre">geometries</span> <span class="pre">or</span> <span class="pre">sensors.',</span> <span class="pre">'Detector</span> <span class="pre">angular</span> <span class="pre">acceptance</span> <span class="pre">uses</span> <span class="pre">a</span> <span class="pre">separate</span> <span class="pre">Lambertian</span> <span class="pre">approximation.')</span></span><a class="headerlink" href="#MomentRT.SP3.model_notes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.SP3.solve">
 <span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/transport/sp3.html#SP3.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SP3.solve" title="Link to this definition">#</a></dt>
@@ -2348,6 +2365,11 @@ harmonics are reconstructed elementwise. Materials provide normalized
 scattering phase-function moments. Illumination is isotropic over
 the incoming hemisphere. P3 is an angular approximation and requires
 validation for the intended configuration.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="MomentRT.P3.model_notes">
+<span class="sig-name descname"><span class="pre">model_notes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('P3</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">steady-state</span> <span class="pre">full</span> <span class="pre">three-dimensional</span> <span class="pre">angular-moment</span> <span class="pre">approximation</span> <span class="pre">through</span> <span class="pre">degree</span> <span class="pre">3,</span> <span class="pre">not</span> <span class="pre">a</span> <span class="pre">solution</span> <span class="pre">of</span> <span class="pre">the</span> <span class="pre">full</span> <span class="pre">radiative</span> <span class="pre">transfer</span> <span class="pre">equation.',</span> <span class="pre">'P3</span> <span class="pre">assumes</span> <span class="pre">isotropic</span> <span class="pre">incoming</span> <span class="pre">diffuse</span> <span class="pre">radiance</span> <span class="pre">and</span> <span class="pre">supports</span> <span class="pre">only</span> <span class="pre">zero-reflectance</span> <span class="pre">Robin</span> <span class="pre">faces</span> <span class="pre">with</span> <span class="pre">equal</span> <span class="pre">refractive</span> <span class="pre">index</span> <span class="pre">throughout;</span> <span class="pre">reflecting</span> <span class="pre">faces</span> <span class="pre">and</span> <span class="pre">index</span> <span class="pre">jumps</span> <span class="pre">are</span> <span class="pre">unsupported.',</span> <span class="pre">'Detector</span> <span class="pre">angular</span> <span class="pre">acceptance</span> <span class="pre">uses</span> <span class="pre">a</span> <span class="pre">Lambertian</span> <span class="pre">approximation;</span> <span class="pre">validate</span> <span class="pre">the</span> <span class="pre">selected</span> <span class="pre">model</span> <span class="pre">against</span> <span class="pre">an</span> <span class="pre">independent</span> <span class="pre">reference</span> <span class="pre">for</span> <span class="pre">the</span> <span class="pre">intended</span> <span class="pre">use.')</span></span><a class="headerlink" href="#MomentRT.P3.model_notes" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.P3.solve">
 <span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/transport/p3.html#P3.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.P3.solve" title="Link to this definition">#</a></dt>
@@ -2432,8 +2454,9 @@ Default is None.</p></li>
 the configured source wavelength.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Independent errors, cautions, and sampled source and detector areas.
-Validation does not solve transport or establish mesh convergence.</p>
+<dd class="field-even"><p>Independent errors, cautions, solver assumptions and limits, and
+sampled source and detector areas. Validation does not solve
+transport or establish mesh convergence.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="#MomentRT.ValidationReport" title="MomentRT.ValidationReport">ValidationReport</a></p>
@@ -2488,13 +2511,21 @@ operator and sparse factorization.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.Simulation.convergence_study">
-<span class="sig-name descname"><span class="pre">convergence_study</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_shapes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/simulation.html#Simulation.convergence_study"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.Simulation.convergence_study" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">convergence_study</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_shapes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_resolutions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/simulation.html#Simulation.convergence_study"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.Simulation.convergence_study" title="Link to this definition">#</a></dt>
 <dd><p>Compare detector signals and footprint sampling across explicit meshes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>mesh_shapes</strong> (<em>iterable</em><em> of </em><em>tuple</em><em> of </em><em>int</em>) – At least two coarse-to-fine node shapes. Each shape must refine at
-least one axis and coarsen none.</p></li>
+<li><p><strong>mesh_shapes</strong> (<em>iterable</em><em> of </em><em>tuple</em><em> of </em><em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – At least two coarse-to-fine Cartesian node shapes. Each shape must
+refine at least one axis and coarsen none. Supply this or
+<code class="docutils literal notranslate"><span class="pre">mesh_resolutions</span></code>, but not both. Default is None.</p></li>
+<li><p><strong>mesh_resolutions</strong> (<em>iterable</em><em> of </em><em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – At least two strictly decreasing global tetrahedral target sizes.
+Supply this or <code class="docutils literal notranslate"><span class="pre">mesh_shapes</span></code>, but not both. Default is None.</p></li>
+<li><p><strong>contact_resolution</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Local target element size near disk sources and detectors. Required
+with <code class="docutils literal notranslate"><span class="pre">contact_distance</span></code>; applies only to tetrahedral studies.
+Default is None.</p></li>
+<li><p><strong>contact_distance</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Positive distance defining each local contact refinement zone.
+Default is None.</p></li>
 <li><p><strong>power_rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – Nonnegative relative power tolerance against adjacent and finest meshes.
 Default is 0.01.</p></li>
 <li><p><strong>area_rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – Nonnegative relative tolerance of sampled source and detector areas
@@ -2543,7 +2574,7 @@ Default is True.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.ValidationReport">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ValidationReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warnings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_sampled_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_sampled_areas</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/validation.html#ValidationReport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.ValidationReport" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">ValidationReport</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">errors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">warnings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_sampled_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_sampled_areas</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_notes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">()</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/validation.html#ValidationReport"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.ValidationReport" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Configuration errors, numerical cautions, and sampled footprint areas.</p>
 <dl class="field-list simple">
@@ -2553,6 +2584,7 @@ Default is True.</p></li>
 <li><p><strong>warnings</strong> (<em>tuple</em><em> of </em><em>str</em>) – Numerical cautions that do not prevent a solve.</p></li>
 <li><p><strong>source_sampled_area</strong> (<em>pint.Quantity</em><em> or </em><em>None</em>) – Boundary quadrature area sampled by the source, when available.</p></li>
 <li><p><strong>detector_sampled_areas</strong> (<em>mapping</em><em> of </em><em>str to pint.Quantity</em>) – Boundary quadrature area sampled by each valid detector.</p></li>
+<li><p><strong>model_notes</strong> (<em>tuple</em><em> of </em><em>str</em>) – Assumptions and known limits of the configured transport solver.</p></li>
 </ul>
 </dd>
 </dl>
@@ -2610,44 +2642,6 @@ Default is None.</p></li>
 </ul>
 </dd>
 </dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="MomentRT.ScalarField.to_pyvista">
-<span class="sig-name descname"><span class="pre">to_pyvista</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/fields.html#ScalarField.to_pyvista"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.ScalarField.to_pyvista" title="Link to this definition">#</a></dt>
-<dd><p>Convert nodal values to the matching optional PyVista grid.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>length_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Length unit used for displayed or exported coordinates.
-Default is ‘mm’.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Original Cartesian nodes or tetrahedral connectivity, with
-coordinates converted to length_unit.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pyvista.ImageData or pyvista.UnstructuredGrid</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="MomentRT.ScalarField.export">
-<span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/fields.html#ScalarField.export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.ScalarField.export" title="Link to this definition">#</a></dt>
-<dd><p>Write the scalar field and provenance to a VTK image file.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>path</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – Destination ending in .vti for Cartesian fields or .vtu for
-tetrahedral fields. Existing files may be overwritten.</p></li>
-<li><p><strong>length_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Length unit used for displayed or exported coordinates.
-Default is ‘mm’.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.ScalarField.resample">
 <span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/fields.html#ScalarField.resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.ScalarField.resample" title="Link to this definition">#</a></dt>
@@ -2954,7 +2948,7 @@ Negative values flag discretization artifacts and remain unchanged.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>meshes</strong> (<em>sequence</em><em> of </em><a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a>) – Coarse-to-fine meshes used in the study.</p></li>
+<li><p><strong>meshes</strong> (<em>sequence</em><em> of </em><a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><em>CartesianMesh</em></a><em> or </em><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><em>TetrahedralMesh</em></a>) – Coarse-to-fine meshes used in the study.</p></li>
 <li><p><strong>results</strong> (<em>sequence</em><em> of </em><a class="reference internal" href="#MomentRT.SimulationResult" title="MomentRT.SimulationResult"><em>SimulationResult</em></a><em> or </em><em>None</em>) – Per-level solutions; None records an unresolved source footprint.</p></li>
 <li><p><strong>detectors</strong> (<em>mapping</em><em> of </em><em>str to SurfaceDetector</em>) – Named passive contact detectors.</p></li>
 <li><p><strong>source_geometric_area</strong> (<em>pint.Quantity</em>) – Exact source footprint area, with area units.</p></li>
@@ -3011,14 +3005,14 @@ checks is not proof of accuracy of the P1 approximation.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="MomentRT.DetectorConvergenceResult.recommended_mesh">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">recommended_mesh</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.mesh.CartesianMesh"><span class="pre">CartesianMesh</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#MomentRT.DetectorConvergenceResult.recommended_mesh" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">recommended_mesh</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.mesh.CartesianMesh"><span class="pre">CartesianMesh</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.mesh.TetrahedralMesh"><span class="pre">TetrahedralMesh</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#MomentRT.DetectorConvergenceResult.recommended_mesh" title="Link to this definition">#</a></dt>
 <dd><p>Return the recommended mesh when the convergence criteria are met.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Recommended existing mesh, or None when criteria are not met.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh">CartesianMesh</a> or None</p>
+<dd class="field-even"><p><a class="reference internal" href="#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh">CartesianMesh</a>, <a class="reference internal" href="#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh">TetrahedralMesh</a>, or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3033,6 +3027,20 @@ checks is not proof of accuracy of the P1 approximation.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>tuple of int or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.DetectorConvergenceResult.recommended_resolution">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">recommended_resolution</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#MomentRT.DetectorConvergenceResult.recommended_resolution" title="Link to this definition">#</a></dt>
+<dd><p>Return the target size of the recommended generated tetrahedral mesh.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Scalar target element size, or None for Cartesian or imported meshes.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity or None</p>
 </dd>
 </dl>
 </dd></dl>
@@ -3322,7 +3330,6 @@ Default is True.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.copy"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.copy()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.plot"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.plot()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.points"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.points</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.to_pyvista"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.to_pyvista()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.CartesianMesh.from_sample"><code class="docutils literal notranslate"><span class="pre">CartesianMesh.from_sample()</span></code></a></li>
 </ul>
 </li>
@@ -3340,22 +3347,25 @@ Default is True.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.refine_region"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.refine_region()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.refine_near"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.refine_near()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.plot"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.plot()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.to_pyvista"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.to_pyvista()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.InfiniteDiffusion"><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.InfiniteDiffusion.model_notes"><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion.model_notes</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.InfiniteDiffusion.solve"><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion.solve()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Diffusion"><code class="docutils literal notranslate"><span class="pre">Diffusion</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Diffusion.model_notes"><code class="docutils literal notranslate"><span class="pre">Diffusion.model_notes</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Diffusion.solve"><code class="docutils literal notranslate"><span class="pre">Diffusion.solve()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SP3"><code class="docutils literal notranslate"><span class="pre">SP3</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SP3.model_notes"><code class="docutils literal notranslate"><span class="pre">SP3.model_notes</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SP3.solve"><code class="docutils literal notranslate"><span class="pre">SP3.solve()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.P3"><code class="docutils literal notranslate"><span class="pre">P3</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.P3.model_notes"><code class="docutils literal notranslate"><span class="pre">P3.model_notes</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.P3.solve"><code class="docutils literal notranslate"><span class="pre">P3.solve()</span></code></a></li>
 </ul>
 </li>
@@ -3380,8 +3390,6 @@ Default is True.</p></li>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fields-and-results">Fields and results</a><ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.ScalarField"><code class="docutils literal notranslate"><span class="pre">ScalarField</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.ScalarField.to_pyvista"><code class="docutils literal notranslate"><span class="pre">ScalarField.to_pyvista()</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.ScalarField.export"><code class="docutils literal notranslate"><span class="pre">ScalarField.export()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.ScalarField.resample"><code class="docutils literal notranslate"><span class="pre">ScalarField.resample()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.ScalarField.plot"><code class="docutils literal notranslate"><span class="pre">ScalarField.plot()</span></code></a></li>
 </ul>
@@ -3408,6 +3416,7 @@ Default is True.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.converged"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.converged</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.recommended_mesh"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.recommended_mesh</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.recommended_shape"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.recommended_shape</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.recommended_resolution"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.recommended_resolution</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.records"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.records</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.plot"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.plot()</span></code></a></li>
 </ul>
@@ -3427,7 +3436,7 @@ Default is True.</p></li>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.8.4/docs/source/python_api.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.0/docs/source/python_api.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

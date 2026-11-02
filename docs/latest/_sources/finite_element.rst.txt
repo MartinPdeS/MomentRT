@@ -554,14 +554,7 @@ The finite workflow follows directly from the weak equation:
    boundary = RobinBoundary(effective_reflectance=0.4)
 
    solver = Diffusion(
-       boundaries={
-           "x_min": boundary,
-           "x_max": boundary,
-           "y_min": boundary,
-           "y_max": boundary,
-           "z_min": boundary,
-           "z_max": boundary,
-       },
+       boundaries=MomentRT.Boundaries.uniform(condition=boundary),
    )
 
    simulation = Simulation(

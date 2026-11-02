@@ -43,6 +43,12 @@ fields so that numerical output can be interpreted in context.
 
       Interpret outputs and find the public objects.
 
+   .. grid-item-card:: Sensor validation
+      :link: sensor_validation
+      :link-type: doc
+
+      Compare detector power against an independent photon reference.
+
 Before interpreting a field
 ---------------------------
 
@@ -59,6 +65,8 @@ or boundary behavior.
 
    Start <getting_started>
    Guide <guide>
+   Choose a transport model <model_selection>
+   Sensor validation <sensor_validation>
    Examples <gallery/index>
    Theory <theory/index>
    Reference <reference/index>

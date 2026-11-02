@@ -25,10 +25,10 @@ Development roadmap
 
 4. Spectral sensor model
    Tabulated wavelength-dependent materials and independent monochromatic
-   sweeps with fixed source and detector geometry are implemented.
-   Next: provenance-tracked chromophore data, measured LED spectra, detector
-   responsivity, broadband spectral integration, calibration and acquisition
-   noise.
+   sweeps, source spectral densities, and linear detector responsivity with
+   explicit broadband quadrature are implemented.
+   Next: provenance-tracked chromophore data, measured-device spectra and
+   responsivity validation, calibration, and acquisition noise.
 
 5. Inference
    Explicit parameter references, unit-aware sensitivities, nuisance parameters,

@@ -176,11 +176,165 @@ sampled aperture area and angular fraction. Check spatial convergence for
 the most demanding wavelengths, rather than assuming a mesh adequate at one
 wavelength is adequate for the whole table.
 
-The sweep is a collection of independent monochromatic experiments.
-It does not integrate an LED emission spectrum, interpolate detector
-responsivity, calculate an electrical current, fit chromophore
-concentrations, or simulate fluorescence that couples wavelengths.
-Those operations require additional physical data and normalization.
+The sweep remains a collection of independent monochromatic experiments.
+Use a source configured with ``spectrum=...`` and ``Simulation.run()`` for
+the explicit broadband integration described below. Chromophore fitting and
+fluorescence that couples wavelengths remain outside this model.
+
+Broadband sources and detector response
+---------------------------------------
+
+The same source and detector classes accept spectral emission and response.
+Supply either ``wavelength`` and ``optical_power``, or a ``SourceSpectrum``;
+the two emission forms are mutually exclusive. For example:
+
+.. code-block:: python
+
+   source_spectrum = MomentRT.SourceSpectrum(
+       wavelengths=np.array([750, 800, 850, 900]) * ureg.nm,
+       spectral_power=np.array([1, 4, 3, 1]) * ureg.uW / ureg.nm,
+   )
+   response = MomentRT.DetectorResponsivity(
+       wavelengths=np.array([750, 900]) * ureg.nm,
+       responsivity=np.array([0.4, 0.6]) * ureg.A / ureg.W,
+   )
+   source = MomentRT.SurfaceSource.on_face(
+       sample=sample,
+       face="z_min",
+       coordinates=np.array([1.5, 1.5]) * ureg.mm,
+       radius=0.5 * ureg.mm,
+       spectrum=source_spectrum,
+   )
+   detector = MomentRT.SurfaceDetector.on_face(
+       sample=sample,
+       face="z_max",
+       coordinates=np.array([1.5, 1.5]) * ureg.mm,
+       radius=0.7 * ureg.mm,
+       acceptance="full_hemisphere",
+       responsivity=response,
+   )
+   simulation = MomentRT.Simulation(
+       medium=sample,
+       source=source,
+       mesh=mesh,
+       solver=solver,
+       detectors={"sensor": detector},
+   )
+   result = simulation.run()
+   measurement = result.detectors["sensor"]
+   print(f"Optical power: {measurement.collected_power:~P}")
+   print(f"Photocurrent: {measurement.photocurrent:~P}")
+
+See the :doc:`complete executable example
+<gallery/sources_detectors/broadband_detector>` for the sample, solver, mesh,
+and spectral plots. Its values are illustrative, not a calibrated instrument.
+
+``SourceSpectrum`` requires increasing positive wavelengths and a nonnegative
+power density in units such as W/nm. Zero-valued endpoints are supported;
+the integrated source power must be positive. ``source.optical_power`` gives
+the trapezoidal total over the stated interval. A broadband source has no
+single ``source.wavelength``. Grouped surface sources currently require
+monochromatic members.
+
+``DetectorResponsivity`` linearly interpolates nonnegative A/W values without
+physical extrapolation. Its table and every material table must cover the
+entire source wavelength grid; coverage is checked before transport solves.
+A monochromatic detector result also has ``photocurrent`` when a response
+is supplied, equal to collected optical power times the interpolated
+responsivity. Without a response, photocurrent is None.
+
+For broadband emission, ``run()`` returns a ``BroadbandSimulationResult``.
+Each named detector provides ``spectral_power`` in W per wavelength unit,
+``collected_power`` in W, and optional ``spectral_photocurrent`` and
+``photocurrent`` in A per wavelength unit and A. If the source density is
+:math:`S_\lambda`, the computed dimensionless collection response is
+:math:`T_\lambda`, and electrical responsivity is :math:`R_\lambda`, then
+
+.. math::
+
+   P_{\mathrm{det}} = \int S_\lambda T_\lambda\,d\lambda,
+   \qquad I_{\mathrm{det}} = \int R_\lambda S_\lambda T_\lambda\,d\lambda.
+
+Both integrals use trapezoidal quadrature on exactly the source grid and its
+endpoints. Refine that grid to resolve source, material, and responsivity
+features; intermediate response-table features are not automatically added
+to the integration grid. Spectral quadrature convergence is separate from
+spatial mesh and transport-model validation. Negative numerical detector
+values are retained through integration.
+
+Monochromatic and broadband detector measurements both expose
+``sampled_area``, ``geometric_area``, ``angular_fraction``, and the detector
+snapshot directly. Broadband ``reference_measurements`` retain the individual
+reference-power measurements on the same aperture and quadrature.
+
+``result.reference_results`` holds independent one-watt monochromatic solves
+used to determine the collection response. Their fluence, flux, energy
+diagnostics, and source and detector areas retain their reference excitation
+and units; they are not spectral densities. Geometry is prepared once per
+broadband call, while each wavelength gets its own operator and factorization.
+The original source, detector, material, and mesh configuration is preserved.
+
+The response is a linear electrical conversion after the existing aperture
+and Lambertian angular collection model. This extension does not supply
+Fresnel-resolved optics, detector saturation, electronic gain, dark current,
+or acquisition noise. Analytical slab and wavelength-quadrature checks verify
+the implementation; experimental instrument calibration remains necessary
+for measured-device predictions.
+
+Inspecting and refining spectral inputs
+---------------------------------------
+
+The tabulated objects provide composable interactive plots and explicit
+source-density resampling:
+
+.. code-block:: python
+
+   source_figure = source.spectrum.plot(show=False)
+   response_figure = detector.responsivity.plot(show=False)
+   refined = source.spectrum.resample(
+       wavelengths=np.linspace(750, 900, 61) * ureg.nm,
+   )
+
+Resampling linearly interpolates densities with their original units and
+rejects extrapolation. Include original source knots when preserving the
+measured piecewise linear shape and integrated source power. Coarsening away
+a measured peak changes the emission configuration.
+
+``simulation.spectral_convergence(...)`` holds the source data, geometry,
+spatial mesh, and detector response fixed while refining wavelength quadrature:
+
+.. code-block:: python
+
+   study = simulation.spectral_convergence(
+       wavelength_grids=[
+           np.linspace(750, 900, count) * ureg.nm
+           for count in (31, 61, 121)
+       ],
+       include_table_knots=True,
+       power_rtol=0.01,
+       photocurrent_rtol=0.01,
+       required_consecutive=2,
+   )
+   figure = study.plot(show=False)
+   print(study.summary())
+   print(f"Recommended wavelengths: {study.recommended_wavelengths}")
+
+Every requested grid must span the original source interval. Source knots are
+always retained, and material and responsivity knots inside that interval are
+included by default. The resulting grids must be nested and add wavelengths
+at each level. ``study.wavelength_grids`` exposes the grids actually used.
+This grid merging applies to the study; ordinary ``run()`` uses exactly the
+source's configured grid.
+
+``SpectralConvergenceResult`` provides per-level powers, photocurrents,
+relative changes against adjacent and finest levels, and explicit failures
+through ``records``. A recommendation requires the configured number of
+passing refinements at the fine end for every detector's optical power and,
+where supplied, photocurrent. Failed levels, unresolved footprints, and
+negative outputs remain visible; a later failure invalidates an earlier
+plateau. These are stability estimates, not rigorous error bounds or spatial
+mesh validation. Use :doc:`mesh convergence <convergence>` separately at
+representative monochromatic wavelengths.
 
 Reusing finite-element preparation
 -----------------------------------

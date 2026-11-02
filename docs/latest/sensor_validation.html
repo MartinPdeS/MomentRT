@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Sensor-focused model validation &#8212; MomentRT 0.9.0 documentation</title>
+    <title>Sensor-focused model validation &#8212; MomentRT 0.9.1 documentation</title>
   
   
   
@@ -26,8 +26,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
@@ -40,21 +40,21 @@
     <link rel="stylesheet" type="text/css" href="_static/layout.css?v=1307682e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=a82ae3da"></script>
+    <script src="_static/documentation_options.js?v=016a97bc"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'sensor_validation';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.0" />
+  <meta name="docsearch:version" content="0.9.1" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -115,7 +115,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -254,14 +254,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -318,7 +318,7 @@
   
 
   
-    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -332,7 +332,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
@@ -430,14 +430,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -531,7 +531,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Sensor-focused model validation</span></li>
@@ -554,96 +554,43 @@
   <section id="sensor-focused-model-validation">
 <h1>Sensor-focused model validation<a class="headerlink" href="#sensor-focused-model-validation" title="Link to this heading">#</a></h1>
 <p>This benchmark compares P1, SP3, and P3 detector-power predictions with an
-independent Monte Carlo photon-transport reference for two layered samples. It
-varies the source-detector separation and records detector power, Monte Carlo
-uncertainty, mesh size, source and aperture quadrature areas, and runtime. The
-plot reports each moment model’s relative detector-power error against the
-Monte Carlo estimate; the shaded band shows the reference’s approximate 95%
-sampling uncertainty.</p>
-<p>At the finest tested mesh (8,844 tetrahedra, with 96.2% of the exact aperture
-area sampled), relative detector-power errors were:</p>
-<div class="pst-scrollable-table-container"><table class="table" id="id1">
-<caption><span class="caption-text">Finest-mesh detector-power error against Monte Carlo</span><a class="headerlink" href="#id1" title="Link to this table">#</a></caption>
-<colgroup>
-<col style="width: 22.6%" />
-<col style="width: 17.0%" />
-<col style="width: 15.1%" />
-<col style="width: 15.1%" />
-<col style="width: 15.1%" />
-<col style="width: 15.1%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>Optical case</p></th>
-<th class="head"><p>Separation (mm)</p></th>
-<th class="head"><p>MC 95% uncertainty</p></th>
-<th class="head"><p>P1 error</p></th>
-<th class="head"><p>SP3 error</p></th>
-<th class="head"><p>P3 error</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Moderate absorption</p></td>
-<td><p>0.75</p></td>
-<td><p>±2.2%</p></td>
-<td><p>+105.0%</p></td>
-<td><p>+92.6%</p></td>
-<td><p>+24.9%</p></td>
-</tr>
-<tr class="row-odd"><td><p>Moderate absorption</p></td>
-<td><p>1.5</p></td>
-<td><p>±4.7%</p></td>
-<td><p>+59.8%</p></td>
-<td><p>+55.0%</p></td>
-<td><p>−1.7%</p></td>
-</tr>
-<tr class="row-even"><td><p>Moderate absorption</p></td>
-<td><p>2.5</p></td>
-<td><p>±9.5%</p></td>
-<td><p>+47.7%</p></td>
-<td><p>+47.8%</p></td>
-<td><p>−3.1%</p></td>
-</tr>
-<tr class="row-odd"><td><p>Higher absorption</p></td>
-<td><p>0.75</p></td>
-<td><p>±2.4%</p></td>
-<td><p>+152.6%</p></td>
-<td><p>+136.9%</p></td>
-<td><p>+47.0%</p></td>
-</tr>
-<tr class="row-even"><td><p>Higher absorption</p></td>
-<td><p>1.5</p></td>
-<td><p>±4.7%</p></td>
-<td><p>+90.5%</p></td>
-<td><p>+86.9%</p></td>
-<td><p>−2.6%</p></td>
-</tr>
-<tr class="row-odd"><td><p>Higher absorption</p></td>
-<td><p>2.5</p></td>
-<td><p>±9.3%</p></td>
-<td><p>+77.4%</p></td>
-<td><p>+82.4%</p></td>
-<td><p>+1.4%</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>The errors are signed <code class="docutils literal notranslate"><span class="pre">(model</span> <span class="pre">−</span> <span class="pre">Monte</span> <span class="pre">Carlo)</span> <span class="pre">/</span> <span class="pre">Monte</span> <span class="pre">Carlo</span></code> percentages.
-The table is one mesh level, not an extrapolated continuum result; use the
-plotted sequence to assess mesh behavior. The complete data, including each
-mesh level’s power and area diagnostics, are available as
+independent Monte Carlo photon-transport reference across eight layered-sample
+and contact-sensor cases. It varies layer thickness, optical properties,
+source radius, detector radius, and five source-detector separations. The
+complete JSON report records all inputs, random seeds, detector powers,
+Monte Carlo standard errors, mesh sizes, sampled source and aperture areas,
+and runtimes. The <a class="reference internal" href="gallery/sweeps_convergence/sensor_validation_cases.html"><span class="doc">executable gallery example</span></a> visualizes these
+published results.</p>
+<p>Each case uses 850 nm wavelength, 1 mW diffuse source power, 6 mm sample width,
+and a 2 mm total sample thickness. The baseline layer thicknesses are
+<code class="docutils literal notranslate"><span class="pre">(0.25,</span> <span class="pre">0.65,</span> <span class="pre">1.10)</span> <span class="pre">mm</span></code>; its source and detector radii are both 0.20 mm.
+Cases vary a single geometry factor around that baseline: top-layer thickness
+is changed to 0.10 or 0.45 mm, source radius to 0.10 or 0.35 mm, and detector
+radius to 0.10 or 0.30 mm. For thickness variants, the bottom layer changes
+to keep total sample thickness at 2 mm. A separate higher-absorption case
+changes the optical coefficients in all three layers. Separations are 0.75,
+1.25, 1.5, 2.0, and 2.5 mm.</p>
+<p>The heat map compares finest-mesh detector power to Monte Carlo; colors are
+clipped for readability. The separate mesh-study plot shows how the baseline
+and higher-absorption cases change over the three mesh levels. Read both plots
+with the Monte Carlo uncertainty and area diagnostics in the JSON report.</p>
+<p>The full reproducible inputs and reference data are available as
 <a class="reference download internal" download="" href="_downloads/e0cb148b7e14d50b6b32fdb12abdfab8/sensor_validation.json"><code class="xref download docutils literal notranslate"><span class="pre">JSON</span></code></a>.</p>
 <a class="reference internal image-reference" href="_images/sensor_validation.png"><img alt="Relative detector-power error for P1, SP3, and P3 across mesh sizes, source-detector separations, and two layered optical-property cases." class="align-center" src="_images/sensor_validation.png" style="width: 100%;" />
+</a>
+<a class="reference internal image-reference" href="_images/sensor_validation_cases.png"><img alt="Finest-mesh relative detector-power errors for P1, SP3, and P3 across eight layered optical and contact geometry cases." class="align-center" src="_images/sensor_validation_cases.png" style="width: 100%;" />
 </a>
 <p>Reproduce the benchmark from the repository root with:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="o">.</span><span class="n">venv</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="n">python</span> <span class="n">tools</span><span class="o">/</span><span class="n">validate_sensor_models</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
-<p>The command writes <code class="docutils literal notranslate"><span class="pre">sensor_validation.json</span></code> and the plot next to each other
-under <code class="docutils literal notranslate"><span class="pre">docs/source/_static/images/sensor_validation</span></code>. It uses one million
-photon histories per optical-property case and a fixed random seed. Use
-<code class="docutils literal notranslate"><span class="pre">--photons</span></code> and <code class="docutils literal notranslate"><span class="pre">--seed</span></code> to choose another run; use <code class="docutils literal notranslate"><span class="pre">--output-dir</span></code> to
-write elsewhere. The JSON file contains the full detector-by-detector mesh
-study and sampled-area diagnostics.</p>
+<p>The command writes the JSON report and both plots under
+<code class="docutils literal notranslate"><span class="pre">docs/source/_static/images/sensor_validation</span></code>. It uses one million photon
+histories per case and deterministic case-specific seeds. Use <code class="docutils literal notranslate"><span class="pre">--photons</span></code>
+and <code class="docutils literal notranslate"><span class="pre">--seed</span></code> to choose another run, <code class="docutils literal notranslate"><span class="pre">--cases</span></code> to select named cases, or
+<code class="docutils literal notranslate"><span class="pre">--output-dir</span></code> to write elsewhere. The committed JSON records each exact
+case configuration alongside the full detector-by-detector mesh study and
+sampled-area diagnostics.</p>
 <section id="reference-definition-and-limits">
 <h2>Reference definition and limits<a class="headerlink" href="#reference-definition-and-limits" title="Link to this heading">#</a></h2>
 <p>The independent reference launches cosine-weighted diffuse photons uniformly
@@ -665,9 +612,13 @@ reference. Mesh refinement cannot remove model-form error. Read the plotted
 errors together with the Monte Carlo uncertainty and area fractions in the
 JSON; agreement in energy balance or sampled area alone is not evidence of
 transport accuracy.</p>
-<p>The benchmark covers illustrative layered cases and a small set of lateral
-separations. It is a diagnostic baseline, not a claim of accuracy for skin,
-all source-detector distances, or every contact-sensor design.</p>
+<p>The cases are illustrative and do not span the full range of tissue structures,
+optical properties, or sensor designs. They are a reproducible diagnostic
+suite, not a claim of accuracy for skin or every source-detector distance.
+At the finest mesh, the small-source and small-detector cases sample about 87%
+of their corresponding geometric footprint areas. Treat those particular
+results as under-resolved; refine the contact mesh before interpreting their
+model errors as transport-approximation error.</p>
 </section>
 </section>
 
@@ -706,7 +657,7 @@ all source-detector distances, or every contact-sensor design.</p>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -726,7 +677,7 @@ all source-detector distances, or every contact-sensor design.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.0/docs/source/sensor_validation.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/sensor_validation.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -760,8 +711,8 @@ all source-detector distances, or every contact-sensor design.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">

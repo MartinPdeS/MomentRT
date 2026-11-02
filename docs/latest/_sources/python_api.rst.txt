@@ -81,6 +81,14 @@ Premade materials
 Sources, detectors, and boundaries
 ----------------------------------
 
+.. autoclass:: MomentRT.SourceSpectrum
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.DetectorResponsivity
+   :members:
+   :member-order: bysource
+
 .. autoclass:: MomentRT.PointSource
    :members:
    :member-order: bysource
@@ -176,5 +184,17 @@ Fields and results
    :member-order: bysource
 
 .. autoclass:: MomentRT.SpectralSimulationResult
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.BroadbandSimulationResult
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.BroadbandDetectorResult
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.SpectralConvergenceResult
    :members:
    :member-order: bysource

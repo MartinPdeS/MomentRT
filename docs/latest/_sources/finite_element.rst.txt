@@ -708,8 +708,8 @@ Limits of this boundary and transport model
 Each solve is steady-state and monochromatic. Passive aperture
 :doc:`detectors` and :doc:`spectral` sweeps operate on this model.
 It does not model Fresnel reflection from refractive indices, collimated
-illumination, free-space detector optics, time response, broadband spectral
-integration, or inverse estimation. P1
+illumination, free-space detector optics, time response, or inverse estimation.
+Broadband integration combines independent solves as described in :doc:`spectral`. P1
 diffusion becomes least reliable near the source footprint and sample
 boundaries, in weakly scattering regions, around unresolved interfaces, and
 at short source-to-detector distances. Plotting or a small algebraic residual

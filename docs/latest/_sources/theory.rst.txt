@@ -418,8 +418,8 @@ does not establish that the physical field is accurate.
 
 MomentRT provides passive contact :doc:`detectors` with an additional
 Lambertian escape assumption and independent monochromatic :doc:`spectral`
-sweeps. It does not provide collimated-source propagation, time dependence,
-broadband spectral integration,
+sweeps, plus explicit broadband optical-power and linear photocurrent integration.
+It does not provide collimated-source propagation, time dependence,
 chromophore fitting, or inverse estimation. Refractive index is stored with
 materials, but no automatic Fresnel rule is derived from it. In the finite
 solver all internal refractive indices must be equal; an external diffuse

@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Wavelength-dependent materials and sweeps &#8212; MomentRT 0.9.0 documentation</title>
+    <title>Wavelength-dependent materials and sweeps &#8212; MomentRT 0.9.1 documentation</title>
   
   
   
@@ -26,8 +26,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
@@ -40,12 +40,12 @@
     <link rel="stylesheet" type="text/css" href="_static/layout.css?v=1307682e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=a82ae3da"></script>
+    <script src="_static/documentation_options.js?v=016a97bc"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,9 +53,9 @@
     <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'spectral';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.0" />
+  <meta name="docsearch:version" content="0.9.1" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -116,7 +116,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -255,14 +255,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -319,7 +319,7 @@
   
 
   
-    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -333,7 +333,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
@@ -431,14 +431,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -541,7 +541,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -713,11 +713,145 @@ vectors in the same order. Each constituent detector result retains its
 sampled aperture area and angular fraction. Check spatial convergence for
 the most demanding wavelengths, rather than assuming a mesh adequate at one
 wavelength is adequate for the whole table.</p>
-<p>The sweep is a collection of independent monochromatic experiments.
-It does not integrate an LED emission spectrum, interpolate detector
-responsivity, calculate an electrical current, fit chromophore
-concentrations, or simulate fluorescence that couples wavelengths.
-Those operations require additional physical data and normalization.</p>
+<p>The sweep remains a collection of independent monochromatic experiments.
+Use a source configured with <code class="docutils literal notranslate"><span class="pre">spectrum=...</span></code> and <code class="docutils literal notranslate"><span class="pre">Simulation.run()</span></code> for
+the explicit broadband integration described below. Chromophore fitting and
+fluorescence that couples wavelengths remain outside this model.</p>
+</section>
+<section id="broadband-sources-and-detector-response">
+<h2>Broadband sources and detector response<a class="headerlink" href="#broadband-sources-and-detector-response" title="Link to this heading">#</a></h2>
+<p>The same source and detector classes accept spectral emission and response.
+Supply either <code class="docutils literal notranslate"><span class="pre">wavelength</span></code> and <code class="docutils literal notranslate"><span class="pre">optical_power</span></code>, or a <code class="docutils literal notranslate"><span class="pre">SourceSpectrum</span></code>;
+the two emission forms are mutually exclusive. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">source_spectrum</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">SourceSpectrum</span><span class="p">(</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">750</span><span class="p">,</span> <span class="mi">800</span><span class="p">,</span> <span class="mi">850</span><span class="p">,</span> <span class="mi">900</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nm</span><span class="p">,</span>
+    <span class="n">spectral_power</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">uW</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nm</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">response</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">DetectorResponsivity</span><span class="p">(</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">750</span><span class="p">,</span> <span class="mi">900</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nm</span><span class="p">,</span>
+    <span class="n">responsivity</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">A</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">W</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">source</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">SurfaceSource</span><span class="o">.</span><span class="n">on_face</span><span class="p">(</span>
+    <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
+    <span class="n">face</span><span class="o">=</span><span class="s2">"z_min"</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span>
+    <span class="n">radius</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span>
+    <span class="n">spectrum</span><span class="o">=</span><span class="n">source_spectrum</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">detector</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">SurfaceDetector</span><span class="o">.</span><span class="n">on_face</span><span class="p">(</span>
+    <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
+    <span class="n">face</span><span class="o">=</span><span class="s2">"z_max"</span><span class="p">,</span>
+    <span class="n">coordinates</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">])</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span>
+    <span class="n">radius</span><span class="o">=</span><span class="mf">0.7</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span>
+    <span class="n">acceptance</span><span class="o">=</span><span class="s2">"full_hemisphere"</span><span class="p">,</span>
+    <span class="n">responsivity</span><span class="o">=</span><span class="n">response</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">simulation</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">Simulation</span><span class="p">(</span>
+    <span class="n">medium</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
+    <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
+    <span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span>
+    <span class="n">solver</span><span class="o">=</span><span class="n">solver</span><span class="p">,</span>
+    <span class="n">detectors</span><span class="o">=</span><span class="p">{</span><span class="s2">"sensor"</span><span class="p">:</span> <span class="n">detector</span><span class="p">},</span>
+<span class="p">)</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="n">measurement</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">detectors</span><span class="p">[</span><span class="s2">"sensor"</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Optical power: </span><span class="si">{</span><span class="n">measurement</span><span class="o">.</span><span class="n">collected_power</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Photocurrent: </span><span class="si">{</span><span class="n">measurement</span><span class="o">.</span><span class="n">photocurrent</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>See the <a class="reference internal" href="gallery/sources_detectors/broadband_detector.html"><span class="doc">complete executable example</span></a> for the sample, solver, mesh,
+and spectral plots. Its values are illustrative, not a calibrated instrument.</p>
+<p><code class="docutils literal notranslate"><span class="pre">SourceSpectrum</span></code> requires increasing positive wavelengths and a nonnegative
+power density in units such as W/nm. Zero-valued endpoints are supported;
+the integrated source power must be positive. <code class="docutils literal notranslate"><span class="pre">source.optical_power</span></code> gives
+the trapezoidal total over the stated interval. A broadband source has no
+single <code class="docutils literal notranslate"><span class="pre">source.wavelength</span></code>. Grouped surface sources currently require
+monochromatic members.</p>
+<p><code class="docutils literal notranslate"><span class="pre">DetectorResponsivity</span></code> linearly interpolates nonnegative A/W values without
+physical extrapolation. Its table and every material table must cover the
+entire source wavelength grid; coverage is checked before transport solves.
+A monochromatic detector result also has <code class="docutils literal notranslate"><span class="pre">photocurrent</span></code> when a response
+is supplied, equal to collected optical power times the interpolated
+responsivity. Without a response, photocurrent is None.</p>
+<p>For broadband emission, <code class="docutils literal notranslate"><span class="pre">run()</span></code> returns a <code class="docutils literal notranslate"><span class="pre">BroadbandSimulationResult</span></code>.
+Each named detector provides <code class="docutils literal notranslate"><span class="pre">spectral_power</span></code> in W per wavelength unit,
+<code class="docutils literal notranslate"><span class="pre">collected_power</span></code> in W, and optional <code class="docutils literal notranslate"><span class="pre">spectral_photocurrent</span></code> and
+<code class="docutils literal notranslate"><span class="pre">photocurrent</span></code> in A per wavelength unit and A. If the source density is
+<span class="math notranslate nohighlight">\(S_\lambda\)</span>, the computed dimensionless collection response is
+<span class="math notranslate nohighlight">\(T_\lambda\)</span>, and electrical responsivity is <span class="math notranslate nohighlight">\(R_\lambda\)</span>, then</p>
+<div class="math notranslate nohighlight">
+\[P_{\mathrm{det}} = \int S_\lambda T_\lambda\,d\lambda,
+\qquad I_{\mathrm{det}} = \int R_\lambda S_\lambda T_\lambda\,d\lambda.\]</div>
+<p>Both integrals use trapezoidal quadrature on exactly the source grid and its
+endpoints. Refine that grid to resolve source, material, and responsivity
+features; intermediate response-table features are not automatically added
+to the integration grid. Spectral quadrature convergence is separate from
+spatial mesh and transport-model validation. Negative numerical detector
+values are retained through integration.</p>
+<p>Monochromatic and broadband detector measurements both expose
+<code class="docutils literal notranslate"><span class="pre">sampled_area</span></code>, <code class="docutils literal notranslate"><span class="pre">geometric_area</span></code>, <code class="docutils literal notranslate"><span class="pre">angular_fraction</span></code>, and the detector
+snapshot directly. Broadband <code class="docutils literal notranslate"><span class="pre">reference_measurements</span></code> retain the individual
+reference-power measurements on the same aperture and quadrature.</p>
+<p><code class="docutils literal notranslate"><span class="pre">result.reference_results</span></code> holds independent one-watt monochromatic solves
+used to determine the collection response. Their fluence, flux, energy
+diagnostics, and source and detector areas retain their reference excitation
+and units; they are not spectral densities. Geometry is prepared once per
+broadband call, while each wavelength gets its own operator and factorization.
+The original source, detector, material, and mesh configuration is preserved.</p>
+<p>The response is a linear electrical conversion after the existing aperture
+and Lambertian angular collection model. This extension does not supply
+Fresnel-resolved optics, detector saturation, electronic gain, dark current,
+or acquisition noise. Analytical slab and wavelength-quadrature checks verify
+the implementation; experimental instrument calibration remains necessary
+for measured-device predictions.</p>
+</section>
+<section id="inspecting-and-refining-spectral-inputs">
+<h2>Inspecting and refining spectral inputs<a class="headerlink" href="#inspecting-and-refining-spectral-inputs" title="Link to this heading">#</a></h2>
+<p>The tabulated objects provide composable interactive plots and explicit
+source-density resampling:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">source_figure</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">response_figure</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">responsivity</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">refined</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span>
+    <span class="n">wavelengths</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">750</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="mi">61</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nm</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Resampling linearly interpolates densities with their original units and
+rejects extrapolation. Include original source knots when preserving the
+measured piecewise linear shape and integrated source power. Coarsening away
+a measured peak changes the emission configuration.</p>
+<p><code class="docutils literal notranslate"><span class="pre">simulation.spectral_convergence(...)</span></code> holds the source data, geometry,
+spatial mesh, and detector response fixed while refining wavelength quadrature:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">study</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">spectral_convergence</span><span class="p">(</span>
+    <span class="n">wavelength_grids</span><span class="o">=</span><span class="p">[</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">750</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="n">count</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nm</span>
+        <span class="k">for</span> <span class="n">count</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">31</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">121</span><span class="p">)</span>
+    <span class="p">],</span>
+    <span class="n">include_table_knots</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">power_rtol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">photocurrent_rtol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+    <span class="n">required_consecutive</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">figure</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">study</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Recommended wavelengths: </span><span class="si">{</span><span class="n">study</span><span class="o">.</span><span class="n">recommended_wavelengths</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Every requested grid must span the original source interval. Source knots are
+always retained, and material and responsivity knots inside that interval are
+included by default. The resulting grids must be nested and add wavelengths
+at each level. <code class="docutils literal notranslate"><span class="pre">study.wavelength_grids</span></code> exposes the grids actually used.
+This grid merging applies to the study; ordinary <code class="docutils literal notranslate"><span class="pre">run()</span></code> uses exactly the
+source’s configured grid.</p>
+<p><code class="docutils literal notranslate"><span class="pre">SpectralConvergenceResult</span></code> provides per-level powers, photocurrents,
+relative changes against adjacent and finest levels, and explicit failures
+through <code class="docutils literal notranslate"><span class="pre">records</span></code>. A recommendation requires the configured number of
+passing refinements at the fine end for every detector’s optical power and,
+where supplied, photocurrent. Failed levels, unresolved footprints, and
+negative outputs remain visible; a later failure invalidates an earlier
+plateau. These are stability estimates, not rigorous error bounds or spatial
+mesh validation. Use <a class="reference internal" href="convergence.html"><span class="doc">mesh convergence</span></a> separately at
+representative monochromatic wavelengths.</p>
 </section>
 <section id="reusing-finite-element-preparation">
 <h2>Reusing finite-element preparation<a class="headerlink" href="#reusing-finite-element-preparation" title="Link to this heading">#</a></h2>
@@ -804,7 +938,7 @@ rather than assuming a fixed speedup.</p>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -821,6 +955,8 @@ rather than assuming a fixed speedup.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sample-composition-and-plotting">Sample composition and plotting</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sweeping-an-instrument-configuration">Sweeping an instrument configuration</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-and-interpretation">Results and interpretation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#broadband-sources-and-detector-response">Broadband sources and detector response</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inspecting-and-refining-spectral-inputs">Inspecting and refining spectral inputs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reusing-finite-element-preparation">Reusing finite-element preparation</a></li>
 </ul>
   </nav></div>
@@ -829,7 +965,7 @@ rather than assuming a fixed speedup.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.0/docs/source/spectral.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/spectral.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -863,8 +999,8 @@ rather than assuming a fixed speedup.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">

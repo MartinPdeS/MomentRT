@@ -96,7 +96,7 @@ simulation = Simulation(
 # A missing recommendation means more refinement or different tolerances
 # need investigation, rather than automatic acceptance of the last mesh.
 
-study = simulation.convergence_study(
+study = simulation.mesh_convergence(
     mesh_shapes=[
         (9, 7, 7),
         (13, 10, 10),

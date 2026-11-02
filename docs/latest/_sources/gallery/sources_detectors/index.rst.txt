@@ -21,6 +21,23 @@ geometry enters finite-sample simulations.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Keep the source and detector as physical objects, attach a spectral power density and an electrical responsivity, and call Simulation.run(). The result retains collected spectral power and explicitly integrates optical power and photocurrent over wavelength. These illustrative tables are not measurements of a particular LED, photodiode, or tissue.">
+
+.. only:: html
+
+  .. image:: /gallery/sources_detectors/images/thumb/sphx_glr_broadband_detector_thumb.png
+    :alt:
+
+  :doc:`/gallery/sources_detectors/broadband_detector`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Integrate a source spectrum and detector response</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Compare collected power, sampled detector area, and sampled illumination area over four explicit meshes. The study preserves the physical sample and instrument geometry. Its recommendation is a numerical resolution check for these observables, not validation of P1 against radiative transfer.">
 
 .. only:: html
@@ -97,6 +114,7 @@ geometry enters finite-sample simulations.
 .. toctree::
    :hidden:
 
+   /gallery/sources_detectors/broadband_detector
    /gallery/sources_detectors/detector_convergence
    /gallery/sources_detectors/seven_fiber_skin
    /gallery/sources_detectors/spectral_detectors

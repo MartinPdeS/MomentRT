@@ -5,7 +5,8 @@ Sweeps and convergence
 
 Vary optical properties and wavelength, and study how mesh resolution affects
 the calculated fields and observables. These examples separate parameter
-trends from numerical convergence checks.
+trends from numerical convergence checks, and measure how solver runtime and
+memory use grow with finite-element mesh size.
 
 
 .. raw:: html
@@ -72,6 +73,40 @@ trends from numerical convergence checks.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Explore the published P1, SP3, and P3 detector-power comparisons across layer thicknesses, optical properties, source sizes, detector radii, and separations. The example reads the checked-in Monte Carlo reference report so documentation builds do not rerun the photon simulations.">
+
+.. only:: html
+
+  .. image:: /gallery/sweeps_convergence/images/thumb/sphx_glr_sensor_validation_cases_thumb.png
+    :alt:
+
+  :doc:`/gallery/sweeps_convergence/sensor_validation_cases`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compare sensor-validation cases</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Measure solve time and peak process memory for three finite-element models on successively finer tetrahedral meshes. Each case runs in a fresh process so its peak resident memory is measured independently. These small illustrative benchmarks show where P3 may justify testing iterative solvers; they do not establish that an iterative method or preconditioner will be faster or more reliable.">
+
+.. only:: html
+
+  .. image:: /gallery/sweeps_convergence/images/thumb/sphx_glr_solver_scaling_thumb.png
+    :alt:
+
+  :doc:`/gallery/sweeps_convergence/solver_scaling`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Benchmark P1, SP3, and P3 solver scaling</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Specify different spectral anisotropy tables for two layers and evaluate an SP3 sensor at several wavelengths. The numbers are illustrative. Each result is monochromatic; the sweep is not a broadband integration.">
 
 .. only:: html
@@ -100,6 +135,8 @@ trends from numerical convergence checks.
    /gallery/sweeps_convergence/absorption_sweep
    /gallery/sweeps_convergence/mesh_refinement
    /gallery/sweeps_convergence/reflectance_sweep
+   /gallery/sweeps_convergence/sensor_validation_cases
+   /gallery/sweeps_convergence/solver_scaling
    /gallery/sweeps_convergence/sp3_spectral_anisotropy
 
 

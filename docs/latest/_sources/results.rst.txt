@@ -204,6 +204,14 @@ powers in ``detector_power``. The wavelength vector preserves the requested
 ordering; the sweep does not integrate these independent powers into a
 broadband signal.
 
+For a source configured with ``SourceSpectrum``, ``simulation.run()`` returns
+``BroadbandSimulationResult``. Its detector entries provide ``spectral_power``,
+integrated ``collected_power``, and optional ``spectral_photocurrent`` and
+``photocurrent`` when responsivity is supplied. ``reference_results`` retains
+the one-watt monochromatic fields and footprint diagnostics used to compute
+the spectral transfer response. See :doc:`spectral` for their units and
+integration interval; those reference fields are not spectral densities.
+
 ``result.diagnostics`` includes:
 
 * ``linear_relative_residual``: relative residual of the sparse algebraic

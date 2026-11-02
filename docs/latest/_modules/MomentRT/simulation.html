@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.simulation &#8212; MomentRT 0.9.0 documentation</title>
+    <title>MomentRT.simulation &#8212; MomentRT 0.9.1 documentation</title>
   
   
   
@@ -25,8 +25,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="../../_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
@@ -39,21 +39,21 @@
     <link rel="stylesheet" type="text/css" href="../../_static/layout.css?v=1307682e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=a82ae3da"></script>
+    <script src="../../_static/documentation_options.js?v=016a97bc"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/MomentRT/simulation';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.0" />
+  <meta name="docsearch:version" content="0.9.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -112,7 +112,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -251,14 +251,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -327,7 +327,7 @@
       
         
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
         
 
@@ -425,14 +425,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -509,7 +509,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="../../index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -690,7 +690,8 @@
 <span class="sd">        ----------</span>
 <span class="sd">        wavelengths : pint.Quantity or None, optional</span>
 <span class="sd">            One-dimensional sweep wavelengths with length units. None checks</span>
-<span class="sd">            the configured source wavelength.</span>
+<span class="sd">            the monochromatic source wavelength or the complete broadband</span>
+<span class="sd">            source grid.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -699,6 +700,14 @@
 <span class="sd">            sampled source and detector areas. Validation does not solve</span>
 <span class="sd">            transport or establish mesh convergence.</span>
 <span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reference_simulation</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
+                <span class="n">wavelengths</span><span class="o">=</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">wavelengths</span>
+                    <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span>
+                    <span class="k">else</span> <span class="n">wavelengths</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_configuration</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">)</span></div>
 
 
@@ -795,6 +804,14 @@
                 <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
                 <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Wavelengths: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">detector</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">detector</span><span class="o">.</span><span class="n">responsivity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="n">selected_wavelengths</span><span class="p">:</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="n">detector</span><span class="o">.</span><span class="n">responsivity</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">)</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                        <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Detector </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> responsivity: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">):</span>
             <span class="n">materials</span> <span class="o">=</span> <span class="p">[</span>
@@ -1090,14 +1107,52 @@
 
 <div class="viewcode-block" id="Simulation.run">
 <a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.run">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">BroadbandSimulationResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Solve the configured transport problem and evaluate all named detectors.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        SimulationResult</span>
-<span class="sd">            Solved fields, numerical diagnostics, and configured detector measurements.</span>
+<span class="sd">        SimulationResult or BroadbandSimulationResult</span>
+<span class="sd">            Monochromatic fields and measurements, or broadband detector spectra,</span>
+<span class="sd">            trapezoidal optical and electrical integrals, and reference solves.</span>
+<span class="sd">            Broadband integration uses exactly the source spectrum's grid and</span>
+<span class="sd">            endpoints; refine that grid to assess spectral quadrature error.</span>
 <span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">started</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+            <span class="n">spectrum</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span><span class="p">)</span>
+            <span class="n">reference</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reference_simulation</span><span class="p">()</span>
+            <span class="n">broadband</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">BroadbandSimulationResult</span><span class="p">(</span>
+                <span class="n">spectrum</span><span class="o">=</span><span class="n">spectrum</span><span class="p">,</span>
+                <span class="n">reference_results</span><span class="o">=</span><span class="n">reference</span><span class="o">.</span><span class="n">sweep</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">spectrum</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">),</span>
+                <span class="n">reference_optical_power</span><span class="o">=</span><span class="n">reference</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">optical_power</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">broadband</span><span class="o">.</span><span class="n">diagnostics</span><span class="p">[</span><span class="s2">"total_time"</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">started</span>
+            <span class="p">)</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">second</span>
+            <span class="k">return</span> <span class="n">broadband</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_run_monochromatic</span><span class="p">()</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_reference_simulation</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">Simulation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Copy broadband geometry with explicit one-watt monochromatic emission."""</span>
+        <span class="n">spectrum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span>
+        <span class="k">assert</span> <span class="n">spectrum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">reference</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
+        <span class="n">reference</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">reference</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">spectrum</span><span class="o">.</span><span class="n">wavelengths</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">reference</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">optical_power</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>
+        <span class="k">return</span> <span class="n">reference</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_run_monochromatic</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Solve a monochromatic configuration and measure every detector."""</span>
+        <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">detector</span><span class="o">.</span><span class="n">responsivity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">detector</span><span class="o">.</span><span class="n">responsivity</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
 
         <span class="n">solution</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
             <span class="n">medium</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">mesh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span>
@@ -1113,8 +1168,7 @@
 
         <span class="n">solution</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">measurements</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">solution</span></div>
-
+        <span class="k">return</span> <span class="n">solution</span>
 
 <div class="viewcode-block" id="Simulation.sweep">
 <a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.sweep">[docs]</a>
@@ -1152,6 +1206,11 @@
 
         <span class="n">started</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"sweep uses independent monochromatic powers; use run() for a source spectrum."</span>
+            <span class="p">)</span>
+
         <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
             <span class="n">value</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"wavelengths"</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
         <span class="p">)</span>
@@ -1174,6 +1233,9 @@
 
         <span class="k">for</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="n">wavelengths</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">detector</span><span class="o">.</span><span class="n">responsivity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">detector</span><span class="o">.</span><span class="n">responsivity</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">)</span>
 
         <span class="n">prepare</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="s2">"_prepare"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
@@ -1225,7 +1287,7 @@
 
             <span class="n">solve_started</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 
-            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">run</span><span class="p">())</span>
+            <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">simulation</span><span class="o">.</span><span class="n">_run_monochromatic</span><span class="p">())</span>
 
             <span class="n">solve_times</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">solve_started</span><span class="p">)</span>
 
@@ -1242,9 +1304,9 @@
         <span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Simulation.convergence_study">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.convergence_study">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">convergence_study</span><span class="p">(</span>
+<div class="viewcode-block" id="Simulation.mesh_convergence">
+<a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.mesh_convergence">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">mesh_convergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">mesh_shapes</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1308,15 +1370,85 @@
         <span class="p">)</span></div>
 
 
+    <span class="c1"># Existing callers retain the same signature and behavior.</span>
+    <span class="n">convergence_study</span> <span class="o">=</span> <span class="n">mesh_convergence</span>
+
+<div class="viewcode-block" id="Simulation.spectral_convergence">
+<a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.spectral_convergence">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">spectral_convergence</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">wavelength_grids</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="n">Quantity</span><span class="p">],</span>
+        <span class="n">include_table_knots</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="n">power_rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">photocurrent_rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+        <span class="n">power_atol</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">photocurrent_atol</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">required_consecutive</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SpectralConvergenceResult</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Check broadband power and current stability across wavelength grids.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        wavelength_grids : iterable of pint.Quantity</span>
+<span class="sd">            At least two nested coarse-to-fine wavelength vectors spanning the</span>
+<span class="sd">            original source interval. Source knots are always retained.</span>
+<span class="sd">        include_table_knots : bool, optional</span>
+<span class="sd">            Include material and responsivity knots inside the interval. The</span>
+<span class="sd">            resulting inspectable grids must still add samples. Default is True.</span>
+<span class="sd">        power_rtol : float, optional</span>
+<span class="sd">            Nonnegative relative optical-power tolerance. Default is 0.01.</span>
+<span class="sd">        photocurrent_rtol : float, optional</span>
+<span class="sd">            Nonnegative relative current tolerance for detectors with response.</span>
+<span class="sd">            Default is 0.01.</span>
+<span class="sd">        power_atol : pint.Quantity or None, optional</span>
+<span class="sd">            Nonnegative absolute optical-power tolerance. None means zero watts.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        photocurrent_atol : pint.Quantity or None, optional</span>
+<span class="sd">            Nonnegative absolute current tolerance. None means zero amperes.</span>
+<span class="sd">            Default is None.</span>
+<span class="sd">        required_consecutive : int, optional</span>
+<span class="sd">            Consecutive passing refinements required at the fine end. Default is 2.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        SpectralConvergenceResult</span>
+<span class="sd">            Per-level spectra, measurements, changes, and failures. A wavelength</span>
+<span class="sd">            grid is recommended only after a stable final refinement sequence.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        Geometry, source data, and detector response remain fixed. This checks</span>
+<span class="sd">        wavelength integration; assess spatial mesh and model accuracy separately.</span>
+<span class="sd">        """</span>
+        <span class="k">return</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">convergence</span><span class="o">.</span><span class="n">_SpectralConvergenceStudy</span><span class="p">(</span><span class="n">simulation</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="n">wavelength_grids</span><span class="o">=</span><span class="n">wavelength_grids</span><span class="p">,</span>
+            <span class="n">include_table_knots</span><span class="o">=</span><span class="n">include_table_knots</span><span class="p">,</span>
+            <span class="n">power_rtol</span><span class="o">=</span><span class="n">power_rtol</span><span class="p">,</span>
+            <span class="n">photocurrent_rtol</span><span class="o">=</span><span class="n">photocurrent_rtol</span><span class="p">,</span>
+            <span class="n">power_atol</span><span class="o">=</span><span class="n">power_atol</span><span class="p">,</span>
+            <span class="n">photocurrent_atol</span><span class="o">=</span><span class="n">photocurrent_atol</span><span class="p">,</span>
+            <span class="n">required_consecutive</span><span class="o">=</span><span class="n">required_consecutive</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="Simulation.plot_system">
 <a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.plot_system">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_system</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="o">*</span><span class="p">,</span>
+        <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span><span class="p">,</span>
+        <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Display the physical sample, source, and detector geometry in 3D.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
+<span class="sd">        wavelength : pint.Quantity or None, optional</span>
+<span class="sd">            Display wavelength for material properties. None uses the source</span>
+<span class="sd">            wavelength for monochromatic sources. Broadband sources with</span>
+<span class="sd">            spectral materials require an explicit display wavelength.</span>
 <span class="sd">        length_unit : str, optional</span>
 <span class="sd">            Length unit used for displayed or exported coordinates.</span>
 <span class="sd">            Default is 'mm'.</span>
@@ -1330,7 +1462,13 @@
 <span class="sd">            Sample construction geometry with source and detector overlays.</span>
 <span class="sd">        """</span>
 
-        <span class="n">medium</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">wavelength</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">wavelength</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span>
+
+        <span class="k">if</span> <span class="n">wavelength</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">medium</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">medium</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">medium</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">HomogeneousMedium</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span>
@@ -1400,8 +1538,8 @@
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">

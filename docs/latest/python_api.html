@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Python class reference &#8212; MomentRT 0.9.0 documentation</title>
+    <title>Python class reference &#8212; MomentRT 0.9.1 documentation</title>
   
   
   
@@ -26,8 +26,8 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
@@ -40,21 +40,21 @@
     <link rel="stylesheet" type="text/css" href="_static/layout.css?v=1307682e" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=a82ae3da"></script>
+    <script src="_static/documentation_options.js?v=016a97bc"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'python_api';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.0" />
+  <meta name="docsearch:version" content="0.9.1" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -115,7 +115,7 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
     <span class="fa-solid fa-bars"></span>
   </button>
   
@@ -254,14 +254,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
       
@@ -318,7 +318,7 @@
   
 
   
-    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page" aria-expanded="false" aria-controls="pst-secondary-sidebar-modal">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -332,7 +332,7 @@
       
       
       
-      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
@@ -430,14 +430,14 @@
 
 <div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
   <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
-    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
   </button>
   <ul class="dropdown-menu dropdown-menu-end">
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
-    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
   </ul>
 </div></div>
         
@@ -540,7 +540,7 @@
     
     <li class="breadcrumb-item breadcrumb-home">
       <a href="index.html" class="nav-link" aria-label="Home">
-        <i class="fa-solid fa-home"></i>
+        <i class="fa-solid fa-house"></i>
       </a>
     </li>
     
@@ -1471,16 +1471,150 @@ Default is True.</p></li>
 <section id="sources-detectors-and-boundaries">
 <h2>Sources, detectors, and boundaries<a class="headerlink" href="#sources-detectors-and-boundaries" title="Link to this heading">#</a></h2>
 <dl class="py class">
-<dt class="sig sig-object py" id="MomentRT.PointSource">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">PointSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Point</span> <span class="pre">source'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crimson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#PointSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.PointSource" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="MomentRT.SourceSpectrum">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SourceSpectrum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_power</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#SourceSpectrum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SourceSpectrum" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Tabulated incoming spectral power density for a broadband source.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelengths</strong> (<em>pint.Quantity</em>) – Strictly increasing positive vacuum wavelengths, shape (n,), n &gt;= 2.
+Their endpoints define the integration interval.</p></li>
+<li><p><strong>spectral_power</strong> (<em>pint.Quantity</em>) – Nonnegative spectral power density, shape (n,), such as W / nm.
+The trapezoidal integral must be positive. Surface-source power is
+diffuse power already coupled into the sample.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.SourceSpectrum.optical_power">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">optical_power</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span></span><a class="headerlink" href="#MomentRT.SourceSpectrum.optical_power" title="Link to this definition">#</a></dt>
+<dd><p>Return the trapezoidal spectral integral over the supplied interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Total incoming optical power in watts.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.SourceSpectrum.resample">
+<span class="sig-name descname"><span class="pre">resample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelengths</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#SourceSpectrum.resample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SourceSpectrum.resample" title="Link to this definition">#</a></dt>
+<dd><p>Interpolate density onto an explicit grid without extrapolation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>wavelengths</strong> (<em>pint.Quantity</em>) – Strictly increasing positive vacuum wavelengths, shape (n,), n &gt;= 2,
+within the original table. Include existing knots when preserving
+the piecewise linear source and its total optical power.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Independent interpolated table, retaining spectral density units.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#MomentRT.SourceSpectrum" title="MomentRT.SourceSpectrum">SourceSpectrum</a></p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the grid is invalid, outside coverage, or loses all source power.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.SourceSpectrum.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uW/nm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#SourceSpectrum.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SourceSpectrum.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the supplied spectral power-density samples.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelength_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Display length unit. Default is ‘nm’.</p></li>
+<li><p><strong>power_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Display spectral power-density unit. Default is ‘uW/nm’.</p></li>
+<li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – Display the composable figure immediately. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Source density curve with physical wavelength and power labels.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>plotly.graph_objects.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MomentRT.DetectorResponsivity">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">DetectorResponsivity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">responsivity</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/detector.html#DetectorResponsivity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorResponsivity" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Tabulated detector responsivity with linear interpolation and no extrapolation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelengths</strong> (<em>pint.Quantity</em>) – Strictly increasing positive vacuum wavelengths, shape (n,), n &gt;= 2.</p></li>
+<li><p><strong>responsivity</strong> (<em>pint.Quantity</em>) – Nonnegative electrical responsivity, shape (n,), with A / W units.
+It describes a linear detector without saturation or electronics gain.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.DetectorResponsivity.at">
+<span class="sig-name descname"><span class="pre">at</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/detector.html#DetectorResponsivity.at"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorResponsivity.at" title="Link to this definition">#</a></dt>
+<dd><p>Interpolate responsivity within the supplied wavelength interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>wavelength</strong> (<em>pint.Quantity</em>) – Positive scalar or array of vacuum wavelengths with length units.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Responsivity with A / W units, matching the input shape.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pint.Quantity</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If any wavelength lies outside the tabulated interval.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.DetectorResponsivity.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">responsivity_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'A/W'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/detector.html#DetectorResponsivity.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorResponsivity.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the tabulated linear electrical response.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelength_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Display length unit. Default is ‘nm’.</p></li>
+<li><p><strong>responsivity_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Display electrical response unit. Default is ‘A/W’.</p></li>
+<li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – Display the composable figure immediately. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Response curve with physical wavelength and responsivity labels.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>plotly.graph_objects.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MomentRT.PointSource">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">PointSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Point</span> <span class="pre">source'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crimson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#PointSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.PointSource" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_SourceEmission</span></code></p>
 <p>Isotropic point illumination embedded in an infinite medium.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>position</strong> (<em>pint.Quantity</em>) – Absolute Cartesian position, shape (3,), with length units.</p></li>
-<li><p><strong>wavelength</strong> (<em>pint.Quantity</em>) – Positive scalar vacuum wavelength, with length units.</p></li>
-<li><p><strong>optical_power</strong> (<em>pint.Quantity</em>) – Positive scalar optical power with power units.</p></li>
+<li><p><strong>wavelength</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Positive scalar vacuum wavelength, with length units.</p></li>
+<li><p><strong>optical_power</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Positive scalar optical power with power units.</p></li>
+<li><p><strong>spectrum</strong> (<a class="reference internal" href="#MomentRT.SourceSpectrum" title="MomentRT.SourceSpectrum"><em>SourceSpectrum</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Broadband spectral density. Supply this or both wavelength and
+optical_power. Default is None.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Legend label. Default is <code class="docutils literal notranslate"><span class="pre">&quot;Point</span> <span class="pre">source&quot;</span></code>.</p></li>
 <li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – Plotly-compatible color. Default is <code class="docutils literal notranslate"><span class="pre">&quot;crimson&quot;</span></code>.</p></li>
 </ul>
@@ -1493,8 +1627,8 @@ regularized, and the Cartesian mesh is an observation window.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.UniformSurfaceSource">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">UniformSurfaceSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Full-face</span> <span class="pre">illumination'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crimson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#UniformSurfaceSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.UniformSurfaceSource" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">UniformSurfaceSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Full-face</span> <span class="pre">illumination'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crimson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#UniformSurfaceSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.UniformSurfaceSource" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">_SourceEmission</span></code></p>
 <p>Uniform incoming diffuse partial current across one complete sample face.</p>
 <p>optical_power is power already transmitted into the sample, before diffuse
 internal reflection. This does not model collimated LED entry or specular
@@ -1503,8 +1637,10 @@ Fresnel loss. The boundary condition’s source factor is applied by the solver.
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>face</strong> (<em>{'x_min'</em><em>, </em><em>'x_max'</em><em>, </em><em>'y_min'</em><em>, </em><em>'y_max'</em><em>, </em><em>'z_min'</em><em>, </em><em>'z_max'}</em>) – Axis-aligned sample face; min and max refer to outward boundaries.</p></li>
-<li><p><strong>wavelength</strong> (<em>pint.Quantity</em>) – Positive scalar vacuum wavelength, with length units.</p></li>
-<li><p><strong>optical_power</strong> (<em>pint.Quantity</em>) – Positive scalar optical power with power units.</p></li>
+<li><p><strong>wavelength</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Positive scalar vacuum wavelength, with length units.</p></li>
+<li><p><strong>optical_power</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Positive scalar optical power with power units.</p></li>
+<li><p><strong>spectrum</strong> (<a class="reference internal" href="#MomentRT.SourceSpectrum" title="MomentRT.SourceSpectrum"><em>SourceSpectrum</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Broadband spectral density. Supply this or both wavelength and
+optical_power. Default is None.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Legend label. Default is <code class="docutils literal notranslate"><span class="pre">&quot;Full-face</span> <span class="pre">illumination&quot;</span></code>.</p></li>
 <li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – Plotly-compatible color. Default is <code class="docutils literal notranslate"><span class="pre">&quot;crimson&quot;</span></code>.</p></li>
 </ul>
@@ -1518,7 +1654,7 @@ The solver applies the Robin source factor separately.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.SurfaceSource">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SurfaceSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Illumination</span> <span class="pre">spot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crimson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#SurfaceSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceSource" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SurfaceSource</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Illumination</span> <span class="pre">spot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crimson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#SurfaceSource"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceSource" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#MomentRT.UniformSurfaceSource" title="MomentRT.source.UniformSurfaceSource"><code class="xref py py-class docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code></a></p>
 <p>Circular top-hat incoming diffuse illumination on an axis-aligned face.</p>
 <p>position is an absolute 3D surface coordinate; radius is the spot radius.
@@ -1531,8 +1667,10 @@ resolve the disk edge and check the reported quadrature spot area.</p>
 <li><p><strong>face</strong> (<em>{'x_min'</em><em>, </em><em>'x_max'</em><em>, </em><em>'y_min'</em><em>, </em><em>'y_max'</em><em>, </em><em>'z_min'</em><em>, </em><em>'z_max'}</em>) – Axis-aligned sample face; min and max refer to outward boundaries.</p></li>
 <li><p><strong>position</strong> (<em>pint.Quantity</em>) – Absolute Cartesian position, shape (3,), with length units.</p></li>
 <li><p><strong>radius</strong> (<em>pint.Quantity</em>) – Positive scalar radius with length units.</p></li>
-<li><p><strong>wavelength</strong> (<em>pint.Quantity</em>) – Positive scalar vacuum wavelength, with length units.</p></li>
-<li><p><strong>optical_power</strong> (<em>pint.Quantity</em>) – Positive scalar optical power with power units.</p></li>
+<li><p><strong>wavelength</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Positive scalar vacuum wavelength, with length units.</p></li>
+<li><p><strong>optical_power</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Positive scalar optical power with power units.</p></li>
+<li><p><strong>spectrum</strong> (<a class="reference internal" href="#MomentRT.SourceSpectrum" title="MomentRT.SourceSpectrum"><em>SourceSpectrum</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Broadband spectral density. Supply this or both wavelength and
+optical_power. Default is None.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Legend label. Default is <code class="docutils literal notranslate"><span class="pre">&quot;Illumination</span> <span class="pre">spot&quot;</span></code>.</p></li>
 <li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – Plotly-compatible color. Default is <code class="docutils literal notranslate"><span class="pre">&quot;crimson&quot;</span></code>.</p></li>
 </ul>
@@ -1544,7 +1682,7 @@ is normalized to the specified incoming power; energy conservation alone
 does not establish that the disk edge is spatially resolved.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.SurfaceSource.on_face">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">on_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Illumination</span> <span class="pre">spot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crimson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#SurfaceSource.on_face"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceSource.on_face" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">on_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Illumination</span> <span class="pre">spot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'crimson'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/source.html#SurfaceSource.on_face"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceSource.on_face" title="Link to this definition">#</a></dt>
 <dd><p>Place a circular source using absolute coordinates in a sample face.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1554,8 +1692,10 @@ does not establish that the disk edge is spatially resolved.</p>
 <li><p><strong>coordinates</strong> (<em>pint.Quantity</em>) – Two absolute in-plane coordinates, ordered by Cartesian axis
 (y, z for x faces; x, z for y faces; x, y for z faces).</p></li>
 <li><p><strong>radius</strong> (<em>pint.Quantity</em>) – Positive illumination radius with length units.</p></li>
-<li><p><strong>wavelength</strong> (<em>pint.Quantity</em>) – Positive vacuum wavelength with length units.</p></li>
-<li><p><strong>optical_power</strong> (<em>pint.Quantity</em>) – Incoming diffuse power already coupled into the sample.</p></li>
+<li><p><strong>wavelength</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Positive vacuum wavelength with length units.</p></li>
+<li><p><strong>optical_power</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Incoming diffuse power already coupled into the sample.</p></li>
+<li><p><strong>spectrum</strong> (<a class="reference internal" href="#MomentRT.SourceSpectrum" title="MomentRT.SourceSpectrum"><em>SourceSpectrum</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Broadband spectral density. Supply this or both wavelength and
+optical_power. Default is None.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Legend label. Default is <code class="docutils literal notranslate"><span class="pre">&quot;Illumination</span> <span class="pre">spot&quot;</span></code>.</p></li>
 <li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – Plotly-compatible color. Default is <code class="docutils literal notranslate"><span class="pre">&quot;crimson&quot;</span></code>.</p></li>
 </ul>
@@ -1573,7 +1713,7 @@ does not establish that the disk edge is spatially resolved.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.SurfaceDetector">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SurfaceDetector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptance_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Surface</span> <span class="pre">detector'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'royalblue'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/detector.html#SurfaceDetector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceDetector" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SurfaceDetector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collection_axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptance_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">responsivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Surface</span> <span class="pre">detector'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'royalblue'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/detector.html#SurfaceDetector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceDetector" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Circular aperture in a sample face with a cone of accepted outgoing rays.</p>
 <p>collection_axis points along collected ray propagation, out of the sample.
@@ -1590,6 +1730,8 @@ it does not alter the transport boundary or model refraction and lenses.</p>
 <li><p><strong>collection_axis</strong> (<em>array_like</em><em> of </em><em>float</em><em>, </em><a class="reference internal" href="#MomentRT.TetrahedralMesh.shape" title="MomentRT.TetrahedralMesh.shape"><em>shape</em></a><em> (</em><em>3</em><em>,</em><em>)</em>) – Nonzero dimensionless direction along accepted outgoing rays.
 It is normalized internally and must point into the outward hemisphere.</p></li>
 <li><p><strong>acceptance_angle</strong> (<em>pint.Quantity</em>) – Acceptance-cone half-angle, from 0 to 90 degrees, with angular units.</p></li>
+<li><p><strong>responsivity</strong> (<a class="reference internal" href="#MomentRT.DetectorResponsivity" title="MomentRT.DetectorResponsivity"><em>DetectorResponsivity</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Linear spectral electrical response in A / W. None reports optical
+power without photocurrent. Default is None.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Legend label. Default is <code class="docutils literal notranslate"><span class="pre">&quot;Surface</span> <span class="pre">detector&quot;</span></code>.</p></li>
 <li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – Plotly-compatible color. Default is <code class="docutils literal notranslate"><span class="pre">&quot;royalblue&quot;</span></code>.</p></li>
 </ul>
@@ -1603,8 +1745,8 @@ inside the outward hemisphere, the accepted fraction is
 cos(tilt) * sin(acceptance_angle)**2.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.SurfaceDetector.on_face">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">on_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptance_angle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Surface</span> <span class="pre">detector'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'royalblue'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/detector.html#SurfaceDetector.on_face"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceDetector.on_face" title="Link to this definition">#</a></dt>
-<dd><p>Place a detector on a face with an explicitly selected outward normal.</p>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">on_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptance_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orientation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'outward_normal'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">acceptance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">responsivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Surface</span> <span class="pre">detector'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'royalblue'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/detector.html#SurfaceDetector.on_face"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceDetector.on_face" title="Link to this definition">#</a></dt>
+<dd><p>Place an outward-facing detector using absolute in-plane coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1613,9 +1755,14 @@ cos(tilt) * sin(acceptance_angle)**2.</p>
 <li><p><strong>coordinates</strong> (<em>pint.Quantity</em>) – Two absolute in-plane coordinates, ordered by Cartesian axis
 (y, z for x faces; x, z for y faces; x, y for z faces).</p></li>
 <li><p><strong>radius</strong> (<em>pint.Quantity</em>) – Positive aperture radius with length units.</p></li>
-<li><p><strong>acceptance_angle</strong> (<em>pint.Quantity</em>) – Acceptance cone half-angle with angular units, from zero to 90 degrees.</p></li>
-<li><p><strong>orientation</strong> (<em>{'outward_normal'}</em>) – Explicitly select the outward face normal as the collection axis.
+<li><p><strong>acceptance_angle</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Cone half-angle from zero to 90 degrees. Supply this or acceptance.
+Default is None.</p></li>
+<li><p><strong>orientation</strong> (<em>{'outward_normal'}</em><em>, </em><em>optional</em>) – Select the outward face normal as the collection axis by default.
 Use the main constructor for a tilted collection axis.</p></li>
+<li><p><strong>acceptance</strong> (<em>{'full_hemisphere'}</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Explicitly collect the complete outward hemisphere. Supply this or
+acceptance_angle. Default is None.</p></li>
+<li><p><strong>responsivity</strong> (<a class="reference internal" href="#MomentRT.DetectorResponsivity" title="MomentRT.DetectorResponsivity"><em>DetectorResponsivity</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Linear spectral electrical response in A / W. None reports optical
+power without photocurrent. Default is None.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Legend label. Default is <code class="docutils literal notranslate"><span class="pre">&quot;Surface</span> <span class="pre">detector&quot;</span></code>.</p></li>
 <li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – Plotly-compatible color. Default is <code class="docutils literal notranslate"><span class="pre">&quot;royalblue&quot;</span></code>.</p></li>
 </ul>
@@ -1631,7 +1778,7 @@ Use the main constructor for a tilted collection axis.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.SurfaceDetector.full_hemisphere_on_face">
-<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">full_hemisphere_on_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Surface</span> <span class="pre">detector'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'royalblue'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/detector.html#SurfaceDetector.full_hemisphere_on_face"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceDetector.full_hemisphere_on_face" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">full_hemisphere_on_face</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">face</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">responsivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Surface</span> <span class="pre">detector'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'royalblue'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/detector.html#SurfaceDetector.full_hemisphere_on_face"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SurfaceDetector.full_hemisphere_on_face" title="Link to this definition">#</a></dt>
 <dd><p>Collect all escaping irradiance across a circular contact aperture.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1641,6 +1788,8 @@ Use the main constructor for a tilted collection axis.</p></li>
 <li><p><strong>coordinates</strong> (<em>pint.Quantity</em>) – Absolute in-plane coordinates, shape (2,), with length units, ordered
 by Cartesian axis.</p></li>
 <li><p><strong>radius</strong> (<em>pint.Quantity</em>) – Positive aperture radius with length units.</p></li>
+<li><p><strong>responsivity</strong> (<a class="reference internal" href="#MomentRT.DetectorResponsivity" title="MomentRT.DetectorResponsivity"><em>DetectorResponsivity</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Linear spectral electrical response in A / W. None reports optical
+power without photocurrent. Default is None.</p></li>
 <li><p><strong>name</strong> (<em>str</em><em>, </em><em>optional</em>) – Legend label. Default is <code class="docutils literal notranslate"><span class="pre">&quot;Surface</span> <span class="pre">detector&quot;</span></code>.</p></li>
 <li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – Plotly-compatible color. Default is <code class="docutils literal notranslate"><span class="pre">&quot;royalblue&quot;</span></code>.</p></li>
 </ul>
@@ -2451,7 +2600,8 @@ Default is None.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>wavelengths</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – One-dimensional sweep wavelengths with length units. None checks
-the configured source wavelength.</p>
+the monochromatic source wavelength or the complete broadband
+source grid.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>Independent errors, cautions, solver assumptions and limits, and
@@ -2470,10 +2620,13 @@ transport or establish mesh convergence.</p>
 <dd><p>Solve the configured transport problem and evaluate all named detectors.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Solved fields, numerical diagnostics, and configured detector measurements.</p>
+<dd class="field-odd"><p>Monochromatic fields and measurements, or broadband detector spectra,
+trapezoidal optical and electrical integrals, and reference solves.
+Broadband integration uses exactly the source spectrum’s grid and
+endpoints; refine that grid to assess spectral quadrature error.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#MomentRT.SimulationResult" title="MomentRT.SimulationResult">SimulationResult</a></p>
+<dd class="field-even"><p><a class="reference internal" href="#MomentRT.SimulationResult" title="MomentRT.SimulationResult">SimulationResult</a> or <a class="reference internal" href="#MomentRT.BroadbandSimulationResult" title="MomentRT.BroadbandSimulationResult">BroadbandSimulationResult</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -2510,8 +2663,8 @@ operator and sparse factorization.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="MomentRT.Simulation.convergence_study">
-<span class="sig-name descname"><span class="pre">convergence_study</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_shapes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_resolutions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/simulation.html#Simulation.convergence_study"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.Simulation.convergence_study" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="MomentRT.Simulation.mesh_convergence">
+<span class="sig-name descname"><span class="pre">mesh_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_shapes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_resolutions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/simulation.html#Simulation.mesh_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.Simulation.mesh_convergence" title="Link to this definition">#</a></dt>
 <dd><p>Compare detector signals and footprint sampling across explicit meshes.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2549,12 +2702,88 @@ only when the final refinement sequence meets all requested criteria.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.Simulation.convergence_study">
+<span class="sig-name descname"><span class="pre">convergence_study</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_shapes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_resolutions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#MomentRT.Simulation.convergence_study" title="Link to this definition">#</a></dt>
+<dd><p>Compare detector signals and footprint sampling across explicit meshes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mesh_shapes</strong> (<em>iterable</em><em> of </em><em>tuple</em><em> of </em><em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – At least two coarse-to-fine Cartesian node shapes. Each shape must
+refine at least one axis and coarsen none. Supply this or
+<code class="docutils literal notranslate"><span class="pre">mesh_resolutions</span></code>, but not both. Default is None.</p></li>
+<li><p><strong>mesh_resolutions</strong> (<em>iterable</em><em> of </em><em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – At least two strictly decreasing global tetrahedral target sizes.
+Supply this or <code class="docutils literal notranslate"><span class="pre">mesh_shapes</span></code>, but not both. Default is None.</p></li>
+<li><p><strong>contact_resolution</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Local target element size near disk sources and detectors. Required
+with <code class="docutils literal notranslate"><span class="pre">contact_distance</span></code>; applies only to tetrahedral studies.
+Default is None.</p></li>
+<li><p><strong>contact_distance</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Positive distance defining each local contact refinement zone.
+Default is None.</p></li>
+<li><p><strong>power_rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – Nonnegative relative power tolerance against adjacent and finest meshes.
+Default is 0.01.</p></li>
+<li><p><strong>area_rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – Nonnegative relative tolerance of sampled source and detector areas
+against their geometric areas.
+Default is 0.02.</p></li>
+<li><p><strong>power_atol</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Nonnegative absolute power tolerance. None means zero watts.
+Default is None.</p></li>
+<li><p><strong>required_consecutive</strong> (<em>int</em><em>, </em><em>optional</em>) – Positive number of consecutive passing refinements required at the
+fine end of the mesh sequence.
+Default is 2.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Per-level fields, powers, areas, failures, and a mesh recommendation
+only when the final refinement sequence meets all requested criteria.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#MomentRT.DetectorConvergenceResult" title="MomentRT.DetectorConvergenceResult">DetectorConvergenceResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.Simulation.spectral_convergence">
+<span class="sig-name descname"><span class="pre">spectral_convergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength_grids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_table_knots</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/simulation.html#Simulation.spectral_convergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.Simulation.spectral_convergence" title="Link to this definition">#</a></dt>
+<dd><p>Check broadband power and current stability across wavelength grids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelength_grids</strong> (<em>iterable</em><em> of </em><em>pint.Quantity</em>) – At least two nested coarse-to-fine wavelength vectors spanning the
+original source interval. Source knots are always retained.</p></li>
+<li><p><strong>include_table_knots</strong> (<em>bool</em><em>, </em><em>optional</em>) – Include material and responsivity knots inside the interval. The
+resulting inspectable grids must still add samples. Default is True.</p></li>
+<li><p><strong>power_rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – Nonnegative relative optical-power tolerance. Default is 0.01.</p></li>
+<li><p><strong>photocurrent_rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – Nonnegative relative current tolerance for detectors with response.
+Default is 0.01.</p></li>
+<li><p><strong>power_atol</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Nonnegative absolute optical-power tolerance. None means zero watts.
+Default is None.</p></li>
+<li><p><strong>photocurrent_atol</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Nonnegative absolute current tolerance. None means zero amperes.
+Default is None.</p></li>
+<li><p><strong>required_consecutive</strong> (<em>int</em><em>, </em><em>optional</em>) – Consecutive passing refinements required at the fine end. Default is 2.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Per-level spectra, measurements, changes, and failures. A wavelength
+grid is recommended only after a stable final refinement sequence.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#MomentRT.SpectralConvergenceResult" title="MomentRT.SpectralConvergenceResult">SpectralConvergenceResult</a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>Geometry, source data, and detector response remain fixed. This checks
+wavelength integration; assess spatial mesh and model accuracy separately.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.Simulation.plot_system">
-<span class="sig-name descname"><span class="pre">plot_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/simulation.html#Simulation.plot_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.Simulation.plot_system" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/simulation.html#Simulation.plot_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.Simulation.plot_system" title="Link to this definition">#</a></dt>
 <dd><p>Display the physical sample, source, and detector geometry in 3D.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelength</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Display wavelength for material properties. None uses the source
+wavelength for monochromatic sources. Broadband sources with
+spectral materials require an explicit display wavelength.</p></li>
 <li><p><strong>length_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Length unit used for displayed or exported coordinates.
 Default is ‘mm’.</p></li>
 <li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to display the figure immediately. The figure is always returned.
@@ -2920,7 +3149,7 @@ Default is None.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.DetectorResult">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">DetectorResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">collected_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampled_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometric_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_escaping_irradiance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#DetectorResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorResult" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">DetectorResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">collected_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampled_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometric_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_escaping_irradiance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#DetectorResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Finite-aperture diffuse collection and quadrature provenance.</p>
 <dl class="field-list simple">
@@ -2935,6 +3164,8 @@ It is not normalized to the geometric area.</p></li>
 <li><p><strong>minimum_escaping_irradiance</strong> (<em>pint.Quantity</em>) – Smallest sampled escaping irradiance inside the aperture.
 Negative values flag discretization artifacts and remain unchanged.</p></li>
 <li><p><strong>detector</strong> (<a class="reference internal" href="#MomentRT.SurfaceDetector" title="MomentRT.SurfaceDetector"><em>SurfaceDetector</em></a>) – Snapshot of the aperture and angular collection configuration.</p></li>
+<li><p><strong>photocurrent</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Linear electrical current in amperes when responsivity is configured.
+Default is None.</p></li>
 </ul>
 </dd>
 </dl>
@@ -3165,6 +3396,185 @@ Default is True.</p></li>
 
 </dd></dl>
 
+<dl class="py class">
+<dt class="sig sig-object py" id="MomentRT.BroadbandSimulationResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BroadbandSimulationResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_optical_power</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#BroadbandSimulationResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.BroadbandSimulationResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Broadband detector predictions and the underlying unit-power solves.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>spectrum</strong> (<a class="reference internal" href="#MomentRT.SourceSpectrum" title="MomentRT.SourceSpectrum"><em>SourceSpectrum</em></a>) – Source spectral density and the integration wavelength grid.</p></li>
+<li><p><strong>reference_results</strong> (<a class="reference internal" href="#MomentRT.SpectralSimulationResult" title="MomentRT.SpectralSimulationResult"><em>SpectralSimulationResult</em></a>) – Independent monochromatic solves on the source grid, each excited by
+reference_optical_power. Their fields retain those reference units.</p></li>
+<li><p><strong>reference_optical_power</strong> (<em>pint.Quantity</em>) – Positive scalar optical power used for every reference solve.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.BroadbandSimulationResult.detector_power">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">detector_power</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#MomentRT.BroadbandSimulationResult.detector_power" title="Link to this definition">#</a></dt>
+<dd><p>Return the wavelength-integrated optical powers for named detectors.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Accepted broadband optical powers in watts.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict of str to pint.Quantity</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MomentRT.BroadbandDetectorResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BroadbandDetectorResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">responsivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_measurements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#BroadbandDetectorResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.BroadbandDetectorResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Collected spectral density and its explicit wavelength integrals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelengths</strong> (<em>pint.Quantity</em>) – Strictly increasing positive vacuum wavelengths, shape (n,), n &gt;= 2.</p></li>
+<li><p><strong>spectral_power</strong> (<em>pint.Quantity</em>) – Collected power density, shape (n,), with W / length units. Negative
+numerical outputs are retained. Integration uses the supplied endpoints.</p></li>
+<li><p><strong>responsivity</strong> (<a class="reference internal" href="#MomentRT.DetectorResponsivity" title="MomentRT.DetectorResponsivity"><em>DetectorResponsivity</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Linear electrical response. None leaves photocurrent unavailable.
+Default is None.</p></li>
+<li><p><strong>reference_measurements</strong> (<em>sequence</em><em> of </em><a class="reference internal" href="#MomentRT.DetectorResult" title="MomentRT.DetectorResult"><em>DetectorResult</em></a><em> or </em><em>None</em><em>, </em><em>optional</em>) – Measurements on the same aperture and mesh, one per wavelength.
+Supplies the sampled and geometric areas. Default is None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>spectral_power</strong> (<em>pint.Quantity</em>) – Signed collected power density in its supplied W / length units.</p></li>
+<li><p><strong>collected_power</strong> (<em>pint.Quantity</em>) – Trapezoidal optical integral in watts.</p></li>
+<li><p><strong>photocurrent</strong> (<em>pint.Quantity</em><em> or </em><em>None</em>) – Trapezoidal electrical integral in amperes when responsivity is supplied.</p></li>
+<li><p><strong>responsivity</strong> (<a class="reference internal" href="#MomentRT.DetectorResponsivity" title="MomentRT.DetectorResponsivity"><em>DetectorResponsivity</em></a><em> or </em><em>None</em>) – Snapshot of the linear response used for electrical conversion.</p></li>
+<li><p><strong>sampled_area</strong> (<em>pint.Quantity</em><em> or </em><em>None</em>) – Shared sampled aperture area. None when no geometry was supplied.</p></li>
+<li><p><strong>geometric_area</strong> (<em>pint.Quantity</em><em> or </em><em>None</em>) – Shared exact aperture area. None when no geometry was supplied.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="MomentRT.SpectralConvergenceResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SpectralConvergenceResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength_grids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level_errors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent_rtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent_atol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SpectralConvergenceResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralConvergenceResult" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Detector power and photocurrent stability on nested wavelength grids.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>wavelength_grids</strong> (<em>sequence</em><em> of </em><em>pint.Quantity</em>) – Increasing-resolution wavelength vectors over one fixed source interval.</p></li>
+<li><p><strong>results</strong> (<em>sequence</em><em> of </em><a class="reference internal" href="#MomentRT.BroadbandSimulationResult" title="MomentRT.BroadbandSimulationResult"><em>BroadbandSimulationResult</em></a><em> or </em><em>None</em>) – Per-level predictions. None retains a failed refinement.</p></li>
+<li><p><strong>detectors</strong> (<em>mapping</em><em> of </em><em>str to SurfaceDetector</em>) – Fixed detector geometry and optional electrical response.</p></li>
+<li><p><strong>level_errors</strong> (<em>sequence</em><em> of </em><em>mapping</em><em> of </em><em>str to str</em>) – Per-level solve failures and negative-field diagnostics.</p></li>
+<li><p><strong>power_rtol</strong> (<em>float</em>) – Nonnegative relative optical-power tolerance.</p></li>
+<li><p><strong>photocurrent_rtol</strong> (<em>float</em>) – Nonnegative relative electrical-current tolerance.</p></li>
+<li><p><strong>power_atol</strong> (<em>pint.Quantity</em>) – Nonnegative absolute optical-power tolerance.</p></li>
+<li><p><strong>photocurrent_atol</strong> (<em>pint.Quantity</em>) – Nonnegative absolute electrical-current tolerance.</p></li>
+<li><p><strong>required_consecutive</strong> (<em>int</em>) – Consecutive passing refinements required at the fine end.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Variables<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>wavelength_grids</strong> (<em>tuple</em><em> of </em><em>pint.Quantity</em>) – Actual nested integration grids after required table knots are merged.</p></li>
+<li><p><strong>sample_counts</strong> (<em>numpy.ndarray</em><em> of </em><em>int</em>) – Number of wavelengths at each level.</p></li>
+<li><p><strong>detector_power</strong> (<em>dict</em><em> of </em><em>str to pint.Quantity</em>) – Integrated optical-power vectors in watts, with NaN for failed levels.</p></li>
+<li><p><strong>detector_photocurrent</strong> (<em>dict</em><em> of </em><em>str to pint.Quantity</em>) – Integrated current vectors in amperes for detectors with responsivity.</p></li>
+<li><p><strong>power_relative_change</strong> (<em>dict</em><em> of </em><em>str to numpy.ndarray</em>) – Adjacent power changes divided by the larger absolute adjacent value.</p></li>
+<li><p><strong>photocurrent_relative_change</strong> (<em>dict</em><em> of </em><em>str to numpy.ndarray</em>) – Adjacent current changes using the same normalization as power changes.</p></li>
+<li><p><strong>power_relative_to_finest</strong> (<em>dict</em><em> of </em><em>str to numpy.ndarray</em>) – Absolute power differences divided by the finest absolute power.</p></li>
+<li><p><strong>photocurrent_relative_to_finest</strong> (<em>dict</em><em> of </em><em>str to numpy.ndarray</em>) – Current differences relative to the finest absolute current.</p></li>
+<li><p><strong>meets_tolerances</strong> (<em>numpy.ndarray</em><em> of </em><em>bool</em>) – Per-level stability checks including failures and negative outputs.</p></li>
+<li><p><strong>recommended_index</strong> (<em>int</em><em> or </em><em>None</em>) – Recommended grid index, or None after an unresolved final sequence.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A recommendation requires adjacent-level stability and agreement with the
+finest result for every measured quantity. Failed or negative outputs are
+retained and prevent a recommendation from a failed final sequence.
+These criteria concern wavelength integration, not spatial or model accuracy.</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.SpectralConvergenceResult.converged">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">converged</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></span><a class="headerlink" href="#MomentRT.SpectralConvergenceResult.converged" title="Link to this definition">#</a></dt>
+<dd><p>Report whether the final sequence supports a wavelength recommendation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>True when all detector quantities meet the final stability criteria.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.SpectralConvergenceResult.recommended_wavelengths">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">recommended_wavelengths</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Quantity</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#MomentRT.SpectralConvergenceResult.recommended_wavelengths" title="Link to this definition">#</a></dt>
+<dd><p>Return a copy of the recommended grid when tolerances are met.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Increasing vacuum wavelengths, or None after an unresolved sequence.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pint.Quantity or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="MomentRT.SpectralConvergenceResult.records">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">records</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">object</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#MomentRT.SpectralConvergenceResult.records" title="Link to this definition">#</a></dt>
+<dd><p>Return per-level powers, currents, changes, and explicit failures.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Records preserving physical units and all failed refinement levels.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list of dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.SpectralConvergenceResult.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SpectralConvergenceResult.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralConvergenceResult.summary" title="Link to this definition">#</a></dt>
+<dd><p>Describe wavelength refinement outcomes and the final recommendation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Labeled sample counts, passing levels, failures, and recommendation.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.SpectralConvergenceResult.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uW'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SpectralConvergenceResult.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralConvergenceResult.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot integrated measurements against wavelength sample count.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>power_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Optical-power display unit. Default is ‘uW’.</p></li>
+<li><p><strong>current_unit</strong> (<em>str</em><em>, </em><em>optional</em>) – Electrical-current display unit. Default is ‘uA’.</p></li>
+<li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – Display immediately when True. Default is True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Composable power and optional photocurrent curves with failed gaps.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>plotly.graph_objects.Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 </section>
 
@@ -3203,7 +3613,7 @@ Default is True.</p></li>
             
             
               
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <dialog id="pst-secondary-sidebar-modal" tabindex="-1"></dialog>
                 <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
@@ -3292,6 +3702,17 @@ Default is True.</p></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sources-detectors-and-boundaries">Sources, detectors, and boundaries</a><ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SourceSpectrum"><code class="docutils literal notranslate"><span class="pre">SourceSpectrum</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SourceSpectrum.optical_power"><code class="docutils literal notranslate"><span class="pre">SourceSpectrum.optical_power</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SourceSpectrum.resample"><code class="docutils literal notranslate"><span class="pre">SourceSpectrum.resample()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SourceSpectrum.plot"><code class="docutils literal notranslate"><span class="pre">SourceSpectrum.plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorResponsivity"><code class="docutils literal notranslate"><span class="pre">DetectorResponsivity</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorResponsivity.at"><code class="docutils literal notranslate"><span class="pre">DetectorResponsivity.at()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorResponsivity.plot"><code class="docutils literal notranslate"><span class="pre">DetectorResponsivity.plot()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.PointSource"><code class="docutils literal notranslate"><span class="pre">PointSource</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.UniformSurfaceSource"><code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SurfaceSource"><code class="docutils literal notranslate"><span class="pre">SurfaceSource</span></code></a><ul class="nav section-nav flex-column">
@@ -3377,7 +3798,9 @@ Default is True.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Simulation.validate"><code class="docutils literal notranslate"><span class="pre">Simulation.validate()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Simulation.run"><code class="docutils literal notranslate"><span class="pre">Simulation.run()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Simulation.sweep"><code class="docutils literal notranslate"><span class="pre">Simulation.sweep()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Simulation.mesh_convergence"><code class="docutils literal notranslate"><span class="pre">Simulation.mesh_convergence()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Simulation.convergence_study"><code class="docutils literal notranslate"><span class="pre">Simulation.convergence_study()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Simulation.spectral_convergence"><code class="docutils literal notranslate"><span class="pre">Simulation.spectral_convergence()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Simulation.plot_system"><code class="docutils literal notranslate"><span class="pre">Simulation.plot_system()</span></code></a></li>
 </ul>
 </li>
@@ -3427,6 +3850,19 @@ Default is True.</p></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralSimulationResult.plot"><code class="docutils literal notranslate"><span class="pre">SpectralSimulationResult.plot()</span></code></a></li>
 </ul>
 </li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.BroadbandSimulationResult"><code class="docutils literal notranslate"><span class="pre">BroadbandSimulationResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.BroadbandSimulationResult.detector_power"><code class="docutils literal notranslate"><span class="pre">BroadbandSimulationResult.detector_power</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.BroadbandDetectorResult"><code class="docutils literal notranslate"><span class="pre">BroadbandDetectorResult</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralConvergenceResult"><code class="docutils literal notranslate"><span class="pre">SpectralConvergenceResult</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralConvergenceResult.converged"><code class="docutils literal notranslate"><span class="pre">SpectralConvergenceResult.converged</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralConvergenceResult.recommended_wavelengths"><code class="docutils literal notranslate"><span class="pre">SpectralConvergenceResult.recommended_wavelengths</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralConvergenceResult.records"><code class="docutils literal notranslate"><span class="pre">SpectralConvergenceResult.records</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralConvergenceResult.summary"><code class="docutils literal notranslate"><span class="pre">SpectralConvergenceResult.summary()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SpectralConvergenceResult.plot"><code class="docutils literal notranslate"><span class="pre">SpectralConvergenceResult.plot()</span></code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -3436,7 +3872,7 @@ Default is True.</p></li>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.0/docs/source/python_api.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/python_api.rst">
       <i class="fa-solid fa-pencil"></i>
       
       
@@ -3470,8 +3906,8 @@ Default is True.</p></li>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">

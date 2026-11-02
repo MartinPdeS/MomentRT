@@ -197,8 +197,8 @@ window from ``InfiniteDiffusion`` is not a sample surface and cannot supply
 these measurements. Reflecting faces have zero modeled escape.
 
 The detector does not model angle-dependent Fresnel transmission, refraction,
-lenses, a stand-off distance, quantum efficiency, electrical responsivity, or
-noise. Acceptance is specified as an angular cone, not inferred from a
+lenses, a stand-off distance, or noise. A supplied ``DetectorResponsivity``
+table adds a linear A/W conversion after optical collection. Acceptance is specified as an angular cone, not inferred from a
 numerical aperture. Detector results retain a copy of the aperture
 configuration, wavelength, and angular model for provenance.
 
@@ -216,3 +216,19 @@ individual :class:`~MomentRT.DetectorResult` measurements in the order of
 geometric aperture areas. These are independent monochromatic measurements,
 not a broadband integral. ``spectrum.detector_power["reflection"]`` remains
 available as a unit-bearing power array.
+
+
+A source configured with ``SourceSpectrum`` makes ``Simulation.run()`` return
+a broadband result. ``result.detectors["sensor"]`` then provides collected
+spectral density, wavelength-integrated optical power, and optional
+photocurrent. See :doc:`spectral` for units, quadrature, reference-field
+provenance, coverage requirements, and validation limits.
+
+
+Sources and detectors share the ``on_face(sample=..., face=...,
+coordinates=..., radius=...)`` placement convention. For full hemispherical
+collection, use ``SurfaceDetector.on_face(..., acceptance="full_hemisphere")``.
+For an outward cone, supply ``acceptance_angle=...`` instead; the face normal
+is the default orientation. The main constructor retains explicit tilted
+collection axes. ``full_hemisphere_on_face(...)`` and explicit
+``orientation="outward_normal"`` remain supported.

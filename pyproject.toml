@@ -52,9 +52,7 @@ keywords = [
 [project.optional-dependencies]
 release = ["martinpdes-maintenance==0.2.3"]
 testing = ["martinpdes-maintenance[testing]==0.2.3"]
-documentation = [
-    "MartinPdeS-docs>=0.5,<0.6",
-]
+documentation = ["MartinPdeS-docs>=0.5,<0.6"]
 dev = ["martinpdes-maintenance[quality]==0.2.3"]
 
 [project.urls]

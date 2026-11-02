@@ -33,7 +33,7 @@ jobs:
       conda_channels: conda-forge
       conda_apt_package: libglu1-mesa
       release_validation_command: >-
-        python -m pip install "martinpdes-maintenance==0.2.2" &&
+        python -m pip install "martinpdes-maintenance==0.2.3" &&
         python -m martinpdes_maintenance.cli check --version "${GITHUB_REF_NAME#v}"
       documentation_apt_package: libglu1-mesa
     secrets:

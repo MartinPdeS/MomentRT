@@ -101,7 +101,7 @@ class PointSource:
             Coordinate units, legend labels, and physical sample bounds.
         """
 
-        go = MomentRT.plotting.require_plotly()
+        go = MomentRT.plotting.go
 
         position = self.position.to(context["length_unit"]).magnitude
 
@@ -243,7 +243,7 @@ class UniformSurfaceSource:
 
         surface[..., axes[1]] = vertical
 
-        go = MomentRT.plotting.require_plotly()
+        go = MomentRT.plotting.go
 
         figure.add_trace(
             go.Surface(
@@ -433,7 +433,7 @@ class SurfaceSource(UniformSurfaceSource):
             Coordinate units, legend labels, and physical sample bounds.
         """
 
-        go = MomentRT.plotting.require_plotly()
+        go = MomentRT.plotting.go
 
         position = self.position.to(context["length_unit"]).magnitude
 

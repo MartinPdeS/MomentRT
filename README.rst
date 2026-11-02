@@ -69,11 +69,11 @@ approximations, validation limits, and complete workflow.
 Installation
 ------------
 
-Install the released Python package with Plotly visualization support:
+Install the released Python package:
 
 .. code-block:: console
 
-   python -m pip install "MomentRT[viz]"
+   python -m pip install MomentRT
 
 Or install the conda package and its dependencies:
 
@@ -88,9 +88,7 @@ calculations:
 
    python -c "import MomentRT; print(MomentRT.__version__)"
 
-The base package includes the numerical dependencies. Plotly is optional for
-interactive plots; PyVista is optional for VTK export. Install both plotting
-extras with ``python -m pip install "MomentRT[viz,vtk]"``.
+The package includes Plotly for interactive plots.
 
 First simulation
 ----------------
@@ -168,7 +166,7 @@ circular diffuse source on the upper face.
    import MomentRT
 
    from MomentRT import (
-       CartesianMesh,
+       TetrahedralMesh,
        Diffusion,
        Material,
        RobinBoundary,
@@ -205,9 +203,9 @@ circular diffuse source on the upper face.
        material=upper_material,
    )
 
-   mesh = CartesianMesh.from_sample(
+   mesh = TetrahedralMesh.from_sample(
        sample=sample,
-       shape=(25, 25, 17),
+       resolution=0.5 * ureg.millimeter,
    )
 
    source = SurfaceSource(
@@ -221,14 +219,7 @@ circular diffuse source on the upper face.
    boundary = RobinBoundary(effective_reflectance=0.5)
 
    solver = Diffusion(
-       boundaries={
-           "x_min": boundary,
-           "x_max": boundary,
-           "y_min": boundary,
-           "y_max": boundary,
-           "z_min": boundary,
-           "z_max": boundary,
-       },
+       boundaries=MomentRT.Boundaries.uniform(condition=boundary),
    )
 
    simulation = Simulation(
@@ -247,6 +238,7 @@ circular diffuse source on the upper face.
    figure = result.fluence.plot(
        view="volume",
        scale="log",
+       display_resolution=0.4 * ureg.millimeter,
    )
 
    print(f"Incoming power: {result.energy_balance['incoming_power']}")
@@ -254,7 +246,10 @@ circular diffuse source on the upper face.
    print(f"Escaping power: {result.energy_balance['escaping_power']}")
 
 The finite ``Diffusion`` solver uses P1 diffusion with linear tetrahedral FEM.
-Its sample mesh must span the sample exactly. Internal refractive indices
+The recommended ``TetrahedralMesh`` conforms to sample interfaces; its
+resolution is a target element size. Refine the mesh to assess convergence.
+Tetrahedral fluence plots interpolate onto a separate display grid. The sample
+mesh must span the sample exactly. Internal refractive indices
 must be equal because the solver models continuous fluence and does not
 resolve refracting interfaces. ``SurfaceSource.optical_power`` is diffuse
 power already coupled into the sample; incident beam propagation and
@@ -273,6 +268,7 @@ using its browser slider, or choose a starting value with ``opacity``:
    figure = result.fluence.plot(
        view="volume",
        scale="log",
+       display_resolution=0.4 * ureg.millimeter,
        opacity=0.12,
        show=False,
    )

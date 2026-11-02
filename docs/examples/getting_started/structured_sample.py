@@ -9,23 +9,20 @@ and inspect the finite-sample P1 fluence volume.
 """
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/structured_sample.png'
-import os
 import numpy as np
 import MomentRT
 from MomentRT import (
     Box,
-    CartesianMesh,
     Diffusion,
     Material,
     RobinBoundary,
     Simulation,
     Sphere,
     StructuredMedium,
+    TetrahedralMesh,
     UniformSurfaceSource,
     ureg,
 )
-
-show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 # %%
 # Optical materials
@@ -159,7 +156,7 @@ sample.add_structures(
 # show primitive boundaries; the section below resolves overlaps.
 
 figure = sample.plot(
-    show=show_figures,
+    show=False,
 )
 
 # %%
@@ -168,9 +165,9 @@ figure = sample.plot(
 # Use equal refractive indices across all regions because internal refraction
 # at refractive-index jumps is outside the current continuous-fluence FEM model.
 
-mesh = CartesianMesh.from_sample(
+mesh = TetrahedralMesh.from_sample(
     sample=sample,
-    shape=(21, 21, 21),
+    resolution=0.6 * ureg.millimeter,
 )
 
 source = UniformSurfaceSource(
@@ -184,14 +181,7 @@ boundary = RobinBoundary(
 )
 
 solver = Diffusion(
-    boundaries={
-        "x_min": boundary,
-        "x_max": boundary,
-        "y_min": boundary,
-        "y_max": boundary,
-        "z_min": boundary,
-        "z_max": boundary,
-    },
+    boundaries=MomentRT.Boundaries.uniform(condition=boundary),
 )
 
 simulation = Simulation(
@@ -204,15 +194,16 @@ simulation = Simulation(
 # %%
 # Solve and inspect fluence in 3D
 # ----------------------------------
-# The logarithmic volume displays the nodal fluence rate throughout the sample.
-# The mesh gives a useful visualization; refine it to assess interface accuracy.
+# The volume interpolates the nodal fluence onto a separate display grid.
+# Refine the tetrahedral mesh to assess spatial accuracy.
 
 result = simulation.run()
 
 fluence_figure = result.fluence.plot(
     view="volume",
     scale="log",
-    show=show_figures,
+    display_resolution=0.4 * ureg.millimeter,
+    show=False,
 )
 
 
@@ -225,7 +216,7 @@ fluence_figure = result.fluence.plot(
 section_figure = sample.plot_section(
     normal="y",
     position=0 * ureg.millimeter,
-    show=show_figures,
+    show=False,
 )
 
 

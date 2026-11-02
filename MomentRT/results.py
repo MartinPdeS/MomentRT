@@ -786,7 +786,7 @@ class DetectorConvergenceResult:
             Composable interactive figure, also displayed when show is True.
         """
 
-        go = MomentRT.plotting.require_plotly()
+        go = MomentRT.plotting.go
 
         figure = MomentRT.plotting.make_subplots(
             rows=1,
@@ -1048,7 +1048,7 @@ class SpectralSimulationResult:
         if not powers:
             raise ValueError("Configure detectors to plot a collected-power spectrum.")
 
-        go = MomentRT.plotting.require_plotly()
+        go = MomentRT.plotting.go
 
         figure = go.Figure()
 

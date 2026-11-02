@@ -232,7 +232,7 @@ class CartesianMesh:
                 [1, 7, 3],
             ]
         )
-        go = MomentRT.plotting.require_plotly()
+        go = MomentRT.plotting.go
         figure = MomentRT.plotting.make_figure(length_unit=length_unit)
         figure.add_trace(
             go.Mesh3d(
@@ -318,7 +318,7 @@ class CartesianMesh:
         lines[:, :2] = coordinates[:, :2]
         line_points = lines.reshape(-1, 3)
         figure.add_trace(
-            MomentRT.plotting.require_plotly().Scatter3d(
+            MomentRT.plotting.go.Scatter3d(
                 x=line_points[:, 0],
                 y=line_points[:, 1],
                 z=line_points[:, 2],
@@ -350,29 +350,6 @@ class CartesianMesh:
         return (
             np.stack(np.meshgrid(*axes, indexing="ij"), axis=-1)
             * MomentRT.units.ureg.meter
-        )
-
-    def to_pyvista(self, *, length_unit: str = "mm") -> MomentRT.plotting.ImageData:
-        """Convert Cartesian data to a PyVista image grid.
-
-        Parameters
-        ----------
-        length_unit : str, optional
-            Length unit used for displayed or exported coordinates.
-            Default is 'mm'.
-
-        Returns
-        -------
-        pyvista.ImageData
-            Cartesian VTK grid with coordinates converted to length_unit.
-        """
-
-        pv = MomentRT.plotting.require_pyvista()
-
-        return pv.ImageData(
-            dimensions=self.shape,
-            spacing=self.spacing.to(length_unit).magnitude,
-            origin=self.origin.to(length_unit).magnitude,
         )
 
     @classmethod
@@ -1141,7 +1118,7 @@ class TetrahedralMesh:
         lines[:, :2] = coordinates[edges[selection]]
         line_points = lines.reshape(-1, 3)
         boundary_triangles = np.concatenate(list(self._faces.values()))
-        go = MomentRT.plotting.require_plotly()
+        go = MomentRT.plotting.go
         figure = MomentRT.plotting.make_figure(length_unit=length_unit)
         figure.add_trace(
             go.Mesh3d(
@@ -1205,7 +1182,7 @@ class TetrahedralMesh:
         lines[:, :2] = coordinates[edges[selection]]
         line_points = lines.reshape(-1, 3)
         figure.add_trace(
-            MomentRT.plotting.require_plotly().Scatter3d(
+            MomentRT.plotting.go.Scatter3d(
                 x=line_points[:, 0],
                 y=line_points[:, 1],
                 z=line_points[:, 2],
@@ -1216,30 +1193,6 @@ class TetrahedralMesh:
                 legendgroup=context["legendgroup"],
                 hoverinfo="skip",
             )
-        )
-
-    def to_pyvista(
-        self, *, length_unit: str = "mm"
-    ) -> MomentRT.plotting.UnstructuredGrid:
-        """Convert the actual tetrahedra to an optional PyVista grid.
-
-        Parameters
-        ----------
-        length_unit : str, optional
-            Coordinate unit. Default is 'mm'.
-
-        Returns
-        -------
-        pyvista.UnstructuredGrid
-            Linear tetrahedra with original node ordering and connectivity.
-        """
-        pv = MomentRT.plotting.require_pyvista()
-        cells = np.column_stack([np.full(len(self._tetrahedra), 4), self._tetrahedra])
-
-        return pv.UnstructuredGrid(
-            cells.ravel(),
-            np.full(len(cells), 10, dtype=np.uint8),
-            self._points.to(length_unit).magnitude,
         )
 
     def _interpolate(self, *, points: Quantity, values: np.ndarray) -> np.ndarray:

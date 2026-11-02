@@ -17,8 +17,6 @@ from MomentRT import (
     ureg,
 )
 
-pytest.importorskip("plotly")
-
 
 @pytest.fixture
 def field():

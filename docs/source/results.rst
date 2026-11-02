@@ -226,14 +226,6 @@ diagnostics and collected-power comparisons across explicit mesh levels.
 It preserves failed resolution checks and returns no recommended mesh when
 the supplied fine levels do not satisfy the requested criteria.
 
-Export
-------
-
-``ScalarField.export(path="fluence.vti")`` writes a VTK ImageData file using
-optional PyVista. The export stores the scalar values, field units, coordinate
-units, and field metadata. The numerical solve and Plotly figures do not
-require PyVista.
-
 Interpreting a result summary
 -----------------------------
 

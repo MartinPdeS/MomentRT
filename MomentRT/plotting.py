@@ -1,83 +1,28 @@
-"""Optional interactive Plotly figures for geometry and physical fields."""
+"""Interactive Plotly figures for geometry and physical fields."""
 
 from __future__ import annotations
 from collections.abc import Iterable, Mapping
 from html import escape
 from types import ModuleType
-from typing import TYPE_CHECKING, Any, Literal, cast
+from typing import Any, Literal, cast
 import numpy as np
+import plotly.graph_objects as go
 from numpy.typing import NDArray
+from plotly.colors import qualitative  # noqa: F401
+from plotly.graph_objects import Figure, Mesh3d  # noqa: F401
+from plotly.subplots import make_subplots  # noqa: F401
 import MomentRT
-
-try:
-    import plotly.graph_objects as go
-    from plotly.colors import qualitative
-    from plotly.subplots import make_subplots
-except ImportError:
-    go = None  # type: ignore[assignment]
-    qualitative = None
-    make_subplots = None
-
-try:
-    import pyvista as pv
-except ImportError:
-    pv = None  # type: ignore[assignment]
-
-
-if TYPE_CHECKING:
-    from plotly.graph_objects import Figure as Figure
-    from plotly.graph_objects import Mesh3d as Mesh3d
-    from pyvista import DataSet as DataSet
-    from pyvista import ImageData as ImageData
-    from pyvista import UnstructuredGrid as UnstructuredGrid
-else:
-    Figure = None if go is None else go.Figure
-    Mesh3d = None if go is None else go.Mesh3d
-    ImageData = None if pv is None else pv.ImageData
-    UnstructuredGrid = None if pv is None else pv.UnstructuredGrid
-    DataSet = None if pv is None else pv.DataSet
 
 
 def require_plotly() -> ModuleType:
-    """Require the optional Plotly backend without importing it inside a function.
+    """Return the Plotly graph objects module.
 
     Returns
     -------
     module
-        Plotly graph_objects module when the visualization extra is installed.
-
-    Raises
-    ------
-    ImportError
-        If Plotly is unavailable; install MomentRT[viz].
+        Plotly graph_objects module.
     """
-
-    if go is None:
-        raise ImportError('Install 3D support with: pip install "MomentRT[viz]"')
-
     return go
-
-
-def require_pyvista() -> ModuleType:
-    """Require the optional PyVista backend without importing it inside a function.
-
-    Returns
-    -------
-    module
-        PyVista module when the VTK extra is installed.
-
-    Raises
-    ------
-    ImportError
-        If PyVista is unavailable; install MomentRT[vtk].
-    """
-
-    if pv is None:
-        raise ImportError(
-            'Install VTK export support with: pip install "MomentRT[vtk]"'
-        )
-
-    return pv
 
 
 def make_figure(*, length_unit: str) -> MomentRT.plotting.Figure:
@@ -93,8 +38,6 @@ def make_figure(*, length_unit: str) -> MomentRT.plotting.Figure:
     plotly.graph_objects.Figure
         Empty three-dimensional figure with labeled Cartesian axes.
     """
-
-    go = require_plotly()
 
     figure = go.Figure()
 
@@ -137,8 +80,6 @@ def plot_medium(
     plotly.graph_objects.Figure
         Homogeneous material shown within the observation window.
     """
-
-    go = require_plotly()
 
     points = mesh.points.to(length_unit).magnitude
 
@@ -337,8 +278,6 @@ def _add_direction_arrow(
     legendgroup : str or None
         Group linking the arrow to its footprint.
     """
-    go = require_plotly()
-
     tip = start + length * direction
 
     figure.add_trace(
@@ -397,8 +336,6 @@ def _add_footprint_fill(
     legendgroup : str or None
         Group linking the fill to its outline.
     """
-    go = require_plotly()
-
     vertices = np.vstack([position, ring])
 
     figure.add_trace(
@@ -491,8 +428,6 @@ def plot_field(
         raise ValueError(
             "Log display requires strictly positive values; no clipping is applied."
         )
-
-    go = require_plotly()
 
     points = field.mesh.points.to(length_unit).magnitude
 
@@ -731,8 +666,6 @@ def _box_surface(
         Triangulated box construction trace.
     """
 
-    go = require_plotly()
-
     vertices = np.array(
         [
             [x, y, z]
@@ -806,8 +739,6 @@ def plot_sample(
 
     if not np.isscalar(opacity) or not np.isfinite(opacity) or not 0 <= opacity <= 1:
         raise ValueError("opacity must be between zero and one.")
-
-    go = require_plotly()
 
     figure = make_figure(length_unit=length_unit)
 
@@ -951,8 +882,6 @@ def plot_section(
 
     if scale not in ("linear", "log"):
         raise ValueError("scale must be linear or log.")
-
-    go = require_plotly()
 
     names = np.asarray([escape(name) for name in section.names])[section.labels]
 

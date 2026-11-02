@@ -16,5 +16,5 @@ jobs:
       python-versions: '["3.11", "3.12", "3.13", "3.14"]'
       apt-package: libglu1-mesa
       install-command: >-
-        python -m pip install --upgrade pip && python -m pip install -e ".[testing,viz,vtk]"
+        python -m pip install --upgrade pip && python -m pip install -e ".[testing]"
       test-command: python -m pytest -q

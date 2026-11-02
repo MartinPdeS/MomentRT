@@ -192,7 +192,7 @@ supported recommendation can be made. Its ``plot(power_unit=...,
 area_unit=..., show=...)`` method compares powers and areas.
 See :doc:`convergence` for the criteria and unresolved levels.
 
-``ScalarField.plot(...)`` returns a Plotly figure when Plotly is installed.
+``ScalarField.plot(...)`` returns a Plotly figure.
 Its ``view`` may be ``volume`` (default), ``slices``, or ``isosurfaces``;
 ``scale`` may be ``linear`` or ``log``; ``length_unit`` controls displayed
 coordinates; ``opacity`` chooses the initial opacity for volume and

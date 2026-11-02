@@ -162,7 +162,6 @@ def test_unconfigured_sample_and_unsupported_solver():
 
 
 def test_example_and_geometry_plot():
-    pytest.importorskip("plotly")
 
     example = runpy.run_path("docs/examples/getting_started/structured_sample.py")
 
@@ -303,7 +302,6 @@ def test_sections_resolve_material_precedence(normal, axes):
 
 
 def test_section_plots_and_validation():
-    pytest.importorskip("plotly")
 
     sample = sample_configuration()
 

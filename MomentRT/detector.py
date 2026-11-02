@@ -332,7 +332,7 @@ class SurfaceDetector:
             Coordinate units, legend labels, and physical sample bounds.
         """
 
-        go = MomentRT.plotting.require_plotly()
+        go = MomentRT.plotting.go
 
         position = self.position.to(context["length_unit"]).magnitude
 

@@ -1,5 +1,3 @@
-import builtins
-import importlib
 import numpy as np
 import pytest
 import MomentRT
@@ -88,35 +86,8 @@ def test_explicit_units_and_singularity():
         simulation.run()
 
 
-def test_vtk_order_and_export(tmp_path):
-    pv = pytest.importorskip("pyvista")
-
-    simulation = configuration()
-
-    field = simulation.run().fluence
-
-    grid = field.to_pyvista()
-
-    np.testing.assert_allclose(
-        grid.points, field.mesh.points.to("mm").magnitude.reshape(-1, 3, order="F")
-    )
-
-    target = tmp_path / "fluence.vti"
-
-    field.export(path=target)
-
-    restored = pv.read(target)
-
-    np.testing.assert_allclose(
-        restored[field.name], field.values.magnitude.ravel(order="F")
-    )
-
-    assert restored.field_data["coordinate_units"][0] == "mm"
-
-
 @pytest.mark.parametrize("view", ["slices", "volume", "isosurfaces"])
 def test_plotly_fields(view, tmp_path):
-    pytest.importorskip("plotly")
 
     simulation = configuration()
 
@@ -169,7 +140,6 @@ def test_plotly_fields(view, tmp_path):
 
 
 def test_plotly_system():
-    pytest.importorskip("plotly")
 
     simulation = configuration()
 
@@ -180,31 +150,3 @@ def test_plotly_system():
     assert figure.layout.scene.xaxis.title.text == "x [m]"
 
     np.testing.assert_allclose(figure.data[0].x, [-0.0095] * 4 + [0.0095] * 4)
-
-
-def test_optional_visualization(monkeypatch):
-    original = builtins.__import__
-
-    def without_visualization(name, *args, **kwargs):
-        if name.startswith(("plotly", "pyvista")):
-            raise ImportError("blocked for test")
-
-        return original(name, *args, **kwargs)
-
-    try:
-        with monkeypatch.context() as patch:
-            patch.setattr(builtins, "__import__", without_visualization)
-
-            importlib.reload(MomentRT.plotting)
-
-            simulation = configuration()
-
-            assert simulation.run().fluence.values.shape == (20, 20, 20)
-
-            with pytest.raises(ImportError, match="viz"):
-                simulation.plot_system(show=False)
-
-            with pytest.raises(ImportError, match="vtk"):
-                simulation.mesh.to_pyvista()
-    finally:
-        importlib.reload(MomentRT.plotting)

@@ -9,11 +9,11 @@ Install
 -------
 
 For numerical calculations and interactive Plotly figures, install the
-editable project with its visualization extra:
+editable project:
 
 .. code-block:: console
 
-   python -m pip install -e '.[viz]'
+   python -m pip install -e .
 
 For the executable documentation gallery, install the documentation extra and
 build the docs:
@@ -23,9 +23,7 @@ build the docs:
    python -m pip install -e '.[documentation]'
    make docs PYTHON=.venv/bin/python
 
-The base package requires NumPy, SciPy, Pint, and Matplotlib. Plotly is an
-optional dependency for interactive figures. PyVista is an optional extra for
-VTK image export; it is not needed to solve transport problems.
+The base package includes Plotly for interactive figures.
 
 Choose the physical model first
 -------------------------------

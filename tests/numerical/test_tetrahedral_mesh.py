@@ -206,9 +206,7 @@ def test_external_gmsh_session_is_preserved(sample):
         gmsh.finalize()
 
 
-def test_tetrahedral_vtk_export_and_explicit_display_resolution(imported, tmp_path):
-    pytest.importorskip("plotly")
-    pv = pytest.importorskip("pyvista")
+def test_tetrahedral_plot_and_explicit_display_resolution(imported):
     mesh, _ = imported
     field = MomentRT.ScalarField(
         mesh=mesh, values=np.ones(mesh.shape) * u.W / u.m**2, name="Fluence"
@@ -220,11 +218,6 @@ def test_tetrahedral_vtk_export_and_explicit_display_resolution(imported, tmp_pa
     mesh_figure = mesh.plot(show=False)
     assert mesh_figure.data[0].type == "mesh3d"
     assert mesh_figure.data[1].type == "scatter3d"
-    target = tmp_path / "fluence.vtu"
-    field.export(path=target)
-    loaded = pv.read(target)
-    assert np.all(loaded.celltypes == 10)
-    np.testing.assert_array_equal(loaded.point_data["Fluence"], field.values.magnitude)
 
 
 @pytest.mark.parametrize("face", ["x_min", "x_max", "y_min", "y_max", "z_max"])

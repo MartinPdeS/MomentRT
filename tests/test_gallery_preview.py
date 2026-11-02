@@ -2,9 +2,7 @@
 
 import importlib.util
 from pathlib import Path
-import pytest
-
-plotly = pytest.importorskip("plotly.graph_objects")
+import plotly.graph_objects as plotly
 
 
 def test_explicit_preview_is_not_replaced_by_a_later_figure(tmp_path):

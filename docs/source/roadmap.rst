@@ -3,8 +3,8 @@ Development roadmap
 
 1. Initial baseline (implemented)
    Explicit-unit material, ideal point source, Cartesian observation mesh,
-   infinite-medium diffusion, nodal fluence, optional 3D visualization,
-   VTK export, analytical energy-balance and rendering checks.
+   infinite-medium diffusion, nodal fluence, interactive 3D visualization,
+   analytical energy-balance and rendering checks.
 
 2. Physical geometry and fields
    Layered materials and box/sphere construction are implemented for geometry

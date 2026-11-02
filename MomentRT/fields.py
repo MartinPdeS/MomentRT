@@ -3,7 +3,6 @@
 from __future__ import annotations
 import copy
 from collections.abc import Iterable, Mapping
-from pathlib import Path
 from typing import Literal
 import numpy as np
 from pint import Quantity
@@ -65,61 +64,6 @@ class ScalarField:
         self.name = name
 
         self.metadata = dict(metadata or {})
-
-    def to_pyvista(self, *, length_unit: str = "mm") -> MomentRT.plotting.DataSet:
-        """Convert nodal values to the matching optional PyVista grid.
-
-        Parameters
-        ----------
-        length_unit : str, optional
-            Length unit used for displayed or exported coordinates.
-            Default is 'mm'.
-
-        Returns
-        -------
-        pyvista.ImageData or pyvista.UnstructuredGrid
-            Original Cartesian nodes or tetrahedral connectivity, with
-            coordinates converted to length_unit.
-        """
-
-        grid = self.mesh.to_pyvista(length_unit=length_unit)
-
-        grid.point_data[self.name] = self.values.magnitude.ravel(order="F")
-
-        grid.field_data["value_units"] = [str(self.values.units)]
-
-        grid.field_data["coordinate_units"] = [length_unit]
-
-        grid.field_data["association"] = ["point"]
-
-        for key, value in self.metadata.items():
-            grid.field_data[key] = [str(value)]
-
-        return grid
-
-    def export(self, *, path: str | Path, length_unit: str = "mm") -> None:
-        """Write the scalar field and provenance to a VTK image file.
-
-        Parameters
-        ----------
-        path : str or pathlib.Path
-            Destination ending in .vti for Cartesian fields or .vtu for
-            tetrahedral fields. Existing files may be overwritten.
-        length_unit : str, optional
-            Length unit used for displayed or exported coordinates.
-            Default is 'mm'.
-        """
-
-        extension = (
-            ".vtu" if isinstance(self.mesh, MomentRT.mesh.TetrahedralMesh) else ".vti"
-        )
-
-        if Path(path).suffix != extension:
-            raise ValueError(f"This mesh requires a {extension} extension.")
-
-        grid = self.to_pyvista(length_unit=length_unit)
-
-        grid.save(path)
 
     def resample(self, *, resolution: Quantity) -> MomentRT.fields.ScalarField:
         """Interpolate a tetrahedral nodal field onto a Cartesian display grid.
@@ -455,7 +399,7 @@ class VectorField:
         ):
             raise ValueError("max_vectors must be a positive integer.")
 
-        go = MomentRT.plotting.require_plotly()
+        go = MomentRT.plotting.go
 
         selection = np.linspace(
             0, len(self.values) - 1, min(max_vectors, len(self.values)), dtype=int

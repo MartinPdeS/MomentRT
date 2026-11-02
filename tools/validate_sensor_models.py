@@ -11,7 +11,11 @@ from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
 import scipy
-from sensor_reference import LayerOptics, simulate_layered_slab_reference
+from sensor_reference import (
+    REFERENCE_REVISION,
+    LayerOptics,
+    simulate_layered_slab_reference,
+)
 import MomentRT
 
 DETECTOR_OFFSETS_MM = (0.75, 1.25, 1.5, 2.0, 2.5)
@@ -436,6 +440,7 @@ def main() -> None:
     ]
     report = {
         "monte_carlo_method": "independent layered-slab photon transport",
+        "reference_revision": REFERENCE_REVISION,
         "photon_count_per_case": arguments.photons,
         "mesh_resolutions_mm": MESH_RESOLUTIONS_MM,
         "base_contact_resolution_schedule_mm": (0.2, 0.15, 0.1),

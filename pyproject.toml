@@ -73,6 +73,8 @@ version-method = "literal"
 conda-recipe = "conda.recipe/meta.yaml"
 citation = "CITATION.cff"
 zenodo = ".zenodo.json"
+changelog = "CHANGELOG.md"
+repository = "MartinPdeS/MomentRT"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

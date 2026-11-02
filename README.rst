@@ -315,11 +315,12 @@ The `online documentation <https://martinpdes.github.io/MomentRT/>`_ includes:
 * An executable `example gallery
   <https://martinpdes.github.io/MomentRT/docs/latest/gallery/index.html>`_.
 
-Build the docs and run the examples locally with:
+From the repository root, reuse a development ``.venv`` (or create one as
+described below), then build the docs and run the examples with:
 
 .. code-block:: console
 
-   python -m pip install -e ".[documentation,viz]"
+   .venv/bin/python -m pip install -e ".[documentation]"
    make docs PYTHON=.venv/bin/python
 
 Common issues
@@ -354,14 +355,21 @@ the same Python interpreter used for development:
    git clone https://github.com/MartinPdeS/MomentRT.git
    cd MomentRT
    python3 -m venv .venv
-   .venv/bin/python -m pip install -e ".[testing,documentation,dev,viz]"
-   make check PYTHON=.venv/bin/python
+   .venv/bin/python -m pip install -e ".[testing,documentation,dev,release]"
+   make check typecheck docstring-check PYTHON=.venv/bin/python
    make docs PYTHON=.venv/bin/python
 
 ``make check`` runs quality checks and tests. The codebase intentionally keeps
 the package flat, with type hints and NumPy-style API docstrings. Run
 ``make typecheck docstring-check`` to validate annotations and public
 parameter documentation.
+
+See the `contributor guide
+<https://github.com/MartinPdeS/MomentRT/blob/master/CONTRIBUTING.rst>`_ for
+platform setup, reference-data regeneration, release commands, and the API
+compatibility policy. User-visible changes and scientific corrections are
+recorded in the `changelog
+<https://github.com/MartinPdeS/MomentRT/blob/master/CHANGELOG.md>`_.
 
 Citation and license
 --------------------

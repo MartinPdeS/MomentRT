@@ -70,3 +70,4 @@ or boundary behavior.
    Examples <gallery/index>
    Theory <theory/index>
    Reference <reference/index>
+   Contributing <contributing>

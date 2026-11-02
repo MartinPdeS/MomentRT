@@ -264,6 +264,57 @@ def test_unresolved_detector_does_not_abort_study():
     assert not study.converged
 
 
+def test_tetrahedral_detector_convergence_reports_sampling_and_recommendation():
+    simulation = configuration()
+    simulation.source = SurfaceSource(
+        face="z_min",
+        position=np.array([1, 1, 0]) * ureg.mm,
+        radius=0.5 * ureg.mm,
+        wavelength=800 * ureg.nm,
+        optical_power=1 * ureg.mW,
+    )
+
+    study = simulation.convergence_study(
+        mesh_resolutions=[2 * ureg.mm, 1.2 * ureg.mm],
+        contact_resolution=0.5 * ureg.mm,
+        contact_distance=0.5 * ureg.mm,
+        required_consecutive=1,
+    )
+
+    assert all(isinstance(mesh, MomentRT.TetrahedralMesh) for mesh in study.meshes)
+    assert np.all(np.diff(study.node_counts) > 0)
+    assert np.all(np.diff(study.tetrahedron_counts) > 0)
+    assert study.mesh_resolutions[0] == 2 * ureg.mm
+    assert study.mesh_resolutions[1] == 1.2 * ureg.mm
+    assert np.all(np.isfinite(study.source_area_relative_error))
+    assert np.all(np.isfinite(study.detector_area_relative_error["transmission"]))
+    assert len(study.detector_power["transmission"]) == 2
+    assert study.recommended_shape is None
+    if study.recommended_mesh is not None:
+        assert study.recommended_resolution == study.recommended_mesh.resolution
+
+
+@pytest.mark.parametrize(
+    "arguments",
+    [
+        {"mesh_resolutions": [1 * ureg.mm]},
+        {"mesh_resolutions": [1 * ureg.mm, 1.5 * ureg.mm]},
+        {
+            "mesh_resolutions": [1 * ureg.mm, 0.5 * ureg.mm],
+            "contact_resolution": 0.25 * ureg.mm,
+        },
+        {
+            "mesh_resolutions": [1 * ureg.mm, 0.5 * ureg.mm],
+            "contact_resolution": 1.5 * ureg.mm,
+            "contact_distance": 0.1 * ureg.mm,
+        },
+    ],
+)
+def test_invalid_tetrahedral_convergence_inputs_fail_before_meshing(arguments):
+    with pytest.raises((TypeError, ValueError)):
+        configuration().convergence_study(**arguments)
+
+
 def test_invalid_interface_is_not_hidden_by_an_unresolved_source():
     simulation = configuration()
 

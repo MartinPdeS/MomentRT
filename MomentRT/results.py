@@ -384,7 +384,7 @@ class DetectorConvergenceResult:
 
     Parameters
     ----------
-    meshes : sequence of CartesianMesh
+    meshes : sequence of CartesianMesh or TetrahedralMesh
         Coarse-to-fine meshes used in the study.
     results : sequence of SimulationResult or None
         Per-level solutions; None records an unresolved source footprint.
@@ -451,7 +451,7 @@ class DetectorConvergenceResult:
     def __init__(
         self,
         *,
-        meshes: Sequence[MomentRT.mesh.CartesianMesh],
+        meshes: Sequence[MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh],
         results: Sequence[MomentRT.results.SimulationResult | None],
         detectors: Mapping[str, MomentRT.detector.SurfaceDetector],
         source_geometric_area: Quantity,
@@ -466,7 +466,7 @@ class DetectorConvergenceResult:
 
         Parameters
         ----------
-        meshes : sequence of CartesianMesh
+        meshes : sequence of CartesianMesh or TetrahedralMesh
             Coarse-to-fine meshes used in the study.
         results : sequence of SimulationResult or None
             Per-level solutions; None records an unresolved source footprint.
@@ -513,8 +513,16 @@ class DetectorConvergenceResult:
         self.node_counts = np.array([np.prod(mesh.shape) for mesh in meshes], dtype=int)
 
         self.tetrahedron_counts = np.array(
-            [6 * np.prod(np.asarray(mesh.shape) - 1) for mesh in meshes], dtype=int
+            [
+                len(mesh.tetrahedra)
+                if isinstance(mesh, MomentRT.mesh.TetrahedralMesh)
+                else 6 * np.prod(np.asarray(mesh.shape) - 1)
+                for mesh in meshes
+            ],
+            dtype=int,
         )
+
+        self.mesh_resolutions = tuple(mesh.resolution for mesh in meshes)
 
         self.source_geometric_area = source_geometric_area.copy()
 
@@ -696,12 +704,14 @@ class DetectorConvergenceResult:
         return self.recommended_index is not None
 
     @property
-    def recommended_mesh(self) -> MomentRT.mesh.CartesianMesh | None:
+    def recommended_mesh(
+        self,
+    ) -> MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh | None:
         """Return the recommended mesh when the convergence criteria are met.
 
         Returns
         -------
-        CartesianMesh or None
+        CartesianMesh, TetrahedralMesh, or None
             Recommended existing mesh, or None when criteria are not met.
         """
 
@@ -721,7 +731,25 @@ class DetectorConvergenceResult:
             Recommended node counts, or None when no mesh is recommended.
         """
 
-        return None if self.recommended_mesh is None else self.recommended_mesh.shape
+        if not isinstance(self.recommended_mesh, MomentRT.mesh.CartesianMesh):
+            return None
+
+        return self.recommended_mesh.shape
+
+    @property
+    def recommended_resolution(self) -> Quantity | None:
+        """Return the target size of the recommended generated tetrahedral mesh.
+
+        Returns
+        -------
+        pint.Quantity or None
+            Scalar target element size, or None for Cartesian or imported meshes.
+        """
+
+        if not isinstance(self.recommended_mesh, MomentRT.mesh.TetrahedralMesh):
+            return None
+
+        return self.recommended_mesh.resolution
 
     @property
     def records(self) -> list[dict[str, object]]:
@@ -735,6 +763,7 @@ class DetectorConvergenceResult:
         return [
             {
                 "mesh_shape": shape,
+                "mesh_resolution": self.mesh_resolutions[index],
                 "node_count": int(self.node_counts[index]),
                 "source_sampled_area": self.source_sampled_area[index],
                 "source_area_relative_error": float(

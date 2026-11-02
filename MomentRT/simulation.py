@@ -693,7 +693,10 @@ class Simulation:
     def convergence_study(
         self,
         *,
-        mesh_shapes: Iterable[tuple[int, int, int]],
+        mesh_shapes: Iterable[tuple[int, int, int]] | None = None,
+        mesh_resolutions: Iterable[Quantity] | None = None,
+        contact_resolution: Quantity | None = None,
+        contact_distance: Quantity | None = None,
         power_rtol: float = 0.01,
         area_rtol: float = 0.02,
         power_atol: Quantity | None = None,
@@ -703,9 +706,20 @@ class Simulation:
 
         Parameters
         ----------
-        mesh_shapes : iterable of tuple of int
-            At least two coarse-to-fine node shapes. Each shape must refine at
-            least one axis and coarsen none.
+        mesh_shapes : iterable of tuple of int or None, optional
+            At least two coarse-to-fine Cartesian node shapes. Each shape must
+            refine at least one axis and coarsen none. Supply this or
+            ``mesh_resolutions``, but not both. Default is None.
+        mesh_resolutions : iterable of pint.Quantity or None, optional
+            At least two strictly decreasing global tetrahedral target sizes.
+            Supply this or ``mesh_shapes``, but not both. Default is None.
+        contact_resolution : pint.Quantity or None, optional
+            Local target element size near disk sources and detectors. Required
+            with ``contact_distance``; applies only to tetrahedral studies.
+            Default is None.
+        contact_distance : pint.Quantity or None, optional
+            Positive distance defining each local contact refinement zone.
+            Default is None.
         power_rtol : float, optional
             Nonnegative relative power tolerance against adjacent and finest meshes.
             Default is 0.01.
@@ -730,6 +744,9 @@ class Simulation:
 
         return MomentRT.convergence._DetectorConvergenceStudy(simulation=self).run(
             mesh_shapes=mesh_shapes,
+            mesh_resolutions=mesh_resolutions,
+            contact_resolution=contact_resolution,
+            contact_distance=contact_distance,
             power_rtol=power_rtol,
             area_rtol=area_rtol,
             power_atol=power_atol,

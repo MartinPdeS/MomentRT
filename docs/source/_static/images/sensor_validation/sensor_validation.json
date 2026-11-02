@@ -1,0 +1,785 @@
+{
+  "monte_carlo_method": "independent layered-slab photon transport",
+  "photon_count_per_case": 1000000,
+  "mesh_resolutions_mm": [
+    1.0,
+    0.8,
+    0.6
+  ],
+  "contact_resolutions_mm": [
+    0.2,
+    0.15,
+    0.1
+  ],
+  "contact_distance_mm": 0.35,
+  "sample_width_mm": 6.0,
+  "python": "3.14.7",
+  "numpy": "2.5.4",
+  "scipy": "1.18.1",
+  "momentrt": "0.8.4",
+  "elapsed_seconds": 21.27160229200672,
+  "cases": [
+    {
+      "name": "moderate_absorption",
+      "monte_carlo": {
+        "method": "analog photon transport with continuous absorption weighting",
+        "photon_count": 1000000,
+        "seed": 20261102,
+        "source_power_w": 0.001,
+        "detector_offsets_mm": [
+          0.75,
+          1.5,
+          2.5
+        ],
+        "detector_power_w": [
+          6.32107010573204e-06,
+          1.3016385986846826e-06,
+          2.918923925602291e-07
+        ],
+        "standard_error_w": [
+          7.170181530995207e-08,
+          3.097998579725789e-08,
+          1.4188897800051078e-08
+        ],
+        "relative_standard_error": [
+          0.011343303287355064,
+          0.023800758389128474,
+          0.048610029455027126
+        ],
+        "layers": [
+          {
+            "thickness_mm": 0.25,
+            "absorption_per_mm": 0.18,
+            "reduced_scattering_per_mm": 1.5,
+            "anisotropy": 0.85
+          },
+          {
+            "thickness_mm": 0.65,
+            "absorption_per_mm": 0.05,
+            "reduced_scattering_per_mm": 1.1,
+            "anisotropy": 0.8
+          },
+          {
+            "thickness_mm": 1.1,
+            "absorption_per_mm": 0.02,
+            "reduced_scattering_per_mm": 0.65,
+            "anisotropy": 0.75
+          }
+        ]
+      },
+      "finite_element": {
+        "P1": [
+          {
+            "target_resolution_mm": 1.0,
+            "contact_resolution_mm": 0.2,
+            "nodes": 530,
+            "tetrahedra": 1967,
+            "mesh_generation_seconds": 0.18772133300080895,
+            "solve_seconds": 0.01907166698947549,
+            "source_sampled_area_mm2": 0.1094564075455241,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.1840940478285761e-05,
+                "sampled_area_mm2": 0.10945640754552419,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975602,
+                "relative_error_percent": 87.32493518064639,
+                "mc_95_percent": 2.2232874443215924
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.9430164889272656e-06,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": 49.27465203403626,
+                "mc_95_percent": 4.664948644269181
+              },
+              "separation_2.5_mm": {
+                "power_w": 4.3615717328552207e-07,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": 49.42396047390147,
+                "mc_95_percent": 9.527565773185316
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.8,
+            "contact_resolution_mm": 0.15,
+            "nodes": 870,
+            "tetrahedra": 3372,
+            "mesh_generation_seconds": 0.15080983300867956,
+            "solve_seconds": 0.022071916988352314,
+            "source_sampled_area_mm2": 0.11570176974357713,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.3497759805255931e-05,
+                "sampled_area_mm2": 0.11570176974357722,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585305,
+                "relative_error_percent": 113.53599279046063,
+                "mc_95_percent": 2.2232874443215924
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.983833764444596e-06,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": 52.410489858650315,
+                "mc_95_percent": 4.664948644269181
+              },
+              "separation_2.5_mm": {
+                "power_w": 4.298349940648657e-07,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": 47.258032418975596,
+                "mc_95_percent": 9.527565773185316
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.6,
+            "contact_resolution_mm": 0.1,
+            "nodes": 2013,
+            "tetrahedra": 8844,
+            "mesh_generation_seconds": 0.2778200410102727,
+            "solve_seconds": 0.048442875006003305,
+            "source_sampled_area_mm2": 0.12082802473137971,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.295563573392318e-05,
+                "sampled_area_mm2": 0.12082802473137963,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014423,
+                "relative_error_percent": 104.959532440161,
+                "mc_95_percent": 2.2232874443215924
+              },
+              "separation_1.5_mm": {
+                "power_w": 2.0798100840940636e-06,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": 59.78398967238143,
+                "mc_95_percent": 4.664948644269181
+              },
+              "separation_2.5_mm": {
+                "power_w": 4.3108201518798893e-07,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": 47.68525188577479,
+                "mc_95_percent": 9.527565773185316
+              }
+            }
+          }
+        ],
+        "SP3": [
+          {
+            "target_resolution_mm": 1.0,
+            "contact_resolution_mm": 0.2,
+            "nodes": 530,
+            "tetrahedra": 1967,
+            "mesh_generation_seconds": 0.18772133300080895,
+            "solve_seconds": 0.022322709002764896,
+            "source_sampled_area_mm2": 0.1094564075455241,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.106467471492561e-05,
+                "sampled_area_mm2": 0.10945640754552419,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975602,
+                "relative_error_percent": 75.04432841034301,
+                "mc_95_percent": 2.2232874443215924
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.8845297655658271e-06,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": 44.7813369602101,
+                "mc_95_percent": 4.664948644269181
+              },
+              "separation_2.5_mm": {
+                "power_w": 4.3533947353934116e-07,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": 49.14382307840145,
+                "mc_95_percent": 9.527565773185316
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.8,
+            "contact_resolution_mm": 0.15,
+            "nodes": 870,
+            "tetrahedra": 3372,
+            "mesh_generation_seconds": 0.15080983300867956,
+            "solve_seconds": 0.036368000000948086,
+            "source_sampled_area_mm2": 0.11570176974357713,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.2639176628165765e-05,
+                "sampled_area_mm2": 0.11570176974357722,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585305,
+                "relative_error_percent": 99.95311579766171,
+                "mc_95_percent": 2.2232874443215924
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.9280231350976533e-06,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": 48.122769027127646,
+                "mc_95_percent": 4.664948644269181
+              },
+              "separation_2.5_mm": {
+                "power_w": 4.302045293216865e-07,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": 47.38463224351351,
+                "mc_95_percent": 9.527565773185316
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.6,
+            "contact_resolution_mm": 0.1,
+            "nodes": 2013,
+            "tetrahedra": 8844,
+            "mesh_generation_seconds": 0.2778200410102727,
+            "solve_seconds": 0.09693641698686406,
+            "source_sampled_area_mm2": 0.12082802473137971,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.217270447950614e-05,
+                "sampled_area_mm2": 0.12082802473137963,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014423,
+                "relative_error_percent": 92.57347689385298,
+                "mc_95_percent": 2.2232874443215924
+              },
+              "separation_1.5_mm": {
+                "power_w": 2.017468173954538e-06,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": 54.994495092048425,
+                "mc_95_percent": 4.664948644269181
+              },
+              "separation_2.5_mm": {
+                "power_w": 4.3155677566831867e-07,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": 47.84790103060708,
+                "mc_95_percent": 9.527565773185316
+              }
+            }
+          }
+        ],
+        "P3": [
+          {
+            "target_resolution_mm": 1.0,
+            "contact_resolution_mm": 0.2,
+            "nodes": 530,
+            "tetrahedra": 1967,
+            "mesh_generation_seconds": 0.18772133300080895,
+            "solve_seconds": 0.26362183400487993,
+            "source_sampled_area_mm2": 0.1094564075455241,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 9.072297623344615e-06,
+                "sampled_area_mm2": 0.10945640754552419,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975602,
+                "relative_error_percent": 43.52471134780994,
+                "mc_95_percent": 2.2232874443215924
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.1216693103514791e-06,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": -13.82636382441824,
+                "mc_95_percent": 4.664948644269181
+              },
+              "separation_2.5_mm": {
+                "power_w": 2.533488609514199e-07,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": -13.204705772130108,
+                "mc_95_percent": 9.527565773185316
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.8,
+            "contact_resolution_mm": 0.15,
+            "nodes": 870,
+            "tetrahedra": 3372,
+            "mesh_generation_seconds": 0.15080983300867956,
+            "solve_seconds": 0.5470000409986824,
+            "source_sampled_area_mm2": 0.11570176974357713,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 9.018361296983187e-06,
+                "sampled_area_mm2": 0.11570176974357722,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585305,
+                "relative_error_percent": 42.67143293989419,
+                "mc_95_percent": 2.2232874443215924
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.2345718654224273e-06,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": -5.152484977783141,
+                "mc_95_percent": 4.664948644269181
+              },
+              "separation_2.5_mm": {
+                "power_w": 2.595474981687879e-07,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": -11.081102219807661,
+                "mc_95_percent": 9.527565773185316
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.6,
+            "contact_resolution_mm": 0.1,
+            "nodes": 2013,
+            "tetrahedra": 8844,
+            "mesh_generation_seconds": 0.2778200410102727,
+            "solve_seconds": 2.4747274160035886,
+            "source_sampled_area_mm2": 0.12082802473137971,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 7.898133333910588e-06,
+                "sampled_area_mm2": 0.12082802473137963,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014423,
+                "relative_error_percent": 24.949307661505653,
+                "mc_95_percent": 2.2232874443215924
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.2800342259068875e-06,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": -1.6597827384365,
+                "mc_95_percent": 4.664948644269181
+              },
+              "separation_2.5_mm": {
+                "power_w": 2.827909217766747e-07,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": -3.118091123829624,
+                "mc_95_percent": 9.527565773185316
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "higher_absorption",
+      "monte_carlo": {
+        "method": "analog photon transport with continuous absorption weighting",
+        "photon_count": 1000000,
+        "seed": 20261103,
+        "source_power_w": 0.001,
+        "detector_offsets_mm": [
+          0.75,
+          1.5,
+          2.5
+        ],
+        "detector_power_w": [
+          4.673918065335605e-06,
+          9.324462874242895e-07,
+          1.9233737520572942e-07
+        ],
+        "standard_error_w": [
+          5.6386801513431906e-08,
+          2.2295242880516593e-08,
+          9.154681443411445e-09
+        ],
+        "relative_standard_error": [
+          0.012064139919702064,
+          0.023910484905359086,
+          0.04759699685835549
+        ],
+        "layers": [
+          {
+            "thickness_mm": 0.25,
+            "absorption_per_mm": 0.35,
+            "reduced_scattering_per_mm": 1.2,
+            "anisotropy": 0.85
+          },
+          {
+            "thickness_mm": 0.65,
+            "absorption_per_mm": 0.14,
+            "reduced_scattering_per_mm": 0.9,
+            "anisotropy": 0.8
+          },
+          {
+            "thickness_mm": 1.1,
+            "absorption_per_mm": 0.08,
+            "reduced_scattering_per_mm": 0.6,
+            "anisotropy": 0.75
+          }
+        ]
+      },
+      "finite_element": {
+        "P1": [
+          {
+            "target_resolution_mm": 1.0,
+            "contact_resolution_mm": 0.2,
+            "nodes": 530,
+            "tetrahedra": 1967,
+            "mesh_generation_seconds": 0.10563258299953304,
+            "solve_seconds": 0.01542687499022577,
+            "source_sampled_area_mm2": 0.1094564075455241,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.0857862827056557e-05,
+                "sampled_area_mm2": 0.10945640754552419,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975602,
+                "relative_error_percent": 132.30751321005286,
+                "mc_95_percent": 2.3645714242616043
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.6665746811119058e-06,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": 78.73144046886713,
+                "mc_95_percent": 4.6864550414503805
+              },
+              "separation_2.5_mm": {
+                "power_w": 3.4792488098042415e-07,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": 80.89301707911632,
+                "mc_95_percent": 9.329011384237678
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.8,
+            "contact_resolution_mm": 0.15,
+            "nodes": 870,
+            "tetrahedra": 3372,
+            "mesh_generation_seconds": 0.15048450000176672,
+            "solve_seconds": 0.022410958001273684,
+            "source_sampled_area_mm2": 0.11570176974357713,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.2409057246500291e-05,
+                "sampled_area_mm2": 0.11570176974357722,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585305,
+                "relative_error_percent": 165.49582326940674,
+                "mc_95_percent": 2.3645714242616043
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.6976119937303053e-06,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": 82.06003033371977,
+                "mc_95_percent": 4.6864550414503805
+              },
+              "separation_2.5_mm": {
+                "power_w": 3.411655447049213e-07,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": 77.37870465373729,
+                "mc_95_percent": 9.329011384237678
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.6,
+            "contact_resolution_mm": 0.1,
+            "nodes": 2013,
+            "tetrahedra": 8844,
+            "mesh_generation_seconds": 0.277367000002414,
+            "solve_seconds": 0.047748708006110974,
+            "source_sampled_area_mm2": 0.12082802473137971,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.1808139943855494e-05,
+                "sampled_area_mm2": 0.12082802473137963,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014423,
+                "relative_error_percent": 152.6390017709398,
+                "mc_95_percent": 2.3645714242616043
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.7762070297217744e-06,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": 90.48893793423939,
+                "mc_95_percent": 4.6864550414503805
+              },
+              "separation_2.5_mm": {
+                "power_w": 3.411397392577028e-07,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": 77.36528789207517,
+                "mc_95_percent": 9.329011384237678
+              }
+            }
+          }
+        ],
+        "SP3": [
+          {
+            "target_resolution_mm": 1.0,
+            "contact_resolution_mm": 0.2,
+            "nodes": 530,
+            "tetrahedra": 1967,
+            "mesh_generation_seconds": 0.10563258299953304,
+            "solve_seconds": 0.021646541994414292,
+            "source_sampled_area_mm2": 0.1094564075455241,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.0111717634149486e-05,
+                "sampled_area_mm2": 0.10945640754552419,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975602,
+                "relative_error_percent": 116.3434936770426,
+                "mc_95_percent": 2.3645714242616043
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.6340787864788996e-06,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": 75.24642529198546,
+                "mc_95_percent": 4.6864550414503805
+              },
+              "separation_2.5_mm": {
+                "power_w": 3.561804019317417e-07,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": 85.18522546684504,
+                "mc_95_percent": 9.329011384237678
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.8,
+            "contact_resolution_mm": 0.15,
+            "nodes": 870,
+            "tetrahedra": 3372,
+            "mesh_generation_seconds": 0.15048450000176672,
+            "solve_seconds": 0.03635587501048576,
+            "source_sampled_area_mm2": 0.11570176974357713,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.1588486534625317e-05,
+                "sampled_area_mm2": 0.11570176974357722,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585305,
+                "relative_error_percent": 147.93944550658742,
+                "mc_95_percent": 2.3645714242616043
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.6688582885254706e-06,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": 78.97634545099461,
+                "mc_95_percent": 4.6864550414503805
+              },
+              "separation_2.5_mm": {
+                "power_w": 3.5062611991822126e-07,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": 82.29744455188795,
+                "mc_95_percent": 9.329011384237678
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.6,
+            "contact_resolution_mm": 0.1,
+            "nodes": 2013,
+            "tetrahedra": 8844,
+            "mesh_generation_seconds": 0.277367000002414,
+            "solve_seconds": 0.09614525000506546,
+            "source_sampled_area_mm2": 0.12082802473137971,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 1.1071570981292049e-05,
+                "sampled_area_mm2": 0.12082802473137963,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014423,
+                "relative_error_percent": 136.8798688065378,
+                "mc_95_percent": 2.3645714242616043
+              },
+              "separation_1.5_mm": {
+                "power_w": 1.7427090379542518e-06,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": 86.89645306735719,
+                "mc_95_percent": 4.6864550414503805
+              },
+              "separation_2.5_mm": {
+                "power_w": 3.508036469612519e-07,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": 82.38974436768855,
+                "mc_95_percent": 9.329011384237678
+              }
+            }
+          }
+        ],
+        "P3": [
+          {
+            "target_resolution_mm": 1.0,
+            "contact_resolution_mm": 0.2,
+            "nodes": 530,
+            "tetrahedra": 1967,
+            "mesh_generation_seconds": 0.10563258299953304,
+            "solve_seconds": 0.29933675000211224,
+            "source_sampled_area_mm2": 0.1094564075455241,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 8.16660569964851e-06,
+                "sampled_area_mm2": 0.10945640754552419,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975602,
+                "relative_error_percent": 74.7271900253587,
+                "mc_95_percent": 2.3645714242616043
+              },
+              "separation_1.5_mm": {
+                "power_w": 8.032170695013789e-07,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": -13.85915946749946,
+                "mc_95_percent": 4.6864550414503805
+              },
+              "separation_2.5_mm": {
+                "power_w": 1.6785311867413655e-07,
+                "sampled_area_mm2": 0.10945640754552394,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.8710264156975582,
+                "relative_error_percent": -12.72984853068928,
+                "mc_95_percent": 9.329011384237678
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.8,
+            "contact_resolution_mm": 0.15,
+            "nodes": 870,
+            "tetrahedra": 3372,
+            "mesh_generation_seconds": 0.15048450000176672,
+            "solve_seconds": 0.548022042014054,
+            "source_sampled_area_mm2": 0.11570176974357713,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 7.995304408528944e-06,
+                "sampled_area_mm2": 0.11570176974357722,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585305,
+                "relative_error_percent": 71.06214308347855,
+                "mc_95_percent": 2.3645714242616043
+              },
+              "separation_1.5_mm": {
+                "power_w": 8.979305565486964e-07,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": -3.70163207694638,
+                "mc_95_percent": 4.6864550414503805
+              },
+              "separation_2.5_mm": {
+                "power_w": 1.7232478323833748e-07,
+                "sampled_area_mm2": 0.11570176974357725,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9207254289585307,
+                "relative_error_percent": -10.404941809144434,
+                "mc_95_percent": 9.329011384237678
+              }
+            }
+          },
+          {
+            "target_resolution_mm": 0.6,
+            "contact_resolution_mm": 0.1,
+            "nodes": 2013,
+            "tetrahedra": 8844,
+            "mesh_generation_seconds": 0.277367000002414,
+            "solve_seconds": 2.381915999998455,
+            "source_sampled_area_mm2": 0.12082802473137971,
+            "source_geometric_area_mm2": 0.12566370614359174,
+            "detectors": {
+              "separation_0.75_mm": {
+                "power_w": 6.868879260491799e-06,
+                "sampled_area_mm2": 0.12082802473137963,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014423,
+                "relative_error_percent": 46.96190999656705,
+                "mc_95_percent": 2.3645714242616043
+              },
+              "separation_1.5_mm": {
+                "power_w": 9.08452038168935e-07,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": -2.5732580609692994,
+                "mc_95_percent": 4.6864550414503805
+              },
+              "separation_2.5_mm": {
+                "power_w": 1.9505018761411853e-07,
+                "sampled_area_mm2": 0.12082802473137977,
+                "geometric_area_mm2": 0.12566370614359174,
+                "sampled_area_fraction": 0.9615188700014434,
+                "relative_error_percent": 1.4104447487064917,
+                "mc_95_percent": 9.329011384237678
+              }
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

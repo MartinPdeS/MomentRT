@@ -183,12 +183,15 @@ Finite sweeps prepare geometry, material labels, region matrices, and
 boundary quadrature once per call. Spectral ``diagnostics`` include
 preparation and per-wavelength timing quantities. See :doc:`spectral`.
 
-``simulation.convergence_study(mesh_shapes=..., power_rtol=...,
-area_rtol=..., power_atol=..., required_consecutive=...)`` returns a
+``simulation.convergence_study(mesh_shapes=...)`` compares explicit Cartesian
+levels; ``mesh_resolutions=...`` compares interface-fitted tetrahedra and can
+apply local ``contact_resolution`` / ``contact_distance`` refinement. The
+method returns a
 ``DetectorConvergenceResult`` for configured finite detectors. It retains
 per-level powers, footprint areas, errors, fields, and convergence flags.
-The ``recommended_mesh`` and ``recommended_shape`` are None when no
-supported recommendation can be made. Its ``plot(power_unit=...,
+``recommended_mesh`` is None when no supported recommendation can be made;
+``recommended_shape`` and ``recommended_resolution`` describe the matching
+mesh type. Its ``plot(power_unit=...,
 area_unit=..., show=...)`` method compares powers and areas.
 See :doc:`convergence` for the criteria and unresolved levels.
 

@@ -24,7 +24,10 @@ class _DetectorConvergenceStudy:
     def run(
         self,
         *,
-        mesh_shapes: Iterable[tuple[int, int, int]],
+        mesh_shapes: Iterable[tuple[int, int, int]] | None,
+        mesh_resolutions: Iterable[Quantity] | None,
+        contact_resolution: Quantity | None,
+        contact_distance: Quantity | None,
         power_rtol: float,
         area_rtol: float,
         power_atol: Quantity | None,
@@ -34,9 +37,19 @@ class _DetectorConvergenceStudy:
 
         Parameters
         ----------
-        mesh_shapes : iterable of tuple of int
-            At least two coarse-to-fine node shapes. Each shape must refine at
-            least one axis and coarsen none.
+        mesh_shapes : iterable of tuple of int or None
+            At least two coarse-to-fine Cartesian node shapes. Each shape must
+            refine at least one axis and coarsen none. Supply this or
+            ``mesh_resolutions``, but not both.
+        mesh_resolutions : iterable of pint.Quantity or None
+            At least two strictly decreasing global tetrahedral target sizes.
+            Supply this or ``mesh_shapes``, but not both.
+        contact_resolution : pint.Quantity or None
+            Optional local target element size near sources and detectors.
+            Required together with ``contact_distance`` and only with
+            ``mesh_resolutions``.
+        contact_distance : pint.Quantity or None
+            Positive distance defining each local contact refinement zone.
         power_rtol : float
             Nonnegative relative power tolerance against adjacent and finest meshes.
         area_rtol : float
@@ -71,8 +84,25 @@ class _DetectorConvergenceStudy:
         if not self.simulation.detectors:
             raise ValueError("Configure at least one detector for a convergence study.")
 
-        if not isinstance(self.simulation.source, MomentRT.source.UniformSurfaceSource):
+        if not isinstance(
+            self.simulation.source,
+            (
+                MomentRT.source.UniformSurfaceSource,
+                MomentRT.source.SurfaceSourceGroup,
+            ),
+        ):
             raise TypeError("Detector convergence requires a finite surface source.")
+
+        if (mesh_shapes is None) == (mesh_resolutions is None):
+            raise ValueError("Supply exactly one of mesh_shapes or mesh_resolutions.")
+
+        if (contact_resolution is None) != (contact_distance is None):
+            raise ValueError(
+                "contact_resolution and contact_distance must be supplied together."
+            )
+
+        if mesh_shapes is not None and contact_resolution is not None:
+            raise ValueError("Contact refinement applies only to tetrahedral meshes.")
 
         for name, value in (("power_rtol", power_rtol), ("area_rtol", area_rtol)):
             if (
@@ -114,22 +144,87 @@ class _DetectorConvergenceStudy:
                 sample_origin=medium.origin, sample_size=medium.size
             )
 
-        meshes = tuple(
-            MomentRT.mesh.CartesianMesh.from_sample(sample=medium, shape=shape)
-            for shape in mesh_shapes
-        )
+        meshes: tuple[MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh, ...]
 
-        if len(meshes) < 2:
-            raise ValueError("Supply at least two mesh_shapes from coarse to fine.")
+        if mesh_shapes is not None:
+            shapes = tuple(mesh_shapes)
 
-        for previous, current in zip(meshes[:-1], meshes[1:]):
-            if (
-                np.any(np.asarray(current.shape) < previous.shape)
-                or current.shape == previous.shape
-            ):
+            if len(shapes) < 2:
+                raise ValueError("Supply at least two mesh_shapes from coarse to fine.")
+
+            for previous, current in zip(shapes[:-1], shapes[1:]):
+                if np.any(np.asarray(current) < previous) or current == previous:
+                    raise ValueError(
+                        "Each mesh must refine at least one axis and coarsen none."
+                    )
+
+            meshes = tuple(
+                MomentRT.mesh.CartesianMesh.from_sample(sample=medium, shape=shape)
+                for shape in shapes
+            )
+        else:
+            resolutions = tuple(mesh_resolutions or ())
+
+            if len(resolutions) < 2:
                 raise ValueError(
-                    "Each mesh must refine at least one axis and coarsen none."
+                    "Supply at least two mesh_resolutions from coarse to fine."
                 )
+
+            for index, resolution in enumerate(resolutions):
+                MomentRT.mesh.TetrahedralMesh._validate_resolution(
+                    resolution=resolution
+                )
+
+                if index and not resolutions[index - 1] > resolution:
+                    raise ValueError(
+                        "mesh_resolutions must decrease strictly from coarse to fine."
+                    )
+
+            if contact_resolution is not None:
+                assert contact_distance is not None
+                MomentRT.mesh.TetrahedralMesh._validate_resolution(
+                    resolution=contact_resolution
+                )
+
+                MomentRT.units.validate_units(
+                    value=contact_distance,
+                    unit="m",
+                    name="contact_distance",
+                    shape=(),
+                    positive=True,
+                )
+
+                if any(contact_resolution > resolution for resolution in resolutions):
+                    raise ValueError(
+                        "contact_resolution must not exceed any global mesh resolution."
+                    )
+
+            contacts: list[object] = []
+
+            if isinstance(self.simulation.source, MomentRT.source.SurfaceSource):
+                contacts.append(source)
+
+            contacts.extend(detectors.values())
+
+            tetrahedral_meshes: list[MomentRT.mesh.TetrahedralMesh] = []
+
+            for resolution in resolutions:
+                tetrahedral_mesh = MomentRT.mesh.TetrahedralMesh.from_sample(
+                    sample=medium,
+                    resolution=resolution,
+                )
+
+                if contact_resolution is not None:
+                    assert contact_distance is not None
+                    tetrahedral_mesh.refine_near(
+                        objects=contacts,
+                        resolution=contact_resolution,
+                        distance=contact_distance,
+                    )
+
+                tetrahedral_meshes.append(tetrahedral_mesh)
+
+            meshes = tuple(tetrahedral_meshes)
 
         if isinstance(source, MomentRT.source.SurfaceSourceGroup):
             source_geometric_area = sum(

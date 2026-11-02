@@ -91,6 +91,10 @@ This checks the FEM implementation and spatial discretization for a planar
 homogeneous case. It does not validate the approximations against the full
 radiative transfer equation.
 
+The :doc:`sensor validation benchmark <sensor_validation>` compares measured
+aperture power from P1, SP3, and P3 against an independent layered-slab photon
+transport reference across source-detector separations and mesh refinements.
+
 For a broader view of model breakdown in scattering slabs, see Akdemir et al.,
 `Breakdown of light transport models in photonic scattering slabs with strong
 absorption and anisotropy <https://doi.org/10.1103/PhysRevA.105.033517>`_. Its

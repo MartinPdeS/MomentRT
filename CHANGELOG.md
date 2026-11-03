@@ -6,6 +6,8 @@ The compatibility and deprecation policy is in [CONTRIBUTING.rst](CONTRIBUTING.r
 
 ## [Unreleased]
 
+## [0.10.0] - 2026-11-03
+
 ### Fixed
 
 - Correct the standalone Monte Carlo sensor reference: stop at every layer
@@ -73,6 +75,7 @@ The compatibility and deprecation policy is in [CONTRIBUTING.rst](CONTRIBUTING.r
 - An initial layered-sensor Monte Carlo comparison and published reference
   report. Its reference data are superseded by the correction under Unreleased.
 
-[Unreleased]: https://github.com/MartinPdeS/MomentRT/compare/v0.9.1...HEAD
+[Unreleased]: https://github.com/MartinPdeS/MomentRT/compare/v0.10.0...HEAD
+[0.10.0]: https://github.com/MartinPdeS/MomentRT/releases/tag/v0.10.0
 [0.9.1]: https://github.com/MartinPdeS/MomentRT/compare/v0.9.0...v0.9.1
 [0.9.0]: https://github.com/MartinPdeS/MomentRT/compare/v0.8.4...v0.9.0

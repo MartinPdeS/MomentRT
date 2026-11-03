@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Compare sensor-validation cases &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Compare sensor-validation cases &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=016a97bc"></script>
+    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -205,6 +205,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../../reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -393,6 +400,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -635,11 +649,15 @@ mesh sizes, sampled areas, and solver powers.</p>
 </span>    <span class="o">/</span> <span class="s2">&quot;</span><span class="s2">sensor_validation.json</span><span class="s2">&quot;</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="n">report</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">report_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="p">)</span><span class="p">)</span><span class="w">
+</span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Monte Carlo reference revision: </span><span class="si">{</span><span class="n">report</span><span class="p">[</span><span class="s1">'</span><span class="s1">reference_revision</span><span class="s1">'</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="n">cases</span> <span class="o">=</span> <span class="n">report</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">cases</span><span class="s2">&quot;</span><span class="p">]</span><span class="w">
 </span><span class="n">solver_names</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;</span><span class="s2">P1</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">SP3</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="s2">P3</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="n">detector_offsets_mm</span> <span class="o">=</span> <span class="n">cases</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">monte_carlo</span><span class="s2">&quot;</span><span class="p">]</span><span class="p">[</span><span class="s2">&quot;</span><span class="s2">detector_offsets_mm</span><span class="s2">&quot;</span><span class="p">]</span><span class="w">
 </span><span class="n">detector_names</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">separation_</span><span class="si">{</span><span class="n">offset</span><span class="si">:</span><span class="s2">g</span><span class="si">}</span><span class="s2">_mm</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">offset</span> <span class="ow">in</span> <span class="n">detector_offsets_mm</span><span class="p">]</span><span class="w">
 </span></pre></div></div>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Monte Carlo reference revision: 2
+</pre></div>
+</div>
 </section>
 <section id="inspect-case-inputs">
 <h2>Inspect case inputs<a class="headerlink" href="#inspect-case-inputs" title="Link to this heading">#</a></h2>
@@ -741,7 +759,7 @@ exact values and reference uncertainty remain in the JSON report.</p>
 </span><span class="p">)</span><span class="w">
 </span><span class="n">figure</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">Sensor model error across layered and contact configurations</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../_images/sphx_glr_sensor_validation_cases_001.png" srcset="../../_images/sphx_glr_sensor_validation_cases_001.png" alt="Sensor model error across layered and contact configurations, P1, SP3, P3" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.486 seconds)</p>
+<img src="../../_images/sphx_glr_sensor_validation_cases_001.png" srcset="../../_images/sphx_glr_sensor_validation_cases_001.png" alt="Sensor model error across layered and contact configurations, P1, SP3, P3" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.483 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-sweeps-convergence-sensor-validation-cases-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/9096151038ebc6e74f5bea6cd8e06283/sensor_validation_cases.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sensor_validation_cases.ipynb</span></code></a></p>
@@ -814,7 +832,7 @@ exact values and reference uncertainty remain in the JSON report.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/gallery/sweeps_convergence/sensor_validation_cases.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/gallery/sweeps_convergence/sensor_validation_cases.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

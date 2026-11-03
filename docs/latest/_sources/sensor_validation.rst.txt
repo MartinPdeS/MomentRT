@@ -1,6 +1,15 @@
 Sensor-focused model validation
 ===============================
 
+.. important::
+
+   The data on this page use Monte Carlo reference revision 2. This corrects
+   skipped layer interfaces and inconsistent scattering-distance sampling in
+   the original generator. Earlier reference data distributed with versions
+   0.9.0 and 0.9.1 are superseded; their reported model errors must not be used
+   to judge transport accuracy. The correction is recorded under Unreleased
+   in the repository changelog.
+
 This benchmark compares P1, SP3, and P3 detector-power predictions with an
 independent Monte Carlo photon-transport reference across eight layered-sample
 and contact-sensor cases. It varies layer thickness, optical properties,
@@ -65,6 +74,24 @@ without Fresnel reflection, matching the benchmark's zero-reflectance Robin
 boundaries. The detector accepts the full outward hemisphere, matching the
 Lambertian angular acceptance fraction of one used by these MomentRT
 detectors.
+
+Scattering free paths are sampled with the total scattering coefficient
+:math:`\mu_s`, and absorption reduces weight by
+:math:`\exp(-\mu_a s)` on each traveled segment. Paths stop at every layer
+interface, and the next segment uses that layer's coefficients. This is the
+continuous absorption weighting formulation described in the
+`MCCL documentation <https://github.com/VirtualPhotonics/Vts.MonteCarlo/wiki/MCCL-Post-Processor#using-mcpp-to-generate-detector-results-for-multi-region-tissues-with-varying-mua-values>`_
+and by `Hayakawa et al. (2014) <https://doi.org/10.1364/JOSAA.31.000301>`_.
+
+The reference is checked against cosine-weighted Beer-Lambert transmission
+through absorbing layers, exact unscattered transmission with scattering and
+absorption, and an independent angularly discretized RTE solution for a
+layered isotropically scattering slab. Further checks cover insertion of
+identical-material interfaces, known Henyey-Greenstein moments, and accounting
+for all six exit faces. These checks do not establish accuracy for every
+anisotropic sensor configuration or replace comparison with another mature
+Monte Carlo implementation. The JSON includes per-face escape, unscattered
+power, absorption, and energy-balance uncertainty as additional diagnostics.
 
 These are deliberately matched boundary and detector conventions, not a
 complete model of an optical instrument. The reference uses independent

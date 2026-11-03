@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Transport theory and approximations &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Transport theory and approximations &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=016a97bc"></script>
+    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -206,6 +206,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -394,6 +401,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -793,7 +807,7 @@ instead retains directional memory <span class="math notranslate nohighlight">\(
 <span class="math notranslate nohighlight">\([\mu_a+\mu_s(1-g)]\mathbf J\)</span>.</p>
 <p>Now substitute <span class="math notranslate nohighlight">\(\mathbf P\approx\Phi\mathbf I/3\)</span> from the P1
 approximation above. An isotropic volume source, including the point source
-used by <code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code>, has no preferred direction and therefore
+used by <code class="docutils literal notranslate"><span class="pre">InfiniteP1</span></code>, has no preferred direction and therefore
 <span class="math notranslate nohighlight">\(\mathbf q_1=\mathbf 0\)</span>. The resulting first two P1 equations are</p>
 <div class="math notranslate nohighlight">
 \[ \begin{align}\begin{aligned}\nabla\cdot\mathbf J + \mu_a\Phi = q_0,\\\frac{1}{3}\nabla\Phi + (\mu_a+\mu_s')\mathbf J = 0,\end{aligned}\end{align} \]</div>
@@ -879,7 +893,7 @@ is</p>
 \kappa=\sqrt{\frac{\mu_a}{D}},
 \qquad
 r=\lVert\mathbf r-\mathbf r_s\rVert.\]</div>
-<p><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> evaluates this expression at every node in a
+<p><code class="docutils literal notranslate"><span class="pre">InfiniteP1</span></code> evaluates this expression at every node in a
 <code class="docutils literal notranslate"><span class="pre">CartesianMesh</span></code>. The mesh is only a window into the infinite solution. There
 is no finite-sample boundary condition, interface, or external reflectance in
 this result. A node exactly at <span class="math notranslate nohighlight">\(r=0\)</span> is rejected because the ideal point
@@ -968,8 +982,8 @@ their unknowns. They are independent changes.</p>
 <code class="docutils literal notranslate"><span class="pre">refractive_index</span></code> does not enter the implemented bulk steady diffusion
 coefficient. Internal index changes are rejected by the finite solver, and
 external diffuse reflectance is configured separately.</p>
-<p><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> evaluates the Green function in this chapter.
-<code class="docutils literal notranslate"><span class="pre">Diffusion</span></code> assembles the finite weak problem in <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a>.
+<p><code class="docutils literal notranslate"><span class="pre">InfiniteP1</span></code> evaluates the Green function in this chapter.
+<code class="docutils literal notranslate"><span class="pre">P1</span></code> assembles the finite weak problem in <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a>.
 <code class="docutils literal notranslate"><span class="pre">RobinBoundary</span></code> selects a diffuse partial-current boundary law.
 <code class="docutils literal notranslate"><span class="pre">result.fluence</span></code> stores nodal <span class="math notranslate nohighlight">\(\Phi\)</span>, while the finite solver’s
 <code class="docutils literal notranslate"><span class="pre">result.flux</span></code> stores element-centered <span class="math notranslate nohighlight">\(\mathbf J\)</span>. The source
@@ -1044,7 +1058,7 @@ infers an optical spectrum from the wavelength label.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/theory.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/theory.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

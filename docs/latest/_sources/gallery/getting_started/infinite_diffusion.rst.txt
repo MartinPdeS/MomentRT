@@ -36,7 +36,7 @@ window, not a tissue boundary. Optical properties apply at 970 nm.
     from MomentRT import (
         CartesianMesh,
         HomogeneousMedium,
-        InfiniteDiffusion,
+        InfiniteP1,
         Material,
         PointSource,
         Simulation,
@@ -141,7 +141,7 @@ Keep the numerical model separate from the physical configuration.
 .. code-block:: Python
 
 
-    solver = InfiniteDiffusion()
+    solver = InfiniteP1()
 
 
 
@@ -337,7 +337,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.253 seconds)
+   **Total running time of the script:** (0 minutes 1.238 seconds)
 
 
 .. _sphx_glr_download_gallery_getting_started_infinite_diffusion.py:

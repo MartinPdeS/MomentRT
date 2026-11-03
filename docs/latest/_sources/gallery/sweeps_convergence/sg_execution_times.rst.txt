@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:11.953** total execution time for 6 files **from gallery/sweeps_convergence**:
+**00:12.069** total execution time for 6 files **from gallery/sweeps_convergence**:
 
 .. container::
 
@@ -33,20 +33,20 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_sweeps_convergence_solver_scaling.py` (``solver_scaling.py``)
-     - 00:09.391
+     - 00:09.518
      - 0.0
    * - :ref:`sphx_glr_gallery_sweeps_convergence_sp3_spectral_anisotropy.py` (``sp3_spectral_anisotropy.py``)
-     - 00:00.921
+     - 00:00.924
      - 0.0
    * - :ref:`sphx_glr_gallery_sweeps_convergence_mesh_refinement.py` (``mesh_refinement.py``)
-     - 00:00.540
+     - 00:00.533
      - 0.0
    * - :ref:`sphx_glr_gallery_sweeps_convergence_sensor_validation_cases.py` (``sensor_validation_cases.py``)
-     - 00:00.486
+     - 00:00.483
      - 0.0
    * - :ref:`sphx_glr_gallery_sweeps_convergence_reflectance_sweep.py` (``reflectance_sweep.py``)
-     - 00:00.400
+     - 00:00.397
      - 0.0
    * - :ref:`sphx_glr_gallery_sweeps_convergence_absorption_sweep.py` (``absorption_sweep.py``)
-     - 00:00.215
+     - 00:00.213
      - 0.0

@@ -35,8 +35,8 @@ model angle-dependent Fresnel transmission or detector back-action.
     import numpy as np
     import MomentRT
     from MomentRT import (
+        P1,
         CartesianMesh,
-        Diffusion,
         Material,
         RobinBoundary,
         Simulation,
@@ -96,7 +96,7 @@ into the sample, so reflected light exits toward negative z.
 
     boundary = RobinBoundary(effective_reflectance=0.4)
 
-    solver = Diffusion(
+    solver = P1(
         boundaries={
             face: boundary
             for face in ("x_min", "x_max", "y_min", "y_max", "z_min", "z_max")
@@ -246,7 +246,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.221 seconds)
+   **Total running time of the script:** (0 minutes 0.224 seconds)
 
 
 .. _sphx_glr_download_gallery_sources_detectors_surface_detector.py:

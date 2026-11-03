@@ -35,8 +35,8 @@ these observables, not validation of P1 against radiative transfer.
     import numpy as np
     import MomentRT
     from MomentRT import (
+        P1,
         CartesianMesh,
-        Diffusion,
         Material,
         RobinBoundary,
         Simulation,
@@ -104,7 +104,7 @@ The disk source and the separated reflection aperture lie on the top face.
 
     boundary = RobinBoundary(effective_reflectance=0.4)
 
-    solver = Diffusion(
+    solver = P1(
         boundaries={
             face: boundary
             for face in ("x_min", "x_max", "y_min", "y_max", "z_min", "z_max")
@@ -268,7 +268,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.006 seconds)
+   **Total running time of the script:** (0 minutes 1.016 seconds)
 
 
 .. _sphx_glr_download_gallery_sources_detectors_detector_convergence.py:

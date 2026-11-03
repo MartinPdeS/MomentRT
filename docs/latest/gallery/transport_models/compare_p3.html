@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Compare full P3 with SP3 and P1 &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Compare full P3 with SP3 and P1 &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=016a97bc"></script>
+    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -205,6 +205,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../../reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -393,6 +400,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -691,7 +705,7 @@ all three models, including P3. Each linear diffuse solve uses one source;
 the six fluences and detector powers are added incoherently. This does not
 model optical interference, fiber modes, or Fresnel entry losses.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">solvers</span> <span class="o">=</span> <span class="p">{</span><span class="w">
-</span>    <span class="s2">&quot;</span><span class="s2">P1</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Diffusion" title="MomentRT.Diffusion"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Diffusion</span></a><span class="p">(</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Boundaries" title="MomentRT.Boundaries"><span class="n">boundaries</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Boundaries" title="MomentRT.Boundaries"><span class="n">boundaries</span></a><span class="p">)</span><span class="p">,</span><span class="w">
+</span>    <span class="s2">&quot;</span><span class="s2">P1</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.P1" title="MomentRT.P1"><span class="n">MomentRT</span><span class="o">.</span><span class="n">P1</span></a><span class="p">(</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Boundaries" title="MomentRT.Boundaries"><span class="n">boundaries</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Boundaries" title="MomentRT.Boundaries"><span class="n">boundaries</span></a><span class="p">)</span><span class="p">,</span><span class="w">
 </span>    <span class="s2">&quot;</span><span class="s2">SP3</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.SP3" title="MomentRT.SP3"><span class="n">MomentRT</span><span class="o">.</span><span class="n">SP3</span></a><span class="p">(</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Boundaries" title="MomentRT.Boundaries"><span class="n">boundaries</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Boundaries" title="MomentRT.Boundaries"><span class="n">boundaries</span></a><span class="p">)</span><span class="p">,</span><span class="w">
 </span>    <span class="s2">&quot;</span><span class="s2">P3</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.P3" title="MomentRT.P3"><span class="n">MomentRT</span><span class="o">.</span><span class="n">P3</span></a><span class="p">(</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Boundaries" title="MomentRT.Boundaries"><span class="n">boundaries</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Boundaries" title="MomentRT.Boundaries"><span class="n">boundaries</span></a><span class="p">)</span><span class="p">,</span><span class="w">
 </span><span class="p">}</span><span class="w">
@@ -798,7 +812,7 @@ gallery preview is captured from this same combined P3 volume.</p>
 <p>This view shows the configured geometry and instrument footprints.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">gallery_system_figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.StructuredMedium.plot" title="MomentRT.StructuredMedium.plot"><span class="n">sample</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">overlays</span><span class="o">=</span><span class="n">overlays</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<iframe src="../../_static/gallery/compare_p3-2.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.176 seconds)</p>
+<iframe src="../../_static/gallery/compare_p3-2.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.165 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-transport-models-compare-p3-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/645c0b5230b979d7ed9e3e12730aad62/compare_p3.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">compare_p3.ipynb</span></code></a></p>
@@ -872,7 +886,7 @@ gallery preview is captured from this same combined P3 volume.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/gallery/transport_models/compare_p3.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/gallery/transport_models/compare_p3.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

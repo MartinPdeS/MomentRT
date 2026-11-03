@@ -262,7 +262,7 @@ instead retains directional memory :math:`g`, so its gain is
 
 Now substitute :math:`\mathbf P\approx\Phi\mathbf I/3` from the P1
 approximation above. An isotropic volume source, including the point source
-used by ``InfiniteDiffusion``, has no preferred direction and therefore
+used by ``InfiniteP1``, has no preferred direction and therefore
 :math:`\mathbf q_1=\mathbf 0`. The resulting first two P1 equations are
 
 .. math::
@@ -377,7 +377,7 @@ Setting that limit equal to the source power :math:`P` gives
    \qquad
    r=\lVert\mathbf r-\mathbf r_s\rVert.
 
-``InfiniteDiffusion`` evaluates this expression at every node in a
+``InfiniteP1`` evaluates this expression at every node in a
 ``CartesianMesh``. The mesh is only a window into the infinite solution. There
 is no finite-sample boundary condition, interface, or external reflectance in
 this result. A node exactly at :math:`r=0` is rejected because the ideal point
@@ -481,8 +481,8 @@ From theory to the public API
 coefficient. Internal index changes are rejected by the finite solver, and
 external diffuse reflectance is configured separately.
 
-``InfiniteDiffusion`` evaluates the Green function in this chapter.
-``Diffusion`` assembles the finite weak problem in :doc:`finite_element`.
+``InfiniteP1`` evaluates the Green function in this chapter.
+``P1`` assembles the finite weak problem in :doc:`finite_element`.
 ``RobinBoundary`` selects a diffuse partial-current boundary law.
 ``result.fluence`` stores nodal :math:`\Phi`, while the finite solver's
 ``result.flux`` stores element-centered :math:`\mathbf J`. The source

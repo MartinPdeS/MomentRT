@@ -12,8 +12,8 @@ and inspect the finite-sample P1 fluence volume.
 import numpy as np
 import MomentRT
 from MomentRT import (
+    P1,
     Box,
-    Diffusion,
     Material,
     RobinBoundary,
     Simulation,
@@ -180,7 +180,7 @@ boundary = RobinBoundary(
     effective_reflectance=0.5,
 )
 
-solver = Diffusion(
+solver = P1(
     boundaries=MomentRT.Boundaries.uniform(condition=boundary),
 )
 

@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Choosing a mesh for detector collection &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Choosing a mesh for detector collection &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=016a97bc"></script>
+    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -206,6 +206,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -397,6 +404,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -566,19 +580,31 @@
                   
   <section id="choosing-a-mesh-for-detector-collection">
 <h1>Choosing a mesh for detector collection<a class="headerlink" href="#choosing-a-mesh-for-detector-collection" title="Link to this heading">#</a></h1>
-<p><code class="docutils literal notranslate"><span class="pre">simulation.mesh_convergence(...)</span></code> compares detector power and footprint
+<p><code class="docutils literal notranslate"><span class="pre">MeshConvergence</span></code> compares detector power and footprint
 sampling across explicit finite meshes. It keeps the sample, source,
 detector apertures, wavelength, and boundaries fixed, returning a
 <code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult</span></code> without changing the original configuration.
+The study uses the simulation source wavelength; run separate studies for
+multiple wavelengths.
 <code class="docutils literal notranslate"><span class="pre">simulation.convergence_study(...)</span></code> remains a compatibility alias for
 <code class="docutils literal notranslate"><span class="pre">simulation.mesh_convergence(...)</span></code> with the same arguments and behavior.
 See the <a class="reference internal" href="gallery/sources_detectors/detector_convergence.html"><span class="doc">worked refinement example</span></a> for comparison plots and a
 fluence volume with instrument overlays.</p>
+<p>For progress during mesh generation and solves, enable Python logging before
+running the study. This reports timings, sampled areas, detector powers, and
+unresolved levels:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">"MomentRT.convergence"</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+</pre></div>
+</div>
 <section id="running-a-study">
 <h2>Running a study<a class="headerlink" href="#running-a-study" title="Link to this heading">#</a></h2>
-<p>Configure a finite <code class="docutils literal notranslate"><span class="pre">Diffusion</span></code>, <code class="docutils literal notranslate"><span class="pre">SP3</span></code>, or <code class="docutils literal notranslate"><span class="pre">P3</span></code> simulation with at least one named detector,
+<p>Configure a finite <code class="docutils literal notranslate"><span class="pre">P1</span></code>, <code class="docutils literal notranslate"><span class="pre">SP3</span></code>, or <code class="docutils literal notranslate"><span class="pre">P3</span></code> simulation with at least one named detector,
 then supply meshes from coarse to fine:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">study</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">mesh_convergence</span><span class="p">(</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">study</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">MeshConvergence</span><span class="p">(</span>
+    <span class="n">simulation</span><span class="o">=</span><span class="n">simulation</span><span class="p">,</span>
     <span class="n">mesh_shapes</span><span class="o">=</span><span class="p">[</span>
         <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
         <span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
@@ -591,15 +617,29 @@ then supply meshes from coarse to fine:</p>
     <span class="n">required_consecutive</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">figure</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">study</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+
+<span class="n">figure</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
     <span class="n">power_unit</span><span class="o">=</span><span class="s2">"mW"</span><span class="p">,</span>
     <span class="n">area_unit</span><span class="o">=</span><span class="s2">"mm^2"</span><span class="p">,</span>
     <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Recommended mesh shape: </span><span class="si">{</span><span class="n">study</span><span class="o">.</span><span class="n">recommended_shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Recommended mesh shape: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">recommended_shape</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 </pre></div>
 </div>
+<p>By default, the study prints a row after each mesh is generated and solved.
+The table reports detector powers in microwatts, relative changes from the
+previous level, footprint-area errors, per-level elapsed time, and diagnostics.
+Each level time includes mesh generation, solving, and detector measurements;
+the total time also includes study setup. Set <code class="docutils literal notranslate"><span class="pre">progress=False</span></code>
+to suppress the table.</p>
+<p>The plot shades the power tolerance around each finest-mesh detector value
+(including any absolute power tolerance) and the area tolerances around each
+geometric footprint. The bands alone do not prove convergence: the study also
+checks adjacent refinements, failures, and negative outputs.</p>
 <p>Every shape contains three node counts of at least two. Each successive mesh
 must refine at least one axis and coarsen none. At least two levels are
 required, but two consecutive passing refinements need at least three
@@ -827,7 +867,7 @@ estimate accuracy or recommend a mesh.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/convergence.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/convergence.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

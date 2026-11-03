@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Finite-aperture surface detectors &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Finite-aperture surface detectors &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=016a97bc"></script>
+    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -206,6 +206,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -394,6 +401,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -719,8 +733,8 @@ Such a value requires investigation before physical interpretation.</p>
 detector areas on explicit successively refined meshes. The study retains
 unresolved levels and reports a recommendation only when the stated
 criteria hold at the fine end of the sequence.</p>
-<p>This detector model applies to finite <code class="docutils literal notranslate"><span class="pre">Diffusion</span></code>, <code class="docutils literal notranslate"><span class="pre">SP3</span></code>, and <code class="docutils literal notranslate"><span class="pre">P3</span></code> results. An observation
-window from <code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> is not a sample surface and cannot supply
+<p>This detector model applies to finite <code class="docutils literal notranslate"><span class="pre">P1</span></code>, <code class="docutils literal notranslate"><span class="pre">SP3</span></code>, and <code class="docutils literal notranslate"><span class="pre">P3</span></code> results. An observation
+window from <code class="docutils literal notranslate"><span class="pre">InfiniteP1</span></code> is not a sample surface and cannot supply
 these measurements. Reflecting faces have zero modeled escape.</p>
 <p>The detector does not model angle-dependent Fresnel transmission, refraction,
 lenses, a stand-off distance, or noise. A supplied <code class="docutils literal notranslate"><span class="pre">DetectorResponsivity</span></code>
@@ -814,7 +828,7 @@ collection axes. <code class="docutils literal notranslate"><span class="pre">fu
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/detectors.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/detectors.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

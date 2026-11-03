@@ -1,25 +1,37 @@
 Choosing a mesh for detector collection
 ============================================================
 
-``simulation.mesh_convergence(...)`` compares detector power and footprint
+``MeshConvergence`` compares detector power and footprint
 sampling across explicit finite meshes. It keeps the sample, source,
 detector apertures, wavelength, and boundaries fixed, returning a
 ``DetectorConvergenceResult`` without changing the original configuration.
+The study uses the simulation source wavelength; run separate studies for
+multiple wavelengths.
 ``simulation.convergence_study(...)`` remains a compatibility alias for
 ``simulation.mesh_convergence(...)`` with the same arguments and behavior.
 See the :doc:`worked refinement example
 <gallery/sources_detectors/detector_convergence>` for comparison plots and a
 fluence volume with instrument overlays.
 
+For progress during mesh generation and solves, enable Python logging before
+running the study. This reports timings, sampled areas, detector powers, and
+unresolved levels::
+
+   import logging
+
+   logging.basicConfig(level=logging.INFO)
+   logging.getLogger("MomentRT.convergence").setLevel(logging.INFO)
+
 Running a study
 -----------------
 
-Configure a finite ``Diffusion``, ``SP3``, or ``P3`` simulation with at least one named detector,
+Configure a finite ``P1``, ``SP3``, or ``P3`` simulation with at least one named detector,
 then supply meshes from coarse to fine:
 
 .. code-block:: python
 
-   study = simulation.mesh_convergence(
+   study = MomentRT.MeshConvergence(
+       simulation=simulation,
        mesh_shapes=[
            (9, 7, 7),
            (13, 10, 10),
@@ -32,13 +44,29 @@ then supply meshes from coarse to fine:
        required_consecutive=2,
    )
 
-   figure = study.plot(
+   result = study.run()
+
+   print(result.summary())
+
+   figure = result.plot(
        power_unit="mW",
        area_unit="mm^2",
        show=False,
    )
 
-   print(f"Recommended mesh shape: {study.recommended_shape}")
+   print(f"Recommended mesh shape: {result.recommended_shape}")
+
+By default, the study prints a row after each mesh is generated and solved.
+The table reports detector powers in microwatts, relative changes from the
+previous level, footprint-area errors, per-level elapsed time, and diagnostics.
+Each level time includes mesh generation, solving, and detector measurements;
+the total time also includes study setup. Set ``progress=False``
+to suppress the table.
+
+The plot shades the power tolerance around each finest-mesh detector value
+(including any absolute power tolerance) and the area tolerances around each
+geometric footprint. The bands alone do not prove convergence: the study also
+checks adjacent refinements, failures, and negative outputs.
 
 Every shape contains three node counts of at least two. Each successive mesh
 must refine at least one axis and coarsen none. At least two levels are

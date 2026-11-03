@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Infinite-medium diffusion &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Infinite-medium diffusion &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=016a97bc"></script>
+    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -205,6 +205,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../../reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -393,6 +400,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -607,7 +621,7 @@ window, not a tissue boundary. Optical properties apply at 970 nm.</p>
 </span><span class="kn">from</span><span class="w"> </span><span class="nn">MomentRT</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">CartesianMesh</span></a><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.HomogeneousMedium" title="MomentRT.HomogeneousMedium"><span class="n">HomogeneousMedium</span></a><span class="p">,</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.InfiniteDiffusion" title="MomentRT.InfiniteDiffusion"><span class="n">InfiniteDiffusion</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.InfiniteP1" title="MomentRT.InfiniteP1"><span class="n">InfiniteP1</span></a><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">Material</span></a><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.PointSource" title="MomentRT.PointSource"><span class="n">PointSource</span></a><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">Simulation</span></a><span class="p">,</span><span class="w">
@@ -655,7 +669,7 @@ The even node counts avoid sampling the singular point source.</p>
 <section id="configure-transport">
 <h2>Configure transport<a class="headerlink" href="#configure-transport" title="Link to this heading">#</a></h2>
 <p>Keep the numerical model separate from the physical configuration.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.InfiniteDiffusion" title="MomentRT.InfiniteDiffusion"><span class="n">solver</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.InfiniteDiffusion" title="MomentRT.InfiniteDiffusion"><span class="n">InfiniteDiffusion</span></a><span class="p">(</span><span class="p">)</span><span class="w">
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.InfiniteP1" title="MomentRT.InfiniteP1"><span class="n">solver</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.InfiniteP1" title="MomentRT.InfiniteP1"><span class="n">InfiniteP1</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 </section>
 <section id="compose-the-experiment">
@@ -665,7 +679,7 @@ The even node counts avoid sampling the singular point source.</p>
 </span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.HomogeneousMedium" title="MomentRT.HomogeneousMedium"><span class="n">medium</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.HomogeneousMedium" title="MomentRT.HomogeneousMedium"><span class="n">medium</span></a><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.PointSource" title="MomentRT.PointSource"><span class="n">source</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.PointSource" title="MomentRT.PointSource"><span class="n">source</span></a><span class="p">,</span><span class="w">
 </span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
-</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.InfiniteDiffusion" title="MomentRT.InfiniteDiffusion"><span class="n">solver</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.InfiniteDiffusion" title="MomentRT.InfiniteDiffusion"><span class="n">solver</span></a><span class="p">,</span><span class="w">
+</span>    <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.InfiniteP1" title="MomentRT.InfiniteP1"><span class="n">solver</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.InfiniteP1" title="MomentRT.InfiniteP1"><span class="n">solver</span></a><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
 </section>
@@ -740,7 +754,7 @@ three-dimensional Plotly volume remains available in the example above.</p>
 <p>This view shows the configured geometry and instrument footprints.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">gallery_system_figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.Simulation.plot_system" title="MomentRT.Simulation.plot_system"><span class="n">simulation</span><span class="o">.</span><span class="n">plot_system</span></a><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<iframe src="../../_static/gallery/infinite_diffusion-3.html" title="Interactive view" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.253 seconds)</p>
+<iframe src="../../_static/gallery/infinite_diffusion-3.html" title="Interactive view" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.238 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-getting-started-infinite-diffusion-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/4a71eb6b8a23a271158f240564b6c611/infinite_diffusion.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">infinite_diffusion.ipynb</span></code></a></p>
@@ -820,7 +834,7 @@ three-dimensional Plotly volume remains available in the example above.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/gallery/getting_started/infinite_diffusion.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/gallery/getting_started/infinite_diffusion.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

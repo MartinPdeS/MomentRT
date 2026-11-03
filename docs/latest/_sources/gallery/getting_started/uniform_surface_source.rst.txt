@@ -34,7 +34,7 @@ fluence field. The input power is already coupled into the sample.
     import numpy as np
     import MomentRT
     from MomentRT import (
-        Diffusion,
+        P1,
         Material,
         RobinBoundary,
         Simulation,
@@ -112,7 +112,7 @@ face. All faces use the same explicit effective diffuse reflectance.
         effective_reflectance=0.5,
     )
 
-    solver = Diffusion(
+    solver = P1(
         boundaries=MomentRT.Boundaries.uniform(condition=boundary),
     )
 
@@ -269,7 +269,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.586 seconds)
+   **Total running time of the script:** (0 minutes 0.583 seconds)
 
 
 .. _sphx_glr_download_gallery_getting_started_uniform_surface_source.py:

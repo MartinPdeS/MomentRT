@@ -14,7 +14,7 @@ import MomentRT
 from MomentRT import (
     CartesianMesh,
     HomogeneousMedium,
-    InfiniteDiffusion,
+    InfiniteP1,
     Material,
     PointSource,
     Simulation,
@@ -67,7 +67,7 @@ source = PointSource(
 # -------------------
 # Keep the numerical model separate from the physical configuration.
 
-solver = InfiniteDiffusion()
+solver = InfiniteP1()
 
 # %%
 # Compose the experiment

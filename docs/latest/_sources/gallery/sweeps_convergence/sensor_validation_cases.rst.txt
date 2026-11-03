@@ -50,7 +50,7 @@ Each case records layer thicknesses and optical properties, source and
 detector radii, source-detector separations, Monte Carlo standard errors,
 mesh sizes, sampled areas, and solver powers.
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-51
+.. GENERATED FROM PYTHON SOURCE LINES 22-52
 
 .. code-block:: Python
 
@@ -78,6 +78,7 @@ mesh sizes, sampled areas, and solver powers.
         / "sensor_validation.json"
     )
     report = json.loads(report_path.read_text())
+    print(f"Monte Carlo reference revision: {report['reference_revision']}")
     cases = report["cases"]
     solver_names = ("P1", "SP3", "P3")
     detector_offsets_mm = cases[0]["monte_carlo"]["detector_offsets_mm"]
@@ -87,10 +88,16 @@ mesh sizes, sampled areas, and solver powers.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Monte Carlo reference revision: 2
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 52-57
+
+.. GENERATED FROM PYTHON SOURCE LINES 53-58
 
 Inspect case inputs
 -------------------
@@ -98,7 +105,7 @@ The cases vary one factor at a time around the moderate-absorption baseline,
 except the higher-absorption case, which changes all three layers' optical
 coefficients together.
 
-.. GENERATED FROM PYTHON SOURCE LINES 57-73
+.. GENERATED FROM PYTHON SOURCE LINES 58-74
 
 .. code-block:: Python
 
@@ -138,7 +145,7 @@ coefficients together.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 74-79
+.. GENERATED FROM PYTHON SOURCE LINES 75-80
 
 Compare finest-mesh detector-power errors
 -----------------------------------------
@@ -146,7 +153,7 @@ Relative errors use the independent Monte Carlo detector power as the
 denominator. Colors are clipped at the shared scale limit for visibility;
 exact values and reference uncertainty remain in the JSON report.
 
-.. GENERATED FROM PYTHON SOURCE LINES 79-143
+.. GENERATED FROM PYTHON SOURCE LINES 80-144
 
 .. code-block:: Python
 
@@ -229,7 +236,7 @@ exact values and reference uncertainty remain in the JSON report.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.486 seconds)
+   **Total running time of the script:** (0 minutes 0.483 seconds)
 
 
 .. _sphx_glr_download_gallery_sweeps_convergence_sensor_validation_cases.py:

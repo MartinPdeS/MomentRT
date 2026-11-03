@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Getting started &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Getting started &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=016a97bc"></script>
+    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -205,6 +205,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -396,6 +403,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -573,10 +587,10 @@ build the docs:</p>
 </section>
 <section id="choose-the-physical-model-first">
 <h2>Choose the physical model first<a class="headerlink" href="#choose-the-physical-model-first" title="Link to this heading">#</a></h2>
-<p>Use <a class="reference internal" href="python_api.html#MomentRT.InfiniteDiffusion" title="MomentRT.InfiniteDiffusion"><code class="xref py py-class docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code></a> for a homogeneous, unbounded medium
+<p>Use <a class="reference internal" href="python_api.html#MomentRT.InfiniteP1" title="MomentRT.InfiniteP1"><code class="xref py py-class docutils literal notranslate"><span class="pre">InfiniteP1</span></code></a> for a homogeneous, unbounded medium
 with an embedded isotropic point source. Its Cartesian grid only selects where
 the analytical field is evaluated; the grid edges are not physical boundaries.</p>
-<p>Use <a class="reference internal" href="python_api.html#MomentRT.Diffusion" title="MomentRT.Diffusion"><code class="xref py py-class docutils literal notranslate"><span class="pre">Diffusion</span></code></a> for a finite <a class="reference internal" href="python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructuredMedium</span></code></a>
+<p>Use <a class="reference internal" href="python_api.html#MomentRT.P1" title="MomentRT.P1"><code class="xref py py-class docutils literal notranslate"><span class="pre">P1</span></code></a> for a finite <a class="reference internal" href="python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructuredMedium</span></code></a>
 illuminated on one of its faces. This model solves the steady P1 diffusion
 equation with linear tetrahedral finite elements and explicitly configured
 conditions on all six faces. It currently requires a common refractive index
@@ -620,7 +634,7 @@ center, so that no mesh node coincides with the point-source singularity.</p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MomentRT</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">CartesianMesh</span><span class="p">,</span>
     <span class="n">HomogeneousMedium</span><span class="p">,</span>
-    <span class="n">InfiniteDiffusion</span><span class="p">,</span>
+    <span class="n">InfiniteP1</span><span class="p">,</span>
     <span class="n">Material</span><span class="p">,</span>
     <span class="n">PointSource</span><span class="p">,</span>
     <span class="n">Simulation</span><span class="p">,</span>
@@ -648,7 +662,7 @@ center, so that no mesh node coincides with the point-source singularity.</p>
     <span class="n">optical_power</span><span class="o">=</span><span class="mi">1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">milliwatt</span><span class="p">,</span>
 <span class="p">)</span>
 
-<span class="n">solver</span> <span class="o">=</span> <span class="n">InfiniteDiffusion</span><span class="p">()</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">InfiniteP1</span><span class="p">()</span>
 
 <span class="n">simulation</span> <span class="o">=</span> <span class="n">Simulation</span><span class="p">(</span>
     <span class="n">medium</span><span class="o">=</span><span class="n">medium</span><span class="p">,</span>
@@ -713,7 +727,7 @@ of operations; the gallery example contains a complete runnable configuration.</
     <span class="n">medium</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span>
     <span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">,</span>
     <span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span>
-    <span class="n">solver</span><span class="o">=</span><span class="n">Diffusion</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">boundaries</span><span class="p">),</span>
+    <span class="n">solver</span><span class="o">=</span><span class="n">P1</span><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">boundaries</span><span class="p">),</span>
     <span class="n">detectors</span><span class="o">=</span><span class="p">{</span><span class="s2">"reflection"</span><span class="p">:</span> <span class="n">detector</span><span class="p">},</span>
 <span class="p">)</span>
 
@@ -822,7 +836,7 @@ opacity slider. Use <code class="docutils literal notranslate"><span class="pre"
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/getting_started.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/getting_started.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

@@ -128,11 +128,11 @@ Meshes and transport
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.InfiniteDiffusion
+.. autoclass:: MomentRT.InfiniteP1
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Diffusion
+.. autoclass:: MomentRT.P1
    :members:
    :member-order: bysource
 
@@ -178,6 +178,9 @@ Fields and results
 .. autoclass:: MomentRT.DetectorResult
    :members:
    :member-order: bysource
+
+.. autoclass:: MomentRT.MeshConvergence
+   :members:
 
 .. autoclass:: MomentRT.DetectorConvergenceResult
    :members:

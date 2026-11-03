@@ -58,7 +58,7 @@ accept ``responsivity=DetectorResponsivity(...)`` in A/W for photocurrent.
 See :doc:`spectral` for the complete API, quadrature, and validation limits.
 
 ``PointSource`` requires ``position``, ``wavelength``, and positive
-``optical_power``. It is supported by ``InfiniteDiffusion`` only.
+``optical_power``. It is supported by ``InfiniteP1`` only.
 
 ``SurfaceSource`` requires a boundary ``face``, absolute 3D ``position``,
 positive ``radius``, ``wavelength``, and ``optical_power``. The spot is a
@@ -119,8 +119,8 @@ node counts. Supply exactly one of ``resolution`` or ``shape`` to
 have ``mesh.resolution is None``. The low-level ``CartesianMesh`` constructor
 continues to accept explicit ``shape``, ``spacing``, and ``origin``.
 
-``InfiniteDiffusion`` evaluates the analytical P1 Green function for a
-``HomogeneousMedium`` and ``PointSource``. ``Diffusion`` requires a mapping
+``InfiniteP1`` evaluates the analytical P1 Green function for a
+``HomogeneousMedium`` and ``PointSource``. ``P1`` requires a mapping
 that configures exactly six faces with ``RobinBoundary`` or
 ``ReflectingBoundary`` objects. The finite solver accepts ``SurfaceSource``,
 ``SurfaceSourceGroup``, or ``UniformSurfaceSource``.

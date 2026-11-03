@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Sensor-focused model validation &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Sensor-focused model validation &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,16 +45,17 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=016a97bc"></script>
+    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'sensor_validation';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -205,6 +206,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -396,6 +404,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -553,6 +568,15 @@
                   
   <section id="sensor-focused-model-validation">
 <h1>Sensor-focused model validation<a class="headerlink" href="#sensor-focused-model-validation" title="Link to this heading">#</a></h1>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The data on this page use Monte Carlo reference revision 2. This corrects
+skipped layer interfaces and inconsistent scattering-distance sampling in
+the original generator. Earlier reference data distributed with versions
+0.9.0 and 0.9.1 are superseded; their reported model errors must not be used
+to judge transport accuracy. The correction is recorded under Unreleased
+in the repository changelog.</p>
+</div>
 <p>This benchmark compares P1, SP3, and P3 detector-power predictions with an
 independent Monte Carlo photon-transport reference across eight layered-sample
 and contact-sensor cases. It varies layer thickness, optical properties,
@@ -602,6 +626,22 @@ without Fresnel reflection, matching the benchmark’s zero-reflectance Robin
 boundaries. The detector accepts the full outward hemisphere, matching the
 Lambertian angular acceptance fraction of one used by these MomentRT
 detectors.</p>
+<p>Scattering free paths are sampled with the total scattering coefficient
+<span class="math notranslate nohighlight">\(\mu_s\)</span>, and absorption reduces weight by
+<span class="math notranslate nohighlight">\(\exp(-\mu_a s)\)</span> on each traveled segment. Paths stop at every layer
+interface, and the next segment uses that layer’s coefficients. This is the
+continuous absorption weighting formulation described in the
+<a class="reference external" href="https://github.com/VirtualPhotonics/Vts.MonteCarlo/wiki/MCCL-Post-Processor#using-mcpp-to-generate-detector-results-for-multi-region-tissues-with-varying-mua-values">MCCL documentation</a>
+and by <a class="reference external" href="https://doi.org/10.1364/JOSAA.31.000301">Hayakawa et al. (2014)</a>.</p>
+<p>The reference is checked against cosine-weighted Beer-Lambert transmission
+through absorbing layers, exact unscattered transmission with scattering and
+absorption, and an independent angularly discretized RTE solution for a
+layered isotropically scattering slab. Further checks cover insertion of
+identical-material interfaces, known Henyey-Greenstein moments, and accounting
+for all six exit faces. These checks do not establish accuracy for every
+anisotropic sensor configuration or replace comparison with another mature
+Monte Carlo implementation. The JSON includes per-face escape, unscattered
+power, absorption, and energy-balance uncertainty as additional diagnostics.</p>
 <p>These are deliberately matched boundary and detector conventions, not a
 complete model of an optical instrument. The reference uses independent
 photon histories and reports their sampling error; it does not include
@@ -677,7 +717,7 @@ model errors as transport-approximation error.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/sensor_validation.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/sensor_validation.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

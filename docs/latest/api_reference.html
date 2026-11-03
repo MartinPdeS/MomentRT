@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Public API reference &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Public API reference &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=016a97bc"></script>
+    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -205,6 +205,13 @@
 <li class=" current active">
   <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -393,6 +400,13 @@
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -614,7 +628,7 @@ the resulting collected power over the source grid. Detectors optionally
 accept <code class="docutils literal notranslate"><span class="pre">responsivity=DetectorResponsivity(...)</span></code> in A/W for photocurrent.
 See <a class="reference internal" href="spectral.html"><span class="doc">Wavelength-dependent materials and sweeps</span></a> for the complete API, quadrature, and validation limits.</p>
 <p><code class="docutils literal notranslate"><span class="pre">PointSource</span></code> requires <code class="docutils literal notranslate"><span class="pre">position</span></code>, <code class="docutils literal notranslate"><span class="pre">wavelength</span></code>, and positive
-<code class="docutils literal notranslate"><span class="pre">optical_power</span></code>. It is supported by <code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> only.</p>
+<code class="docutils literal notranslate"><span class="pre">optical_power</span></code>. It is supported by <code class="docutils literal notranslate"><span class="pre">InfiniteP1</span></code> only.</p>
 <p><code class="docutils literal notranslate"><span class="pre">SurfaceSource</span></code> requires a boundary <code class="docutils literal notranslate"><span class="pre">face</span></code>, absolute 3D <code class="docutils literal notranslate"><span class="pre">position</span></code>,
 positive <code class="docutils literal notranslate"><span class="pre">radius</span></code>, <code class="docutils literal notranslate"><span class="pre">wavelength</span></code>, and <code class="docutils literal notranslate"><span class="pre">optical_power</span></code>. The spot is a
 circular top-hat and must fit fully on the face. <code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code>
@@ -667,8 +681,8 @@ node counts. Supply exactly one of <code class="docutils literal notranslate"><s
 <code class="docutils literal notranslate"><span class="pre">from_sample</span></code>. Existing <code class="docutils literal notranslate"><span class="pre">shape=...</span></code> configurations remain supported and
 have <code class="docutils literal notranslate"><span class="pre">mesh.resolution</span> <span class="pre">is</span> <span class="pre">None</span></code>. The low-level <code class="docutils literal notranslate"><span class="pre">CartesianMesh</span></code> constructor
 continues to accept explicit <code class="docutils literal notranslate"><span class="pre">shape</span></code>, <code class="docutils literal notranslate"><span class="pre">spacing</span></code>, and <code class="docutils literal notranslate"><span class="pre">origin</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> evaluates the analytical P1 Green function for a
-<code class="docutils literal notranslate"><span class="pre">HomogeneousMedium</span></code> and <code class="docutils literal notranslate"><span class="pre">PointSource</span></code>. <code class="docutils literal notranslate"><span class="pre">Diffusion</span></code> requires a mapping
+<p><code class="docutils literal notranslate"><span class="pre">InfiniteP1</span></code> evaluates the analytical P1 Green function for a
+<code class="docutils literal notranslate"><span class="pre">HomogeneousMedium</span></code> and <code class="docutils literal notranslate"><span class="pre">PointSource</span></code>. <code class="docutils literal notranslate"><span class="pre">P1</span></code> requires a mapping
 that configures exactly six faces with <code class="docutils literal notranslate"><span class="pre">RobinBoundary</span></code> or
 <code class="docutils literal notranslate"><span class="pre">ReflectingBoundary</span></code> objects. The finite solver accepts <code class="docutils literal notranslate"><span class="pre">SurfaceSource</span></code>,
 <code class="docutils literal notranslate"><span class="pre">SurfaceSourceGroup</span></code>, or <code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code>.</p>
@@ -839,7 +853,7 @@ See <a class="reference internal" href="spectral.html"><span class="doc">Wavelen
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/api_reference.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/api_reference.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

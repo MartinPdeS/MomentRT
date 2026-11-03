@@ -131,7 +131,7 @@ saturation, dark current, or electronic gain.
         medium=sample,
         source=source,
         mesh=mesh,
-        solver=MomentRT.Diffusion(
+        solver=MomentRT.P1(
             boundaries=MomentRT.Boundaries.uniform(
                 condition=MomentRT.RobinBoundary(effective_reflectance=0),
             ),
@@ -313,7 +313,7 @@ by default. Inspect its actual grids and failures before using a recommendation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.899 seconds)
+   **Total running time of the script:** (0 minutes 2.895 seconds)
 
 
 .. _sphx_glr_download_gallery_sources_detectors_broadband_detector.py:

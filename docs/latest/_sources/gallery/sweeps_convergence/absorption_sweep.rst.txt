@@ -37,7 +37,7 @@ fluence reaches a given value. Inputs are illustrative.
     from MomentRT import (
         CartesianMesh,
         HomogeneousMedium,
-        InfiniteDiffusion,
+        InfiniteP1,
         Material,
         PointSource,
         Simulation,
@@ -77,7 +77,7 @@ singularity at the origin.
         optical_power=1 * ureg.milliwatt,
     )
 
-    solver = InfiniteDiffusion()
+    solver = InfiniteP1()
 
 
 
@@ -244,7 +244,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.215 seconds)
+   **Total running time of the script:** (0 minutes 0.213 seconds)
 
 
 .. _sphx_glr_download_gallery_sweeps_convergence_absorption_sweep.py:

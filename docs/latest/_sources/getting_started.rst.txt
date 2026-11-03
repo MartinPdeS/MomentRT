@@ -28,11 +28,11 @@ The base package includes Plotly for interactive figures.
 Choose the physical model first
 -------------------------------
 
-Use :class:`~MomentRT.InfiniteDiffusion` for a homogeneous, unbounded medium
+Use :class:`~MomentRT.InfiniteP1` for a homogeneous, unbounded medium
 with an embedded isotropic point source. Its Cartesian grid only selects where
 the analytical field is evaluated; the grid edges are not physical boundaries.
 
-Use :class:`~MomentRT.Diffusion` for a finite :class:`~MomentRT.StructuredMedium`
+Use :class:`~MomentRT.P1` for a finite :class:`~MomentRT.StructuredMedium`
 illuminated on one of its faces. This model solves the steady P1 diffusion
 equation with linear tetrahedral finite elements and explicitly configured
 conditions on all six faces. It currently requires a common refractive index
@@ -84,7 +84,7 @@ center, so that no mesh node coincides with the point-source singularity.
    from MomentRT import (
        CartesianMesh,
        HomogeneousMedium,
-       InfiniteDiffusion,
+       InfiniteP1,
        Material,
        PointSource,
        Simulation,
@@ -112,7 +112,7 @@ center, so that no mesh node coincides with the point-source singularity.
        optical_power=1 * ureg.milliwatt,
    )
 
-   solver = InfiniteDiffusion()
+   solver = InfiniteP1()
 
    simulation = Simulation(
        medium=medium,
@@ -181,7 +181,7 @@ of operations; the gallery example contains a complete runnable configuration.
        medium=sample,
        source=source,
        mesh=mesh,
-       solver=Diffusion(boundaries=boundaries),
+       solver=P1(boundaries=boundaries),
        detectors={"reflection": detector},
    )
 

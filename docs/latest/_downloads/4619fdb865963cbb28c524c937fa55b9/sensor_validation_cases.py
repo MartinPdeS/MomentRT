@@ -43,6 +43,7 @@ report_path = (
     / "sensor_validation.json"
 )
 report = json.loads(report_path.read_text())
+print(f"Monte Carlo reference revision: {report['reference_revision']}")
 cases = report["cases"]
 solver_names = ("P1", "SP3", "P3")
 detector_offsets_mm = cases[0]["monte_carlo"]["detector_offsets_mm"]

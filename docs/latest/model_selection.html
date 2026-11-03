@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Choose a transport model &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Choose a transport model &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=016a97bc"></script>
+    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -205,6 +205,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -396,6 +403,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -562,11 +576,11 @@ the model from the physical domain and desired result.</p>
 <h2>Start with your question<a class="headerlink" href="#start-with-your-question" title="Link to this heading">#</a></h2>
 <ul class="simple">
 <li><p><strong>What is the fluence around an embedded point source?</strong> Use
-<code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code> for an infinite homogeneous medium. Its Cartesian
+<code class="docutils literal notranslate"><span class="pre">InfiniteP1</span></code> for an infinite homogeneous medium. Its Cartesian
 mesh is an observation window, and the analytical solution is singular
 at the source. It cannot predict escape through a physical surface.</p></li>
 <li><p><strong>What are the fluence and escaping power in a finite sample?</strong> Start with
-<code class="docutils literal notranslate"><span class="pre">Diffusion</span></code> when a P1 approximation is appropriate. Define the sample,
+<code class="docutils literal notranslate"><span class="pre">P1</span></code> when a P1 approximation is appropriate. Define the sample,
 coupled diffuse surface source, mesh, and all six face conditions explicitly.
 Consider <code class="docutils literal notranslate"><span class="pre">SP3</span></code> or <code class="docutils literal notranslate"><span class="pre">P3</span></code> when their additional angular moments and
 supported boundary conditions are relevant to the question.</p></li>
@@ -607,12 +621,12 @@ or determine whether an approximation is accurate for a particular sample.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">InfiniteP1</span></code></p></td>
 <td><p>A homogeneous, unbounded medium with an embedded isotropic point source.</p></td>
 <td><p>Analytical P1 Green function; no physical boundaries or finite source. Singular at the source; diffusion is least reliable nearby. No FEM solve.</p></td>
 <td><p><a class="reference internal" href="gallery/getting_started/infinite_diffusion.html"><span class="doc">Infinite medium</span></a></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">Diffusion</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">P1</span></code></p></td>
 <td><p>A finite sample illuminated by diffuse light on a face.</p></td>
 <td><p>P1 diffusion with continuous fluence, centroid-sampled properties, and explicit six-face conditions. Internal refractive-index jumps are rejected.</p></td>
 <td><p><a class="reference internal" href="gallery/getting_started/surface_diffusion.html"><span class="doc">Finite sample</span></a></p></td>
@@ -718,7 +732,7 @@ are not a direct validation of MomentRT’s finite-element implementation.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/model_selection.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/model_selection.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

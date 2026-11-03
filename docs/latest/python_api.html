@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Python class reference &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Python class reference &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=016a97bc"></script>
+    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -205,6 +205,13 @@
 <li class=" current active">
   <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -393,6 +400,13 @@
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -2346,8 +2360,8 @@ The title reports when only a subset is displayed.</p></li>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="MomentRT.InfiniteDiffusion">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">InfiniteDiffusion</span></span><a class="reference internal" href="_modules/MomentRT/transport/diffusion.html#InfiniteDiffusion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.InfiniteDiffusion" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="MomentRT.InfiniteP1">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">InfiniteP1</span></span><a class="reference internal" href="_modules/MomentRT/transport/infinite_p1.html#InfiniteP1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.InfiniteP1" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Evaluate Phi = P exp(-sqrt(mu_a/D) r) / (4 pi D r).</p>
 <p>No boundary, Fresnel interface, or finite-source correction is applied.
@@ -2357,13 +2371,13 @@ The observation window does not truncate the physical medium.</p>
 No physical outer boundary, Fresnel interface, or finite-source correction
 is applied. The observation window does not truncate the medium.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="MomentRT.InfiniteDiffusion.model_notes">
-<span class="sig-name descname"><span class="pre">model_notes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('InfiniteDiffusion</span> <span class="pre">is</span> <span class="pre">an</span> <span class="pre">analytical</span> <span class="pre">steady-state</span> <span class="pre">P1</span> <span class="pre">Green</span> <span class="pre">function</span> <span class="pre">for</span> <span class="pre">an</span> <span class="pre">embedded</span> <span class="pre">isotropic</span> <span class="pre">point</span> <span class="pre">source</span> <span class="pre">in</span> <span class="pre">a</span> <span class="pre">homogeneous,</span> <span class="pre">unbounded</span> <span class="pre">medium.',</span> <span class="pre">'The</span> <span class="pre">point-source</span> <span class="pre">singularity</span> <span class="pre">is</span> <span class="pre">excluded;</span> <span class="pre">boundaries,</span> <span class="pre">finite</span> <span class="pre">source</span> <span class="pre">footprints,</span> <span class="pre">and</span> <span class="pre">refractive</span> <span class="pre">interfaces</span> <span class="pre">are</span> <span class="pre">not</span> <span class="pre">modeled.',</span> <span class="pre">'P1</span> <span class="pre">diffusion</span> <span class="pre">is</span> <span class="pre">least</span> <span class="pre">reliable</span> <span class="pre">close</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">source</span> <span class="pre">and</span> <span class="pre">where</span> <span class="pre">scattering</span> <span class="pre">does</span> <span class="pre">not</span> <span class="pre">dominate</span> <span class="pre">absorption.')</span></span><a class="headerlink" href="#MomentRT.InfiniteDiffusion.model_notes" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="MomentRT.InfiniteP1.model_notes">
+<span class="sig-name descname"><span class="pre">model_notes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('InfiniteDiffusion</span> <span class="pre">is</span> <span class="pre">an</span> <span class="pre">analytical</span> <span class="pre">steady-state</span> <span class="pre">P1</span> <span class="pre">Green</span> <span class="pre">function</span> <span class="pre">for</span> <span class="pre">an</span> <span class="pre">embedded</span> <span class="pre">isotropic</span> <span class="pre">point</span> <span class="pre">source</span> <span class="pre">in</span> <span class="pre">a</span> <span class="pre">homogeneous,</span> <span class="pre">unbounded</span> <span class="pre">medium.',</span> <span class="pre">'The</span> <span class="pre">point-source</span> <span class="pre">singularity</span> <span class="pre">is</span> <span class="pre">excluded;</span> <span class="pre">boundaries,</span> <span class="pre">finite</span> <span class="pre">source</span> <span class="pre">footprints,</span> <span class="pre">and</span> <span class="pre">refractive</span> <span class="pre">interfaces</span> <span class="pre">are</span> <span class="pre">not</span> <span class="pre">modeled.',</span> <span class="pre">'P1</span> <span class="pre">diffusion</span> <span class="pre">is</span> <span class="pre">least</span> <span class="pre">reliable</span> <span class="pre">close</span> <span class="pre">to</span> <span class="pre">the</span> <span class="pre">source</span> <span class="pre">and</span> <span class="pre">where</span> <span class="pre">scattering</span> <span class="pre">does</span> <span class="pre">not</span> <span class="pre">dominate</span> <span class="pre">absorption.')</span></span><a class="headerlink" href="#MomentRT.InfiniteP1.model_notes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="MomentRT.InfiniteDiffusion.solve">
-<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/transport/diffusion.html#InfiniteDiffusion.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.InfiniteDiffusion.solve" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="MomentRT.InfiniteP1.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/transport/infinite_p1.html#InfiniteP1.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.InfiniteP1.solve" title="Link to this definition">#</a></dt>
 <dd><p>Solve the transport equation for the supplied physical configuration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2391,8 +2405,8 @@ is applied. The observation window does not truncate the medium.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="MomentRT.Diffusion">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">Diffusion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundaries</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/transport/diffusion.html#Diffusion"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.Diffusion" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="MomentRT.P1">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">P1</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundaries</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/transport/p1.html#P1"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.P1" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Steady-state P1 diffusion with linear tetrahedral finite elements.</p>
 <p>Geometry preparation is scoped to a solve or wavelength sweep. No persistent
@@ -2411,13 +2425,13 @@ refractive-index jumps are unsupported. Footprint and unaligned interface
 errors require mesh refinement. Geometry preparation is scoped to a
 solve or sweep, with no persistent cache.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="MomentRT.Diffusion.model_notes">
-<span class="sig-name descname"><span class="pre">model_notes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('Diffusion</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">steady-state</span> <span class="pre">P1</span> <span class="pre">approximation</span> <span class="pre">on</span> <span class="pre">a</span> <span class="pre">finite</span> <span class="pre">sample,</span> <span class="pre">using</span> <span class="pre">linear</span> <span class="pre">tetrahedra</span> <span class="pre">and</span> <span class="pre">centroid-sampled</span> <span class="pre">material</span> <span class="pre">coefficients.',</span> <span class="pre">'Fluence</span> <span class="pre">is</span> <span class="pre">continuous</span> <span class="pre">across</span> <span class="pre">internal</span> <span class="pre">interfaces;</span> <span class="pre">refractive-index</span> <span class="pre">jumps</span> <span class="pre">are</span> <span class="pre">unsupported,</span> <span class="pre">while</span> <span class="pre">absorption</span> <span class="pre">and</span> <span class="pre">reduced</span> <span class="pre">scattering</span> <span class="pre">may</span> <span class="pre">vary.',</span> <span class="pre">'P1</span> <span class="pre">diffusion</span> <span class="pre">is</span> <span class="pre">least</span> <span class="pre">reliable</span> <span class="pre">close</span> <span class="pre">to</span> <span class="pre">illumination</span> <span class="pre">and</span> <span class="pre">in</span> <span class="pre">weakly</span> <span class="pre">scattering</span> <span class="pre">regions;</span> <span class="pre">mesh</span> <span class="pre">refinement</span> <span class="pre">does</span> <span class="pre">not</span> <span class="pre">remove</span> <span class="pre">this</span> <span class="pre">model</span> <span class="pre">error.',</span> <span class="pre">'Robin</span> <span class="pre">effective_reflectance</span> <span class="pre">is</span> <span class="pre">supplied</span> <span class="pre">explicitly</span> <span class="pre">and</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">inferred</span> <span class="pre">from</span> <span class="pre">refractive</span> <span class="pre">index.')</span></span><a class="headerlink" href="#MomentRT.Diffusion.model_notes" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="MomentRT.P1.model_notes">
+<span class="sig-name descname"><span class="pre">model_notes</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">('Diffusion</span> <span class="pre">is</span> <span class="pre">a</span> <span class="pre">steady-state</span> <span class="pre">P1</span> <span class="pre">approximation</span> <span class="pre">on</span> <span class="pre">a</span> <span class="pre">finite</span> <span class="pre">sample,</span> <span class="pre">using</span> <span class="pre">linear</span> <span class="pre">tetrahedra</span> <span class="pre">and</span> <span class="pre">centroid-sampled</span> <span class="pre">material</span> <span class="pre">coefficients.',</span> <span class="pre">'Fluence</span> <span class="pre">is</span> <span class="pre">continuous</span> <span class="pre">across</span> <span class="pre">internal</span> <span class="pre">interfaces;</span> <span class="pre">refractive-index</span> <span class="pre">jumps</span> <span class="pre">are</span> <span class="pre">unsupported,</span> <span class="pre">while</span> <span class="pre">absorption</span> <span class="pre">and</span> <span class="pre">reduced</span> <span class="pre">scattering</span> <span class="pre">may</span> <span class="pre">vary.',</span> <span class="pre">'P1</span> <span class="pre">diffusion</span> <span class="pre">is</span> <span class="pre">least</span> <span class="pre">reliable</span> <span class="pre">close</span> <span class="pre">to</span> <span class="pre">illumination</span> <span class="pre">and</span> <span class="pre">in</span> <span class="pre">weakly</span> <span class="pre">scattering</span> <span class="pre">regions;</span> <span class="pre">mesh</span> <span class="pre">refinement</span> <span class="pre">does</span> <span class="pre">not</span> <span class="pre">remove</span> <span class="pre">this</span> <span class="pre">model</span> <span class="pre">error.',</span> <span class="pre">'Robin</span> <span class="pre">effective_reflectance</span> <span class="pre">is</span> <span class="pre">supplied</span> <span class="pre">explicitly</span> <span class="pre">and</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">inferred</span> <span class="pre">from</span> <span class="pre">refractive</span> <span class="pre">index.')</span></span><a class="headerlink" href="#MomentRT.P1.model_notes" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="MomentRT.Diffusion.solve">
-<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/transport/diffusion.html#Diffusion.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.Diffusion.solve" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="MomentRT.P1.solve">
+<span class="sig-name descname"><span class="pre">solve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">medium</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/transport/p1.html#P1.solve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.P1.solve" title="Link to this definition">#</a></dt>
 <dd><p>Solve the transport equation for the supplied physical configuration.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3023,7 +3037,7 @@ area_weights. Values are not clipped to zero.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.SimulationResult">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SimulationResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_balance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outgoing_power_by_face</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagnostics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SimulationResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SimulationResult" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SimulationResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fluence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flux</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moments</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy_balance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outgoing_power_by_face</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagnostics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_fields</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/simulation.html#SimulationResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SimulationResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Monochromatic transport fields, energy accounting, and measurements.</p>
 <dl class="field-list simple">
@@ -3114,7 +3128,7 @@ Default is None.</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.SimulationResult.summary">
-<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">convergence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SimulationResult.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SimulationResult.summary" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">convergence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/simulation.html#SimulationResult.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SimulationResult.summary" title="Link to this definition">#</a></dt>
 <dd><p>Format detector powers, sampling, energy balance, and diagnostics.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3149,7 +3163,7 @@ Default is None.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.DetectorResult">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">DetectorResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">collected_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampled_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometric_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_escaping_irradiance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#DetectorResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorResult" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">DetectorResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">collected_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampled_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geometric_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angular_fraction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_escaping_irradiance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/detector.html#DetectorResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Finite-aperture diffuse collection and quadrature provenance.</p>
 <dl class="field-list simple">
@@ -3172,8 +3186,55 @@ Default is None.</p></li>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="MomentRT.MeshConvergence">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">MeshConvergence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">simulation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_shapes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_resolutions</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_resolution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact_distance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_rtol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.02</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">progress</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/convergence.html#MeshConvergence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.MeshConvergence" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Configure a detector-power mesh-refinement study at one wavelength.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>simulation</strong> (<a class="reference internal" href="#MomentRT.Simulation" title="MomentRT.Simulation"><em>Simulation</em></a>) – Finite simulation with a surface source and named detectors. Its source
+wavelength is used for every mesh.</p></li>
+<li><p><strong>mesh_shapes</strong> (<em>iterable</em><em> of </em><em>tuple</em><em> of </em><em>int</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Cartesian node shapes, ordered from coarse to fine. Supply exactly one
+of this and <code class="docutils literal notranslate"><span class="pre">mesh_resolutions</span></code>. Default is None.</p></li>
+<li><p><strong>mesh_resolutions</strong> (<em>iterable</em><em> of </em><em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Strictly decreasing tetrahedral target sizes with length units.
+Default is None.</p></li>
+<li><p><strong>contact_resolution</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Tetrahedral target size near source and detector disks. Supply with
+<code class="docutils literal notranslate"><span class="pre">contact_distance</span></code>. Default is None.</p></li>
+<li><p><strong>contact_distance</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Distance from each contact defining local refinement. Default is None.</p></li>
+<li><p><strong>power_rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative detector-power tolerance. Default is 0.01.</p></li>
+<li><p><strong>area_rtol</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative footprint-area tolerance. Default is 0.02.</p></li>
+<li><p><strong>power_atol</strong> (<em>pint.Quantity</em><em> or </em><em>None</em><em>, </em><em>optional</em>) – Absolute detector-power tolerance, with power units. None uses zero.
+Default is None.</p></li>
+<li><p><strong>required_consecutive</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of passing refinements required at the fine end. Default is 2.</p></li>
+<li><p><strong>progress</strong> (<em>bool</em><em>, </em><em>optional</em>) – Print a live table as mesh levels finish. Default is True.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>A passing mesh study does not establish the accuracy of the transport model.
+The simulation is sampled at run time and is not mutated by the study.
+Set the <code class="docutils literal notranslate"><span class="pre">MomentRT.convergence</span></code> logger to INFO for progress and values.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.MeshConvergence.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/convergence.html#MeshConvergence.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.MeshConvergence.run" title="Link to this definition">#</a></dt>
+<dd><p>Run the mesh study with the current simulation configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Per-mesh detector powers, footprint diagnostics, and convergence
+assessment. Unresolved levels and negative outputs are retained.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#MomentRT.DetectorConvergenceResult" title="MomentRT.DetectorConvergenceResult">DetectorConvergenceResult</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.DetectorConvergenceResult">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">DetectorConvergenceResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_geometric_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level_errors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_rtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#DetectorConvergenceResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorConvergenceResult" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">DetectorConvergenceResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">meshes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source_geometric_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level_errors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_rtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/convergence.html#DetectorConvergenceResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorConvergenceResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Detector signals and footprint sampling on successively refined meshes.</p>
 <dl class="field-list simple">
@@ -3291,9 +3352,44 @@ checks is not proof of accuracy of the P1 approximation.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.DetectorConvergenceResult.assessment">
+<span class="sig-name descname"><span class="pre">assessment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/convergence.html#DetectorConvergenceResult.assessment"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorConvergenceResult.assessment" title="Link to this definition">#</a></dt>
+<dd><p>Explain the final convergence decision and any blocking checks.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Final passing-refinement count, requested tolerances, recommendation,
+and reasons the relevant refinement failed, when applicable.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="MomentRT.DetectorConvergenceResult.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/convergence.html#DetectorConvergenceResult.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorConvergenceResult.summary" title="Link to this definition">#</a></dt>
+<dd><p>Describe mesh levels, detector powers, failures, and the assessment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Labeled per-level quantities, footprint errors, relative power
+changes, and the final mesh recommendation, if available.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.DetectorConvergenceResult.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mW'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm^2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#DetectorConvergenceResult.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorConvergenceResult.plot" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mW'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mm^2'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/convergence.html#DetectorConvergenceResult.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.DetectorConvergenceResult.plot" title="Link to this definition">#</a></dt>
 <dd><p>Compare powers, aperture areas, and source area against mesh node count.</p>
+<p>Shaded bands mark power tolerance around each finest-mesh detector
+value and area tolerance around each exact footprint area. Power bands
+include the absolute tolerance and are omitted for unresolved finest
+values. Passing these bands alone does not establish convergence: the
+study also checks adjacent refinements and diagnostic failures.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -3318,7 +3414,7 @@ Default is True.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.SpectralSimulationResult">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SpectralSimulationResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagnostics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SpectralSimulationResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralSimulationResult" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SpectralSimulationResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">diagnostics</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/spectral.html#SpectralSimulationResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralSimulationResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Ordered independent monochromatic solves on one instrument geometry.</p>
 <dl class="field-list simple">
@@ -3342,7 +3438,7 @@ timings when created by Simulation.sweep.</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="MomentRT.SpectralSimulationResult.detectors">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">detectors</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#MomentRT.DetectorResult" title="MomentRT.results.DetectorResult"><span class="pre">DetectorResult</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#MomentRT.SpectralSimulationResult.detectors" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">detectors</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#MomentRT.DetectorResult" title="MomentRT.results.detector.DetectorResult"><span class="pre">DetectorResult</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#MomentRT.SpectralSimulationResult.detectors" title="Link to this definition">#</a></dt>
 <dd><p>Return each detector’s measurements in supplied wavelength order.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -3372,7 +3468,7 @@ are independent solves, not a broadband integral.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.SpectralSimulationResult.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mW'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SpectralSimulationResult.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralSimulationResult.plot" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'nm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mW'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/spectral.html#SpectralSimulationResult.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralSimulationResult.plot" title="Link to this definition">#</a></dt>
 <dd><p>Plot collected power for each detector; no spectral integration is applied.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3398,7 +3494,7 @@ Default is True.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.BroadbandSimulationResult">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BroadbandSimulationResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_optical_power</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#BroadbandSimulationResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.BroadbandSimulationResult" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BroadbandSimulationResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectrum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_optical_power</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/spectral.html#BroadbandSimulationResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.BroadbandSimulationResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Broadband detector predictions and the underlying unit-power solves.</p>
 <dl class="field-list simple">
@@ -3429,7 +3525,7 @@ reference_optical_power. Their fields retain those reference units.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.BroadbandDetectorResult">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BroadbandDetectorResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">responsivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_measurements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#BroadbandDetectorResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.BroadbandDetectorResult" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">BroadbandDetectorResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelengths</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spectral_power</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">responsivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference_measurements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/spectral.html#BroadbandDetectorResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.BroadbandDetectorResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Collected spectral density and its explicit wavelength integrals.</p>
 <dl class="field-list simple">
@@ -3459,7 +3555,7 @@ Supplies the sampled and geometric areas. Default is None.</p></li>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="MomentRT.SpectralConvergenceResult">
-<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SpectralConvergenceResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength_grids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level_errors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent_rtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent_atol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SpectralConvergenceResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralConvergenceResult" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">SpectralConvergenceResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavelength_grids</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">results</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detectors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level_errors</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_rtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent_rtol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_atol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">photocurrent_atol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">required_consecutive</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/convergence.html#SpectralConvergenceResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralConvergenceResult" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Detector power and photocurrent stability on nested wavelength grids.</p>
 <dl class="field-list simple">
@@ -3540,7 +3636,7 @@ These criteria concern wavelength integration, not spatial or model accuracy.</p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.SpectralConvergenceResult.summary">
-<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SpectralConvergenceResult.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralConvergenceResult.summary" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/convergence.html#SpectralConvergenceResult.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralConvergenceResult.summary" title="Link to this definition">#</a></dt>
 <dd><p>Describe wavelength refinement outcomes and the final recommendation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -3554,7 +3650,7 @@ These criteria concern wavelength integration, not spatial or model accuracy.</p
 
 <dl class="py method">
 <dt class="sig sig-object py" id="MomentRT.SpectralConvergenceResult.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uW'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results.html#SpectralConvergenceResult.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralConvergenceResult.plot" title="Link to this definition">#</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uW'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">current_unit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uA'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/MomentRT/results/convergence.html#SpectralConvergenceResult.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#MomentRT.SpectralConvergenceResult.plot" title="Link to this definition">#</a></dt>
 <dd><p>Plot integrated measurements against wavelength sample count.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -3770,14 +3866,14 @@ These criteria concern wavelength integration, not spatial or model accuracy.</p
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.TetrahedralMesh.plot"><code class="docutils literal notranslate"><span class="pre">TetrahedralMesh.plot()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.InfiniteDiffusion"><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.InfiniteDiffusion.model_notes"><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion.model_notes</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.InfiniteDiffusion.solve"><code class="docutils literal notranslate"><span class="pre">InfiniteDiffusion.solve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.InfiniteP1"><code class="docutils literal notranslate"><span class="pre">InfiniteP1</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.InfiniteP1.model_notes"><code class="docutils literal notranslate"><span class="pre">InfiniteP1.model_notes</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.InfiniteP1.solve"><code class="docutils literal notranslate"><span class="pre">InfiniteP1.solve()</span></code></a></li>
 </ul>
 </li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Diffusion"><code class="docutils literal notranslate"><span class="pre">Diffusion</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Diffusion.model_notes"><code class="docutils literal notranslate"><span class="pre">Diffusion.model_notes</span></code></a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.Diffusion.solve"><code class="docutils literal notranslate"><span class="pre">Diffusion.solve()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.P1"><code class="docutils literal notranslate"><span class="pre">P1</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.P1.model_notes"><code class="docutils literal notranslate"><span class="pre">P1.model_notes</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.P1.solve"><code class="docutils literal notranslate"><span class="pre">P1.solve()</span></code></a></li>
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.SP3"><code class="docutils literal notranslate"><span class="pre">SP3</span></code></a><ul class="nav section-nav flex-column">
@@ -3835,12 +3931,18 @@ These criteria concern wavelength integration, not spatial or model accuracy.</p
 </ul>
 </li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorResult"><code class="docutils literal notranslate"><span class="pre">DetectorResult</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.MeshConvergence"><code class="docutils literal notranslate"><span class="pre">MeshConvergence</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.MeshConvergence.run"><code class="docutils literal notranslate"><span class="pre">MeshConvergence.run()</span></code></a></li>
+</ul>
+</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.converged"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.converged</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.recommended_mesh"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.recommended_mesh</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.recommended_shape"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.recommended_shape</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.recommended_resolution"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.recommended_resolution</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.records"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.records</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.assessment"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.assessment()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.summary"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.summary()</span></code></a></li>
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#MomentRT.DetectorConvergenceResult.plot"><code class="docutils literal notranslate"><span class="pre">DetectorConvergenceResult.plot()</span></code></a></li>
 </ul>
 </li>
@@ -3872,7 +3974,7 @@ These criteria concern wavelength integration, not spatial or model accuracy.</p
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/python_api.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/python_api.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

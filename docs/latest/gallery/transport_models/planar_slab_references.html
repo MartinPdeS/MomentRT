@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Compare P1 and SP3 with independent planar slab references &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Compare P1 and SP3 with independent planar slab references &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=016a97bc"></script>
+    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -205,6 +205,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="../../reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -393,6 +400,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -652,7 +666,7 @@ top and bottom faces.</p>
 </span>        <span class="n">medium</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">sample</span></a><span class="p">,</span><span class="w">
 </span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><span class="n">source</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.UniformSurfaceSource" title="MomentRT.UniformSurfaceSource"><span class="n">source</span></a><span class="p">,</span><span class="w">
 </span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.CartesianMesh" title="MomentRT.CartesianMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
-</span>        <span class="n">solver</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Diffusion" title="MomentRT.Diffusion"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Diffusion</span></a><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">boundaries</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="n">solver</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.P1" title="MomentRT.P1"><span class="n">MomentRT</span><span class="o">.</span><span class="n">P1</span></a><span class="p">(</span><span class="n">boundaries</span><span class="o">=</span><span class="n">boundaries</span><span class="p">)</span><span class="p">,</span><span class="w">
 </span>    <span class="p">)</span><span class="p">,</span><span class="w">
 </span>    <span class="s2">&quot;</span><span class="s2">SP3</span><span class="s2">&quot;</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Simulation</span></a><span class="p">(</span><span class="w">
 </span>        <span class="n">medium</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">sample</span></a><span class="p">,</span><span class="w">
@@ -769,7 +783,7 @@ Source sampled area: 4×10⁻⁶ m²
 SP3 relative L2 error against its slab reference: 0.044%
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.223 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.224 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-transport-models-planar-slab-references-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/5bce5bc4b6dfd879171a8a30f2af698a/planar_slab_references.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">planar_slab_references.ipynb</span></code></a></p>
@@ -843,7 +857,7 @@ SP3 relative L2 error against its slab reference: 0.044%
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.9.1/docs/source/gallery/transport_models/planar_slab_references.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/gallery/transport_models/planar_slab_references.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

@@ -13,8 +13,8 @@ import os
 import numpy as np
 import MomentRT
 from MomentRT import (
+    P1,
     CartesianMesh,
-    Diffusion,
     Material,
     RobinBoundary,
     Simulation,
@@ -61,7 +61,7 @@ mesh = CartesianMesh.from_sample(
 
 boundary = RobinBoundary(effective_reflectance=0.4)
 
-solver = Diffusion(
+solver = P1(
     boundaries={
         face: boundary
         for face in ("x_min", "x_max", "y_min", "y_max", "z_min", "z_max")

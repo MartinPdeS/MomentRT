@@ -15,8 +15,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import MomentRT
 from MomentRT import (
+    P1,
     CartesianMesh,
-    Diffusion,
     Material,
     RobinBoundary,
     Simulation,
@@ -59,7 +59,7 @@ boundary = RobinBoundary(
     effective_reflectance=0.5,
 )
 
-solver = Diffusion(
+solver = P1(
     boundaries=MomentRT.Boundaries.uniform(condition=boundary),
 )
 

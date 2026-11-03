@@ -15,7 +15,7 @@ import MomentRT
 from MomentRT import (
     CartesianMesh,
     HomogeneousMedium,
-    InfiniteDiffusion,
+    InfiniteP1,
     Material,
     PointSource,
     Simulation,
@@ -42,7 +42,7 @@ source = PointSource(
     optical_power=1 * ureg.milliwatt,
 )
 
-solver = InfiniteDiffusion()
+solver = InfiniteP1()
 
 # %%
 # Solve at several absorption levels

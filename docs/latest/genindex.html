@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Index &#8212; MomentRT 0.9.1 documentation</title>
+    <title>Index &#8212; MomentRT 0.10.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=016a97bc"></script>
+    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.9.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.9.1" />
+  <meta name="docsearch:version" content="0.10.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -202,6 +202,13 @@
 <li class=" ">
   <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
     Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
   </a>
 </li>
 
@@ -391,6 +398,13 @@
   </a>
 </li>
 
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
+
   </ul>
 </nav></div>
           
@@ -545,6 +559,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.DetectorConvergenceResult.assessment">assessment() (DetectorConvergenceResult method)</a>
+</li>
       <li><a href="python_api.html#MomentRT.DetectorResponsivity.at">at() (DetectorResponsivity method)</a>
 
       <ul>
@@ -645,8 +661,6 @@
 </li>
       <li><a href="python_api.html#MomentRT.SpectralSimulationResult.detectors">detectors (SpectralSimulationResult property)</a>
 </li>
-      <li><a href="python_api.html#MomentRT.Diffusion">Diffusion (class in MomentRT)</a>
-</li>
   </ul></td>
 </tr></table>
 
@@ -703,7 +717,7 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="python_api.html#MomentRT.InfiniteDiffusion">InfiniteDiffusion (class in MomentRT)</a>
+      <li><a href="python_api.html#MomentRT.InfiniteP1">InfiniteP1 (class in MomentRT)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -743,12 +757,14 @@
 </li>
       <li><a href="python_api.html#MomentRT.Simulation.mesh_convergence">mesh_convergence() (Simulation method)</a>
 </li>
+      <li><a href="python_api.html#MomentRT.MeshConvergence">MeshConvergence (class in MomentRT)</a>
+</li>
       <li><a href="python_api.html#MomentRT.SimulationResult.minimum_fluence">minimum_fluence (SimulationResult property)</a>
 </li>
-      <li><a href="python_api.html#MomentRT.Diffusion.model_notes">model_notes (Diffusion attribute)</a>
+      <li><a href="python_api.html#MomentRT.InfiniteP1.model_notes">model_notes (InfiniteP1 attribute)</a>
 
       <ul>
-        <li><a href="python_api.html#MomentRT.InfiniteDiffusion.model_notes">(InfiniteDiffusion attribute)</a>
+        <li><a href="python_api.html#MomentRT.P1.model_notes">(P1 attribute)</a>
 </li>
         <li><a href="python_api.html#MomentRT.P3.model_notes">(P3 attribute)</a>
 </li>
@@ -803,6 +819,8 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.P1">P1 (class in MomentRT)</a>
+</li>
       <li><a href="python_api.html#MomentRT.P3">P3 (class in MomentRT)</a>
 </li>
       <li><a href="python_api.html#MomentRT.PhaseFunction">PhaseFunction (class in MomentRT)</a>
@@ -891,8 +909,12 @@
       </ul></li>
       <li><a href="python_api.html#MomentRT.RobinBoundary">RobinBoundary (class in MomentRT)</a>
 </li>
-      <li><a href="python_api.html#MomentRT.Simulation.run">run() (Simulation method)</a>
+      <li><a href="python_api.html#MomentRT.MeshConvergence.run">run() (MeshConvergence method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.Simulation.run">(Simulation method)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -911,10 +933,10 @@
 </li>
       <li><a href="python_api.html#MomentRT.SimulationResult">SimulationResult (class in MomentRT)</a>
 </li>
-      <li><a href="python_api.html#MomentRT.Diffusion.solve">solve() (Diffusion method)</a>
+      <li><a href="python_api.html#MomentRT.InfiniteP1.solve">solve() (InfiniteP1 method)</a>
 
       <ul>
-        <li><a href="python_api.html#MomentRT.InfiniteDiffusion.solve">(InfiniteDiffusion method)</a>
+        <li><a href="python_api.html#MomentRT.P1.solve">(P1 method)</a>
 </li>
         <li><a href="python_api.html#MomentRT.P3.solve">(P3 method)</a>
 </li>
@@ -929,10 +951,10 @@
 </li>
       <li><a href="python_api.html#MomentRT.SimulationResult.source_sampled_area">source_sampled_area (SimulationResult property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="python_api.html#MomentRT.SourceSpectrum">SourceSpectrum (class in MomentRT)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="python_api.html#MomentRT.SP3">SP3 (class in MomentRT)</a>
 </li>
       <li><a href="python_api.html#MomentRT.Simulation.spectral_convergence">spectral_convergence() (Simulation method)</a>
@@ -949,9 +971,11 @@
 </li>
       <li><a href="python_api.html#MomentRT.StructuredMedium.structures">structures (StructuredMedium property)</a>
 </li>
-      <li><a href="python_api.html#MomentRT.SimulationResult.summary">summary() (SimulationResult method)</a>
+      <li><a href="python_api.html#MomentRT.DetectorConvergenceResult.summary">summary() (DetectorConvergenceResult method)</a>
 
       <ul>
+        <li><a href="python_api.html#MomentRT.SimulationResult.summary">(SimulationResult method)</a>
+</li>
         <li><a href="python_api.html#MomentRT.SpectralConvergenceResult.summary">(SpectralConvergenceResult method)</a>
 </li>
         <li><a href="python_api.html#MomentRT.ValidationReport.summary">(ValidationReport method)</a>

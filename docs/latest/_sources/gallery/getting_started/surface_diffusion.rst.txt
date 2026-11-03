@@ -34,7 +34,7 @@ are equal: refracting internal interfaces are outside this solver's scope.
     import numpy as np
     import MomentRT
     from MomentRT import (
-        Diffusion,
+        P1,
         Material,
         RobinBoundary,
         Simulation,
@@ -184,7 +184,7 @@ not the normal-incidence Fresnel reflectance.
         effective_reflectance=0.5,
     )
 
-    solver = Diffusion(
+    solver = P1(
         boundaries=MomentRT.Boundaries.uniform(condition=boundary),
     )
 
@@ -436,7 +436,7 @@ This view shows the configured geometry and instrument footprints.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.279 seconds)
+   **Total running time of the script:** (0 minutes 1.364 seconds)
 
 
 .. _sphx_glr_download_gallery_getting_started_surface_diffusion.py:

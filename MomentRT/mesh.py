@@ -181,9 +181,7 @@ class CartesianMesh:
         edge_counts = np.asarray([np.prod(shape) for shape in edge_shapes])
         cumulative_counts = np.cumsum(edge_counts)
         total_edges = int(cumulative_counts[-1])
-        selected = np.linspace(
-            0, total_edges - 1, min(max_edges, total_edges), dtype=np.intp
-        )
+        selected = np.arange(total_edges, dtype=np.intp)
         edge_axes = np.searchsorted(cumulative_counts, selected, side="right")
         coordinates = np.empty((len(selected), 3, 3))
         origin = self.origin.to(length_unit).magnitude
@@ -283,7 +281,6 @@ class CartesianMesh:
         context : mapping of str to object
             Shared display units, name, color, and legend group.
         """
-        max_edges = context.get("max_edges", 2000)
         edge_shapes = [
             tuple(count - (index == axis) for index, count in enumerate(self.shape))
             for axis in range(3)
@@ -291,9 +288,7 @@ class CartesianMesh:
         edge_counts = np.asarray([np.prod(shape) for shape in edge_shapes])
         cumulative_counts = np.cumsum(edge_counts)
         total_edges = int(cumulative_counts[-1])
-        selected = np.linspace(
-            0, total_edges - 1, min(max_edges, total_edges), dtype=np.intp
-        )
+        selected = np.arange(total_edges, dtype=np.intp)
         edge_axes = np.searchsorted(cumulative_counts, selected, side="right")
         coordinates = np.empty((len(selected), 3, 3))
         origin = self.origin.to(context["length_unit"]).magnitude
@@ -1169,17 +1164,13 @@ class TetrahedralMesh:
         context : mapping of str to object
             Shared display units, name, color, and legend group.
         """
-        max_edges = context.get("max_edges", 2000)
         pairs = np.array([[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]])
         edges = np.unique(
             np.sort(self._tetrahedra[:, pairs].reshape(-1, 2), axis=1), axis=0
         )
-        selection = np.linspace(
-            0, len(edges) - 1, min(max_edges, len(edges)), dtype=int
-        )
         coordinates = self._points.to(context["length_unit"]).magnitude
-        lines = np.full((len(selection), 3, 3), np.nan)
-        lines[:, :2] = coordinates[edges[selection]]
+        lines = np.full((len(edges), 3, 3), np.nan)
+        lines[:, :2] = coordinates[edges]
         line_points = lines.reshape(-1, 3)
         figure.add_trace(
             MomentRT.plotting.go.Scatter3d(

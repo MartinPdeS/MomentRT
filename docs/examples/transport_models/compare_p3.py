@@ -102,7 +102,7 @@ boundaries = MomentRT.Boundaries.uniform(condition=boundary)
 # model optical interference, fiber modes, or Fresnel entry losses.
 
 solvers = {
-    "P1": MomentRT.Diffusion(boundaries=boundaries),
+    "P1": MomentRT.P1(boundaries=boundaries),
     "SP3": MomentRT.SP3(boundaries=boundaries),
     "P3": MomentRT.P3(boundaries=boundaries),
 }

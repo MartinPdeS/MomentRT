@@ -59,7 +59,7 @@ simulations = {
         medium=sample,
         source=source,
         mesh=mesh,
-        solver=MomentRT.Diffusion(boundaries=boundaries),
+        solver=MomentRT.P1(boundaries=boundaries),
     ),
     "SP3": MomentRT.Simulation(
         medium=sample,

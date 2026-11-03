@@ -175,7 +175,7 @@ def run_case(
         mesh_generation_seconds.append(time.perf_counter() - started)
 
     solver_types: dict[str, Any] = {
-        "P1": MomentRT.Diffusion,
+        "P1": MomentRT.P1,
         "SP3": MomentRT.SP3,
         "P3": MomentRT.P3,
     }

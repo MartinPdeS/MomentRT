@@ -4,7 +4,7 @@ Meshes and local refinement
 For finite samples, start with ``TetrahedralMesh``: it generates unstructured
 linear tetrahedra fitted to material interfaces, with geometric refinement rules.
 P1, SP3, and full P3 also accept ``CartesianMesh``, a uniform grid split into
-tetrahedra by the finite-element solvers. ``InfiniteDiffusion`` uses a
+tetrahedra by the finite-element solvers. ``InfiniteP1`` uses a
 Cartesian observation window. Mesh selection remains explicit in simulations.
 
 Uniform grids

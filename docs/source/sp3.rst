@@ -2,7 +2,7 @@ SP3 transport model
 ===================
 
 The ``SP3`` solver solves a steady-state simplified third-order moment model
-on the same finite tetrahedral mesh as ``Diffusion``. Its unknowns are two
+on the same finite tetrahedral mesh as ``P1``. Its unknowns are two
 coupled composite moments. In planar one-dimensional geometry these equations
 coincide with the corresponding P3 moment equations; in three dimensions SP3
 is a simplification of P3, not the full spherical-harmonics system.

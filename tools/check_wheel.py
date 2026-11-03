@@ -18,6 +18,8 @@ REQUIRED_MODULES = (
     "MomentRT/convergence.py",
     "MomentRT/detector.py",
     "MomentRT/transport/diffusion.py",
+    "MomentRT/transport/p1.py",
+    "MomentRT/transport/infinite_p1.py",
     "MomentRT/fem.py",
     "MomentRT/fields.py",
     "MomentRT/geometry.py",
@@ -27,7 +29,11 @@ REQUIRED_MODULES = (
     "MomentRT/transport/p3.py",
     "MomentRT/phase_function.py",
     "MomentRT/plotting.py",
-    "MomentRT/results.py",
+    "MomentRT/results/__init__.py",
+    "MomentRT/results/convergence.py",
+    "MomentRT/results/detector.py",
+    "MomentRT/results/simulation.py",
+    "MomentRT/results/spectral.py",
     "MomentRT/sections.py",
     "MomentRT/simulation.py",
     "MomentRT/source.py",
@@ -97,7 +103,7 @@ def check_install(*, wheel):
             "location = Path(MomentRT.__file__).resolve(); "
             "assert location.is_relative_to(Path(sys.prefix).resolve()), location; "
             "assert all(hasattr(MomentRT, name) for name in "
-            "('TetrahedralMesh', 'SurfaceDetector', 'SpectralMaterial', 'SpectralSimulationResult', "
+            "('P1', 'InfiniteP1', 'MeshConvergence', 'TetrahedralMesh', 'SurfaceDetector', 'SpectralMaterial', 'SpectralSimulationResult', "
             "'DetectorConvergenceResult', 'SourceSpectrum', 'DetectorResponsivity', "
             "'BroadbandSimulationResult', 'BroadbandDetectorResult', 'SpectralConvergenceResult')); "
             "print(f'Imported MomentRT {MomentRT.__version__} from {location}')"

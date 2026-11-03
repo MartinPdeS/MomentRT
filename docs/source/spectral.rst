@@ -347,7 +347,7 @@ have different anisotropies. Fixed isotropic, Rayleigh, and tabulated phase
 functions supply their own first moment and may omit anisotropy. P1 does not
 require this property.
 
-For finite ``Diffusion``, ``SP3``, and ``P3`` sweeps, the package prepares mesh geometry,
+For finite ``P1``, ``SP3``, and ``P3`` sweeps, the package prepares mesh geometry,
 tetrahedra, element volumes and gradients, centroid material labels, boundary
 triangles, and boundary quadrature once per sweep. It also prepares the
 fixed boundary matrix, source footprint, and normalized source load.

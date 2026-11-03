@@ -221,3 +221,31 @@ def test_point_source_hook_is_shared_with_system_plot(field):
 def test_invalid_overlays_raise_actionable_error(field, overlays):
     with pytest.raises(TypeError, match="overlays|overlay"):
         field.plot(overlays=overlays, show=False)
+
+
+@pytest.mark.parametrize("tetrahedral", [False, True])
+def test_mesh_overlay_displays_all_edges(field, tetrahedral):
+    mesh = CartesianMesh(
+        shape=(11, 11, 11),
+        spacing=np.array([1, 1, 1]) * ureg.mm,
+        origin=np.array([0, 0, 0]) * ureg.mm,
+    )
+
+    if tetrahedral:
+        geometry = MomentRT.fem._MeshGeometry(mesh=mesh)
+        mesh = MomentRT.TetrahedralMesh(
+            points=geometry.points * ureg.m,
+            tetrahedra=geometry.tetrahedra,
+        )
+        pairs = np.array([[0, 1], [0, 2], [0, 3], [1, 2], [1, 3], [2, 3]])
+        edges = np.unique(
+            np.sort(mesh.tetrahedra[:, pairs].reshape(-1, 2), axis=1), axis=0
+        )
+        expected = len(edges)
+    else:
+        expected = 3 * 10 * 11 * 11
+
+    figure = field.plot(overlays=[mesh], show=False)
+
+    assert expected > 2000
+    assert len(figure.data[-1].x) == 3 * expected

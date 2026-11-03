@@ -20,6 +20,8 @@ import MomentRT.simulation
 import MomentRT.source
 import MomentRT.transport
 import MomentRT.transport.diffusion
+import MomentRT.transport.infinite_p1
+import MomentRT.transport.p1
 import MomentRT.transport.p3
 import MomentRT.transport.sp3
 import MomentRT.units
@@ -36,6 +38,8 @@ SourceSpectrum = MomentRT.source.SourceSpectrum
 BroadbandDetectorResult = MomentRT.results.BroadbandDetectorResult
 BroadbandSimulationResult = MomentRT.results.BroadbandSimulationResult
 SpectralConvergenceResult = MomentRT.results.SpectralConvergenceResult
+P1 = MomentRT.transport.p1.P1
+InfiniteP1 = MomentRT.transport.infinite_p1.InfiniteP1
 Diffusion = MomentRT.transport.diffusion.Diffusion
 InfiniteDiffusion = MomentRT.transport.diffusion.InfiniteDiffusion
 BoundaryField = MomentRT.fields.BoundaryField
@@ -54,6 +58,7 @@ HomogeneousMedium = MomentRT.medium.HomogeneousMedium
 StructuredMedium = MomentRT.medium.StructuredMedium
 CartesianMesh = MomentRT.mesh.CartesianMesh
 TetrahedralMesh = MomentRT.mesh.TetrahedralMesh
+MeshConvergence = MomentRT.convergence.MeshConvergence
 DetectorConvergenceResult = MomentRT.results.DetectorConvergenceResult
 DetectorResult = MomentRT.results.DetectorResult
 SimulationResult = MomentRT.results.SimulationResult
@@ -87,11 +92,14 @@ __all__ = [
     "Isotropic",
     "Rayleigh",
     "TabulatedPhaseFunction",
+    "P1",
+    "InfiniteP1",
     "P3",
     "ValidationReport",
     "Boundaries",
     "SP3",
     "TransportSolver",
+    "MeshConvergence",
     "DetectorConvergenceResult",
     "DetectorResolutionError",
     "SourceResolutionError",

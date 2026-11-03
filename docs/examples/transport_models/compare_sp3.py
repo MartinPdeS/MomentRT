@@ -67,7 +67,7 @@ boundaries = {face: boundary for face in MomentRT.boundary.FACES}
 # A zero-reflectance Robin face means a matched-index boundary for this SP3
 # formulation. The illumination is isotropic in the incoming hemisphere.
 
-p1_solver = MomentRT.Diffusion(boundaries=boundaries)
+p1_solver = MomentRT.P1(boundaries=boundaries)
 
 sp3_solver = MomentRT.SP3(boundaries=boundaries)
 

@@ -1,4 +1,4 @@
-"""Results retain physical fields and their provenance."""
+"""Convergence result containers."""
 
 from __future__ import annotations
 import copy
@@ -6,388 +6,7 @@ from collections.abc import Mapping, Sequence
 from typing import cast
 import numpy as np
 from pint import Quantity
-from scipy import integrate
 import MomentRT
-
-
-def _energy_accounting(
-    *,
-    incoming_power: Quantity,
-    absorbed_watts: float,
-    escaping_watts: Mapping[MomentRT.boundary.Face, float],
-) -> tuple[dict[str, Quantity], dict[str, Quantity]]:
-    """Package finite-solver power accounting without changing signed outputs.
-
-    Parameters
-    ----------
-    incoming_power : pint.Quantity
-        Incoming coupled power, with power units.
-    absorbed_watts : float
-        Integrated absorption in watts.
-    escaping_watts : mapping of str to float
-        Signed escaping power by face in watts.
-
-    Returns
-    -------
-    tuple of dict
-        Energy balance and per-face escaping powers, both with power units.
-    """
-    watt = MomentRT.units.ureg.watt
-
-    escaping_total = sum(escaping_watts.values())
-
-    balance = {
-        "incoming_power": incoming_power.copy(),
-        "absorbed_power": absorbed_watts * watt,
-        "escaping_power": escaping_total * watt,
-        "residual_power": (
-            incoming_power.to("W").magnitude - absorbed_watts - escaping_total
-        )
-        * watt,
-    }
-
-    by_face: dict[str, Quantity] = {
-        face: value * watt for face, value in escaping_watts.items()
-    }
-
-    return balance, by_face
-
-
-class SimulationResult:
-    """Monochromatic transport fields, energy accounting, and measurements.
-
-    Parameters
-    ----------
-    fluence : ScalarField
-        Nodal fluence rate, with power-per-area units.
-    flux : VectorField or None, optional
-        Element-centered diffuse current density, with power-per-area units.
-        Default is None.
-    moments : mapping of str to ScalarField, or None, optional
-        Additional solver-specific nodal moment fields.
-    energy_balance : mapping of str to pint.Quantity, or None, optional
-        Incoming, absorbed, net outward, and residual power accounting.
-        Default is None.
-    outgoing_power_by_face : mapping of str to pint.Quantity, or None, optional
-        Escaping transmitted power per complete sample face; not a finite
-        aperture measurement.
-        Default is None.
-    diagnostics : mapping of str to object, or None, optional
-        Numerical provenance, residuals, geometry statistics, or timing quantities.
-        Default is None.
-    boundary_fields : mapping of str to BoundaryField, or None, optional
-        Per-face snapshots of escaping-irradiance quadrature samples.
-        Default is None.
-    detectors : mapping of str to DetectorResult, or None, optional
-        Named finite-aperture measurements already evaluated on this solution.
-        Default is None.
-
-    Attributes
-    ----------
-    fluence : ScalarField
-        Nodal fluence rate with power-per-area units.
-    flux : VectorField or None
-        Element-centered current density, absent for the infinite Green function.
-    boundary_fields : dict of str to BoundaryField
-        Quadrature snapshots for finite-sample contact measurements.
-    detectors : dict of str to DetectorResult
-        Evaluated measurements, keyed by detector name.
-    diagnostics : dict of str to object
-        Solver provenance, residuals, and resolution statistics.
-    """
-
-    def __init__(
-        self,
-        *,
-        fluence: MomentRT.fields.ScalarField,
-        flux: MomentRT.fields.VectorField | None = None,
-        moments: Mapping[str, MomentRT.fields.ScalarField] | None = None,
-        energy_balance: Mapping[str, Quantity] | None = None,
-        outgoing_power_by_face: Mapping[str, Quantity] | None = None,
-        diagnostics: Mapping[str, object] | None = None,
-        boundary_fields: Mapping[str, MomentRT.fields.BoundaryField] | None = None,
-        detectors: Mapping[str, MomentRT.results.DetectorResult] | None = None,
-    ) -> None:
-        """Initialize the SimulationResult configuration.
-
-        Parameters
-        ----------
-        fluence : ScalarField
-            Nodal fluence rate, with power-per-area units.
-        flux : VectorField or None, optional
-            Element-centered diffuse current density, with power-per-area units.
-            Default is None.
-        moments : mapping of str to ScalarField, or None, optional
-            Additional solver-specific nodal moment fields.
-        energy_balance : mapping of str to pint.Quantity, or None, optional
-            Incoming, absorbed, net outward, and residual power accounting.
-            Default is None.
-        outgoing_power_by_face : mapping of str to pint.Quantity, or None, optional
-            Escaping transmitted power per complete sample face; not a finite
-            aperture measurement.
-            Default is None.
-        diagnostics : mapping of str to object, or None, optional
-            Numerical provenance, residuals, geometry statistics, or timing quantities.
-            Default is None.
-        boundary_fields : mapping of str to BoundaryField, or None, optional
-            Per-face snapshots of escaping-irradiance quadrature samples.
-            Default is None.
-        detectors : mapping of str to DetectorResult, or None, optional
-            Named finite-aperture measurements already evaluated on this solution.
-            Default is None.
-        """
-
-        self.fluence = fluence
-
-        self.flux = flux
-
-        self.moments = dict(moments or {})
-
-        self.energy_balance = dict(energy_balance or {})
-
-        self.outgoing_power_by_face = dict(outgoing_power_by_face or {})
-
-        self.diagnostics = dict(diagnostics or {})
-
-        self.boundary_fields = dict(boundary_fields or {})
-
-        self.detectors = dict(detectors or {})
-
-    @property
-    def source_sampled_area(self) -> Quantity | None:
-        """Return the sampled source footprint area, when available.
-
-        Returns
-        -------
-        pint.Quantity or None
-            Sampled area with physical units, or None for an infinite solution.
-        """
-        return cast(Quantity | None, self.diagnostics.get("source_quadrature_area"))
-
-    @property
-    def source_geometric_area(self) -> Quantity | None:
-        """Return the exact source footprint area, when available.
-
-        Returns
-        -------
-        pint.Quantity or None
-            Geometric area with physical units, or None for an infinite solution.
-        """
-        return cast(Quantity | None, self.diagnostics.get("source_geometric_area"))
-
-    @property
-    def linear_relative_residual(self) -> float | None:
-        """Return the relative linear-system residual, when available.
-
-        Returns
-        -------
-        float or None
-            Relative residual, or None for an analytical solution.
-        """
-        return cast(float | None, self.diagnostics.get("linear_relative_residual"))
-
-    @property
-    def minimum_fluence(self) -> Quantity | None:
-        """Return the minimum nodal fluence, when recorded by the solver.
-
-        Returns
-        -------
-        pint.Quantity or None
-            Minimum fluence rate; negative values are not clipped.
-        """
-        return cast(Quantity | None, self.diagnostics.get("minimum_fluence"))
-
-    def summary(
-        self, *, convergence: MomentRT.results.DetectorConvergenceResult | None = None
-    ) -> str:
-        """Format detector powers, sampling, energy balance, and diagnostics.
-
-        Parameters
-        ----------
-        convergence : DetectorConvergenceResult or None, optional
-            Separately supplied convergence study to summarize. The caller must
-            verify it applies to this result; None means none was supplied.
-            Default is None.
-
-        Returns
-        -------
-        str
-            Human-readable result summary with the stored physical units.
-        """
-        lines = ["Transport result"]
-
-        transport = self.fluence.metadata.get("transport")
-
-        if transport is not None:
-            lines.append(f"Model: {transport}")
-
-        wavelength = self.fluence.metadata.get("wavelength")
-
-        if isinstance(wavelength, Quantity):
-            lines.append(f"Wavelength: {wavelength:~P}")
-
-        lines.append(f"Mesh shape: {self.fluence.mesh.shape}")
-
-        if convergence is None:
-            lines.append(
-                "Convergence study: not supplied; convergence is not established."
-            )
-        else:
-            lines.append(
-                f"Supplied convergence study: {'converged' if convergence.converged else 'not converged'}; "
-                f"recommended mesh: {convergence.recommended_shape}. "
-                "Verify that the study applies to this result."
-            )
-
-        for name, measurement in self.detectors.items():
-            lines.append(
-                f"Detector {name}: {measurement.collected_power:~P} (sampled area {measurement.sampled_area:~P}; geometric area {measurement.geometric_area:~P})"
-            )
-
-            if measurement.minimum_escaping_irradiance.magnitude < 0:
-                lines.append(
-                    f"Warning: detector {name} samples negative escaping irradiance."
-                )
-
-            area_error = abs(
-                (measurement.sampled_area / measurement.geometric_area).to("").magnitude
-                - 1
-            )
-
-            if area_error > 0.02:
-                lines.append(
-                    f"Warning: detector {name} sampled area differs from geometric area by {area_error:.1%}."
-                )
-
-        if (
-            self.source_sampled_area is not None
-            and self.source_geometric_area is not None
-        ):
-            lines.append(
-                f"Source sampled area: {self.source_sampled_area:~P}; geometric area: {self.source_geometric_area:~P}"
-            )
-
-            area_error = abs(
-                (self.source_sampled_area / self.source_geometric_area).to("").magnitude
-                - 1
-            )
-
-            if area_error > 0.02:
-                lines.append(
-                    f"Warning: source sampled area differs from geometric area by {area_error:.1%}."
-                )
-
-        for name, power in self.energy_balance.items():
-            lines.append(f"{name.replace('_', ' ').capitalize()}: {power:~P}")
-
-        if self.linear_relative_residual is not None:
-            lines.append(
-                f"Linear relative residual: {self.linear_relative_residual:.3g}"
-            )
-
-        if self.minimum_fluence is not None and self.minimum_fluence.magnitude < 0:
-            lines.append(
-                f"Warning: minimum fluence is negative: {self.minimum_fluence:~P}"
-            )
-
-        return "\n".join(lines)
-
-    @property
-    def detector_power(self) -> dict[str, Quantity]:
-        """Return collected powers keyed by detector name.
-
-        Returns
-        -------
-        dict of str to pint.Quantity
-            Collected optical powers keyed by detector name.
-        """
-
-        return {
-            name: measurement.collected_power
-            for name, measurement in self.detectors.items()
-        }
-
-
-class DetectorResult:
-    """Finite-aperture diffuse collection and quadrature provenance.
-
-    Parameters
-    ----------
-    collected_power : pint.Quantity
-        Integrated accepted diffuse optical power, with power units.
-    sampled_area : pint.Quantity
-        Aperture area represented by selected quadrature weights.
-        It is not normalized to the geometric area.
-    geometric_area : pint.Quantity
-        Exact circular aperture area, with area units.
-    angular_fraction : float
-        Fraction of Lambertian escaping irradiance accepted by the cone.
-    wavelength : pint.Quantity
-        Positive scalar vacuum wavelength, with length units.
-    minimum_escaping_irradiance : pint.Quantity
-        Smallest sampled escaping irradiance inside the aperture.
-        Negative values flag discretization artifacts and remain unchanged.
-    detector : SurfaceDetector
-        Snapshot of the aperture and angular collection configuration.
-    photocurrent : pint.Quantity or None, optional
-        Linear electrical current in amperes when responsivity is configured.
-        Default is None.
-    """
-
-    def __init__(
-        self,
-        *,
-        collected_power: Quantity,
-        sampled_area: Quantity,
-        geometric_area: Quantity,
-        angular_fraction: float,
-        wavelength: Quantity,
-        minimum_escaping_irradiance: Quantity,
-        detector: MomentRT.detector.SurfaceDetector,
-        photocurrent: Quantity | None = None,
-    ) -> None:
-        """Initialize the DetectorResult configuration.
-
-        Parameters
-        ----------
-        collected_power : pint.Quantity
-            Integrated accepted diffuse optical power, with power units.
-        sampled_area : pint.Quantity
-            Aperture area represented by selected quadrature weights.
-            It is not normalized to the geometric area.
-        geometric_area : pint.Quantity
-            Exact circular aperture area, with area units.
-        angular_fraction : float
-            Fraction of Lambertian escaping irradiance accepted by the cone.
-        wavelength : pint.Quantity
-            Positive scalar vacuum wavelength, with length units.
-        minimum_escaping_irradiance : pint.Quantity
-            Smallest sampled escaping irradiance inside the aperture.
-            Negative values flag discretization artifacts and remain unchanged.
-        detector : SurfaceDetector
-            Snapshot of the aperture and angular collection configuration.
-        photocurrent : pint.Quantity or None, optional
-            Linear electrical current in amperes when responsivity is configured.
-            Default is None.
-        """
-
-        self.photocurrent = photocurrent
-
-        self.collected_power = collected_power
-
-        self.sampled_area = sampled_area
-
-        self.geometric_area = geometric_area
-
-        self.angular_fraction = angular_fraction
-
-        self.wavelength = wavelength.copy()
-
-        self.minimum_escaping_irradiance = minimum_escaping_irradiance
-
-        self.detector = detector
-
-        self.angular_model = "Lambertian escaping radiance"
 
 
 class DetectorConvergenceResult:
@@ -803,10 +422,163 @@ class DetectorConvergenceResult:
             for index, shape in enumerate(self.mesh_shapes)
         ]
 
+    def assessment(self) -> str:
+        """Explain the final convergence decision and any blocking checks.
+
+        Returns
+        -------
+        str
+            Final passing-refinement count, requested tolerances, recommendation,
+            and reasons the relevant refinement failed, when applicable.
+        """
+        final_streak = int(self.stable_refinements[-1])
+        lines = [
+            f"Converged: {self.converged}",
+            f"Consecutive passing refinements at the fine end: "
+            f"{final_streak} of {self.required_consecutive} required.",
+            f"Tolerances: power {self.power_rtol:.2%} relative + "
+            f"{self.power_atol.to('uW').magnitude:.4g} µW absolute; "
+            f"footprint area {self.area_rtol:.2%} relative.",
+        ]
+
+        if self.converged:
+            if self.recommended_resolution is not None:
+                recommendation = f"{self.recommended_resolution:~P} target resolution"
+            elif self.recommended_shape is not None:
+                recommendation = f"Cartesian shape {self.recommended_shape}"
+            else:
+                recommendation = (
+                    f"mesh with {self.node_counts[self.recommended_index]} nodes"
+                )
+            lines.append(f"Recommended mesh: {recommendation}.")
+            return "\n".join(lines)
+
+        lines.append("No mesh is recommended.")
+        failed_index = len(self.meshes) - 1 - final_streak
+
+        if failed_index <= 0:
+            lines.append(
+                "Not enough successive passing refinements are available; "
+                "add finer mesh levels and repeat the study."
+            )
+            if failed_index < 0:
+                return "\n".join(lines)
+
+        if failed_index > 0:
+            lines.append(f"Most recent failing refinement: level {failed_index}.")
+
+        source_error = self.source_area_relative_error[failed_index]
+        if not np.isfinite(source_error):
+            lines.append("  Source footprint area is unavailable.")
+        elif source_error > self.area_rtol:
+            lines.append(
+                f"  Source footprint area error {source_error:.2%} exceeds "
+                f"{self.area_rtol:.2%}."
+            )
+
+        for name in self.detectors:
+            area_error = self.detector_area_relative_error[name][failed_index]
+            if not np.isfinite(area_error):
+                lines.append(f"  Detector {name}: footprint area is unavailable.")
+            elif area_error > self.area_rtol:
+                lines.append(
+                    f"  Detector {name}: footprint area error {area_error:.2%} "
+                    f"exceeds {self.area_rtol:.2%}."
+                )
+
+            if failed_index > 0 and not self.power_within_tolerance[name][failed_index]:
+                relative = self.power_relative_change[name][failed_index]
+                if np.isnan(relative):
+                    lines.append(f"  Detector {name}: power comparison is unavailable.")
+                else:
+                    delta = (
+                        abs(
+                            self.detector_power[name][failed_index]
+                            - self.detector_power[name][failed_index - 1]
+                        )
+                        .to("uW")
+                        .magnitude
+                    )
+                    current = (
+                        abs(self.detector_power[name][failed_index]).to("uW").magnitude
+                    )
+                    limit = (
+                        self.power_atol.to("uW").magnitude + self.power_rtol * current
+                    )
+                    lines.append(
+                        f"  Detector {name}: power changed by {delta:.4g} µW; "
+                        f"allowed change is {limit:.4g} µW."
+                    )
+
+        for label, message in self.level_errors[failed_index].items():
+            lines.append(f"  {label}: {message}")
+
+        if final_streak < self.required_consecutive and failed_index > 0:
+            lines.append("Refine the mesh further and repeat the study.")
+        elif final_streak >= self.required_consecutive:
+            lines.append(
+                "The final passing sequence did not satisfy the comparison "
+                "against the finest mesh. Refine further and repeat the study."
+            )
+
+        return "\n".join(lines)
+
+    def summary(self) -> str:
+        """Describe mesh levels, detector powers, failures, and the assessment.
+
+        Returns
+        -------
+        str
+            Labeled per-level quantities, footprint errors, relative power
+            changes, and the final mesh recommendation, if available.
+        """
+        lines = [f"Detector mesh convergence at {self.wavelength:~P}"]
+
+        for index, mesh in enumerate(self.meshes):
+            description = (
+                f"shape {mesh.shape}"
+                if isinstance(mesh, MomentRT.mesh.CartesianMesh)
+                else f"target resolution {self.mesh_resolutions[index]:~P}"
+                if self.mesh_resolutions[index] is not None
+                else "imported tetrahedral mesh"
+            )
+
+            lines.append(
+                f"Level {index}: {description}; {self.node_counts[index]} nodes; "
+                f"source area error {self.source_area_relative_error[index]:.2%}; "
+                f"meets tolerances: {bool(self.meets_tolerances[index])}"
+            )
+
+            for name, powers in self.detector_power.items():
+                power = powers[index].to("uW").magnitude
+                relative_change = self.power_relative_change[name][index]
+                change_text = (
+                    f"{relative_change:.2%}" if np.isfinite(relative_change) else "—"
+                )
+                lines.append(
+                    f"  {name}: power {power:.4g} µW; "
+                    f"area error {self.detector_area_relative_error[name][index]:.2%}; "
+                    f"relative power change {change_text}"
+                )
+
+            if self.level_errors[index]:
+                for label, message in self.level_errors[index].items():
+                    lines.append(f"  {label}: {message}")
+
+        lines.append(self.assessment())
+
+        return "\n".join(lines)
+
     def plot(
         self, *, power_unit: str = "mW", area_unit: str = "mm^2", show: bool = True
     ) -> MomentRT.plotting.Figure:
         """Compare powers, aperture areas, and source area against mesh node count.
+
+        Shaded bands mark power tolerance around each finest-mesh detector
+        value and area tolerance around each exact footprint area. Power bands
+        include the absolute tolerance and are omitted for unresolved finest
+        values. Passing these bands alone does not establish convergence: the
+        study also checks adjacent refinements and diagnostic failures.
 
         Parameters
         ----------
@@ -832,9 +604,9 @@ class DetectorConvergenceResult:
             rows=1,
             cols=3,
             subplot_titles=(
-                "Collected power",
-                "Detector sampled area",
-                "Source sampled area",
+                f"Power: {self.power_rtol:.1%} + absolute tolerance",
+                f"Detector area: ±{self.area_rtol:.1%}",
+                f"Source area: ±{self.area_rtol:.1%}",
             ),
         )
 
@@ -842,6 +614,40 @@ class DetectorConvergenceResult:
             color = MomentRT.plotting.qualitative.Plotly[
                 number % len(MomentRT.plotting.qualitative.Plotly)
             ]
+
+            finest_power = self.detector_power[name][-1].to(power_unit).magnitude
+
+            if np.isfinite(finest_power):
+                power_tolerance = (
+                    self.power_rtol * abs(finest_power)
+                    + self.power_atol.to(power_unit).magnitude
+                )
+
+                figure.add_hrect(
+                    y0=finest_power - power_tolerance,
+                    y1=finest_power + power_tolerance,
+                    fillcolor=color,
+                    opacity=0.12,
+                    line_width=0,
+                    layer="below",
+                    exclude_empty_subplots=False,
+                    row=1,
+                    col=1,
+                )
+
+            geometric_area = self.detector_geometric_area[name].to(area_unit).magnitude
+
+            figure.add_hrect(
+                y0=geometric_area * (1 - self.area_rtol),
+                y1=geometric_area * (1 + self.area_rtol),
+                fillcolor=color,
+                opacity=0.12,
+                line_width=0,
+                layer="below",
+                exclude_empty_subplots=False,
+                row=1,
+                col=2,
+            )
 
             for column, values in (
                 (1, self.detector_power[name].to(power_unit).magnitude),
@@ -878,6 +684,20 @@ class DetectorConvergenceResult:
                 col=2,
             )
 
+        source_area = self.source_geometric_area.to(area_unit).magnitude
+
+        figure.add_hrect(
+            y0=source_area * (1 - self.area_rtol),
+            y1=source_area * (1 + self.area_rtol),
+            fillcolor="crimson",
+            opacity=0.12,
+            line_width=0,
+            layer="below",
+            exclude_empty_subplots=False,
+            row=1,
+            col=3,
+        )
+
         for label, values, dash in (
             (
                 "Source sampled area",
@@ -906,6 +726,23 @@ class DetectorConvergenceResult:
                 col=3,
             )
 
+        # Plotly does not include layout shapes in autoranging. Invisible
+        # points keep the full tolerance bands visible on each y axis.
+        for band in figure.layout.shapes:
+            column = {"y": 1, "y2": 2, "y3": 3}[band.yref]
+            figure.add_trace(
+                go.Scatter(
+                    x=[self.node_counts[0], self.node_counts[-1]],
+                    y=[band.y0, band.y1],
+                    mode="markers",
+                    marker={"opacity": 0},
+                    hoverinfo="skip",
+                    showlegend=False,
+                ),
+                row=1,
+                col=column,
+            )
+
         figure.update_xaxes(
             title_text="Mesh nodes",
             type="log",
@@ -915,17 +752,20 @@ class DetectorConvergenceResult:
             tickangle=-35,
         )
 
-        figure.update_yaxes(title_text=f"Power [{power_unit}]", row=1, col=1)
+        figure.update_yaxes(
+            title_text=f"Power [{power_unit}]; band around finest mesh", row=1, col=1
+        )
 
         figure.update_yaxes(title_text=f"Area [{area_unit}]", row=1, col=2)
 
         figure.update_yaxes(title_text=f"Area [{area_unit}]", row=1, col=3)
 
-        recommendation = (
-            "no mesh meets the criteria"
-            if not self.converged
-            else f"recommended {self.recommended_shape}"
-        )
+        if not self.converged:
+            recommendation = "no mesh meets the criteria"
+        elif self.recommended_resolution is not None:
+            recommendation = f"recommended {self.recommended_resolution:~P}"
+        else:
+            recommendation = f"recommended {self.recommended_shape}"
 
         figure.update_layout(
             template="plotly_white",
@@ -1313,383 +1153,4 @@ class SpectralConvergenceResult:
         figure.update_layout(title="Wavelength integration convergence")
         if show:
             figure.show()
-        return figure
-
-
-class BroadbandDetectorResult:
-    """Collected spectral density and its explicit wavelength integrals.
-
-    Parameters
-    ----------
-    wavelengths : pint.Quantity
-        Strictly increasing positive vacuum wavelengths, shape (n,), n >= 2.
-    spectral_power : pint.Quantity
-        Collected power density, shape (n,), with W / length units. Negative
-        numerical outputs are retained. Integration uses the supplied endpoints.
-    responsivity : DetectorResponsivity or None, optional
-        Linear electrical response. None leaves photocurrent unavailable.
-        Default is None.
-    reference_measurements : sequence of DetectorResult or None, optional
-        Measurements on the same aperture and mesh, one per wavelength.
-        Supplies the sampled and geometric areas. Default is None.
-
-    Attributes
-    ----------
-    spectral_power : pint.Quantity
-        Signed collected power density in its supplied W / length units.
-    collected_power : pint.Quantity
-        Trapezoidal optical integral in watts.
-    photocurrent : pint.Quantity or None
-        Trapezoidal electrical integral in amperes when responsivity is supplied.
-    responsivity : DetectorResponsivity or None
-        Snapshot of the linear response used for electrical conversion.
-    sampled_area : pint.Quantity or None
-        Shared sampled aperture area. None when no geometry was supplied.
-    geometric_area : pint.Quantity or None
-        Shared exact aperture area. None when no geometry was supplied.
-    """
-
-    def __init__(
-        self,
-        *,
-        wavelengths: Quantity,
-        spectral_power: Quantity,
-        responsivity: MomentRT.detector.DetectorResponsivity | None = None,
-        reference_measurements: Sequence[MomentRT.results.DetectorResult] | None = None,
-    ) -> None:
-        """Integrate collected optical density and optional electrical response.
-
-        Parameters
-        ----------
-        wavelengths : pint.Quantity
-            Strictly increasing positive vacuum wavelengths, shape (n,), n >= 2.
-        spectral_power : pint.Quantity
-            Signed collected spectral power density, shape (n,), in W / length.
-        responsivity : DetectorResponsivity or None, optional
-            Linear spectral electrical response. Default is None.
-        reference_measurements : sequence of DetectorResult or None, optional
-            Same-aperture measurements on the wavelength grid. Default is None.
-        """
-        MomentRT.units.validate_units(
-            value=wavelengths, unit="m", name="wavelengths", positive=True
-        )
-        if wavelengths.ndim != 1 or len(wavelengths) < 2:
-            raise ValueError("wavelengths must contain at least two samples.")
-        grid = wavelengths.to("m").magnitude
-        if np.any(np.diff(grid) <= 0):
-            raise ValueError("wavelengths must be strictly increasing.")
-        MomentRT.units.validate_units(
-            value=spectral_power,
-            unit="W/m",
-            name="spectral_power",
-            shape=wavelengths.shape,
-        )
-        self.wavelengths = wavelengths.copy()
-        self.spectral_power = spectral_power.copy()
-        self.responsivity = copy.deepcopy(responsivity)
-        self.reference_measurements = tuple(copy.deepcopy(reference_measurements or ()))
-        self.sampled_area: Quantity | None = None
-        self.geometric_area: Quantity | None = None
-        self.angular_fraction: float | None = None
-        self.detector: MomentRT.detector.SurfaceDetector | None = None
-        self.angular_model = "Lambertian escaping radiance"
-        if self.reference_measurements:
-            if len(self.reference_measurements) != len(wavelengths):
-                raise ValueError("Supply one reference measurement per wavelength.")
-            first = self.reference_measurements[0]
-            for index, measurement in enumerate(self.reference_measurements):
-                if not np.isclose(
-                    measurement.wavelength.to("m").magnitude,
-                    wavelengths[index].to("m").magnitude,
-                    rtol=1e-12,
-                    atol=0,
-                ):
-                    raise ValueError(
-                        "Reference measurement wavelengths must match the grid."
-                    )
-                if (
-                    not np.isclose(
-                        measurement.sampled_area.to("m^2").magnitude,
-                        first.sampled_area.to("m^2").magnitude,
-                        rtol=1e-12,
-                        atol=0,
-                    )
-                    or not np.isclose(
-                        measurement.geometric_area.to("m^2").magnitude,
-                        first.geometric_area.to("m^2").magnitude,
-                        rtol=1e-12,
-                        atol=0,
-                    )
-                    or measurement.angular_fraction != first.angular_fraction
-                ):
-                    raise ValueError(
-                        "Broadband measurements must use the same aperture quadrature."
-                    )
-            self.sampled_area = first.sampled_area.copy()
-            self.geometric_area = first.geometric_area.copy()
-            self.angular_fraction = first.angular_fraction
-            self.detector = copy.deepcopy(first.detector)
-        self.collected_power = (
-            integrate.trapezoid(spectral_power.to("W/m").magnitude, x=grid)
-            * MomentRT.units.ureg.watt
-        )
-        self.spectral_photocurrent: Quantity | None = None
-        self.photocurrent: Quantity | None = None
-        if self.responsivity is not None:
-            self.spectral_photocurrent = spectral_power * self.responsivity.at(
-                wavelength=wavelengths
-            )
-            self.photocurrent = (
-                integrate.trapezoid(
-                    self.spectral_photocurrent.to("A/m").magnitude,
-                    x=grid,
-                )
-                * MomentRT.units.ureg.ampere
-            )
-
-
-class BroadbandSimulationResult:
-    """Broadband detector predictions and the underlying unit-power solves.
-
-    Parameters
-    ----------
-    spectrum : SourceSpectrum
-        Source spectral density and the integration wavelength grid.
-    reference_results : SpectralSimulationResult
-        Independent monochromatic solves on the source grid, each excited by
-        reference_optical_power. Their fields retain those reference units.
-    reference_optical_power : pint.Quantity
-        Positive scalar optical power used for every reference solve.
-    """
-
-    def __init__(
-        self,
-        *,
-        spectrum: MomentRT.source.SourceSpectrum,
-        reference_results: MomentRT.results.SpectralSimulationResult,
-        reference_optical_power: Quantity,
-    ) -> None:
-        """Scale unit responses by source density and integrate detector outputs.
-
-        Parameters
-        ----------
-        spectrum : SourceSpectrum
-            Incoming source density with increasing vacuum wavelengths.
-        reference_results : SpectralSimulationResult
-            Monochromatic reference-power solutions on exactly the same grid.
-        reference_optical_power : pint.Quantity
-            Positive scalar reference optical power, with power units.
-        """
-        MomentRT.units.validate_units(
-            value=reference_optical_power,
-            unit="W",
-            name="reference_optical_power",
-            shape=(),
-            positive=True,
-        )
-        if (
-            spectrum.wavelengths.shape != reference_results.wavelengths.shape
-            or not np.allclose(
-                spectrum.wavelengths.to("m").magnitude,
-                reference_results.wavelengths.to("m").magnitude,
-                rtol=8 * np.finfo(float).eps,
-                atol=0,
-            )
-        ):
-            raise ValueError("Reference wavelengths must match the source spectrum.")
-        self.wavelengths = spectrum.wavelengths.copy()
-        self.source_spectrum = copy.deepcopy(spectrum)
-        self.reference_results = reference_results
-        self.reference_optical_power = reference_optical_power.copy()
-        self.detectors = {
-            name: BroadbandDetectorResult(
-                wavelengths=self.wavelengths,
-                spectral_power=(power / reference_optical_power)
-                * spectrum.spectral_power,
-                responsivity=reference_results.detectors[name][0].detector.responsivity,
-                reference_measurements=reference_results.detectors[name],
-            )
-            for name, power in reference_results.detector_power.items()
-        }
-        self.diagnostics = {
-            **reference_results.diagnostics,
-            "integration_rule": "trapezoidal wavelength quadrature",
-            "integration_interval": self.wavelengths[[0, -1]].copy(),
-            "incoming_optical_power": spectrum.optical_power,
-        }
-
-    @property
-    def detector_power(self) -> dict[str, Quantity]:
-        """Return the wavelength-integrated optical powers for named detectors.
-
-        Returns
-        -------
-        dict of str to pint.Quantity
-            Accepted broadband optical powers in watts.
-        """
-        return {name: result.collected_power for name, result in self.detectors.items()}
-
-
-class SpectralSimulationResult:
-    """Ordered independent monochromatic solves on one instrument geometry.
-
-    Parameters
-    ----------
-    wavelengths : pint.Quantity
-        Nonempty one-dimensional vector of positive vacuum wavelengths.
-    results : sequence of SimulationResult
-        One solution for each wavelength, in the same order. All solutions
-        must contain the same detector names.
-    diagnostics : mapping of str to object, or None, optional
-        Numerical provenance, residuals, geometry statistics, or timing quantities.
-        Default is None.
-
-    Attributes
-    ----------
-    wavelengths : pint.Quantity
-        Supplied vacuum wavelengths in their original units and order.
-    results : tuple of SimulationResult
-        One independent solution at each wavelength.
-    diagnostics : dict of str to object
-        Sweep preparation count and unit-bearing preparation, solve, and total
-        timings when created by Simulation.sweep.
-    """
-
-    def __init__(
-        self,
-        *,
-        wavelengths: Quantity,
-        results: Sequence[MomentRT.results.SimulationResult],
-        diagnostics: Mapping[str, object] | None = None,
-    ) -> None:
-        """Initialize the SpectralSimulationResult configuration.
-
-        Parameters
-        ----------
-        wavelengths : pint.Quantity
-            Nonempty one-dimensional vector of positive vacuum wavelengths.
-        results : sequence of SimulationResult
-            One solution for each wavelength, in the same order. All solutions
-            must contain the same detector names.
-        diagnostics : mapping of str to object, or None, optional
-            Numerical provenance, residuals, geometry statistics, or timing quantities.
-            Default is None.
-        """
-
-        MomentRT.units.validate_units(
-            value=wavelengths, unit="m", name="wavelengths", positive=True
-        )
-
-        if wavelengths.ndim != 1 or not len(wavelengths):
-            raise ValueError("wavelengths must be a nonempty vector.")
-
-        results = tuple(results)
-
-        if len(results) != len(wavelengths) or any(
-            not isinstance(result, SimulationResult) for result in results
-        ):
-            raise ValueError("Supply one SimulationResult for each wavelength.")
-
-        names = set(results[0].detectors)
-
-        if any(set(result.detectors) != names for result in results):
-            raise ValueError(
-                "All spectral results must contain the same detector names."
-            )
-
-        self.wavelengths = wavelengths.copy()
-
-        self.results = results
-
-        self.diagnostics = dict(diagnostics or {})
-
-    @property
-    def detectors(self) -> dict[str, tuple[MomentRT.results.DetectorResult, ...]]:
-        """Return each detector's measurements in supplied wavelength order.
-
-        Returns
-        -------
-        dict of str to tuple of DetectorResult
-            Detector names mapped to monochromatic measurements, including
-            collected power and sampled and geometric aperture areas. These
-            are independent solves, not a broadband integral.
-        """
-        return {
-            name: tuple(result.detectors[name] for result in self.results)
-            for name in self.results[0].detectors
-        }
-
-    @property
-    def detector_power(self) -> dict[str, Quantity]:
-        """Return collected powers keyed by detector name.
-
-        Returns
-        -------
-        dict of str to pint.Quantity
-            Collected optical powers keyed by detector name.
-        """
-
-        return {
-            name: np.array(
-                [
-                    result.detector_power[name].to("W").magnitude
-                    for result in self.results
-                ]
-            )
-            * MomentRT.units.ureg.watt
-            for name in self.results[0].detectors
-        }
-
-    def plot(
-        self, *, wavelength_unit: str = "nm", power_unit: str = "mW", show: bool = True
-    ) -> MomentRT.plotting.Figure:
-        """Plot collected power for each detector; no spectral integration is applied.
-
-        Parameters
-        ----------
-        wavelength_unit : str, optional
-            Length unit used for plotted vacuum wavelengths.
-            Default is 'nm'.
-        power_unit : str, optional
-            Power unit used for plotted detector signals.
-            Default is 'mW'.
-        show : bool, optional
-            Whether to display the figure immediately. The figure is always returned.
-            Default is True.
-
-        Returns
-        -------
-        plotly.graph_objects.Figure
-            Composable interactive figure, also displayed when show is True.
-        """
-
-        powers = self.detector_power
-
-        if not powers:
-            raise ValueError("Configure detectors to plot a collected-power spectrum.")
-
-        go = MomentRT.plotting.go
-
-        figure = go.Figure()
-
-        for name, power in powers.items():
-            figure.add_trace(
-                go.Scatter(
-                    x=self.wavelengths.to(wavelength_unit).magnitude,
-                    y=power.to(power_unit).magnitude,
-                    mode="lines+markers",
-                    name=name,
-                )
-            )
-
-        figure.update_layout(
-            template="plotly_white",
-            title="Collected power across wavelengths",
-            xaxis_title=f"Wavelength [{wavelength_unit}]",
-            yaxis_title=f"Collected power [{power_unit}]",
-        )
-
-        if show:
-            figure.show()
-
         return figure

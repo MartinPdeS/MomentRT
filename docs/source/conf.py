@@ -32,6 +32,7 @@ globals().update(
             "sources_detectors",
             "transport_models",
             "sweeps_convergence",
+            "inverse_problems",
         ],
         gallery_default_thumb=str(
             docs_source / "_static" / "images" / "sample-geometry.png"

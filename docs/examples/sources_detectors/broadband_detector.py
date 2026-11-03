@@ -82,7 +82,7 @@ simulation = MomentRT.Simulation(
     medium=sample,
     source=source,
     mesh=mesh,
-    solver=MomentRT.Diffusion(
+    solver=MomentRT.P1(
         boundaries=MomentRT.Boundaries.uniform(
             condition=MomentRT.RobinBoundary(effective_reflectance=0),
         ),

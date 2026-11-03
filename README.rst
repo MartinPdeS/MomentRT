@@ -63,7 +63,10 @@ Features
 Source spectra and linear detector responsivity support explicit broadband
 optical-power and photocurrent integration.
 
-MomentRT offers P1, SP3, and P3 approximations. It does not currently solve the
+MomentRT offers P1, SP3, and P3 approximations. The finite P1 solver is
+``P1`` and the analytical infinite-medium solver is ``InfiniteP1``. Their
+previous names, ``Diffusion`` and ``InfiniteDiffusion``, remain available as
+aliases. MomentRT does not currently solve the
 full radiative transfer equation or implement collimated LED
 propagation, free-space detector optics,
 time dependence, or inverse estimation. Read the `scientific guide`_ for the equations,
@@ -108,7 +111,7 @@ nodes, avoiding the singular point-source location.
    from MomentRT import (
        CartesianMesh,
        HomogeneousMedium,
-       InfiniteDiffusion,
+       InfiniteP1,
        Material,
        PointSource,
        Simulation,
@@ -136,7 +139,7 @@ nodes, avoiding the singular point-source location.
        optical_power=1 * ureg.milliwatt,
    )
 
-   solver = InfiniteDiffusion()
+   solver = InfiniteP1()
 
    simulation = Simulation(
        medium=medium,
@@ -159,7 +162,7 @@ Finite-sample FEM workflow
 --------------------------
 
 For a finite sample, define its geometry and materials, create a mesh, specify
-surface illumination and all six boundary faces, then run ``Diffusion``. This
+surface illumination and all six boundary faces, then run ``P1``. This
 example uses the same explicit effective reflectance on each face and a
 circular diffuse source on the upper face.
 
@@ -170,7 +173,7 @@ circular diffuse source on the upper face.
 
    from MomentRT import (
        TetrahedralMesh,
-       Diffusion,
+       P1,
        Material,
        RobinBoundary,
        Simulation,
@@ -221,7 +224,7 @@ circular diffuse source on the upper face.
 
    boundary = RobinBoundary(effective_reflectance=0.5)
 
-   solver = Diffusion(
+   solver = P1(
        boundaries=MomentRT.Boundaries.uniform(condition=boundary),
    )
 
@@ -248,7 +251,7 @@ circular diffuse source on the upper face.
    print(f"Absorbed power: {result.energy_balance['absorbed_power']}")
    print(f"Escaping power: {result.energy_balance['escaping_power']}")
 
-The finite ``Diffusion`` solver uses P1 diffusion with linear tetrahedral FEM.
+The finite ``P1`` solver uses P1 diffusion with linear tetrahedral FEM.
 The recommended ``TetrahedralMesh`` conforms to sample interfaces; its
 resolution is a target element size. Refine the mesh to assess convergence.
 Tetrahedral fluence plots interpolate onto a separate display grid. The sample

@@ -53,7 +53,7 @@ def benchmark_case(*, solver_name: str, resolution_mm: float) -> dict[str, objec
         condition=MomentRT.RobinBoundary(effective_reflectance=0)
     )
     solver_types: dict[str, Any] = {
-        "p1": MomentRT.Diffusion,
+        "p1": MomentRT.P1,
         "sp3": MomentRT.SP3,
         "p3": MomentRT.P3,
     }

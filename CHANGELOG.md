@@ -20,6 +20,12 @@ The compatibility and deprecation policy is in [CONTRIBUTING.rst](CONTRIBUTING.r
 
 ### Added
 
+- `MeshConvergence` studies with incremental progress tables, timing,
+  diagnostic assessments, and shaded power and footprint tolerances.
+- Executable inverse and mesh-convergence examples for a layered sample,
+  including a documented synthetic fit and numerical convergence limits.
+- Public `P1` and `InfiniteP1` solver names and dedicated transport modules.
+
 - Independent reference checks for absorbing-layer transmission, unscattered
   transmission, a layered isotropic RTE solution, artificial-interface
   invariance, Henyey–Greenstein moments, and all-face energy accounting.
@@ -28,6 +34,14 @@ The compatibility and deprecation policy is in [CONTRIBUTING.rst](CONTRIBUTING.r
 - A contributor guide covering setup, verification, documentation, packaging,
   releases, and the API compatibility policy.
 - Changelog integration with the shared maintenance release tools.
+
+
+### Changed
+
+- Organize result containers into a `results` package while retaining public
+  imports. Preserve `Diffusion` and `InfiniteDiffusion` as P1 aliases.
+- Draw all tetrahedral and Cartesian mesh overlay edges instead of sampling
+  a fixed number; very fine mesh overlays can take longer to render.
 
 ## [0.9.1]
 

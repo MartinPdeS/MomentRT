@@ -2,11 +2,132 @@
 
 from __future__ import annotations
 import copy
+import logging
+import time
 from collections.abc import Iterable
 from typing import cast
 import numpy as np
 from pint import Quantity
 import MomentRT
+
+_LOGGER = logging.getLogger(__name__)
+
+
+class MeshConvergence:
+    """Configure a detector-power mesh-refinement study at one wavelength.
+
+    Parameters
+    ----------
+    simulation : Simulation
+        Finite simulation with a surface source and named detectors. Its source
+        wavelength is used for every mesh.
+    mesh_shapes : iterable of tuple of int or None, optional
+        Cartesian node shapes, ordered from coarse to fine. Supply exactly one
+        of this and ``mesh_resolutions``. Default is None.
+    mesh_resolutions : iterable of pint.Quantity or None, optional
+        Strictly decreasing tetrahedral target sizes with length units.
+        Default is None.
+    contact_resolution : pint.Quantity or None, optional
+        Tetrahedral target size near source and detector disks. Supply with
+        ``contact_distance``. Default is None.
+    contact_distance : pint.Quantity or None, optional
+        Distance from each contact defining local refinement. Default is None.
+    power_rtol : float, optional
+        Relative detector-power tolerance. Default is 0.01.
+    area_rtol : float, optional
+        Relative footprint-area tolerance. Default is 0.02.
+    power_atol : pint.Quantity or None, optional
+        Absolute detector-power tolerance, with power units. None uses zero.
+        Default is None.
+    required_consecutive : int, optional
+        Number of passing refinements required at the fine end. Default is 2.
+    progress : bool, optional
+        Print a live table as mesh levels finish. Default is True.
+
+    Notes
+    -----
+    A passing mesh study does not establish the accuracy of the transport model.
+    The simulation is sampled at run time and is not mutated by the study.
+    Set the ``MomentRT.convergence`` logger to INFO for progress and values.
+    """
+
+    def __init__(
+        self,
+        *,
+        simulation: MomentRT.simulation.Simulation,
+        mesh_shapes: Iterable[tuple[int, int, int]] | None = None,
+        mesh_resolutions: Iterable[Quantity] | None = None,
+        contact_resolution: Quantity | None = None,
+        contact_distance: Quantity | None = None,
+        power_rtol: float = 0.01,
+        area_rtol: float = 0.02,
+        power_atol: Quantity | None = None,
+        required_consecutive: int = 2,
+        progress: bool = True,
+    ) -> None:
+        """Store the simulation and the explicit coarse-to-fine study settings.
+
+        Parameters
+        ----------
+        simulation : Simulation
+            Finite detector simulation sampled when the study runs.
+        mesh_shapes : iterable of tuple of int or None, optional
+            Cartesian node shapes. Supply this or ``mesh_resolutions``.
+            Default is None.
+        mesh_resolutions : iterable of pint.Quantity or None, optional
+            Tetrahedral target sizes with length units. Default is None.
+        contact_resolution : pint.Quantity or None, optional
+            Tetrahedral target size near contacts. Default is None.
+        contact_distance : pint.Quantity or None, optional
+            Radius of contact refinement zones. Default is None.
+        power_rtol : float, optional
+            Relative detector-power tolerance. Default is 0.01.
+        area_rtol : float, optional
+            Relative footprint-area tolerance. Default is 0.02.
+        power_atol : pint.Quantity or None, optional
+            Absolute power tolerance, with power units. Default is None.
+        required_consecutive : int, optional
+            Number of passing refinements required at the fine end. Default is 2.
+        progress : bool, optional
+            Print a live table as mesh levels finish. Default is True.
+        """
+        self.simulation = simulation
+        self.mesh_shapes = None if mesh_shapes is None else tuple(mesh_shapes)
+        self.mesh_resolutions = (
+            None if mesh_resolutions is None else tuple(mesh_resolutions)
+        )
+        self.contact_resolution = contact_resolution
+        self.contact_distance = contact_distance
+        self.power_rtol = power_rtol
+        self.area_rtol = area_rtol
+        self.power_atol = power_atol
+        self.required_consecutive = required_consecutive
+        if not isinstance(progress, bool):
+            raise TypeError("progress must be a bool.")
+        self.progress = progress
+
+    def run(self) -> MomentRT.results.DetectorConvergenceResult:
+        """Run the mesh study with the current simulation configuration.
+
+        Returns
+        -------
+        DetectorConvergenceResult
+            Per-mesh detector powers, footprint diagnostics, and convergence
+            assessment. Unresolved levels and negative outputs are retained.
+        """
+        return MomentRT.convergence._DetectorConvergenceStudy(
+            simulation=self.simulation,
+        ).run(
+            mesh_shapes=self.mesh_shapes,
+            mesh_resolutions=self.mesh_resolutions,
+            contact_resolution=self.contact_resolution,
+            contact_distance=self.contact_distance,
+            power_rtol=self.power_rtol,
+            area_rtol=self.area_rtol,
+            power_atol=self.power_atol,
+            required_consecutive=self.required_consecutive,
+            progress=self.progress,
+        )
 
 
 class _SpectralConvergenceStudy:
@@ -211,6 +332,7 @@ class _DetectorConvergenceStudy:
         area_rtol: float,
         power_atol: Quantity | None,
         required_consecutive: int,
+        progress: bool = False,
     ) -> MomentRT.results.DetectorConvergenceResult:
         """Run the finite-detector refinement study on independent mesh snapshots.
 
@@ -240,11 +362,16 @@ class _DetectorConvergenceStudy:
             Positive number of consecutive passing refinements required at the
             fine end of the mesh sequence.
 
+        progress : bool, optional
+            Print a live table as levels finish. Default is False.
+
         Returns
         -------
         DetectorConvergenceResult
             Completed study including unresolved levels and refinement diagnostics.
         """
+
+        study_started = time.perf_counter()
 
         if not isinstance(
             self.simulation.medium, MomentRT.medium.StructuredMedium
@@ -329,7 +456,18 @@ class _DetectorConvergenceStudy:
                 sample_origin=medium.origin, sample_size=medium.size
             )
 
-        meshes: tuple[MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh, ...]
+        meshes: list[MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh] = []
+        contacts: list[object] = []
+
+        _LOGGER.info(
+            "Starting detector mesh convergence at %s: power rtol %.2g, "
+            "power atol %s, area rtol %.2g, required consecutive refinements %d",
+            f"{source.wavelength:~P}",
+            power_rtol,
+            f"{power_atol:~P}",
+            area_rtol,
+            required_consecutive,
+        )
 
         if mesh_shapes is not None:
             shapes = tuple(mesh_shapes)
@@ -343,10 +481,7 @@ class _DetectorConvergenceStudy:
                         "Each mesh must refine at least one axis and coarsen none."
                     )
 
-            meshes = tuple(
-                MomentRT.mesh.CartesianMesh.from_sample(sample=medium, shape=shape)
-                for shape in shapes
-            )
+            requests: tuple[tuple[int, int, int] | Quantity, ...] = shapes
         else:
             resolutions = tuple(mesh_resolutions or ())
 
@@ -384,32 +519,12 @@ class _DetectorConvergenceStudy:
                         "contact_resolution must not exceed any global mesh resolution."
                     )
 
-            contacts: list[object] = []
-
             if isinstance(self.simulation.source, MomentRT.source.SurfaceSource):
                 contacts.append(source)
 
             contacts.extend(detectors.values())
 
-            tetrahedral_meshes: list[MomentRT.mesh.TetrahedralMesh] = []
-
-            for resolution in resolutions:
-                tetrahedral_mesh = MomentRT.mesh.TetrahedralMesh.from_sample(
-                    sample=medium,
-                    resolution=resolution,
-                )
-
-                if contact_resolution is not None:
-                    assert contact_distance is not None
-                    tetrahedral_mesh.refine_near(
-                        objects=contacts,
-                        resolution=contact_resolution,
-                        distance=contact_distance,
-                    )
-
-                tetrahedral_meshes.append(tetrahedral_mesh)
-
-            meshes = tuple(tetrahedral_meshes)
+            requests = resolutions
 
         if isinstance(source, MomentRT.source.SurfaceSourceGroup):
             source_geometric_area = sum(
@@ -428,7 +543,70 @@ class _DetectorConvergenceStudy:
 
         level_errors = []
 
-        for mesh in meshes:
+        if progress:
+            columns = [
+                f"{'Mesh':>13}",
+                f"{'Nodes':>9}",
+                f"{'Time (s)':>9}",
+                f"{'Source err':>10}",
+            ]
+            for name in detectors:
+                columns.extend(
+                    [f"{name + ' µW':>13}", f"{'Δ power':>9}", f"{'Area err':>9}"]
+                )
+            header = "  ".join(columns)
+            print(f"Detector mesh convergence at {source.wavelength:~P}", flush=True)
+            print(header, flush=True)
+            print("-" * len(header), flush=True)
+
+        for index, request in enumerate(requests):
+            level_started = time.perf_counter()
+            started = level_started
+            if isinstance(request, tuple):
+                _LOGGER.info(
+                    "Preparing mesh %d/%d: shape %s", index + 1, len(requests), request
+                )
+                mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh = (
+                    MomentRT.mesh.CartesianMesh.from_sample(
+                        sample=medium, shape=request
+                    )
+                )
+            else:
+                _LOGGER.info(
+                    "Preparing mesh %d/%d: target resolution %s",
+                    index + 1,
+                    len(requests),
+                    f"{request:~P}",
+                )
+                mesh = MomentRT.mesh.TetrahedralMesh.from_sample(
+                    sample=medium, resolution=request
+                )
+                if contact_resolution is not None:
+                    assert contact_distance is not None
+                    mesh.refine_near(
+                        objects=contacts,
+                        resolution=contact_resolution,
+                        distance=contact_distance,
+                    )
+                _LOGGER.info(
+                    "Prepared mesh %d/%d: %d nodes, %d tetrahedra in %.2f s",
+                    index + 1,
+                    len(requests),
+                    len(mesh.points),
+                    len(mesh.tetrahedra),
+                    time.perf_counter() - started,
+                )
+
+            meshes.append(mesh)
+            started = time.perf_counter()
+            node_count = (
+                int(np.prod(mesh.shape))
+                if isinstance(mesh, MomentRT.mesh.CartesianMesh)
+                else len(mesh.points)
+            )
+            _LOGGER.info(
+                "Solving mesh %d/%d: %d nodes", index + 1, len(requests), node_count
+            )
             candidate = copy.copy(self.simulation)
 
             candidate.medium = medium
@@ -449,6 +627,18 @@ class _DetectorConvergenceStudy:
                 results.append(None)
 
                 level_errors.append({"source": str(error)})
+                if progress:
+                    label = (
+                        str(request) if isinstance(request, tuple) else f"{request:~P}"
+                    )
+                    print(
+                        f"{label:>13}  {node_count:>9,}  {time.perf_counter() - level_started:>9.2f}  "
+                        f"{'—':>10}  unresolved source: {error}",
+                        flush=True,
+                    )
+                _LOGGER.info(
+                    "Mesh %d/%d unresolved source: %s", index + 1, len(requests), error
+                )
 
                 continue
 
@@ -474,7 +664,87 @@ class _DetectorConvergenceStudy:
 
             level_errors.append(errors)
 
-        return MomentRT.results.DetectorConvergenceResult(
+            _LOGGER.info(
+                "Mesh %d/%d complete in %.2f s: source sampled area %s, geometric area %s",
+                index + 1,
+                len(requests),
+                time.perf_counter() - started,
+                f"{result.source_sampled_area:~P}",
+                f"{source_geometric_area:~P}",
+            )
+
+            for name, measurement in result.detectors.items():
+                _LOGGER.info(
+                    "Mesh %d/%d detector %s: collected power %s, sampled area %s, geometric area %s",
+                    index + 1,
+                    len(requests),
+                    name,
+                    f"{measurement.collected_power:~P}",
+                    f"{measurement.sampled_area:~P}",
+                    f"{measurement.geometric_area:~P}",
+                )
+
+            if errors:
+                _LOGGER.info(
+                    "Mesh %d/%d diagnostics: %s", index + 1, len(requests), errors
+                )
+
+            if progress:
+                label = str(request) if isinstance(request, tuple) else f"{request:~P}"
+                source_error = abs(
+                    (cast(Quantity, result.source_sampled_area) / source_geometric_area)
+                    .to("")
+                    .magnitude
+                    - 1
+                )
+                cells = [
+                    f"{label:>13}",
+                    f"{node_count:>9,}",
+                    f"{time.perf_counter() - level_started:>9.2f}",
+                    f"{source_error:>9.2%}",
+                ]
+                previous_result = results[-2] if len(results) > 1 else None
+                for name in detectors:
+                    current_measurement = result.detectors.get(name)
+                    if current_measurement is None:
+                        cells.extend([f"{'—':>13}", f"{'—':>9}", f"{'—':>9}"])
+                        continue
+                    power = current_measurement.collected_power.to("uW").magnitude
+                    area_error = abs(
+                        (
+                            current_measurement.sampled_area
+                            / current_measurement.geometric_area
+                        )
+                        .to("")
+                        .magnitude
+                        - 1
+                    )
+                    previous_measurement = (
+                        None
+                        if previous_result is None
+                        else previous_result.detectors.get(name)
+                    )
+                    if previous_measurement is None:
+                        change = "—"
+                    else:
+                        previous_power = previous_measurement.collected_power.to(
+                            "uW"
+                        ).magnitude
+                        change = (
+                            f"{abs(power - previous_power) / abs(power):.2%}"
+                            if power != 0
+                            else "0.00%"
+                            if previous_power == 0
+                            else "∞"
+                        )
+                    cells.extend(
+                        [f"{power:>13.4g}", f"{change:>9}", f"{area_error:>8.2%}"]
+                    )
+                print("  ".join(cells), flush=True)
+                for label, message in errors.items():
+                    print(f"  {label}: {message}", flush=True)
+
+        report = MomentRT.results.DetectorConvergenceResult(
             meshes=meshes,
             results=results,
             detectors=detectors,
@@ -486,3 +756,13 @@ class _DetectorConvergenceStudy:
             power_atol=power_atol,
             required_consecutive=required_consecutive,
         )
+
+        _LOGGER.info("Mesh convergence complete. Converged: %s", report.converged)
+
+        if progress:
+            print(report.assessment(), flush=True)
+            print(
+                f"Total time: {time.perf_counter() - study_started:.2f} s", flush=True
+            )
+
+        return report

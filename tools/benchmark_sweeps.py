@@ -59,9 +59,9 @@ def main() -> None:
 
     boundaries = {face: boundary for face in MomentRT.boundary.FACES}
 
-    solver = {"p1": MomentRT.Diffusion, "sp3": MomentRT.SP3, "p3": MomentRT.P3}[
-        args.solver
-    ](boundaries=boundaries)
+    solver = {"p1": MomentRT.P1, "sp3": MomentRT.SP3, "p3": MomentRT.P3}[args.solver](
+        boundaries=boundaries
+    )
 
     simulation = MomentRT.Simulation(
         medium=sample, mesh=mesh, source=source, solver=solver

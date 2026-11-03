@@ -1,5 +1,6 @@
 """Convergence criteria, area aliases, unresolved levels, and exact slab signals."""
 
+import logging
 import numpy as np
 import pytest
 import MomentRT
@@ -290,6 +291,7 @@ def test_tetrahedral_detector_convergence_reports_sampling_and_recommendation():
     assert np.all(np.isfinite(study.detector_area_relative_error["transmission"]))
     assert len(study.detector_power["transmission"]) == 2
     assert study.recommended_shape is None
+    assert "target resolution" in study.summary()
     if study.recommended_mesh is not None:
         assert study.recommended_resolution == study.recommended_mesh.resolution
 
@@ -355,3 +357,140 @@ def test_invalid_interface_is_not_hidden_by_an_unresolved_source():
 def test_invalid_study_inputs_fail_before_solving(arguments):
     with pytest.raises((ValueError, TypeError)):
         configuration().convergence_study(**arguments)
+
+
+def test_mesh_convergence_class_runs_reusable_studies_and_summarizes():
+    simulation = configuration()
+    shapes = [(3, 3, 5), (5, 5, 9), (7, 7, 13)]
+    study = MomentRT.MeshConvergence(
+        simulation=simulation,
+        mesh_shapes=(shape for shape in shapes),
+        power_rtol=0.1,
+        area_rtol=0.2,
+        required_consecutive=1,
+    )
+
+    result = study.run()
+    repeat = study.run()
+
+    assert [mesh.shape for mesh in result.meshes] == shapes
+    np.testing.assert_allclose(
+        result.detector_power["transmission"].magnitude,
+        repeat.detector_power["transmission"].magnitude,
+        equal_nan=True,
+    )
+    assert "transmission" in result.summary()
+    assert "Converged:" in result.summary()
+    assert "source area error" in result.summary()
+    assert simulation.mesh.shape == (5, 5, 9)
+
+
+def test_mesh_convergence_summary_preserves_failure_diagnostics():
+    report = synthetic_report(powers=[0.001, 0.001, 0.001], area_ratios=[1, 1, 1])
+    report.level_errors[-1]["source"] = "unresolved footprint"
+
+    assert "unresolved footprint" in report.summary()
+
+
+def test_mesh_plot_shows_power_and_area_tolerance_bands():
+    report = synthetic_report(
+        powers=[0.0012, 0.0011, 0.001],
+        area_ratios=[0.9, 1.0, 1.0],
+        power_atol=0.0001 * ureg.W,
+    )
+
+    figure = report.plot(power_unit="mW", area_unit="mm^2", show=False)
+    power_band, detector_band, source_band = figure.layout.shapes
+
+    assert power_band.y0 == pytest.approx(0.89)
+    assert power_band.y1 == pytest.approx(1.11)
+    detector_area = report.detector_geometric_area["transmission"].to("mm^2").magnitude
+    assert detector_band.y0 == pytest.approx(detector_area * 0.98)
+    assert detector_band.y1 == pytest.approx(detector_area * 1.02)
+    assert source_band.y0 == pytest.approx(4 * 0.98)
+    assert source_band.y1 == pytest.approx(4 * 1.02)
+
+
+def test_mesh_convergence_logs_progress_and_values(caplog):
+    simulation = configuration()
+    study = MomentRT.MeshConvergence(
+        simulation=simulation,
+        mesh_shapes=[(3, 3, 5), (5, 5, 9)],
+        required_consecutive=1,
+    )
+
+    with caplog.at_level(logging.INFO, logger="MomentRT.convergence"):
+        result = study.run()
+
+    assert "Starting detector mesh convergence" in caplog.text
+    assert "Preparing mesh 1/2" in caplog.text
+    assert "Solving mesh 1/2: 45 nodes" in caplog.text
+    assert "collected power" in caplog.text
+    assert "sampled area" in caplog.text
+    assert "Mesh convergence complete" in caplog.text
+    assert f"Converged: {result.converged}" in caplog.text
+
+
+def test_mesh_convergence_prints_live_table(capsys):
+    simulation = configuration()
+    study = MomentRT.MeshConvergence(
+        simulation=simulation,
+        mesh_shapes=[(3, 3, 5), (5, 5, 9)],
+        required_consecutive=1,
+    )
+
+    study.run()
+
+    output = capsys.readouterr().out
+    assert "Source err" in output
+    assert "Time (s)" in output
+    assert "Total time:" in output
+    assert "transmission µW" in output
+    assert "Δ power" in output
+    assert "45" in output
+    assert "225" in output
+    assert "Converged:" in output
+    assert "nan%" not in output
+
+
+def test_mesh_convergence_progress_can_be_disabled(capsys):
+    study = MomentRT.MeshConvergence(
+        simulation=configuration(),
+        mesh_shapes=[(3, 3, 5), (5, 5, 9)],
+        required_consecutive=1,
+        progress=False,
+    )
+
+    study.run()
+
+    assert capsys.readouterr().out == ""
+
+
+def test_convergence_assessment_explains_failed_power_and_area_checks():
+    report = synthetic_report(
+        powers=[0.0015, 0.00101, 0.001005],
+        area_ratios=[1, 0.9, 1],
+    )
+
+    assessment = report.assessment()
+
+    assert "Converged: False" in assessment
+    assert "1 of 2 required" in assessment
+    assert "Most recent failing refinement: level 1" in assessment
+    assert "footprint area error" in assessment
+    assert "power changed by" in assessment
+    assert "allowed change" in assessment
+    assert "No mesh is recommended" in assessment
+
+
+def test_convergence_assessment_describes_successful_recommendation():
+    report = synthetic_report(
+        powers=[0.00101, 0.001005, 0.001004],
+        area_ratios=[1, 1, 1],
+    )
+
+    assessment = report.assessment()
+
+    assert "Converged: True" in assessment
+    assert "2 of 2 required" in assessment
+    assert "Recommended mesh: Cartesian shape" in assessment

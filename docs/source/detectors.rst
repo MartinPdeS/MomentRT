@@ -192,8 +192,8 @@ detector areas on explicit successively refined meshes. The study retains
 unresolved levels and reports a recommendation only when the stated
 criteria hold at the fine end of the sequence.
 
-This detector model applies to finite ``Diffusion``, ``SP3``, and ``P3`` results. An observation
-window from ``InfiniteDiffusion`` is not a sample surface and cannot supply
+This detector model applies to finite ``P1``, ``SP3``, and ``P3`` results. An observation
+window from ``InfiniteP1`` is not a sample surface and cannot supply
 these measurements. Reflecting faces have zero modeled escape.
 
 The detector does not model angle-dependent Fresnel transmission, refraction,

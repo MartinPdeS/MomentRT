@@ -8,11 +8,11 @@ Start with your question
 ------------------------
 
 * **What is the fluence around an embedded point source?** Use
-  ``InfiniteDiffusion`` for an infinite homogeneous medium. Its Cartesian
+  ``InfiniteP1`` for an infinite homogeneous medium. Its Cartesian
   mesh is an observation window, and the analytical solution is singular
   at the source. It cannot predict escape through a physical surface.
 * **What are the fluence and escaping power in a finite sample?** Start with
-  ``Diffusion`` when a P1 approximation is appropriate. Define the sample,
+  ``P1`` when a P1 approximation is appropriate. Define the sample,
   coupled diffuse surface source, mesh, and all six face conditions explicitly.
   Consider ``SP3`` or ``P3`` when their additional angular moments and
   supported boundary conditions are relevant to the question.
@@ -50,11 +50,11 @@ or determine whether an approximation is accurate for a particular sample.
      - Use it for
      - Key assumptions and limits
      - Example
-   * - ``InfiniteDiffusion``
+   * - ``InfiniteP1``
      - A homogeneous, unbounded medium with an embedded isotropic point source.
      - Analytical P1 Green function; no physical boundaries or finite source. Singular at the source; diffusion is least reliable nearby. No FEM solve.
      - :doc:`Infinite medium <gallery/getting_started/infinite_diffusion>`
-   * - ``Diffusion``
+   * - ``P1``
      - A finite sample illuminated by diffuse light on a face.
      - P1 diffusion with continuous fluence, centroid-sampled properties, and explicit six-face conditions. Internal refractive-index jumps are rejected.
      - :doc:`Finite sample <gallery/getting_started/surface_diffusion>`

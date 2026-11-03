@@ -2,7 +2,7 @@ Finite-sample P1 solver
 =======================
 
 This chapter derives the boundary condition and finite-element equations
-used by ``Diffusion``. It starts from the P1 transport model in
+used by ``P1``. It starts from the P1 transport model in
 :doc:`theory`, explains the meaning of every boundary quantity, and follows
 the weak equation through tetrahedral assembly and power accounting.
 
@@ -515,7 +515,7 @@ The finite workflow follows directly from the weak equation:
 
    from MomentRT import (
        CartesianMesh,
-       Diffusion,
+       P1,
        Material,
        RobinBoundary,
        Simulation,
@@ -553,7 +553,7 @@ The finite workflow follows directly from the weak equation:
 
    boundary = RobinBoundary(effective_reflectance=0.4)
 
-   solver = Diffusion(
+   solver = P1(
        boundaries=MomentRT.Boundaries.uniform(condition=boundary),
    )
 

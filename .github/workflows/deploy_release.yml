@@ -30,7 +30,7 @@ jobs:
       conda_package_name: momentrt
       conda_recipe_path: conda.recipe
       conda_test_import: MomentRT
-      conda_channels: conda-forge
+      conda_channels: martinpdes,conda-forge
       conda_apt_package: libglu1-mesa
       release_validation_command: >-
         python -m pip install "martinpdes-maintenance==0.2.3" &&

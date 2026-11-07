@@ -1,6 +1,7 @@
 """Deterministic light transport using angular-moment methods."""
 
 from __future__ import annotations
+import MomentRT._face_geometry
 import MomentRT._version
 import MomentRT.boundary
 import MomentRT.convergence as convergence  # noqa: F401 -- public submodule
@@ -12,6 +13,7 @@ import MomentRT.material
 import MomentRT.materials
 import MomentRT.medium
 import MomentRT.mesh
+import MomentRT.models
 import MomentRT.phase_function
 import MomentRT.plotting as plotting  # noqa: F401 -- public submodule
 import MomentRT.results

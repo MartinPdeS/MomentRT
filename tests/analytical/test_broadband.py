@@ -219,7 +219,7 @@ def test_emission_exclusivity_factories_and_invalid_tables():
             wavelengths=np.array([700, 800]) * unit.nm,
             spectral_power=np.array([1, -1]) * unit.W / unit.nm,
         )
-    with pytest.raises(TypeError, match="carry units"):
+    with pytest.raises(TypeError, match="Pint quantity"):
         MomentRT.SourceSpectrum(
             wavelengths=np.array([700, 800]) * unit.nm, spectral_power=np.ones(2)
         )

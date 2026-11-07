@@ -5,6 +5,7 @@ import copy
 from collections.abc import Mapping
 from typing import Any
 import numpy as np
+import TypedUnit
 from numpy.typing import ArrayLike
 from pint import Quantity
 from scipy import integrate
@@ -37,14 +38,19 @@ class DetectorResponsivity:
         responsivity : pint.Quantity
             Nonnegative electrical responsivity, shape (n,), with A / W units.
         """
-        MomentRT.units.validate_units(
-            value=wavelengths, unit="m", name="wavelengths", positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=wavelengths,
+            unit="m",
+            name="wavelengths",
+            positive=True,
         )
         if wavelengths.ndim != 1 or len(wavelengths) < 2:
             raise ValueError("wavelengths must be a vector of at least two samples.")
         if np.any(np.diff(wavelengths.to("m").magnitude) <= 0):
             raise ValueError("wavelengths must be strictly increasing.")
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=responsivity,
             unit="A/W",
             name="responsivity",
@@ -72,8 +78,12 @@ class DetectorResponsivity:
         ValueError
             If any wavelength lies outside the tabulated interval.
         """
-        MomentRT.units.validate_units(
-            value=wavelength, unit="m", name="wavelength", positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=wavelength,
+            unit="m",
+            name="wavelength",
+            positive=True,
         )
         requested = wavelength.to("m").magnitude
         grid = self.wavelengths.to("m").magnitude
@@ -215,15 +225,25 @@ class SurfaceDetector:
         if face not in MomentRT.boundary.FACES:
             raise ValueError(f"face must be one of {MomentRT.boundary.FACES}.")
 
-        MomentRT.units.validate_units(
-            value=position, unit="m", name="position", shape=(3,)
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=position,
+            unit="m",
+            name="position",
+            shape=(3,),
         )
 
-        MomentRT.units.validate_units(
-            value=radius, unit="m", name="radius", shape=(), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=radius,
+            unit="m",
+            name="radius",
+            shape=(),
+            positive=True,
         )
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=acceptance_angle,
             unit="radian",
             name="acceptance_angle",
@@ -349,7 +369,7 @@ class SurfaceDetector:
         elif acceptance_angle is None:
             raise ValueError("Supply acceptance or acceptance_angle.")
 
-        position = MomentRT.boundary._face_position(
+        position = MomentRT._face_geometry.face_position(
             sample=sample, face=face, coordinates=coordinates
         )
 
@@ -574,7 +594,7 @@ class SurfaceDetector:
             position[in_plane] + radius > upper[in_plane] + tolerance[in_plane]
         ):
             raise ValueError(
-                MomentRT.boundary._disk_bounds_message(
+                MomentRT._face_geometry.disk_bounds_message(
                     face=self.face,
                     position=self.position,
                     radius=self.radius,

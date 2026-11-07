@@ -21,12 +21,18 @@ import MomentRT
 
 unit = MomentRT.ureg
 wavelengths = np.linspace(750, 900, 31) * unit.nm
+center_wavelength = 820 * unit.nm
+bandwidth = 25 * unit.nm
+spectrum = (
+    5
+    * np.exp(-0.5 * ((wavelengths - center_wavelength) / bandwidth) ** 2)
+    * unit.uW
+    / unit.nm
+)
+
 source_spectrum = MomentRT.SourceSpectrum(
     wavelengths=wavelengths,
-    spectral_power=5
-    * np.exp(-0.5 * ((wavelengths.to("nm").magnitude - 820) / 25) ** 2)
-    * unit.uW
-    / unit.nm,
+    spectral_power=spectrum,
 )
 responsivity = MomentRT.DetectorResponsivity(
     wavelengths=np.array([750, 800, 850, 900]) * unit.nm,

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 import numpy as np
+import TypedUnit
 from numpy.typing import ArrayLike
 from pint import Quantity
 import MomentRT
@@ -113,11 +114,17 @@ class Material:
             Explicit scalar scattering phase function for SP3 and P3.
         """
 
-        MomentRT.units.validate_units(
-            value=absorption, unit="1/m", name="absorption", shape=(), nonnegative=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=absorption,
+            unit="1/m",
+            name="absorption",
+            shape=(),
+            nonnegative=True,
         )
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=reduced_scattering,
             unit="1/m",
             name="reduced_scattering",
@@ -227,8 +234,13 @@ class Material:
         Material
             Monochromatic material at the requested wavelength.
         """
-        MomentRT.units.validate_units(
-            value=wavelength, unit="m", name="wavelength", shape=(), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=wavelength,
+            unit="m",
+            name="wavelength",
+            shape=(),
+            positive=True,
         )
 
         return self
@@ -295,8 +307,12 @@ class SpectralMaterial:
             Explicit scattering phase function, fixed across wavelengths.
         """
 
-        MomentRT.units.validate_units(
-            value=wavelengths, unit="m", name="wavelengths", positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=wavelengths,
+            unit="m",
+            name="wavelengths",
+            positive=True,
         )
 
         if wavelengths.ndim != 1 or len(wavelengths) < 2:
@@ -305,7 +321,8 @@ class SpectralMaterial:
         if np.any(np.diff(wavelengths.to("m").magnitude) <= 0):
             raise ValueError("wavelengths must increase strictly.")
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=absorption,
             unit="1/m",
             name="absorption",
@@ -313,7 +330,8 @@ class SpectralMaterial:
             nonnegative=True,
         )
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=reduced_scattering,
             unit="1/m",
             name="reduced_scattering",
@@ -385,8 +403,13 @@ class SpectralMaterial:
         ValueError
             If wavelength is nonpositive, nonscalar, or outside the tabulated range.
         """
-        MomentRT.units.validate_units(
-            value=wavelength, unit="m", name="wavelength", shape=(), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=wavelength,
+            unit="m",
+            name="wavelength",
+            shape=(),
+            positive=True,
         )
 
         grid = self.wavelengths.magnitude

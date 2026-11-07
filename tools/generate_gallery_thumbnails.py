@@ -23,7 +23,21 @@ def main() -> None:
         help="Path to Chromium or Chrome; omit to use Playwright's Chromium.",
     )
 
+    parser.add_argument(
+        "--example",
+        help="Capture only the example with this filename stem.",
+    )
+
     arguments = parser.parse_args()
+
+    examples = tuple(
+        example
+        for example in EXAMPLES
+        if arguments.example is None or example.stem == arguments.example
+    )
+
+    if not examples:
+        parser.error(f"No example named {arguments.example!r} was found.")
 
     output = ROOT / "docs/source/_static/images"
 
@@ -37,7 +51,7 @@ def main() -> None:
 
         page = browser.new_page(viewport={"width": 1000, "height": 750})
 
-        for example in EXAMPLES:
+        for example in examples:
             name = example.stem
 
             gallery = ROOT / "docs/_build/html/_static/gallery"

@@ -7,6 +7,7 @@ import time
 from collections.abc import Iterable
 from typing import cast
 import numpy as np
+import TypedUnit
 from pint import Quantity
 import MomentRT
 
@@ -183,7 +184,8 @@ class _SpectralConvergenceStudy:
             ("power_atol", power_atol, "W"),
             ("photocurrent_atol", photocurrent_atol, "A"),
         ):
-            MomentRT.units.validate_units(
+            TypedUnit.validate_quantity(
+                registry=MomentRT.units.ureg,
                 value=absolute_tolerance,
                 unit=unit,
                 name=name,
@@ -227,8 +229,12 @@ class _SpectralConvergenceStudy:
         fixed_knots = fixed_knots[(fixed_knots >= lower) & (fixed_knots <= upper)]
         grids: list[Quantity] = []
         for requested in wavelength_grids:
-            MomentRT.units.validate_units(
-                value=requested, unit="m", name="wavelength grid", positive=True
+            TypedUnit.validate_quantity(
+                registry=MomentRT.units.ureg,
+                value=requested,
+                unit="m",
+                name="wavelength grid",
+                positive=True,
             )
             if requested.ndim != 1 or len(requested) < 2:
                 raise ValueError(
@@ -429,8 +435,13 @@ class _DetectorConvergenceStudy:
         if power_atol is None:
             power_atol = 0 * MomentRT.units.ureg.watt
 
-        MomentRT.units.validate_units(
-            value=power_atol, unit="W", name="power_atol", shape=(), nonnegative=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=power_atol,
+            unit="W",
+            name="power_atol",
+            shape=(),
+            nonnegative=True,
         )
 
         if self.simulation.source.spectrum is not None:
@@ -506,7 +517,8 @@ class _DetectorConvergenceStudy:
                     resolution=contact_resolution
                 )
 
-                MomentRT.units.validate_units(
+                TypedUnit.validate_quantity(
+                    registry=MomentRT.units.ureg,
                     value=contact_distance,
                     unit="m",
                     name="contact_distance",

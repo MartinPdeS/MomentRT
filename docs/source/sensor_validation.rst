@@ -17,7 +17,7 @@ source radius, detector radius, and five source-detector separations. The
 complete JSON report records all inputs, random seeds, detector powers,
 Monte Carlo standard errors, mesh sizes, sampled source and aperture areas,
 and runtimes. The :doc:`executable gallery example
-<gallery/sweeps_convergence/sensor_validation_cases>` visualizes these
+<gallery/validation/sensor_validation_cases>` visualizes these
 published results.
 
 Each case uses 850 nm wavelength, 1 mW diffuse source power, 6 mm sample width,

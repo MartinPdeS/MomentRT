@@ -20,73 +20,24 @@ https://doi.org/10.1117/1.JBO.25.4.045002
 
 # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/seven_fiber_skin.png'
 
-import os
 import numpy as np
 import MomentRT
+from MomentRT.models.skin import ShimojoThreeLayer850nm
 
 ureg = MomentRT.ureg
-
-show_figures = os.environ.get("MOMENTRT_SPHINX_GALLERY") != "1"
 
 # %%
 # Define the three tissue layers
 # ------------------------------
-# Positive z points into the sample, so add the epidermis, dermis, then
-# hypodermis. The 4 mm sample contains 0.2 mm epidermis, 1.5 mm dermis, and
-# 2.3 mm of the requested 2.35 mm hypodermis. Optical coefficients are
+# The named model stacks epidermis, dermis, and hypodermis along positive z.
+# The 4 mm sample contains 0.2 mm epidermis, 1.5 mm dermis, and 2.3 mm of
+# the requested 2.35 mm hypodermis. Optical coefficients are
 # approximate 850 nm values.
 # SP3 currently requires equal refractive indices across internal interfaces.
 
-epidermis = MomentRT.Material(
-    absorption=0.329 / ureg.millimeter,
-    reduced_scattering=3.75 / ureg.millimeter,
-    refractive_index=1.4,
-    anisotropy=0.9,
-    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
-)
-
-dermis = MomentRT.Material(
-    absorption=0.055 / ureg.millimeter,
-    reduced_scattering=1.85 / ureg.millimeter,
-    refractive_index=1.4,
-    anisotropy=0.9,
-    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
-)
-
-hypodermis = MomentRT.Material(
-    absorption=0.04 / ureg.millimeter,
-    reduced_scattering=1.33 / ureg.millimeter,
-    refractive_index=1.4,
-    anisotropy=0.9,
-    phase_function=MomentRT.phase_function.HenyeyGreenstein(),
-)
-
-sample = MomentRT.StructuredMedium(
-    origin=(-6, -6, 0) * ureg.millimeter / 10,
-    size=(12, 12, 40) * ureg.millimeter / 10,
-)
-
-sample.add_background(material=hypodermis)
-
-sample.add_layer(
-    name="Epidermis",
-    thickness=0.20 * ureg.millimeter,
-    material=epidermis,
-    clip_to_sample=True,
-)
-
-sample.add_layer(
-    name="Dermis",
-    thickness=1.5 * ureg.millimeter,
-    material=dermis,
-    clip_to_sample=True,
-)
-
-sample.add_layer(
-    name="Hypodermis (subcutaneous fat)",
-    thickness=2.35 * ureg.millimeter,
-    material=hypodermis,
-    clip_to_sample=True,
+sample = ShimojoThreeLayer850nm(
+    origin=(-0.6, -0.6, 0) * ureg.millimeter,
+    size=(1.2, 1.2, 4) * ureg.millimeter,
 )
 
 # %%
@@ -160,7 +111,7 @@ boundaries = MomentRT.Boundaries.uniform(condition=boundary)
 # The transparent surfaces show the epidermis, dermis, and hypodermis in
 # surface-to-depth order; the resolved fluence and seven fiber contacts follow.
 
-sample_figure = sample.plot(show=show_figures)
+sample_figure = sample.plot(show=False)
 
 # %%
 # Solve all six illumination fibers together with SP3
@@ -213,20 +164,12 @@ print(f"Collection geometric area: {detector_result.geometric_area.to('mm^2'):~P
 # before interpreting a result; the approximations themselves also require
 # validation against a suitable radiative-transfer or Monte Carlo reference.
 
-overlays = [mesh, *sources, detector, *sample.structures]
+overlays = [*sources, detector, *sample.structures]
 
-fluence_figure = result.fluence.plot(
+gallery_system_figure = result.fluence.plot(
     view="volume",
     scale="linear",
     display_resolution=0.1 * ureg.millimeter,
     overlays=overlays,
-    show=show_figures,
+    show=False,
 )
-
-
-# %%
-# Inspect the modeled geometry
-# ----------------------------
-# This view shows the configured geometry and instrument footprints.
-
-gallery_system_figure = sample.plot(overlays=overlays, show=False)

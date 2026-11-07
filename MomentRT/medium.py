@@ -5,6 +5,7 @@ import copy
 from collections.abc import Iterable
 from typing import Literal, cast
 import numpy as np
+import TypedUnit
 from numpy.typing import NDArray
 from pint import Quantity
 import MomentRT
@@ -111,10 +112,21 @@ class StructuredMedium:
             Positive full Cartesian extents, shape (3,), with length units.
         """
 
-        MomentRT.units.validate_units(value=origin, unit="m", name="origin", shape=(3,))
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=origin,
+            unit="m",
+            name="origin",
+            shape=(3,),
+        )
 
-        MomentRT.units.validate_units(
-            value=size, unit="m", name="size", shape=(3,), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=size,
+            unit="m",
+            name="size",
+            shape=(3,),
+            positive=True,
         )
 
         self.origin = origin.copy()
@@ -326,7 +338,9 @@ class StructuredMedium:
             query lies outside the finite sample.
         """
 
-        MomentRT.units.validate_units(value=points, unit="m", name="points")
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg, value=points, unit="m", name="points"
+        )
 
         if points.ndim < 1 or points.shape[-1] != 3:
             raise ValueError("points must have a trailing axis of length three.")
@@ -500,7 +514,8 @@ class StructuredMedium:
         if not isinstance(clip_to_sample, (bool, np.bool_)):
             raise TypeError("clip_to_sample must be a boolean.")
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=thickness,
             unit="m",
             name="thickness",

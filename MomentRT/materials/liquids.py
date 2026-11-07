@@ -3,6 +3,7 @@
 from __future__ import annotations
 import importlib.resources
 import numpy as np
+import TypedUnit
 from pint import Quantity
 import MomentRT
 
@@ -47,7 +48,8 @@ class Water(MomentRT.material.Material):
         pint.Quantity
             Absorption coefficient in mm^-1.
         """
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=wavelength,
             unit="m",
             name="wavelength",
@@ -85,7 +87,8 @@ class Water(MomentRT.material.Material):
         refractive_index : float
             Positive dimensionless refractive index.
         """
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=wavelength,
             unit="m",
             name="wavelength",
@@ -194,7 +197,8 @@ class Intralipid(MomentRT.material.Material):
         ):
             raise ValueError("refractive_index must be a positive, unitless number.")
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=wavelength,
             unit="m",
             name="wavelength",

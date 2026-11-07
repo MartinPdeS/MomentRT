@@ -123,7 +123,7 @@ Collected-power spectra use wavelength and power axes, so geometric
 overlays belong on a constituent spatial field:
 ``spectrum.results[2].fluence.plot(overlays=[source, detector])``.
 See the :doc:`spectral detector example
-<gallery/sources_detectors/spectral_detectors>` for both figures.
+<gallery/spectral/spectral_detectors>` for both figures.
 
 Diffusive flux
 --------------

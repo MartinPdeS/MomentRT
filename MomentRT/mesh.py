@@ -8,6 +8,7 @@ from typing import Any, cast
 from uuid import uuid4
 import gmsh
 import numpy as np
+import TypedUnit
 from numpy.typing import ArrayLike, NDArray
 from pint import Quantity
 import MomentRT
@@ -59,11 +60,22 @@ class CartesianMesh:
         ):
             raise ValueError("shape must contain three integers of at least two.")
 
-        MomentRT.units.validate_units(
-            value=spacing, unit="m", name="spacing", shape=(3,), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=spacing,
+            unit="m",
+            name="spacing",
+            shape=(3,),
+            positive=True,
         )
 
-        MomentRT.units.validate_units(value=origin, unit="m", name="origin", shape=(3,))
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=origin,
+            unit="m",
+            name="origin",
+            shape=(3,),
+        )
 
         self.shape: tuple[int, int, int] = (shape[0], shape[1], shape[2])
 
@@ -381,7 +393,8 @@ class CartesianMesh:
             raise ValueError("Supply exactly one of resolution or shape.")
 
         if resolution is not None:
-            MomentRT.units.validate_units(
+            TypedUnit.validate_quantity(
+                registry=MomentRT.units.ureg,
                 value=resolution,
                 unit="m",
                 name="resolution",
@@ -459,7 +472,9 @@ class TetrahedralMesh:
         tetrahedra : array_like of int
             Valid node indices with shape (T, 4); N >= 4 and T >= 1.
         """
-        MomentRT.units.validate_units(value=points, unit="m", name="points")
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg, value=points, unit="m", name="points"
+        )
 
         coordinates = np.asarray(points.to("m").magnitude, dtype=float)
         cells = np.asarray(tetrahedra)
@@ -718,7 +733,8 @@ class TetrahedralMesh:
     @staticmethod
     def _validate_resolution(*, resolution: Quantity) -> None:
         """Validate one physical scalar target size."""
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=resolution,
             unit="m",
             name="resolution",
@@ -770,7 +786,8 @@ class TetrahedralMesh:
             Positive scalar length of the fine neighborhood and transition band.
         """
         self._validate_refinement(resolution=resolution)
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=distance,
             unit="m",
             name="distance",
@@ -796,7 +813,7 @@ class TetrahedralMesh:
                         "refine_near requires circular surface sources or detectors."
                     )
 
-                MomentRT.boundary._validate_face_disk(
+                MomentRT._face_geometry.validate_face_disk(
                     sample=self._sample,
                     face=member.face,
                     position=member.position,
@@ -1188,7 +1205,9 @@ class TetrahedralMesh:
 
     def _interpolate(self, *, points: Quantity, values: np.ndarray) -> np.ndarray:
         """Interpolate P1 nodal values using the original tetrahedral connectivity."""
-        MomentRT.units.validate_units(value=points, unit="m", name="points")
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg, value=points, unit="m", name="points"
+        )
         queries = np.asarray(points.to("m").magnitude)
 
         if queries.ndim < 1 or queries.shape[-1] != 3:

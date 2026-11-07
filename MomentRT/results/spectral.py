@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 from collections.abc import Mapping, Sequence
 import numpy as np
+import TypedUnit
 from pint import Quantity
 from scipy import integrate
 import MomentRT
@@ -63,15 +64,20 @@ class BroadbandDetectorResult:
         reference_measurements : sequence of DetectorResult or None, optional
             Same-aperture measurements on the wavelength grid. Default is None.
         """
-        MomentRT.units.validate_units(
-            value=wavelengths, unit="m", name="wavelengths", positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=wavelengths,
+            unit="m",
+            name="wavelengths",
+            positive=True,
         )
         if wavelengths.ndim != 1 or len(wavelengths) < 2:
             raise ValueError("wavelengths must contain at least two samples.")
         grid = wavelengths.to("m").magnitude
         if np.any(np.diff(grid) <= 0):
             raise ValueError("wavelengths must be strictly increasing.")
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=spectral_power,
             unit="W/m",
             name="spectral_power",
@@ -173,7 +179,8 @@ class BroadbandSimulationResult:
         reference_optical_power : pint.Quantity
             Positive scalar reference optical power, with power units.
         """
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=reference_optical_power,
             unit="W",
             name="reference_optical_power",
@@ -269,8 +276,12 @@ class SpectralSimulationResult:
             Default is None.
         """
 
-        MomentRT.units.validate_units(
-            value=wavelengths, unit="m", name="wavelengths", positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=wavelengths,
+            unit="m",
+            name="wavelengths",
+            positive=True,
         )
 
         if wavelengths.ndim != 1 or not len(wavelengths):

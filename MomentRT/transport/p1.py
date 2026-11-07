@@ -4,6 +4,7 @@ from __future__ import annotations
 import copy
 from collections.abc import Mapping
 import numpy as np
+import TypedUnit
 from pint import Quantity
 from scipy import sparse
 from scipy.sparse import linalg as sparse_linalg
@@ -231,7 +232,8 @@ class _PreparedDiffusion:
         if isinstance(mesh, MomentRT.mesh.TetrahedralMesh):
             mesh._validate_sample(sample=medium)
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=source.optical_power,
             unit="W",
             name="optical_power",
@@ -284,7 +286,7 @@ class _PreparedDiffusion:
                 ):
                     raise ValueError("Source position must lie on its configured face.")
 
-                MomentRT.boundary._validate_face_disk(
+                MomentRT._face_geometry.validate_face_disk(
                     sample=self.medium,
                     face=source.face,
                     position=source.position,
@@ -311,7 +313,7 @@ class _PreparedDiffusion:
                 position[in_plane] + radius > upper[in_plane]
             ):
                 raise ValueError(
-                    MomentRT.boundary._disk_bounds_message(
+                    MomentRT._face_geometry.disk_bounds_message(
                         face=self.source.face,
                         position=self.source.position,
                         radius=self.source.radius,
@@ -424,7 +426,8 @@ class _PreparedDiffusion:
             Finite-element fluence, element flux, boundary fields, and power balance.
         """
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=source.optical_power,
             unit="W",
             name="optical_power",

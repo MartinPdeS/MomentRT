@@ -21,7 +21,8 @@ requirements:
     - python >=3.11
     - numpy >=1.26
     - scipy >=1.12
-    - pint >=0.24
+    - pint >=0.24,<0.26
+    - typedunit >=0.3.0,<0.4
     - matplotlib >=3.8
     - plotly >=6,<7
     - gmsh >=4.13,<5

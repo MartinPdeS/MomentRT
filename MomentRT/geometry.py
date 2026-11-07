@@ -4,6 +4,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 import numpy as np
+import TypedUnit
 from numpy.typing import NDArray
 from pint import Quantity
 import MomentRT
@@ -70,10 +71,21 @@ class Box:
             Nonempty name identifying this object.
         """
 
-        MomentRT.units.validate_units(value=origin, unit="m", name="origin", shape=(3,))
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=origin,
+            unit="m",
+            name="origin",
+            shape=(3,),
+        )
 
-        MomentRT.units.validate_units(
-            value=size, unit="m", name="size", shape=(3,), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=size,
+            unit="m",
+            name="size",
+            shape=(3,),
+            positive=True,
         )
 
         _validate_region(material=material, name=name)
@@ -146,10 +158,21 @@ class Sphere:
             Nonempty name identifying this object.
         """
 
-        MomentRT.units.validate_units(value=center, unit="m", name="center", shape=(3,))
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=center,
+            unit="m",
+            name="center",
+            shape=(3,),
+        )
 
-        MomentRT.units.validate_units(
-            value=radius, unit="m", name="radius", shape=(), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=radius,
+            unit="m",
+            name="radius",
+            shape=(),
+            positive=True,
         )
 
         _validate_region(material=material, name=name)
@@ -221,10 +244,17 @@ class Layer:
             Nonempty name identifying this object.
         """
 
-        MomentRT.units.validate_units(value=depth, unit="m", name="depth", shape=())
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg, value=depth, unit="m", name="depth", shape=()
+        )
 
-        MomentRT.units.validate_units(
-            value=thickness, unit="m", name="thickness", shape=(), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=thickness,
+            unit="m",
+            name="thickness",
+            shape=(),
+            positive=True,
         )
 
         _validate_region(material=material, name=name)

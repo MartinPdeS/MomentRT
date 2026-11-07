@@ -10,7 +10,7 @@ multiple wavelengths.
 ``simulation.convergence_study(...)`` remains a compatibility alias for
 ``simulation.mesh_convergence(...)`` with the same arguments and behavior.
 See the :doc:`worked refinement example
-<gallery/sources_detectors/detector_convergence>` for comparison plots and a
+<gallery/sources_and_detectors/detector_convergence>` for comparison plots and a
 fluence volume with instrument overlays.
 
 For progress during mesh generation and solves, enable Python logging before

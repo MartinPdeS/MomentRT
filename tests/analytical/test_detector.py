@@ -176,7 +176,7 @@ def test_invalid_collection_configuration(axis, angle):
 
 
 def test_acceptance_requires_an_explicit_quantity():
-    with pytest.raises(TypeError, match="carry units"):
+    with pytest.raises(TypeError, match="Pint quantity"):
         SurfaceDetector(
             face="z_max",
             position=np.ones(3) * ureg.mm,

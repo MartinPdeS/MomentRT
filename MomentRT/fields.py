@@ -5,6 +5,7 @@ import copy
 from collections.abc import Iterable, Mapping
 from typing import Literal
 import numpy as np
+import TypedUnit
 from pint import Quantity
 import MomentRT
 
@@ -262,12 +263,15 @@ class BoundaryField:
         if face not in MomentRT.boundary.FACES:
             raise ValueError(f"face must be one of {MomentRT.boundary.FACES}.")
 
-        MomentRT.units.validate_units(value=positions, unit="m", name="positions")
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg, value=positions, unit="m", name="positions"
+        )
 
         if positions.ndim < 2 or positions.shape[-1] != 3:
             raise ValueError("positions must have a trailing axis of length three.")
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=area_weights,
             unit="m^2",
             name="area_weights",
@@ -275,23 +279,38 @@ class BoundaryField:
             positive=True,
         )
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=escaping_irradiance,
             unit="W/m^2",
             name="escaping_irradiance",
             shape=positions.shape[:-1],
         )
 
-        MomentRT.units.validate_units(
-            value=sample_origin, unit="m", name="sample_origin", shape=(3,)
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=sample_origin,
+            unit="m",
+            name="sample_origin",
+            shape=(3,),
         )
 
-        MomentRT.units.validate_units(
-            value=sample_size, unit="m", name="sample_size", shape=(3,), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=sample_size,
+            unit="m",
+            name="sample_size",
+            shape=(3,),
+            positive=True,
         )
 
-        MomentRT.units.validate_units(
-            value=wavelength, unit="m", name="wavelength", shape=(), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=wavelength,
+            unit="m",
+            name="wavelength",
+            shape=(),
+            positive=True,
         )
 
         self.face = face
@@ -349,7 +368,9 @@ class VectorField:
             Nonempty name identifying this object.
         """
 
-        MomentRT.units.validate_units(value=positions, unit="m", name="positions")
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg, value=positions, unit="m", name="positions"
+        )
 
         if positions.ndim != 2 or positions.shape[1] != 3 or len(positions) == 0:
             raise ValueError("positions must have shape (N, 3).")

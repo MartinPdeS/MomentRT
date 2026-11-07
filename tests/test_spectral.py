@@ -44,7 +44,7 @@ def test_spectral_interpolation_and_coverage():
         with pytest.raises(ValueError, match="outside"):
             spectral.at(wavelength=wavelength * ureg.nm)
 
-    with pytest.raises(TypeError, match="carry units"):
+    with pytest.raises(TypeError, match="Pint quantity"):
         spectral.at(wavelength=750)
 
     with pytest.raises(ValueError, match="shape"):

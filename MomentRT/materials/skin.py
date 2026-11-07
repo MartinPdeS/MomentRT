@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 import numpy as np
+import TypedUnit
 from pint import Quantity
 import MomentRT
 
@@ -61,7 +62,8 @@ class Epidermis(MomentRT.material.Material):
             or not 0 <= melanin_fraction <= 1
         ):
             raise ValueError("melanin_fraction must be a unitless fraction in [0, 1].")
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=wavelength,
             unit="m",
             name="wavelength",
@@ -173,7 +175,8 @@ class Dermis(MomentRT.material.Material):
             or not 0 <= hydration <= 1
         ):
             raise ValueError("hydration must be a unitless fraction in [0, 1].")
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=wavelength,
             unit="m",
             name="wavelength",

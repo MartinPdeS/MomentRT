@@ -85,7 +85,7 @@ Independent references
 ----------------------
 
 The :doc:`planar slab example
-<gallery/transport_models/planar_slab_references>` compares P1 and SP3 finite-element
+<gallery/validation/planar_slab_references>` compares P1 and SP3 finite-element
 fields with independently calculated one-dimensional analytical solutions.
 This checks the FEM implementation and spatial discretization for a planar
 homogeneous case. It does not validate the approximations against the full

@@ -5,6 +5,7 @@ from collections.abc import Iterable, Mapping
 from html import escape
 from typing import Any
 import numpy as np
+import TypedUnit
 from pint import Quantity
 from scipy import integrate
 import MomentRT
@@ -38,14 +39,19 @@ class SourceSpectrum:
         spectral_power : pint.Quantity
             Nonnegative spectral power density, shape (n,), with W / length units.
         """
-        MomentRT.units.validate_units(
-            value=wavelengths, unit="m", name="wavelengths", positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=wavelengths,
+            unit="m",
+            name="wavelengths",
+            positive=True,
         )
         if wavelengths.ndim != 1 or len(wavelengths) < 2:
             raise ValueError("wavelengths must be a vector of at least two samples.")
         if np.any(np.diff(wavelengths.to("m").magnitude) <= 0):
             raise ValueError("wavelengths must be strictly increasing.")
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=spectral_power,
             unit="W/m",
             name="spectral_power",
@@ -94,7 +100,8 @@ class SourceSpectrum:
         ValueError
             If the grid is invalid, outside coverage, or loses all source power.
         """
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=wavelengths,
             unit="m",
             name="wavelengths",
@@ -187,10 +194,16 @@ class _SourceEmission:
                 raise ValueError(
                     "Supply both wavelength and optical_power, or spectrum."
                 )
-            MomentRT.units.validate_units(
-                value=wavelength, unit="m", name="wavelength", shape=(), positive=True
+            TypedUnit.validate_quantity(
+                registry=MomentRT.units.ureg,
+                value=wavelength,
+                unit="m",
+                name="wavelength",
+                shape=(),
+                positive=True,
             )
-            MomentRT.units.validate_units(
+            TypedUnit.validate_quantity(
+                registry=MomentRT.units.ureg,
                 value=optical_power,
                 unit="W",
                 name="optical_power",
@@ -305,8 +318,12 @@ class PointSource(_SourceEmission):
             Nonempty Plotly-compatible color string.
         """
 
-        MomentRT.units.validate_units(
-            value=position, unit="m", name="position", shape=(3,)
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=position,
+            unit="m",
+            name="position",
+            shape=(3,),
         )
 
         self._configure_emission(
@@ -596,12 +613,21 @@ class SurfaceSource(UniformSurfaceSource):
             color=color,
         )
 
-        MomentRT.units.validate_units(
-            value=position, unit="m", name="position", shape=(3,)
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=position,
+            unit="m",
+            name="position",
+            shape=(3,),
         )
 
-        MomentRT.units.validate_units(
-            value=radius, unit="m", name="radius", shape=(), positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=radius,
+            unit="m",
+            name="radius",
+            shape=(),
+            positive=True,
         )
 
         self.position = position.copy()
@@ -652,7 +678,7 @@ class SurfaceSource(UniformSurfaceSource):
         SurfaceSource
             Source with its absolute three-dimensional position recorded.
         """
-        position = MomentRT.boundary._face_position(
+        position = MomentRT._face_geometry.face_position(
             sample=sample, face=face, coordinates=coordinates
         )
 
@@ -667,7 +693,7 @@ class SurfaceSource(UniformSurfaceSource):
             color=color,
         )
 
-        MomentRT.boundary._validate_face_disk(
+        MomentRT._face_geometry.validate_face_disk(
             sample=sample, face=face, position=source.position, radius=source.radius
         )
 

@@ -28,10 +28,12 @@ globals().update(
         prefer_installed_package=True,
         gallery_sections=[
             "getting_started",
-            "meshes",
-            "sources_detectors",
+            "samples_and_meshes",
+            "sources_and_detectors",
+            "spectral",
             "transport_models",
-            "sweeps_convergence",
+            "parameter_studies",
+            "validation",
             "inverse_problems",
         ],
         gallery_default_thumb=str(

@@ -4,6 +4,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from math import factorial
 import numpy as np
+import TypedUnit
 from scipy import sparse, special
 from scipy.sparse import linalg as sparse_linalg
 import MomentRT
@@ -259,7 +260,8 @@ class _PreparedP3(MomentRT.transport.diffusion._PreparedDiffusion):
                 + ", ".join(missing)
             )
 
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=source.optical_power,
             unit="W",
             name="optical_power",

@@ -1,10 +1,10 @@
 """Physical units shared by all MomentRT objects."""
 
 from __future__ import annotations
-import numpy as np
+import TypedUnit
 from pint import Quantity, UnitRegistry
 
-ureg = UnitRegistry()
+ureg: UnitRegistry = UnitRegistry()
 
 
 def validate_units(
@@ -50,16 +50,12 @@ def validate_units(
     if not isinstance(value, ureg.Quantity):
         raise TypeError(f"{name} must carry units from MomentRT.ureg.")
 
-    magnitude = np.asarray(value.to(unit).magnitude, dtype=float)
-
-    if shape is not None and magnitude.shape != shape:
-        raise ValueError(f"{name} must have shape {shape}.")
-
-    if not np.all(np.isfinite(magnitude)):
-        raise ValueError(f"{name} must be finite.")
-
-    if positive and np.any(magnitude <= 0):
-        raise ValueError(f"{name} must be positive.")
-
-    if nonnegative and np.any(magnitude < 0):
-        raise ValueError(f"{name} must be nonnegative.")
+    TypedUnit.validate_quantity(
+        value=value,
+        unit=unit,
+        name=name,
+        registry=ureg,
+        shape=shape,
+        positive=positive,
+        nonnegative=nonnegative,
+    )

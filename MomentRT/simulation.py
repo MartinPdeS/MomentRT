@@ -6,6 +6,7 @@ import time
 from collections.abc import Iterable, Mapping
 from typing import Any, Protocol, cast
 import numpy as np
+import TypedUnit
 from pint import Quantity
 import MomentRT
 
@@ -231,7 +232,8 @@ class Simulation:
         ):
             for name, unit in (("wavelength", "m"), ("optical_power", "W")):
                 try:
-                    MomentRT.units.validate_units(
+                    TypedUnit.validate_quantity(
+                        registry=MomentRT.units.ureg,
                         value=getattr(source, name),
                         unit=unit,
                         name=name,
@@ -248,8 +250,12 @@ class Simulation:
                 selected_wavelengths = [source.wavelength]
         else:
             try:
-                MomentRT.units.validate_units(
-                    value=wavelengths, unit="m", name="wavelengths", positive=True
+                TypedUnit.validate_quantity(
+                    registry=MomentRT.units.ureg,
+                    value=wavelengths,
+                    unit="m",
+                    name="wavelengths",
+                    positive=True,
                 )
 
                 if wavelengths.ndim != 1 or not len(wavelengths):
@@ -422,7 +428,7 @@ class Simulation:
                                 "Source position must lie on its configured face."
                             )
 
-                        MomentRT.boundary._validate_face_disk(
+                        MomentRT._face_geometry.validate_face_disk(
                             sample=medium,
                             face=member.face,
                             position=member.position,
@@ -451,7 +457,7 @@ class Simulation:
                             "Source position must lie on its configured face."
                         )
 
-                    MomentRT.boundary._validate_face_disk(
+                    MomentRT._face_geometry.validate_face_disk(
                         sample=medium,
                         face=source.face,
                         position=source.position,
@@ -660,16 +666,24 @@ class Simulation:
                 "sweep uses independent monochromatic powers; use run() for a source spectrum."
             )
 
-        MomentRT.units.validate_units(
-            value=wavelengths, unit="m", name="wavelengths", positive=True
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=wavelengths,
+            unit="m",
+            name="wavelengths",
+            positive=True,
         )
 
         if wavelengths.ndim != 1 or not len(wavelengths):
             raise ValueError("wavelengths must be a nonempty vector.")
 
         if optical_power is not None:
-            MomentRT.units.validate_units(
-                value=optical_power, unit="W", name="optical_power", positive=True
+            TypedUnit.validate_quantity(
+                registry=MomentRT.units.ureg,
+                value=optical_power,
+                unit="W",
+                name="optical_power",
+                positive=True,
             )
 
             if optical_power.shape not in ((), wavelengths.shape):

@@ -59,3 +59,16 @@ def test_plotly_is_a_core_dependency():
     run_requirements = recipe.split("  run:\n", 1)[1].split("\ntest:", 1)[0]
 
     assert "    - plotly >=6,<7" in run_requirements
+
+
+def test_typedunit_and_pint_requirements_match_conda_recipe():
+    """Both distributions use the supported TypedUnit and Pint versions."""
+    root = Path.cwd()
+    project = tomllib.loads((root / "pyproject.toml").read_text())["project"]
+    recipe = (root / "conda.recipe" / "meta.yaml").read_text()
+    run_requirements = recipe.split("  run:\n", 1)[1].split("\ntest:", 1)[0]
+
+    assert "TypedUnit>=0.3.0,<0.4" in project["dependencies"]
+    assert "pint>=0.24,<0.26" in project["dependencies"]
+    assert "    - typedunit >=0.3.0,<0.4" in run_requirements
+    assert "    - pint >=0.24,<0.26" in run_requirements

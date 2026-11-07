@@ -3,6 +3,7 @@
 from __future__ import annotations
 from typing import Literal, cast
 import numpy as np
+import TypedUnit
 from pint import Quantity
 import MomentRT
 
@@ -82,8 +83,12 @@ class SampleSection:
         if normal not in ("x", "y", "z"):
             raise ValueError("normal must be x, y, or z.")
 
-        MomentRT.units.validate_units(
-            value=position, unit="m", name="position", shape=()
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
+            value=position,
+            unit="m",
+            name="position",
+            shape=(),
         )
 
         if len(resolution) != 2 or any(

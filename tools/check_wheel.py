@@ -14,6 +14,7 @@ REQUIRED_MODULES = (
     "MomentRT/__init__.py",
     "MomentRT/py.typed",
     "MomentRT/_version.py",
+    "MomentRT/_face_geometry.py",
     "MomentRT/boundary.py",
     "MomentRT/convergence.py",
     "MomentRT/detector.py",
@@ -27,7 +28,12 @@ REQUIRED_MODULES = (
     "MomentRT/medium.py",
     "MomentRT/mesh.py",
     "MomentRT/transport/p3.py",
-    "MomentRT/phase_function.py",
+    "MomentRT/phase_function/__init__.py",
+    "MomentRT/phase_function/base.py",
+    "MomentRT/phase_function/henyey_greenstein.py",
+    "MomentRT/phase_function/isotropic.py",
+    "MomentRT/phase_function/rayleigh.py",
+    "MomentRT/phase_function/tabulated.py",
     "MomentRT/plotting.py",
     "MomentRT/results/__init__.py",
     "MomentRT/results/convergence.py",
@@ -106,6 +112,8 @@ def check_install(*, wheel):
             "('P1', 'InfiniteP1', 'MeshConvergence', 'TetrahedralMesh', 'SurfaceDetector', 'SpectralMaterial', 'SpectralSimulationResult', "
             "'DetectorConvergenceResult', 'SourceSpectrum', 'DetectorResponsivity', "
             "'BroadbandSimulationResult', 'BroadbandDetectorResult', 'SpectralConvergenceResult')); "
+            "from MomentRT.phase_function.henyey_greenstein import HenyeyGreenstein; "
+            "assert HenyeyGreenstein is MomentRT.HenyeyGreenstein; "
             "print(f'Imported MomentRT {MomentRT.__version__} from {location}')"
         )
 

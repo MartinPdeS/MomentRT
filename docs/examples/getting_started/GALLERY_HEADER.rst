@@ -1,5 +1,5 @@
 Getting started
 ===============
 
-Learn the basic workflow with an analytical infinite-medium example and
-finite samples. Build geometry, configure illumination, and inspect fluence.
+Start with a skin contact sensor, an analytical calculation, or a finite
+sample, then explore structured geometry.

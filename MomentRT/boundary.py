@@ -5,7 +5,6 @@ import copy
 from collections.abc import Iterator, Mapping
 from typing import Literal
 import numpy as np
-from pint import Quantity
 import MomentRT
 
 Face = Literal["x_min", "x_max", "y_min", "y_max", "z_min", "z_max"]
@@ -160,94 +159,3 @@ class Boundaries(Mapping[Face, RobinBoundary | ReflectingBoundary]):
             raise ValueError(f"Unknown boundary faces: {sorted(unknown)}.")
 
         return Boundaries(conditions={**self._conditions, **conditions})
-
-
-def _face_position(
-    *, sample: MomentRT.medium.StructuredMedium, face: Face, coordinates: Quantity
-) -> Quantity:
-    """Convert absolute in-plane coordinates to a sample-face position."""
-    if not isinstance(sample, MomentRT.medium.StructuredMedium):
-        raise TypeError("sample must be a StructuredMedium.")
-
-    if face not in FACES:
-        raise ValueError(f"face must be one of {FACES}.")
-
-    MomentRT.units.validate_units(
-        value=coordinates, unit="m", name="coordinates", shape=(2,)
-    )
-
-    axis = "xyz".index(face[0])
-
-    position = np.asarray(
-        sample.origin.to(coordinates.units).magnitude, dtype=float
-    ).copy()
-
-    position[[i for i in range(3) if i != axis]] = coordinates.magnitude
-
-    if face.endswith("max"):
-        position[axis] += sample.size.to(coordinates.units).magnitude[axis]
-
-    return position * coordinates.units
-
-
-def _validate_face_disk(
-    *,
-    sample: MomentRT.medium.StructuredMedium,
-    face: Face,
-    position: Quantity,
-    radius: Quantity,
-) -> None:
-    """Require a circular face footprint to fit within the sample."""
-    axis = "xyz".index(face[0])
-
-    in_plane = [index for index in range(3) if index != axis]
-
-    lower = sample.origin.to("m").magnitude
-
-    upper = (sample.origin + sample.size).to("m").magnitude
-
-    center = position.to("m").magnitude
-
-    distance = radius.to("m").magnitude
-
-    tolerance = 16 * np.finfo(float).eps * np.maximum(np.abs(lower), np.abs(upper))
-
-    if np.any(
-        center[in_plane] - distance < lower[in_plane] - tolerance[in_plane]
-    ) or np.any(center[in_plane] + distance > upper[in_plane] + tolerance[in_plane]):
-        raise ValueError(
-            _disk_bounds_message(
-                face=face,
-                position=position,
-                radius=radius,
-                lower=sample.origin,
-                upper=sample.origin + sample.size,
-                label="circular footprint",
-            )
-        )
-
-
-def _disk_bounds_message(
-    *,
-    face: Face,
-    position: Quantity,
-    radius: Quantity,
-    lower: Quantity,
-    upper: Quantity,
-    label: str,
-) -> str:
-    """Describe a footprint and the in-plane bounds it must fit within."""
-    axes = [index for index in range(3) if index != "xyz".index(face[0])]
-
-    unit = position.units
-
-    bounds = ", ".join(
-        f"{'xyz'[axis]}=[{lower[axis].to(unit):~P}, {upper[axis].to(unit):~P}]"
-        for axis in axes
-    )
-
-    return (
-        f"The entire {label} must fit on its sample face {face}: "
-        f"center={position:~P}, radius={radius.to(unit):~P}; "
-        f"in-plane bounds: {bounds}."
-    )

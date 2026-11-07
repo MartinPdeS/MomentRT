@@ -7,6 +7,12 @@ with scattering angle. MomentRT's scalar, axisymmetric models use the cosine
 normalized so that :math:`2\pi\int_{-1}^{1}p(\mu)\,d\mu=1`. They do not
 represent polarization or azimuth-dependent scattering.
 
+The implementations live in separate modules under ``MomentRT.phase_function``.
+For example, ``from MomentRT.phase_function.henyey_greenstein import
+HenyeyGreenstein`` imports that implementation directly. The existing
+``MomentRT.phase_function.HenyeyGreenstein`` and ``MomentRT.HenyeyGreenstein``
+paths remain available.
+
 Available models
 ----------------
 

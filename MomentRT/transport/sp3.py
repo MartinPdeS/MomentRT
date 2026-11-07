@@ -3,6 +3,7 @@
 from __future__ import annotations
 from collections.abc import Mapping
 import numpy as np
+import TypedUnit
 from scipy import sparse
 from scipy.sparse import linalg as sparse_linalg
 import MomentRT
@@ -137,7 +138,8 @@ class _PreparedSP3(MomentRT.transport.diffusion._PreparedDiffusion):
         source: MomentRT.source.UniformSurfaceSource,
         mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
     ) -> MomentRT.results.SimulationResult:
-        MomentRT.units.validate_units(
+        TypedUnit.validate_quantity(
+            registry=MomentRT.units.ureg,
             value=source.optical_power,
             unit="W",
             name="optical_power",

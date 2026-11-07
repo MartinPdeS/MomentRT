@@ -1,357 +1,207 @@
 |logo|
 
-.. list-table::
-   :widths: 35 65
-   :header-rows: 1
-
-   * - Badge
-     - Status
-   * - Python versions
-     - |python|
-   * - Documentation
-     - |docs|
-   * - Tests
-     - |tests|
-   * - Coverage workflow
-     - |coverage|
-   * - PyPI package
-     - |pypi|
-   * - PyPI downloads
-     - |pypi_downloads|
-   * - Anaconda package
-     - |anaconda|
-   * - Anaconda downloads
-     - |anaconda_downloads|
-   * - Latest Anaconda release
-     - |anaconda_date|
+|python| |pypi| |anaconda| |docs| |tests|
 
 MomentRT
 ========
 
-**MomentRT** is an open-source Python package for deterministic light
-transport using angular-moment methods. It models steady-state P1 diffusion
-in homogeneous infinite media and finite structured samples. Its API keeps the
-sample, illumination, mesh, and solver explicit, and its results include
-unit-bearing optical fields and power diagnostics.
+**MomentRT** is a Python library for deterministic light transport in
+scattering media. It is designed for biomedical optics workflows such as
+exploring how layered skin, diffuse illumination, and a contact detector
+influence the light reaching a sensor.
 
-Features
---------
+Define the tissue, source, detector, boundary conditions, mesh, and transport
+model as separate objects. MomentRT solves for unit-bearing optical fields and
+reports detector power and energy-balance diagnostics. Its general-purpose
+transport API also supports nonbiological media and instruments.
 
-* Analytical P1 diffusion from an isotropic point source in an infinite,
-  homogeneous medium.
-* Boundary-aware P1 diffusion for finite samples, solved with linear
-  tetrahedral finite elements.
-* Layered samples with box and sphere structures, plus resolved material
-  cross-sections.
-* Explicit diffuse surface illumination and Robin or reflecting conditions
-  on all six sample faces.
-* Interactive Plotly views for sample geometry, fluence, sections, and
-  element-centered flux. Volume plots include an opacity control.
-* Unit-bearing fields, per-face escaping power, and solver diagnostics.
-* Circular contact detector apertures with explicit angular acceptance under
-  a Lambertian escape model.
-* Tabulated wavelength-dependent materials and monochromatic sweeps on a
-  fixed source, sample, and detector geometry.
-* Detector mesh-refinement studies and reusable finite-element preparation
-  across wavelengths.
-* A coupled SP3 finite-element solver with explicit scattering anisotropy and
-  matched-index boundaries, alongside the P1 diffusion solver.
-* A full three-dimensional P3 finite-element solver with matched-index faces.
-* Scalar Henyey–Greenstein, isotropic, Rayleigh, and tabulated scattering
-  phase functions for SP3 and P3.
+.. figure:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/images/readme-skin-fluence.png
+   :width: 850
+   :align: center
+   :alt: Three-dimensional calculated fluence in a layered skin sample with a surface source and detector.
 
-Source spectra and linear detector responsivity support explicit broadband
-optical-power and photocurrent integration.
+   A P1 finite-element solution for an illustrative three-layer skin sample.
+   The colored volume shows fluence interpolated from the nodal solution onto
+   a display grid. `Explore
+   the interactive example <https://martinpdes.github.io/MomentRT/docs/latest/gallery/getting_started/skin_contact.html>`_.
 
-MomentRT offers P1, SP3, and P3 approximations. The finite P1 solver is
-``P1`` and the analytical infinite-medium solver is ``InfiniteP1``. Their
-previous names, ``Diffusion`` and ``InfiniteDiffusion``, remain available as
-aliases. MomentRT does not currently solve the
-full radiative transfer equation or implement collimated LED
-propagation, free-space detector optics,
-time dependence, or inverse estimation. Read the `scientific guide`_ for the equations,
-approximations, validation limits, and complete workflow.
+What you can model
+------------------
 
-Installation
-------------
+* **Tissue and phantoms:** finite layered samples with inclusions, named skin
+  models, and user-supplied monochromatic or wavelength-dependent materials.
+* **Contact instruments:** diffuse disk or full-face illumination and circular
+  detector apertures with explicit orientation and angular acceptance.
+* **Light transport:** analytical infinite-medium P1 and finite-sample P1,
+  SP3, and full three-dimensional P3 angular-moment models.
+* **Spectral response:** monochromatic sweeps, source spectra, and linear
+  detector responsivity for broadband optical power and photocurrent.
+* **Inspection and verification:** interactive 3D fields, sample sections,
+  sampled footprint areas, energy diagnostics, and detector mesh studies.
 
-Install the released Python package:
+Install
+-------
 
 .. code-block:: console
 
    python -m pip install MomentRT
 
-Or install the conda package and its dependencies:
+Or install from conda:
 
 .. code-block:: console
 
    conda install -c martinpdes -c conda-forge momentrt
 
-Verify the installation with the same Python interpreter you will use for your
-calculations:
+Skin contact-sensor example
+---------------------------
 
-.. code-block:: console
-
-   python -c "import MomentRT; print(MomentRT.__version__)"
-
-The package includes Plotly for interactive plots.
-
-First simulation
-----------------
-
-The infinite-medium solver is a quick way to calculate and inspect a fluence
-field. This example uses explicit units and places the source between grid
-nodes, avoiding the singular point-source location.
+This complete example constructs a finite skin sample and a source and detector
+on its upper face, refines a tetrahedral mesh around the contacts, and solves
+with P1. The preset contains coefficients near **850 nm** interpolated from
+one ex vivo skin dataset; its dimensions and optical properties are
+illustrative rather than patient-specific.
 
 .. code-block:: python
 
-   import numpy as np
    import MomentRT
+   from MomentRT.models.skin import ShimojoThreeLayer850nm
 
-   from MomentRT import (
-       CartesianMesh,
-       HomogeneousMedium,
-       InfiniteP1,
-       Material,
-       PointSource,
-       Simulation,
-       ureg,
+   ureg = MomentRT.ureg
+
+   sample = ShimojoThreeLayer850nm(
+       origin=(-3, -3, 0) * ureg.mm,
+       size=(6, 6, 4) * ureg.mm,
    )
 
-   material = Material(
-       absorption=0.02 / ureg.millimeter,
-       reduced_scattering=1.0 / ureg.millimeter,
-       refractive_index=1.4,
-       phase_function=MomentRT.phase_function.HenyeyGreenstein(),
-   )
-
-   medium = HomogeneousMedium(material=material)
-
-   mesh = CartesianMesh(
-       shape=(40, 40, 40),
-       spacing=np.full(3, 0.4) * ureg.millimeter,
-       origin=np.full(3, -7.8) * ureg.millimeter,
-   )
-
-   source = PointSource(
-       position=np.zeros(3) * ureg.millimeter,
-       wavelength=970 * ureg.nanometer,
-       optical_power=1 * ureg.milliwatt,
-   )
-
-   solver = InfiniteP1()
-
-   simulation = Simulation(
-       medium=medium,
-       source=source,
-       mesh=mesh,
-       solver=solver,
-   )
-
-   result = simulation.run()
-
-   figure = result.fluence.plot(
-       scale="log",
-   )
-
-``result.fluence`` is a nodal fluence-rate field with units of W/m². The
-infinite solver evaluates an analytical Green function; the observation grid
-does not create physical sample boundaries.
-
-Finite-sample FEM workflow
---------------------------
-
-For a finite sample, define its geometry and materials, create a mesh, specify
-surface illumination and all six boundary faces, then run ``P1``. This
-example uses the same explicit effective reflectance on each face and a
-circular diffuse source on the upper face.
-
-.. code-block:: python
-
-   import numpy as np
-   import MomentRT
-
-   from MomentRT import (
-       TetrahedralMesh,
-       P1,
-       Material,
-       RobinBoundary,
-       Simulation,
-       StructuredMedium,
-       SurfaceSource,
-       ureg,
-   )
-
-   background = Material(
-       absorption=0.02 / ureg.millimeter,
-       reduced_scattering=1.0 / ureg.millimeter,
-       refractive_index=1.4,
-       phase_function=MomentRT.phase_function.HenyeyGreenstein(),
-   )
-
-   upper_material = Material(
-       absorption=0.04 / ureg.millimeter,
-       reduced_scattering=1.5 / ureg.millimeter,
-       refractive_index=1.4,
-       phase_function=MomentRT.phase_function.HenyeyGreenstein(),
-   )
-
-   sample = StructuredMedium(
-       origin=(-4, -4, 0) * ureg.millimeter,
-       size=(8, 8, 4) * ureg.millimeter,
-   )
-
-   sample.add_background(material=background)
-
-   sample.add_layer(
-       name="Upper layer",
-       thickness=1 * ureg.millimeter,
-       material=upper_material,
-   )
-
-   mesh = TetrahedralMesh.from_sample(
+   source = MomentRT.SurfaceSource.on_face(
        sample=sample,
-       resolution=0.5 * ureg.millimeter,
-   )
-
-   source = SurfaceSource(
        face="z_min",
-       position=np.array([0, 0, 0]) * ureg.millimeter,
-       radius=1 * ureg.millimeter,
-       wavelength=970 * ureg.nanometer,
-       optical_power=1 * ureg.milliwatt,
+       coordinates=(-1, 0) * ureg.mm,
+       radius=0.8 * ureg.mm,
+       wavelength=850 * ureg.nm,
+       optical_power=1 * ureg.mW,
    )
 
-   boundary = RobinBoundary(effective_reflectance=0.5)
-
-   solver = P1(
-       boundaries=MomentRT.Boundaries.uniform(condition=boundary),
+   detector = MomentRT.SurfaceDetector.on_face(
+       sample=sample,
+       face="z_min",
+       coordinates=(1, 0) * ureg.mm,
+       radius=0.8 * ureg.mm,
+       orientation="outward_normal",
+       acceptance_angle=90 * ureg.degree,
    )
 
-   simulation = Simulation(
+   mesh = MomentRT.TetrahedralMesh.from_sample(
+       sample=sample,
+       resolution=0.4 * ureg.mm,
+   )
+   mesh.refine_near(
+       objects=[source, detector],
+       resolution=0.2 * ureg.mm,
+       distance=0.3 * ureg.mm,
+   )
+
+   solver = MomentRT.P1(
+       boundaries=MomentRT.Boundaries.uniform(
+           condition=MomentRT.RobinBoundary(effective_reflectance=0),
+       ),
+   )
+   simulation = MomentRT.Simulation(
        medium=sample,
        source=source,
        mesh=mesh,
        solver=solver,
-   )
-
-   geometry = simulation.plot_system(
-       show=False,
+       detectors={"contact": detector},
    )
 
    result = simulation.run()
+   measurement = result.detectors["contact"]
 
-   figure = result.fluence.plot(
+   print(f"Collected power: {measurement.collected_power.to('uW'):~P}")
+   print(f"Sampled source area: {result.source_sampled_area.to('mm^2'):~P}")
+   print(f"Geometric source area: {result.source_geometric_area.to('mm^2'):~P}")
+   print(f"Sampled detector area: {measurement.sampled_area.to('mm^2'):~P}")
+   print(f"Geometric detector area: {measurement.geometric_area.to('mm^2'):~P}")
+   print(f"Minimum nodal fluence: {result.fluence.values.min().to('W/m^2'):~P}")
+
+   system_figure = simulation.plot_system(show=False)
+   mesh_figure = mesh.plot(max_edges=4000, show=False)
+   fluence_figure = result.fluence.plot(
        view="volume",
        scale="log",
-       display_resolution=0.4 * ureg.millimeter,
-   )
-
-   print(f"Incoming power: {result.energy_balance['incoming_power']}")
-   print(f"Absorbed power: {result.energy_balance['absorbed_power']}")
-   print(f"Escaping power: {result.energy_balance['escaping_power']}")
-
-The finite ``P1`` solver uses P1 diffusion with linear tetrahedral FEM.
-The recommended ``TetrahedralMesh`` conforms to sample interfaces; its
-resolution is a target element size. Refine the mesh to assess convergence.
-Tetrahedral fluence plots interpolate onto a separate display grid. The sample
-mesh must span the sample exactly. Internal refractive indices
-must be equal because the solver models continuous fluence and does not
-resolve refracting interfaces. ``SurfaceSource.optical_power`` is diffuse
-power already coupled into the sample; incident beam propagation and
-specular entry losses are not included. The supplied effective reflectance
-is a diffuse partial-current coefficient, not a Fresnel value inferred from
-refractive index.
-
-Visualization
--------------
-
-The default fluence plot is a Plotly volume view. Adjust opacity from 0 to 1
-using its browser slider, or choose a starting value with ``opacity``:
-
-.. code-block:: python
-
-   figure = result.fluence.plot(
-       view="volume",
-       scale="log",
-       display_resolution=0.4 * ureg.millimeter,
-       opacity=0.12,
+       display_resolution=0.3 * ureg.mm,
+       opacity=0.3,
+       overlays=[source, detector],
        show=False,
    )
+   fluence_figure.show()
 
-   figure.write_html("fluence.html")
+The figure objects are Plotly figures; call ``.show()`` on any of them to
+rotate, zoom, and inspect values interactively. The complete `executable
+example <https://martinpdes.github.io/MomentRT/docs/latest/gallery/getting_started/skin_contact.html>`_
+includes the same configuration and generated figures.
 
-Other scalar-field views include central mesh ``slices`` and
-``isosurfaces``. ``result.flux.plot()`` displays element-centered diffusive
-flux vectors. ``sample.plot()`` shows the transparent construction surfaces;
-``sample.plot_section(...)`` displays a sampled material or optical-property
-map. Log color scales change the displayed colors only; hover values retain
-their physical units.
-
-The following figures were generated from MomentRT examples and results.
-The live documentation contains interactive Plotly versions.
-
-.. image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/source/_static/images/sample-geometry.png
-   :width: 900
+.. figure:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/images/readme-skin-system.png
+   :width: 720
    :align: center
-   :alt: MomentRT view of a layered sample with a spherical inclusion.
+   :alt: Three-dimensional skin sample with surface source and detector.
 
-.. image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/source/_static/images/infinite-fluence-volume.png
-   :width: 900
+   The skin construction and contact footprints. Positive z points into the
+   sample. Transparent layer surfaces show the construction geometry.
+
+.. figure:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/images/readme-skin-mesh.png
+   :width: 720
    :align: center
-   :alt: Logarithmic volume rendering of fluence around an isotropic point source.
+   :alt: Tetrahedral mesh of the skin sample with refinement near the surface contacts.
 
-.. image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/source/_static/images/finite-fluence-slices.png
-   :width: 900
-   :align: center
-   :alt: Logarithmic fluence on three central planes in a finite sample.
+   Tetrahedral mesh refined near the source and detector. Only a subset of
+   edges is displayed; the solve uses the full mesh.
 
-Documentation
--------------
+Interpreting the result
+-----------------------
 
-The `online documentation <https://martinpdes.github.io/MomentRT/>`_ includes:
+* **Skin properties:** the preset uses a shared refractive index and fixed
+  coefficients interpolated to 850 nm from Shimojo et al. (2020),
+  doi:10.1117/1.JBO.25.4.045002. Individual skin properties, blood content,
+  and optical behavior vary. Use explicit or spectral materials when needed.
+* **Source and boundaries:** surface-source power is diffuse power already
+  coupled into the sample. The model does not simulate collimated LED
+  propagation or specular entry losses. Robin effective reflectance is a
+  supplied diffuse partial-current coefficient, not a Fresnel value inferred
+  from refractive index. Finite solvers currently reject internal index jumps.
+* **Detector:** the circular aperture integrates escaping irradiance using a
+  Lambertian angular approximation. It is not a Fresnel-resolved radiance or
+  a simulation of external detector optics.
+* **Accuracy:** P1, SP3, and P3 are distinct approximations to transport, not
+  full radiative transfer. Check mesh and source/detector footprint convergence,
+  and compare the intended geometry against an independent transport reference
+  or measurements. Energy balance and footprint-area agreement alone do not
+  establish physical accuracy, especially near illumination. Negative nodal
+  values can occur as numerical artifacts; they are reported, not clipped.
 
-* The P1 moment equations, infinite-medium Green function, and approximation
-  limits.
-* The finite-sample Robin boundary condition, weak form, and FEM assembly.
-* Complete workflows, visualization guidance, results, and API reference.
-* An executable `example gallery
-  <https://martinpdes.github.io/MomentRT/docs/latest/gallery/index.html>`_.
+The `scientific guide <https://martinpdes.github.io/MomentRT/docs/latest/theory.html>`_
+explains the equations and limitations, and the `detector convergence guide
+<https://martinpdes.github.io/MomentRT/docs/latest/convergence.html>`_ shows how
+to examine mesh refinement.
 
-From the repository root, reuse a development ``.venv`` (or create one as
-described below), then build the docs and run the examples with:
-
-.. code-block:: console
-
-   .venv/bin/python -m pip install -e ".[documentation]"
-   make docs PYTHON=.venv/bin/python
-
-Common issues
--------------
-
-* **Point-source singularity:** do not place an observation node exactly at
-  the point source. MomentRT reports this instead of silently regularizing it.
-* **No visible internal interface:** construction plots use transparent
-  geometry surfaces. Use a sampled section to inspect the resolved material
-  precedence.
-* **Finite solver rejects refractive indices:** the current FEM formulation
-  requires equal internal refractive indices; it does not model internal
-  refraction.
-* **Unexpected surface-source power:** source power is already coupled diffuse
-  power in the sample. Collimated illumination and specular entry losses are
-  outside the model.
-* **Slow or changing fields under refinement:** element-centroid materials,
-  source quadrature, interface alignment, and P1 validity can all affect the
-  result. Refine meshes and compare independent references; energy balance
-  alone does not validate the physical approximation.
-* **Log plot rejects values:** logarithmic rendering requires strictly
-  positive values and does not clip zeros or negative values.
-
-Developer setup
+Explore further
 ---------------
 
-Clone the repository, install the development extras, and build the docs with
-the same Python interpreter used for development:
+* `Example gallery <https://martinpdes.github.io/MomentRT/docs/latest/gallery/index.html>`_:
+  sample construction, meshes, contact sensors, spectral calculations, and
+  comparisons of transport models.
+* `Seven-fiber skin probe <https://martinpdes.github.io/MomentRT/docs/latest/gallery/sources_and_detectors/seven_fiber_skin.html>`_:
+  six illumination fibers and one collection aperture on layered skin.
+* `Spectral modeling <https://martinpdes.github.io/MomentRT/docs/latest/spectral.html>`_:
+  spectral materials, source power density, detector responsivity, and
+  wavelength-integration convergence.
+* `Model selection <https://martinpdes.github.io/MomentRT/docs/latest/model_selection.html>`_:
+  choose between the available approximations and review their limits.
+
+Development and citation
+------------------------
+
+To work on the package or build the executable documentation locally:
 
 .. code-block:: console
 
@@ -362,27 +212,11 @@ the same Python interpreter used for development:
    make check typecheck docstring-check PYTHON=.venv/bin/python
    make docs PYTHON=.venv/bin/python
 
-``make check`` runs quality checks and tests. The codebase intentionally keeps
-the package flat, with type hints and NumPy-style API docstrings. Run
-``make typecheck docstring-check`` to validate annotations and public
-parameter documentation.
-
-See the `contributor guide
-<https://github.com/MartinPdeS/MomentRT/blob/master/CONTRIBUTING.rst>`_ for
-platform setup, reference-data regeneration, release commands, and the API
-compatibility policy. User-visible changes and scientific corrections are
-recorded in the `changelog
-<https://github.com/MartinPdeS/MomentRT/blob/master/CHANGELOG.md>`_.
-
-Citation and license
---------------------
-
+See the `contributor guide <https://github.com/MartinPdeS/MomentRT/blob/master/CONTRIBUTING.rst>`_
+and `changelog <https://github.com/MartinPdeS/MomentRT/blob/master/CHANGELOG.md>`_.
 MomentRT is distributed under the MIT license. If you use it in research,
-cite the version recorded in ``CITATION.cff``. For bibliographic metadata,
-see the `CITATION.cff file
+cite the version recorded in `CITATION.cff
 <https://github.com/MartinPdeS/MomentRT/blob/master/CITATION.cff>`_.
-
-.. _scientific guide: https://martinpdes.github.io/MomentRT/docs/latest/theory.html
 
 .. |logo| image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/images/logo.svg
    :alt: MomentRT — light transport through a finite element volume.

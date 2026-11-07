@@ -20,6 +20,11 @@ Assets
   and a larger source point for small displays.
 * ``favicon.ico``: browser favicon with 16, 24, 32, 48, 64, 128, and 256-pixel
   representations. Sphinx uses this file for its browser tab icon.
+* ``readme-skin-system.png``, ``readme-skin-mesh.png``, and
+  ``readme-skin-fluence.png``: 3D views captured from the executable skin
+  contact-sensor example. After ``make docs``, regenerate them with
+  ``.venv/bin/python tools/generate_readme_images.py`` using Playwright and
+  Chromium.
 
 The SVG files are editable vector originals. Export them on a transparent
 background, preserving their viewBox proportions. Use the simplified favicon

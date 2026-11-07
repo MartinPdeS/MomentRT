@@ -327,15 +327,13 @@ class _PreparedDiffusion:
         else:
             self.source_geometric_area = float(np.prod((upper - lower)[in_plane]))
 
-        self.geometry = MomentRT.fem._MeshGeometry(mesh=self.mesh)
+        self.geometry = MomentRT.fem.FiniteElementGeometry(mesh=self.mesh)
 
         self.labels = self.medium.material_labels(
             points=self.geometry.centers * MomentRT.units.ureg.meter
         )
 
-        self.region_matrices = MomentRT.fem._region_matrices(
-            geometry=self.geometry, labels=self.labels
-        )
+        self.region_matrices = self.geometry.region_matrices(labels=self.labels)
 
         node_count = len(self.geometry.points)
 
@@ -379,11 +377,9 @@ class _PreparedDiffusion:
             shape=(node_count, node_count),
         ).tocsr()
 
-        quadrature, barycentric, weights = self.geometry.quadrature[self.source.face]
+        _, barycentric, weights = self.geometry.quadrature[self.source.face]
 
-        incoming, self.source_sampled_area = MomentRT.fem.source_irradiance(
-            quadrature=quadrature,
-            weights=weights,
+        incoming, self.source_sampled_area = self.geometry.source_irradiance(
             source=self.source,
         )
 

@@ -21,7 +21,9 @@ REQUIRED_MODULES = (
     "MomentRT/transport/diffusion.py",
     "MomentRT/transport/p1.py",
     "MomentRT/transport/infinite_p1.py",
-    "MomentRT/fem.py",
+    "MomentRT/fem/__init__.py",
+    "MomentRT/fem/geometry.py",
+    "MomentRT/fem/kernels.py",
     "MomentRT/fields.py",
     "MomentRT/geometry.py",
     "MomentRT/material.py",
@@ -40,10 +42,12 @@ REQUIRED_MODULES = (
     "MomentRT/results/detector.py",
     "MomentRT/results/simulation.py",
     "MomentRT/results/spectral.py",
+    "MomentRT/results/transient.py",
     "MomentRT/sections.py",
     "MomentRT/simulation.py",
     "MomentRT/source.py",
     "MomentRT/transport/sp3.py",
+    "MomentRT/transport/transient_p1.py",
     "MomentRT/units.py",
     "MomentRT/validation.py",
 )
@@ -111,9 +115,14 @@ def check_install(*, wheel):
             "assert all(hasattr(MomentRT, name) for name in "
             "('P1', 'InfiniteP1', 'MeshConvergence', 'TetrahedralMesh', 'SurfaceDetector', 'SpectralMaterial', 'SpectralSimulationResult', "
             "'DetectorConvergenceResult', 'SourceSpectrum', 'DetectorResponsivity', "
-            "'BroadbandSimulationResult', 'BroadbandDetectorResult', 'SpectralConvergenceResult')); "
+            "'BroadbandSimulationResult', 'BroadbandDetectorResult', 'SpectralConvergenceResult', "
+            "'TransientP1', 'TransientResult')); "
             "from MomentRT.phase_function.henyey_greenstein import HenyeyGreenstein; "
             "assert HenyeyGreenstein is MomentRT.HenyeyGreenstein; "
+            "from MomentRT.fem.geometry import FiniteElementGeometry; "
+            "from MomentRT.fem.kernels import triangle_areas; "
+            "assert FiniteElementGeometry is MomentRT.fem.FiniteElementGeometry; "
+            "assert triangle_areas is MomentRT.fem.triangle_areas; "
             "print(f'Imported MomentRT {MomentRT.__version__} from {location}')"
         )
 

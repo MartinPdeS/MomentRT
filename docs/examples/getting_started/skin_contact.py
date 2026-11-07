@@ -26,7 +26,7 @@ sample = ShimojoThreeLayer850nm(
     origin=(-3, -3, 0) * ureg.mm,
     size=(6, 6, 4) * ureg.mm,
 )
-source = MomentRT.SurfaceSource.on_face(
+source = MomentRT.source.SurfaceSource.on_face(
     sample=sample,
     face="z_min",
     coordinates=(-1, 0) * ureg.mm,
@@ -34,7 +34,7 @@ source = MomentRT.SurfaceSource.on_face(
     wavelength=850 * ureg.nm,
     optical_power=1 * ureg.mW,
 )
-detector = MomentRT.SurfaceDetector.on_face(
+detector = MomentRT.detector.SurfaceDetector.on_face(
     sample=sample,
     face="z_min",
     coordinates=(1, 0) * ureg.mm,
@@ -50,7 +50,7 @@ detector = MomentRT.SurfaceDetector.on_face(
 # displays a subset of tetrahedral edges, not every element. Resolution and
 # source/detector sampling need a separate mesh-convergence study.
 
-mesh = MomentRT.TetrahedralMesh.from_sample(
+mesh = MomentRT.mesh.TetrahedralMesh.from_sample(
     sample=sample,
     resolution=0.4 * ureg.mm,
 )
@@ -59,12 +59,12 @@ mesh.refine_near(
     resolution=0.2 * ureg.mm,
     distance=0.3 * ureg.mm,
 )
-solver = MomentRT.P1(
-    boundaries=MomentRT.Boundaries.uniform(
-        condition=MomentRT.RobinBoundary(effective_reflectance=0),
+solver = MomentRT.transport.P1(
+    boundaries=MomentRT.boundary.Boundaries.uniform(
+        condition=MomentRT.boundary.RobinBoundary(effective_reflectance=0),
     ),
 )
-simulation = MomentRT.Simulation(
+simulation = MomentRT.simulation.Simulation(
     medium=sample,
     source=source,
     mesh=mesh,

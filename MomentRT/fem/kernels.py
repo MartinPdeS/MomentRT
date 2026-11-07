@@ -1,11 +1,10 @@
-"""Linear tetrahedral FEM kernels for structured and unstructured meshes."""
+"""Standalone linear tetrahedral and boundary integration kernels."""
 
 from __future__ import annotations
 from itertools import permutations
 from typing import cast
 import numpy as np
 from numpy.typing import NDArray
-from scipy import sparse
 import MomentRT
 
 
@@ -292,96 +291,3 @@ def source_load(
     local_load = np.einsum("tq,qa->ta", weights * irradiance, barycentric)
 
     return local_load, sampled_area
-
-
-class _MeshGeometry:
-    """Numerical geometry prepared once for a fixed finite tetrahedral mesh."""
-
-    def __init__(
-        self, *, mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh
-    ) -> None:
-        """Initialize the _MeshGeometry configuration.
-
-        Parameters
-        ----------
-        mesh : CartesianMesh or TetrahedralMesh
-            Nodes and tetrahedra used for finite-element discretization.
-        """
-
-        self.points = mesh.points.to("m").magnitude.reshape(-1, 3)
-
-        self.tetrahedra = (
-            mesh.tetrahedra
-            if isinstance(mesh, MomentRT.mesh.TetrahedralMesh)
-            else tetrahedralize(mesh=mesh)
-        )
-
-        self.volumes, self.gradients = element_geometry(
-            points=self.points,
-            tetrahedra=self.tetrahedra,
-        )
-
-        self.centers = self.points[self.tetrahedra].mean(axis=1)
-
-        self.faces = (
-            mesh.faces
-            if isinstance(mesh, MomentRT.mesh.TetrahedralMesh)
-            else boundary_triangles(tetrahedra=self.tetrahedra, shape=mesh.shape)
-        )
-
-        self.quadrature = {
-            face: triangle_quadrature(points=self.points, triangles=triangles)
-            for face, triangles in self.faces.items()
-        }
-
-
-def _region_matrices(
-    *, geometry: _MeshGeometry, labels: NDArray[np.int64]
-) -> dict[int, tuple[sparse.csr_matrix, sparse.csr_matrix]]:
-    """Assemble unit diffusion and absorption matrices for each occupied region.
-
-    Parameters
-    ----------
-    geometry : _MeshGeometry
-        Prepared nodal coordinates, elements, and boundary quadrature in SI.
-    labels : ndarray of int, shape (T,)
-        Resolved material label at each tetrahedral centroid.
-
-    Returns
-    -------
-    dict of int to tuple of scipy.sparse.csr_matrix
-        Unit-coefficient stiffness and mass matrices for each occupied region.
-        Multiply by diffusion length (m) and absorption (1/m), respectively.
-    """
-
-    stiffness = geometry.volumes[:, None, None] * np.einsum(
-        "tik,tjk->tij", geometry.gradients, geometry.gradients
-    )
-
-    mass = geometry.volumes[:, None, None] * (np.ones((4, 4)) + np.eye(4)) / 20
-
-    shape = (len(geometry.points), len(geometry.points))
-
-    matrices = {}
-
-    for label in np.unique(labels):
-        selected = labels == label
-
-        tetrahedra = geometry.tetrahedra[selected]
-
-        local_shape = (len(tetrahedra), 4, 4)
-
-        rows = np.broadcast_to(tetrahedra[:, :, None], local_shape).ravel()
-
-        columns = np.broadcast_to(tetrahedra[:, None, :], local_shape).ravel()
-
-        matrices[int(label)] = (
-            sparse.coo_matrix(
-                (stiffness[selected].ravel(), (rows, columns)), shape=shape
-            ).tocsr(),
-            sparse.coo_matrix(
-                (mass[selected].ravel(), (rows, columns)), shape=shape
-            ).tocsr(),
-        )
-
-    return matrices

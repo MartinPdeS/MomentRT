@@ -191,6 +191,14 @@ Compare angular approximations and explore phase functions and layer anisotropy.
 .. grid:: 1 2 2 2
    :gutter: 3
 
+   .. grid-item-card:: Follow a diffuse pulse through layered tissue
+      :link: transport_models/transient_p1
+      :link-type: doc
+      :img-top: transport_models/images/thumb/sphx_glr_transient_p1_thumb.png
+      :img-alt: Transient P1 fluence in a layered sample with source and detector
+
+      Calculate a pulsed time response and inspect the contact detector trace.
+
    .. grid-item-card:: Compare P1 and SP3 transport
       :link: transport_models/compare_sp3
       :link-type: doc

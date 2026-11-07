@@ -7,6 +7,7 @@ import MomentRT.results.convergence
 import MomentRT.results.detector
 import MomentRT.results.simulation
 import MomentRT.results.spectral
+import MomentRT.results.transient
 
 
 def test_result_import_paths_share_classes() -> None:
@@ -19,6 +20,7 @@ def test_result_import_paths_share_classes() -> None:
         "BroadbandDetectorResult": MomentRT.results.spectral,
         "BroadbandSimulationResult": MomentRT.results.spectral,
         "SpectralSimulationResult": MomentRT.results.spectral,
+        "TransientResult": MomentRT.results.transient,
     }
 
     for name, module in modules.items():

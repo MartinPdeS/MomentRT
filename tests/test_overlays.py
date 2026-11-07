@@ -232,7 +232,7 @@ def test_mesh_overlay_displays_all_edges(field, tetrahedral):
     )
 
     if tetrahedral:
-        geometry = MomentRT.fem._MeshGeometry(mesh=mesh)
+        geometry = MomentRT.fem.FiniteElementGeometry(mesh=mesh)
         mesh = MomentRT.TetrahedralMesh(
             points=geometry.points * ureg.m,
             tetrahedra=geometry.tetrahedra,

@@ -6,6 +6,7 @@ import MomentRT.transport.infinite_p1
 import MomentRT.transport.p1
 import MomentRT.transport.p3
 import MomentRT.transport.sp3
+import MomentRT.transport.transient_p1
 
 
 def test_solver_import_paths_share_classes():
@@ -17,3 +18,10 @@ def test_solver_import_paths_share_classes():
     assert MomentRT.InfiniteDiffusion is MomentRT.transport.diffusion.InfiniteDiffusion
     assert MomentRT.SP3 is MomentRT.transport.sp3.SP3
     assert MomentRT.P3 is MomentRT.transport.p3.P3
+    assert MomentRT.transport.P1 is MomentRT.P1
+    assert MomentRT.transport.InfiniteP1 is MomentRT.InfiniteP1
+    assert MomentRT.transport.SP3 is MomentRT.SP3
+    assert MomentRT.transport.P3 is MomentRT.P3
+    assert MomentRT.transport.TransientP1 is MomentRT.TransientP1
+    assert MomentRT.transport.Diffusion is MomentRT.Diffusion
+    assert MomentRT.transport.InfiniteDiffusion is MomentRT.InfiniteDiffusion

@@ -12,6 +12,7 @@ from MomentRT.results.spectral import (
     BroadbandSimulationResult,
     SpectralSimulationResult,
 )
+from MomentRT.results.transient import TransientResult
 
 __all__ = [
     "BroadbandDetectorResult",
@@ -21,5 +22,6 @@ __all__ = [
     "SimulationResult",
     "SpectralConvergenceResult",
     "SpectralSimulationResult",
+    "TransientResult",
     "_energy_accounting",
 ]

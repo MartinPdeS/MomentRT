@@ -8,6 +8,7 @@ import TypedUnit
 from scipy import sparse, special
 from scipy.sparse import linalg as sparse_linalg
 import MomentRT
+from MomentRT.transport.p1 import _PreparedDiffusion
 
 
 class P3:
@@ -229,7 +230,7 @@ class P3:
         return prepared.solve(medium=medium, source=source, mesh=mesh)
 
 
-class _PreparedP3(MomentRT.transport.diffusion._PreparedDiffusion):
+class _PreparedP3(_PreparedDiffusion):
     """Prepare physical geometry once for one solve or wavelength sweep."""
 
     def solve(

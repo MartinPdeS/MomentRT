@@ -26,6 +26,7 @@ import MomentRT.transport.infinite_p1
 import MomentRT.transport.p1
 import MomentRT.transport.p3
 import MomentRT.transport.sp3
+import MomentRT.transport.transient_p1
 import MomentRT.units
 import MomentRT.validation
 
@@ -40,10 +41,10 @@ SourceSpectrum = MomentRT.source.SourceSpectrum
 BroadbandDetectorResult = MomentRT.results.BroadbandDetectorResult
 BroadbandSimulationResult = MomentRT.results.BroadbandSimulationResult
 SpectralConvergenceResult = MomentRT.results.SpectralConvergenceResult
-P1 = MomentRT.transport.p1.P1
-InfiniteP1 = MomentRT.transport.infinite_p1.InfiniteP1
-Diffusion = MomentRT.transport.diffusion.Diffusion
-InfiniteDiffusion = MomentRT.transport.diffusion.InfiniteDiffusion
+P1 = MomentRT.transport.P1
+InfiniteP1 = MomentRT.transport.InfiniteP1
+Diffusion = MomentRT.transport.Diffusion
+InfiniteDiffusion = MomentRT.transport.InfiniteDiffusion
 BoundaryField = MomentRT.fields.BoundaryField
 ScalarField = MomentRT.fields.ScalarField
 VectorField = MomentRT.fields.VectorField
@@ -52,10 +53,10 @@ Layer = MomentRT.geometry.Layer
 Sphere = MomentRT.geometry.Sphere
 Material = MomentRT.material.Material
 SpectralMaterial = MomentRT.material.SpectralMaterial
-Water = MomentRT.materials.liquids.Water
-Intralipid = MomentRT.materials.liquids.Intralipid
-Epidermis = MomentRT.materials.skin.Epidermis
-Dermis = MomentRT.materials.skin.Dermis
+Water = MomentRT.materials.Water
+Intralipid = MomentRT.materials.Intralipid
+Epidermis = MomentRT.materials.Epidermis
+Dermis = MomentRT.materials.Dermis
 HomogeneousMedium = MomentRT.medium.HomogeneousMedium
 StructuredMedium = MomentRT.medium.StructuredMedium
 CartesianMesh = MomentRT.mesh.CartesianMesh
@@ -68,8 +69,10 @@ SpectralSimulationResult = MomentRT.results.SpectralSimulationResult
 SampleSection = MomentRT.sections.SampleSection
 TransportSolver = MomentRT.simulation.TransportSolver
 Simulation = MomentRT.simulation.Simulation
-SP3 = MomentRT.transport.sp3.SP3
-P3 = MomentRT.transport.p3.P3
+SP3 = MomentRT.transport.SP3
+P3 = MomentRT.transport.P3
+TransientP1 = MomentRT.transport.TransientP1
+TransientResult = MomentRT.results.TransientResult
 PhaseFunction = MomentRT.phase_function.PhaseFunction
 HenyeyGreenstein = MomentRT.phase_function.HenyeyGreenstein
 Isotropic = MomentRT.phase_function.Isotropic
@@ -84,6 +87,8 @@ UniformSurfaceSource = MomentRT.source.UniformSurfaceSource
 ureg = MomentRT.units.ureg
 
 __all__ = [
+    "TransientP1",
+    "TransientResult",
     "SpectralConvergenceResult",
     "SourceSpectrum",
     "DetectorResponsivity",

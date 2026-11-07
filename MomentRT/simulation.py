@@ -24,7 +24,11 @@ class TransportSolver(Protocol):
         medium: Any,
         source: Any,
         mesh: MomentRT.mesh.CartesianMesh | MomentRT.mesh.TetrahedralMesh,
-    ) -> MomentRT.results.SimulationResult | MomentRT.fields.ScalarField:
+    ) -> (
+        MomentRT.results.SimulationResult
+        | MomentRT.results.TransientResult
+        | MomentRT.fields.ScalarField
+    ):
         """Solve the transport problem on a mesh supported by the implementation.
 
         Parameters
@@ -39,7 +43,7 @@ class TransportSolver(Protocol):
 
         Returns
         -------
-        SimulationResult or ScalarField
+        SimulationResult, TransientResult, or ScalarField
             Transport solution, or a fluence field wrapped by Simulation.run.
         """
         ...
@@ -157,13 +161,19 @@ class Simulation:
             transport or establish mesh convergence.
         """
         if self.source.spectrum is not None:
-            return self._reference_simulation().validate(
+            report = self._reference_simulation().validate(
                 wavelengths=(
                     self.source.spectrum.wavelengths
                     if wavelengths is None
                     else wavelengths
                 )
             )
+            if isinstance(self.solver, MomentRT.transport.transient_p1.TransientP1):
+                report.errors = (
+                    *report.errors,
+                    "TransientP1 requires a monochromatic source.",
+                )
+            return report
         return self._validate_configuration(wavelengths=wavelengths)
 
     def _validate_configuration(
@@ -194,6 +204,7 @@ class Simulation:
                 MomentRT.transport.diffusion.Diffusion,
                 MomentRT.transport.sp3.SP3,
                 MomentRT.transport.p3.P3,
+                MomentRT.transport.transient_p1.TransientP1,
             ),
         )
 
@@ -201,7 +212,7 @@ class Simulation:
 
         if not finite and not infinite:
             errors.append(
-                "Preflight validation supports Diffusion, SP3, P3, and InfiniteDiffusion solvers."
+                "Preflight validation supports Diffusion, SP3, P3, TransientP1, and InfiniteDiffusion solvers."
             )
 
         if finite and not isinstance(medium, MomentRT.medium.StructuredMedium):
@@ -469,17 +480,13 @@ class Simulation:
                     errors.append(f"Source: {error}")
 
             if mesh_valid:
-                geometry = MomentRT.fem._MeshGeometry(mesh=mesh)
+                geometry = MomentRT.fem.FiniteElementGeometry(mesh=mesh)
 
                 if source_valid and isinstance(
                     source, MomentRT.source.UniformSurfaceSource
                 ):
                     try:
-                        quadrature, _, weights = geometry.quadrature[source.face]
-
-                        _, sampled = MomentRT.fem.source_irradiance(
-                            quadrature=quadrature, weights=weights, source=source
-                        )
+                        _, sampled = geometry.source_irradiance(source=source)
 
                         source_area = sampled * MomentRT.units.ureg.meter**2
 
@@ -567,17 +574,45 @@ class Simulation:
 
     def run(
         self,
-    ) -> MomentRT.results.SimulationResult | MomentRT.results.BroadbandSimulationResult:
+    ) -> (
+        MomentRT.results.SimulationResult
+        | MomentRT.results.BroadbandSimulationResult
+        | MomentRT.results.TransientResult
+    ):
         """Solve the configured transport problem and evaluate all named detectors.
 
         Returns
         -------
-        SimulationResult or BroadbandSimulationResult
+        SimulationResult, BroadbandSimulationResult, or TransientResult
             Monochromatic fields and measurements, or broadband detector spectra,
             trapezoidal optical and electrical integrals, and reference solves.
             Broadband integration uses exactly the source spectrum's grid and
             endpoints; refine that grid to assess spectral quadrature error.
         """
+
+        if isinstance(self.solver, MomentRT.transport.transient_p1.TransientP1):
+            if not isinstance(self.medium, MomentRT.medium.StructuredMedium):
+                raise TypeError("TransientP1 requires a finite StructuredMedium.")
+            if not isinstance(self.source, MomentRT.source.UniformSurfaceSource):
+                raise TypeError("TransientP1 requires a surface source.")
+            if self.source.spectrum is not None:
+                raise ValueError("TransientP1 requires a monochromatic source.")
+            for detector in self.detectors.values():
+                if detector.responsivity is not None:
+                    detector.responsivity.at(wavelength=self.source.wavelength)
+            result = self.solver.solve(
+                medium=self.medium,
+                source=self.source,
+                mesh=self.mesh,
+            )
+            for frame in result.frames:
+                frame.detectors.update(
+                    {
+                        name: detector.measure(result=frame)
+                        for name, detector in self.detectors.items()
+                    }
+                )
+            return result
 
         if self.source.spectrum is not None:
             started = time.perf_counter()
@@ -615,6 +650,8 @@ class Simulation:
             medium=self.medium, source=self.source, mesh=self.mesh
         )
 
+        if isinstance(solution, MomentRT.results.TransientResult):
+            raise TypeError("Transient solvers must be run through Simulation.run().")
         if not isinstance(solution, MomentRT.results.SimulationResult):
             solution = MomentRT.results.SimulationResult(fluence=solution)
 
@@ -660,6 +697,9 @@ class Simulation:
         """
 
         started = time.perf_counter()
+
+        if isinstance(self.solver, MomentRT.transport.transient_p1.TransientP1):
+            raise ValueError("TransientP1 does not support wavelength sweeps.")
 
         if self.source.spectrum is not None:
             raise ValueError(
@@ -817,6 +857,11 @@ class Simulation:
             Per-level fields, powers, areas, failures, and a mesh recommendation
             only when the final refinement sequence meets all requested criteria.
         """
+
+        if isinstance(self.solver, MomentRT.transport.transient_p1.TransientP1):
+            raise ValueError(
+                "mesh_convergence currently supports steady-state detector results only."
+            )
 
         return MomentRT.convergence._DetectorConvergenceStudy(simulation=self).run(
             mesh_shapes=mesh_shapes,

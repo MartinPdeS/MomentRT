@@ -3,7 +3,8 @@ Choose a workflow
 
 MomentRT exposes steady-state P1, SP3, and full P3 workflows. Choose based on
 whether the physical domain is unbounded and homogeneous or a finite sample
-with an explicitly modeled illuminated boundary.
+with an explicitly modeled illuminated boundary. For sampled diffuse pulses,
+see the :doc:`time-dependent P1 solver <time_dependent>`.
 
 .. grid:: 1 2 2 2
    :gutter: 3

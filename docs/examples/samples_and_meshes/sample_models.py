@@ -23,12 +23,12 @@ ureg = MomentRT.ureg
 # fits at one wavelength. Their refractive indices match because the finite
 # solvers do not currently model refractive-index jumps within the sample.
 
-epidermis = MomentRT.Epidermis(
+epidermis = MomentRT.materials.Epidermis(
     melanin_fraction=0.05,
     wavelength=850 * ureg.nm,
     refractive_index=1.4,
 )
-dermis = MomentRT.Dermis(
+dermis = MomentRT.materials.Dermis(
     hydration=0.7,
     wavelength=850 * ureg.nm,
     refractive_index=1.4,
@@ -74,23 +74,23 @@ print(f"Phantom layers: {[layer.name for layer in phantom.structures]}")
 # mesh is illustrative: resolving the layer and source footprint, and the
 # validity of P1 at the relevant distances, require separate checks.
 
-mesh = MomentRT.CartesianMesh.from_sample(
+mesh = MomentRT.mesh.CartesianMesh.from_sample(
     sample=sample,
     shape=(13, 13, 13),
 )
-source = MomentRT.SurfaceSource(
+source = MomentRT.source.SurfaceSource(
     face="z_min",
     position=np.zeros(3) * ureg.mm,
     radius=1 * ureg.mm,
     wavelength=850 * ureg.nm,
     optical_power=1 * ureg.mW,
 )
-solver = MomentRT.P1(
-    boundaries=MomentRT.Boundaries.uniform(
-        condition=MomentRT.RobinBoundary(effective_reflectance=0),
+solver = MomentRT.transport.P1(
+    boundaries=MomentRT.boundary.Boundaries.uniform(
+        condition=MomentRT.boundary.RobinBoundary(effective_reflectance=0),
     ),
 )
-simulation = MomentRT.Simulation(
+simulation = MomentRT.simulation.Simulation(
     medium=sample,
     source=source,
     mesh=mesh,

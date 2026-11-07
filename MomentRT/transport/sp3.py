@@ -7,6 +7,7 @@ import TypedUnit
 from scipy import sparse
 from scipy.sparse import linalg as sparse_linalg
 import MomentRT
+from MomentRT.transport.p1 import _PreparedDiffusion
 
 
 class SP3:
@@ -115,7 +116,7 @@ class SP3:
         return prepared.solve(medium=medium, source=source, mesh=mesh)
 
 
-class _PreparedSP3(MomentRT.transport.diffusion._PreparedDiffusion):
+class _PreparedSP3(_PreparedDiffusion):
     """Reuse the finite geometry and source quadrature during a sweep."""
 
     def __init__(

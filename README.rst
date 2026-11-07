@@ -1,6 +1,29 @@
 |logo|
 
-|python| |pypi| |anaconda| |docs| |tests|
+.. list-table::
+   :widths: 35 65
+   :header-rows: 1
+
+   * - Badge
+     - Status
+   * - Python versions
+     - |python|
+   * - Documentation
+     - |docs|
+   * - Tests
+     - |tests|
+   * - Coverage workflow
+     - |coverage|
+   * - PyPI package
+     - |pypi|
+   * - PyPI downloads
+     - |pypi_downloads|
+   * - Anaconda package
+     - |anaconda|
+   * - Anaconda downloads
+     - |anaconda_downloads|
+   * - Latest Anaconda release
+     - |anaconda_date|
 
 MomentRT
 ========
@@ -34,6 +57,8 @@ What you can model
   detector apertures with explicit orientation and angular acceptance.
 * **Light transport:** analytical infinite-medium P1 and finite-sample P1,
   SP3, and full three-dimensional P3 angular-moment models.
+* **Time-resolved transport:** coupled transient P1 fluence and current for
+  explicit diffuse pulse profiles, with time-resolved contact-detector power.
 * **Spectral response:** monochromatic sweeps, source spectra, and linear
   detector responsivity for broadband optical power and photocurrent.
 * **Inspection and verification:** interactive 3D fields, sample sections,
@@ -73,7 +98,7 @@ illustrative rather than patient-specific.
        size=(6, 6, 4) * ureg.mm,
    )
 
-   source = MomentRT.SurfaceSource.on_face(
+   source = MomentRT.source.SurfaceSource.on_face(
        sample=sample,
        face="z_min",
        coordinates=(-1, 0) * ureg.mm,
@@ -82,7 +107,7 @@ illustrative rather than patient-specific.
        optical_power=1 * ureg.mW,
    )
 
-   detector = MomentRT.SurfaceDetector.on_face(
+   detector = MomentRT.detector.SurfaceDetector.on_face(
        sample=sample,
        face="z_min",
        coordinates=(1, 0) * ureg.mm,
@@ -91,7 +116,7 @@ illustrative rather than patient-specific.
        acceptance_angle=90 * ureg.degree,
    )
 
-   mesh = MomentRT.TetrahedralMesh.from_sample(
+   mesh = MomentRT.mesh.TetrahedralMesh.from_sample(
        sample=sample,
        resolution=0.4 * ureg.mm,
    )
@@ -101,12 +126,12 @@ illustrative rather than patient-specific.
        distance=0.3 * ureg.mm,
    )
 
-   solver = MomentRT.P1(
-       boundaries=MomentRT.Boundaries.uniform(
-           condition=MomentRT.RobinBoundary(effective_reflectance=0),
+   solver = MomentRT.transport.P1(
+       boundaries=MomentRT.boundary.Boundaries.uniform(
+           condition=MomentRT.boundary.RobinBoundary(effective_reflectance=0),
        ),
    )
-   simulation = MomentRT.Simulation(
+   simulation = MomentRT.simulation.Simulation(
        medium=sample,
        source=source,
        mesh=mesh,

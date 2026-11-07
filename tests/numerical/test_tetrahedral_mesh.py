@@ -29,7 +29,7 @@ def cartesian(sample):
 
 @pytest.fixture
 def imported(cartesian):
-    geometry = MomentRT.fem._MeshGeometry(mesh=cartesian)
+    geometry = MomentRT.fem.FiniteElementGeometry(mesh=cartesian)
     permutation = np.random.default_rng(10).permutation(len(geometry.points))
     inverse = np.argsort(permutation)
     return MomentRT.TetrahedralMesh(

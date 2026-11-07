@@ -6,6 +6,28 @@ The compatibility and deprecation policy is in [CONTRIBUTING.rst](CONTRIBUTING.r
 
 ## [Unreleased]
 
+### Added
+
+- `TransientP1` for time-dependent coupled fluence and element-centered
+  current, with sampled diffuse pulses, layered materials, time-resolved
+  contact-detector power, and energy-storage diagnostics. The model requires
+  an explicit uniform energy speed and zero initial fields; its early-time and
+  near-source predictions require independent transport validation.
+- Reusable skin and layered-phantom models, Gaussian and Lorentzian source
+  spectra, and biomedical contact-sensor examples with 3D visualizations.
+- Domain-level imports such as `MomentRT.transport.TransientP1` and
+  `MomentRT.materials.Epidermis`, alongside existing top-level imports.
+
+### Changed
+
+- Organize FEM and phase-function implementations into packages while retaining
+  their established public import paths. Prepare finite-element geometry and
+  source quadrature together for each solve or sweep.
+- Use TypedUnit for dimensional validation. This release requires
+  `TypedUnit>=0.3.0,<0.4` and Pint `>=0.24,<0.26`.
+- Reorganize the executable example gallery by task. Links to examples moved
+  to different gallery sections need to be updated.
+
 ## [0.10.0] - 2026-11-03
 
 ### Fixed

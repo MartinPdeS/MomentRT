@@ -67,7 +67,7 @@ Use named sample models, then create Cartesian or tetrahedral meshes.
    .. grid-item-card:: Cartesian mesh from node counts
       :link: samples_and_meshes/cartesian_shape
       :link-type: doc
-      :img-top: meshes/images/thumb/sphx_glr_cartesian_shape_thumb.png
+      :img-top: samples_and_meshes/images/thumb/sphx_glr_cartesian_shape_thumb.png
       :img-alt: Regular Cartesian grid shown inside its sample bounds
 
       Set explicit node counts for a regular grid and plot its cell edges.
@@ -75,7 +75,7 @@ Use named sample models, then create Cartesian or tetrahedral meshes.
    .. grid-item-card:: Cartesian mesh from physical resolution
       :link: samples_and_meshes/cartesian_resolution
       :link-type: doc
-      :img-top: meshes/images/thumb/sphx_glr_cartesian_resolution_thumb.png
+      :img-top: samples_and_meshes/images/thumb/sphx_glr_cartesian_resolution_thumb.png
       :img-alt: Cartesian grid with different spacing by axis
 
       Request spacing in physical units, including anisotropic spacing by axis.
@@ -83,7 +83,7 @@ Use named sample models, then create Cartesian or tetrahedral meshes.
    .. grid-item-card:: Uniform tetrahedral mesh
       :link: samples_and_meshes/tetrahedral_global
       :link-type: doc
-      :img-top: meshes/images/thumb/sphx_glr_tetrahedral_global_thumb.png
+      :img-top: samples_and_meshes/images/thumb/sphx_glr_tetrahedral_global_thumb.png
       :img-alt: Tetrahedral elements inside the sample boundary
 
       Generate and plot an unstructured tetrahedral mesh at a global target size.
@@ -91,7 +91,7 @@ Use named sample models, then create Cartesian or tetrahedral meshes.
    .. grid-item-card:: Locally refined tetrahedral mesh
       :link: samples_and_meshes/tetrahedral_local
       :link-type: doc
-      :img-top: meshes/images/thumb/sphx_glr_tetrahedral_local_thumb.png
+      :img-top: samples_and_meshes/images/thumb/sphx_glr_tetrahedral_local_thumb.png
       :img-alt: Tetrahedral mesh refined around a skin layer and fiber contacts
 
       Refine a named layer and the neighborhoods around a source and detector.
@@ -107,7 +107,7 @@ Configure diffuse illumination and contact apertures, and check detector mesh co
    .. grid-item-card:: Uniform face illumination
       :link: sources_and_detectors/uniform_surface_source
       :link-type: doc
-      :img-top: getting_started/images/thumb/sphx_glr_uniform_surface_source_thumb.png
+      :img-top: sources_and_detectors/images/thumb/sphx_glr_uniform_surface_source_thumb.png
       :img-alt: Finite-sample fluence under uniform face illumination
 
       Use ``UniformSurfaceSource`` to illuminate an entire sample face and
@@ -116,7 +116,7 @@ Configure diffuse illumination and contact apertures, and check detector mesh co
    .. grid-item-card:: Collect light with finite apertures
       :link: sources_and_detectors/surface_detector
       :link-type: doc
-      :img-top: sources_detectors/images/thumb/sphx_glr_surface_detector_thumb.png
+      :img-top: sources_and_detectors/images/thumb/sphx_glr_surface_detector_thumb.png
       :img-alt: Finite-sample fluence with source and detector apertures
 
       Define detector positions and acceptance cones, inspect the system, and
@@ -125,7 +125,7 @@ Configure diffuse illumination and contact apertures, and check detector mesh co
    .. grid-item-card:: Seven-fiber skin probe
       :link: sources_and_detectors/seven_fiber_skin
       :link-type: doc
-      :img-top: sources_detectors/images/thumb/sphx_glr_seven_fiber_skin_thumb.png
+      :img-top: sources_and_detectors/images/thumb/sphx_glr_seven_fiber_skin_thumb.png
       :img-alt: Six illumination fibers and a central detector on layered skin
 
       Simulate simultaneous illumination from six fibers around a central
@@ -134,7 +134,7 @@ Configure diffuse illumination and contact apertures, and check detector mesh co
    .. grid-item-card:: Check detector mesh convergence
       :link: sources_and_detectors/detector_convergence
       :link-type: doc
-      :img-top: sources_detectors/images/thumb/sphx_glr_detector_convergence_thumb.png
+      :img-top: sources_and_detectors/images/thumb/sphx_glr_detector_convergence_thumb.png
       :img-alt: Finest-mesh fluence with source and detector overlays
 
       Compare detector signals and sampled source and aperture areas over
@@ -159,7 +159,7 @@ Sweep wavelength-dependent materials and integrate source spectra and detector r
    .. grid-item-card:: Sweep a spectral sensor
       :link: spectral/spectral_detectors
       :link-type: doc
-      :img-top: sources_detectors/images/thumb/sphx_glr_spectral_detectors_thumb.png
+      :img-top: spectral/images/thumb/sphx_glr_spectral_detectors_thumb.png
       :img-alt: Monochromatic fluence from a spectral sensor sweep
 
       Interpolate material spectra and plot collected power across wavelengths
@@ -168,7 +168,7 @@ Sweep wavelength-dependent materials and integrate source spectra and detector r
    .. grid-item-card:: Integrate source and detector spectra
       :link: spectral/broadband_detector
       :link-type: doc
-      :img-top: sources_detectors/images/thumb/sphx_glr_broadband_detector_thumb.png
+      :img-top: spectral/images/thumb/sphx_glr_broadband_detector_thumb.png
       :img-alt: Incoming and collected spectral power and detector photocurrent
 
       Configure the existing source with a power density and the detector with
@@ -177,7 +177,7 @@ Sweep wavelength-dependent materials and integrate source spectra and detector r
    .. grid-item-card:: Sweep spectral anisotropy
       :link: spectral/sp3_spectral_anisotropy
       :link-type: doc
-      :img-top: sweeps_convergence/images/thumb/sphx_glr_sp3_spectral_anisotropy_thumb.png
+      :img-top: spectral/images/thumb/sphx_glr_sp3_spectral_anisotropy_thumb.png
       :img-alt: SP3 fluence from wavelength-dependent material tables
 
       Interpolate layer-specific anisotropy and detector power across
@@ -243,7 +243,7 @@ Vary optical properties and boundary reflectance, and examine computational scal
    .. grid-item-card:: How absorption changes fluence
       :link: parameter_studies/absorption_sweep
       :link-type: doc
-      :img-top: sweeps_convergence/images/thumb/sphx_glr_absorption_sweep_thumb.png
+      :img-top: parameter_studies/images/thumb/sphx_glr_absorption_sweep_thumb.png
       :img-alt: Infinite-medium fluence at several absorption values
 
       Compare fluence profiles while holding reduced scattering and source
@@ -252,7 +252,7 @@ Vary optical properties and boundary reflectance, and examine computational scal
    .. grid-item-card:: Change boundary reflectance
       :link: parameter_studies/reflectance_sweep
       :link-type: doc
-      :img-top: sweeps_convergence/images/thumb/sphx_glr_reflectance_sweep_thumb.png
+      :img-top: parameter_studies/images/thumb/sphx_glr_reflectance_sweep_thumb.png
       :img-alt: Fluence volume for an intermediate boundary reflectance
 
       Compare centerline fluence and escaping power as diffuse reflectance
@@ -261,7 +261,7 @@ Vary optical properties and boundary reflectance, and examine computational scal
    .. grid-item-card:: Benchmark P1, SP3, and P3 scaling
       :link: parameter_studies/solver_scaling
       :link-type: doc
-      :img-top: sweeps_convergence/images/thumb/sphx_glr_solver_scaling_thumb.png
+      :img-top: parameter_studies/images/thumb/sphx_glr_solver_scaling_thumb.png
       :img-alt: Solve time and peak process memory versus tetrahedron count
 
       Measure solve time and peak process memory across tetrahedral mesh sizes,
@@ -278,7 +278,7 @@ Assess mesh refinement and compare calculations with independent references.
    .. grid-item-card:: Mesh refinement and FEM timings
       :link: validation/mesh_refinement
       :link-type: doc
-      :img-top: sweeps_convergence/images/thumb/sphx_glr_mesh_refinement_thumb.png
+      :img-top: validation/images/thumb/sphx_glr_mesh_refinement_thumb.png
       :img-alt: Finite-sample fluence on the finest mesh
 
       Compare fluence over three grids and inspect recorded FEM preparation,
@@ -295,7 +295,7 @@ Assess mesh refinement and compare calculations with independent references.
    .. grid-item-card:: Vary layered sensor validation cases
       :link: validation/sensor_validation_cases
       :link-type: doc
-      :img-top: sweeps_convergence/images/thumb/sphx_glr_sensor_validation_cases_thumb.png
+      :img-top: validation/images/thumb/sphx_glr_sensor_validation_cases_thumb.png
       :img-alt: P1, SP3, and P3 detector-power errors across eight sensor cases
 
       Explore published comparisons while varying layer thickness, optical

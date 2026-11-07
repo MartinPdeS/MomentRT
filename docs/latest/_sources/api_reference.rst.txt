@@ -7,6 +7,37 @@ Dimensional values require quantities from ``MomentRT.ureg``. See
 :doc:`getting_started` for examples and :doc:`theory` and
 :doc:`finite_element` for their physical interpretation.
 
+Public namespaces
+-----------------
+
+The main API groups objects by responsibility. The existing top-level imports
+remain available as convenience aliases.
+
+.. list-table::
+   :widths: 28 72
+   :header-rows: 1
+
+   * - Namespace
+     - Examples
+   * - ``MomentRT.material``
+     - ``Material``, ``SpectralMaterial``
+   * - ``MomentRT.materials``
+     - ``Epidermis``, ``Dermis``, ``Water``, ``Intralipid``
+   * - ``MomentRT.medium`` and ``MomentRT.geometry``
+     - ``StructuredMedium``, ``HomogeneousMedium``, ``Layer``, ``Sphere``, ``Box``
+   * - ``MomentRT.source`` and ``MomentRT.detector``
+     - ``SurfaceSource``, ``SourceSpectrum``, ``SurfaceDetector``, ``DetectorResponsivity``
+   * - ``MomentRT.boundary`` and ``MomentRT.mesh``
+     - ``Boundaries``, ``RobinBoundary``, ``TetrahedralMesh``, ``CartesianMesh``
+   * - ``MomentRT.transport``
+     - ``P1``, ``InfiniteP1``, ``TransientP1``, ``SP3``, ``P3``
+   * - ``MomentRT.simulation`` and ``MomentRT.results``
+     - ``Simulation``, ``SimulationResult``, ``TransientResult``
+   * - ``MomentRT.phase_function`` and ``MomentRT.fields``
+     - ``HenyeyGreenstein``, ``Rayleigh``, ``ScalarField``, ``VectorField``
+   * - ``MomentRT.models``
+     - Named builders in ``skin``, ``phantom``, and ``spectrum``
+
 Materials and media
 -------------------
 
@@ -35,10 +66,10 @@ insertion order are preserved on the resolved copy. Property sampling and
 display methods accept an explicit ``wavelength`` for spectral samples.
 See :doc:`spectral`.
 
-Parameterized materials are available as ``MomentRT.Intralipid(concentration=,
-wavelength=, refractive_index=)``, ``MomentRT.Epidermis(melanin_fraction=,
-wavelength=, refractive_index=)``, ``MomentRT.Dermis(hydration=, wavelength=,
-refractive_index=)``, and ``MomentRT.Water(wavelength=, refractive_index=)``.
+Parameterized materials are available as ``MomentRT.materials.Intralipid(concentration=,
+wavelength=, refractive_index=)``, ``MomentRT.materials.Epidermis(melanin_fraction=,
+wavelength=, refractive_index=)``, ``MomentRT.materials.Dermis(hydration=, wavelength=,
+refractive_index=)``, and ``MomentRT.materials.Water(wavelength=, refractive_index=)``.
 Intralipid concentration is particle volume fraction in percent: 22.7 is
 undiluted 20% stock. Its empirical equation has a wavelength-dependent validity
 limit. The simple skin models put melanin in the epidermis; the dermis model

@@ -9,9 +9,10 @@ diffusion equation.
 
 .. important::
 
-   This chapter explains the relation between models. MomentRT currently
-   implements steady-state P1 diffusion only. Neither a transient solve,
-   frequency-domain modulation, nor a pulse response is available in the API.
+   ``TransientP1`` solves the coupled time-dependent P1 equations on finite
+   samples. It supports monochromatic surface sources, a sampled pulse, and
+   time-resolved contact-detector output. Frequency-domain modulation and a
+   time-dependent diffusion solver are not implemented.
 
 Adding time to radiative transfer
 ---------------------------------
@@ -196,7 +197,72 @@ intended initial angular field. A transient boundary model must also be
 specified. The partial-current reasoning in :doc:`finite_element` can be
 applied to instantaneous P1 moments, but extending the solver requires a
 consistent treatment of time-dependent sources, interfaces, and boundary
-conditions rather than adding one time derivative to the present matrix.
+conditions rather than adding one time derivative to the steady matrix.
+
+Finite-element implementation
+-----------------------------
+
+``TransientP1`` solves the coupled equations above rather than applying the
+homogeneous scalar telegrapher equation across a heterogeneous sample. The
+fluence uses continuous linear tetrahedral nodal basis functions, while the
+three current components are constant within each tetrahedron. Optical
+coefficients are sampled at element centroids; they may vary between elements.
+The discrete current is not smoothed across interfaces. Internal refractive
+indices must match and the energy speed is an explicit uniform input.
+
+The instantaneous outward P1 partial-current condition on a Robin face is
+
+.. math::
+
+   \mathbf J\cdot\mathbf n = \beta\Phi - \frac{2I_\mathrm{in}}{1+R},
+   \qquad \beta=\frac{1-R}{2(1+R)}.
+
+Here :math:`R` is the supplied diffuse effective reflectance and
+:math:`I_\mathrm{in}` is diffuse incoming partial current already coupled into
+the sample. Reflecting faces have zero normal current. The face term is
+inserted in the weak conservation equation at each time step; it is not a
+normal-incidence Fresnel model. Boundary escaping irradiance and contact
+detectors retain the existing Lambertian angular approximation.
+
+The method starts with zero fluence and current. A dimensionless nonnegative
+``power_profile`` multiplies the monochromatic source power at the supplied
+``times`` and must start at zero. It is linearly interpolated over each time
+interval. Implicit midpoint time integration advances both P1 moments together;
+the element current can be eliminated locally for each step, leaving one
+sparse nodal solve. The time step may vary. Midpoint is second-order for smooth
+solutions but does not suppress all rapidly oscillating numerical modes; resolve
+the pulse and current-relaxation timescale, and inspect signed results.
+
+The returned ``TransientResult`` contains ``times`` and per-time ``frames``
+with nodal fluence, element-centered current, and boundary fields. A simulation
+with named detectors also provides ``detector_power`` arrays. It reports
+incoming, absorbed, and escaping powers and stored energy at each time; the
+``interval_energy_residual`` checks midpoint energy conservation. Negative
+values are not clipped. Storing every frame costs memory proportional to the
+number of time samples and mesh elements.
+
+For each interval, the reported residual is
+
+.. math::
+
+   \frac{U_{n+1}-U_n}{t_{n+1}-t_n}
+   +\overline{P_\mathrm{abs}}+\overline{P_\mathrm{escape}}
+   -\overline{P_\mathrm{in}},
+   \qquad U=\int_\Omega \frac{\Phi}{v}\,dV,
+
+where overbars denote endpoint averages. The difference between escaping and
+incoming power is the signed net outward current. Detector-aperture power is
+reported separately and is not part of this whole-boundary energy balance.
+
+Use the `pulsed layered sample example
+<gallery/transport_models/transient_p1.html>`_ for a complete calculation.
+The solver handles one monochromatic source configuration at a time; spectral
+sweeps, broadband integration, nonzero initial fields, and the steady-state
+detector-convergence helper are not implemented for transient results. Refine
+the mesh, source and detector footprints, and time grid independently. Compare
+against an appropriate transport reference for the intended geometry: energy
+conservation or convergence of the discrete P1 equations alone does not prove
+P1 is accurate for early-time or near-source light transport.
 
 Steady state and modulation
 ----------------------------

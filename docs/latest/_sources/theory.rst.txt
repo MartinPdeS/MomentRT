@@ -1,8 +1,8 @@
 Transport theory and approximations
 ===================================
 
-MomentRT implements steady-state P1 diffusion, simplified P3 (SP3), and
-full three-dimensional P3. These are distinct angular-moment approximations
+MomentRT implements steady-state P1 diffusion, time-dependent P1, simplified
+P3 (SP3), and full three-dimensional P3. These are distinct angular-moment approximations
 to the radiative transfer equation (RTE); MomentRT does not solve the full
 RTE. P1 is available as an analytical Green function in an infinite
 homogeneous medium and as a finite-domain FEM solver. SP3 and P3 use finite
@@ -30,8 +30,8 @@ approximation; it does not restore angular information discarded by P1.
 
 For the boundary and spatial discretization, continue with
 :doc:`finite_element`. For time dependence and the telegrapher equation,
-continue with :doc:`time_dependent`. The time-dependent equations are
-background theory, not implemented solver options.
+continue with :doc:`time_dependent` for the coupled transient P1 solver and
+the relationship to the telegrapher equation.
 
 Quantities and units
 ---------------------
@@ -388,7 +388,7 @@ The exponential sets the attenuation length :math:`1/\kappa`; the factor
 :math:`4\pi r^2`. Together they show the model's two length scales:
 directional randomization through :math:`\ell_{\mathrm{tr}}` and absorption
 through :math:`1/\kappa`. The :doc:`absorption sweep example
-<gallery/sweeps_convergence/absorption_sweep>` compares the resulting radial profiles
+<gallery/parameter_studies/absorption_sweep>` compares the resulting radial profiles
 while holding reduced scattering and source power fixed.
 
 .. figure:: _static/images/infinite-fluence-volume.png
@@ -419,7 +419,8 @@ does not establish that the physical field is accurate.
 MomentRT provides passive contact :doc:`detectors` with an additional
 Lambertian escape assumption and independent monochromatic :doc:`spectral`
 sweeps, plus explicit broadband optical-power and linear photocurrent integration.
-It does not provide collimated-source propagation, time dependence,
+The coupled :doc:`time-dependent P1 solver <time_dependent>` supports sampled
+diffuse pulses. MomentRT does not provide collimated-source propagation,
 chromophore fitting, or inverse estimation. Refractive index is stored with
 materials, but no automatic Fresnel rule is derived from it. In the finite
 solver all internal refractive indices must be equal; an external diffuse

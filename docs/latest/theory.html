@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Transport theory and approximations &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Transport theory and approximations &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -576,8 +576,8 @@
                   
   <section id="transport-theory-and-approximations">
 <h1>Transport theory and approximations<a class="headerlink" href="#transport-theory-and-approximations" title="Link to this heading">#</a></h1>
-<p>MomentRT implements steady-state P1 diffusion, simplified P3 (SP3), and
-full three-dimensional P3. These are distinct angular-moment approximations
+<p>MomentRT implements steady-state P1 diffusion, time-dependent P1, simplified
+P3 (SP3), and full three-dimensional P3. These are distinct angular-moment approximations
 to the radiative transfer equation (RTE); MomentRT does not solve the full
 RTE. P1 is available as an analytical Green function in an infinite
 homogeneous medium and as a finite-domain FEM solver. SP3 and P3 use finite
@@ -601,8 +601,8 @@ equation is approximated on a mesh. Refining the mesh improves the spatial
 approximation; it does not restore angular information discarded by P1.</p>
 <p>For the boundary and spatial discretization, continue with
 <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a>. For time dependence and the telegrapher equation,
-continue with <a class="reference internal" href="time_dependent.html"><span class="doc">Time-dependent P1 and the telegrapher equation</span></a>. The time-dependent equations are
-background theory, not implemented solver options.</p>
+continue with <a class="reference internal" href="time_dependent.html"><span class="doc">Time-dependent P1 and the telegrapher equation</span></a> for the coupled transient P1 solver and
+the relationship to the telegrapher equation.</p>
 </section>
 <section id="quantities-and-units">
 <h2>Quantities and units<a class="headerlink" href="#quantities-and-units" title="Link to this heading">#</a></h2>
@@ -902,7 +902,7 @@ source is singular; the model does not silently soften or spread the source.</p>
 <span class="math notranslate nohighlight">\(1/r\)</span> is the geometric spreading of power over a sphere of area
 <span class="math notranslate nohighlight">\(4\pi r^2\)</span>. Together they show the model’s two length scales:
 directional randomization through <span class="math notranslate nohighlight">\(\ell_{\mathrm{tr}}\)</span> and absorption
-through <span class="math notranslate nohighlight">\(1/\kappa\)</span>. The <a class="reference internal" href="gallery/sweeps_convergence/absorption_sweep.html"><span class="doc">absorption sweep example</span></a> compares the resulting radial profiles
+through <span class="math notranslate nohighlight">\(1/\kappa\)</span>. The <a class="reference internal" href="gallery/parameter_studies/absorption_sweep.html"><span class="doc">absorption sweep example</span></a> compares the resulting radial profiles
 while holding reduced scattering and source power fixed.</p>
 <figure class="align-center" id="id2">
 <a class="reference internal image-reference" href="_images/infinite-fluence-volume.png"><img alt="MomentRT logarithmic volume rendering of fluence from an embedded point source." src="_images/infinite-fluence-volume.png" style="width: 85%;" />
@@ -928,7 +928,8 @@ does not establish that the physical field is accurate.</p>
 <p>MomentRT provides passive contact <a class="reference internal" href="detectors.html"><span class="doc">Finite-aperture surface detectors</span></a> with an additional
 Lambertian escape assumption and independent monochromatic <a class="reference internal" href="spectral.html"><span class="doc">Wavelength-dependent materials and sweeps</span></a>
 sweeps, plus explicit broadband optical-power and linear photocurrent integration.
-It does not provide collimated-source propagation, time dependence,
+The coupled <a class="reference internal" href="time_dependent.html"><span class="doc">time-dependent P1 solver</span></a> supports sampled
+diffuse pulses. MomentRT does not provide collimated-source propagation,
 chromophore fitting, or inverse estimation. Refractive index is stored with
 materials, but no automatic Fresnel rule is derived from it. In the finite
 solver all internal refractive indices must be equal; an external diffuse
@@ -1058,7 +1059,7 @@ infers an optical spectrum from the wavelength label.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/theory.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/theory.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

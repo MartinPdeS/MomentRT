@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Recover an epidermis change &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Recover an epidermis change &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -62,10 +62,12 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Check detector mesh convergence" href="mesh_convergence.html" />
+    <link rel="prev" title="Inverse problems" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -179,7 +181,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     Examples
   </a>
@@ -381,7 +383,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     Examples
   </a>
@@ -507,7 +509,64 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
-  <div class="bd-toc-item navbar-nav"></div>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/index.html">Getting started</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/infinite_diffusion.html">Infinite-medium diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/skin_contact.html">Simulate a contact sensor on layered skin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/structured_sample.html">A heterogeneous layered sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/surface_diffusion.html">Surface illumination and FEM diffusion</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../samples_and_meshes/index.html">Samples and meshes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/cartesian_resolution.html">Create a Cartesian mesh from physical resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/cartesian_shape.html">Create a Cartesian mesh from node counts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/sample_models.html">Build samples with named models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/tetrahedral_global.html">Create a uniform tetrahedral mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/tetrahedral_local.html">Refine a tetrahedral mesh near layers and contacts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../sources_and_detectors/index.html">Sources and detectors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/detector_convergence.html">Choose a mesh for detector collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/seven_fiber_skin.html">Seven-fiber bundle on a three-layer skin sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/surface_detector.html">Collect light with finite apertures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/uniform_surface_source.html">Uniform illumination on a sample face</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../spectral/index.html">Spectral calculations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/broadband_detector.html">Integrate a source spectrum and detector response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/source_spectra.html">Build analytical source spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/sp3_spectral_anisotropy.html">Sweep wavelength-dependent scattering anisotropy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/spectral_detectors.html">Sweep wavelengths with a fixed sensor geometry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../transport_models/index.html">Transport models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/compare_p3.html">Compare full P3 with SP3 and P1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/compare_sp3.html">Compare P1 and SP3 transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/phase_functions.html">Compare scattering phase functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/sp3_layered_anisotropy.html">Use different anisotropies in a layered sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/transient_p1.html">Follow a diffuse pulse through layered tissue</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../parameter_studies/index.html">Parameter studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../parameter_studies/absorption_sweep.html">How absorption changes fluence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parameter_studies/reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parameter_studies/solver_scaling.html">Benchmark P1, SP3, and P3 solver scaling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../validation/index.html">Validation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../validation/mesh_refinement.html">Check finite-element mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/planar_slab_references.html">Compare P1 and SP3 with independent planar slab references</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/sensor_validation_cases.html">Compare sensor-validation cases</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Inverse problems</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a aria-current="page" class="current reference internal" href="#">Recover an epidermis change</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mesh_convergence.html">Check detector mesh convergence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_landscape.html">Explore a synthetic objective landscape</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
 </nav></div>
     </div>
   
@@ -546,6 +605,12 @@
         <i class="fa-solid fa-house"></i>
       </a>
     </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Examples</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Inverse problems</a></li>
+    
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Recover an epidermis change</span></li>
   </ul>
 </nav>
@@ -590,14 +655,14 @@ The baseline dermis-like background is fixed and has the same refractive
 index as the epidermis. Source power is diffuse power already coupled in.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">wavelengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">650</span><span class="p">,</span> <span class="mi">850</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">nm</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">background</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Material</span></a><span class="p">(</span><span class="w">
-</span>    <span class="n">phase_function</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Isotropic" title="MomentRT.Isotropic"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Isotropic</span></a><span class="p">(</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.material.Material" title="MomentRT.Material"><span class="n">background</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.material.Material" title="MomentRT.Material"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Material</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">phase_function</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.phase_function.Isotropic" title="MomentRT.Isotropic"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Isotropic</span></a><span class="p">(</span><span class="p">)</span><span class="p">,</span><span class="w">
 </span>    <span class="n">absorption</span><span class="o">=</span><span class="mf">0.025</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>    <span class="n">reduced_scattering</span><span class="o">=</span><span class="mf">1.2</span> <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>    <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">source</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">MomentRT</span><span class="o">.</span><span class="n">SurfaceSource</span></a><span class="p">(</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.source.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">source</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.source.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">MomentRT</span><span class="o">.</span><span class="n">SurfaceSource</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">face</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">z_min</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="p">[</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>    <span class="n">radius</span><span class="o">=</span><span class="mf">0.8</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
@@ -606,7 +671,7 @@ index as the epidermis. Source power is diffuse power already coupled in.</p>
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="n">detectors</span> <span class="o">=</span> <span class="p">{</span><span class="w">
-</span>    <span class="n">name</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.SurfaceDetector" title="MomentRT.SurfaceDetector"><span class="n">MomentRT</span><span class="o">.</span><span class="n">SurfaceDetector</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">name</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.detector.SurfaceDetector" title="MomentRT.SurfaceDetector"><span class="n">MomentRT</span><span class="o">.</span><span class="n">SurfaceDetector</span></a><span class="p">(</span><span class="w">
 </span>        <span class="n">face</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">z_min</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>        <span class="n">position</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="p">[</span><span class="n">position</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>        <span class="n">radius</span><span class="o">=</span><span class="mf">0.75</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
@@ -616,27 +681,27 @@ index as the epidermis. Source power is diffuse power already coupled in.</p>
 </span>    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">position</span> <span class="ow">in</span> <span class="p">(</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">near</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;</span><span class="s2">far</span><span class="s2">&quot;</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span><span class="p">)</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">MomentRT</span><span class="o">.</span><span class="n">RobinBoundary</span></a><span class="p">(</span><span class="n">effective_reflectance</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.boundary.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.boundary.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">MomentRT</span><span class="o">.</span><span class="n">RobinBoundary</span></a><span class="p">(</span><span class="n">effective_reflectance</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.P1" title="MomentRT.P1"><span class="n">solver</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.P1" title="MomentRT.P1"><span class="n">MomentRT</span><span class="o">.</span><span class="n">P1</span></a><span class="p">(</span><span class="w">
-</span>    <span class="n">boundaries</span><span class="o">=</span><span class="p">{</span><span class="n">face</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">FACES</span><span class="p">}</span><span class="p">,</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.transport.P1" title="MomentRT.P1"><span class="n">solver</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.transport.P1" title="MomentRT.P1"><span class="n">MomentRT</span><span class="o">.</span><span class="n">P1</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">boundaries</span><span class="o">=</span><span class="p">{</span><span class="n">face</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.boundary.RobinBoundary" title="MomentRT.RobinBoundary"><span class="n">boundary</span></a> <span class="k">for</span> <span class="n">face</span> <span class="ow">in</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">FACES</span><span class="p">}</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="c1"># The layer geometry stays fixed during fitting, so generate its conforming</span><span class="w">
 </span><span class="c1"># tetrahedral mesh once and reuse it for every trial.</span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">mesh_sample</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">MomentRT</span><span class="o">.</span><span class="n">StructuredMedium</span></a><span class="p">(</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.medium.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">mesh_sample</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.medium.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">MomentRT</span><span class="o">.</span><span class="n">StructuredMedium</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>    <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.StructuredMedium.add_background" title="MomentRT.StructuredMedium.add_background"><span class="n">mesh_sample</span><span class="o">.</span><span class="n">add_background</span></a><span class="p">(</span><span class="n">material</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">background</span></a><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.medium.StructuredMedium.add_background" title="MomentRT.StructuredMedium.add_background"><span class="n">mesh_sample</span><span class="o">.</span><span class="n">add_background</span></a><span class="p">(</span><span class="n">material</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.material.Material" title="MomentRT.Material"><span class="n">background</span></a><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.StructuredMedium.add_layer" title="MomentRT.StructuredMedium.add_layer"><span class="n">mesh_sample</span><span class="o">.</span><span class="n">add_layer</span></a><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Epidermis</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">background</span></a><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.medium.StructuredMedium.add_layer" title="MomentRT.StructuredMedium.add_layer"><span class="n">mesh_sample</span><span class="o">.</span><span class="n">add_layer</span></a><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Epidermis</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.material.Material" title="MomentRT.Material"><span class="n">background</span></a><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="n">mesh_resolution</span> <span class="o">=</span> <span class="mf">0.2</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.TetrahedralMesh.from_sample" title="MomentRT.TetrahedralMesh.from_sample"><span class="n">MomentRT</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="o">.</span><span class="n">from_sample</span></a><span class="p">(</span><span class="w">
-</span>    <span class="n">sample</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">mesh_sample</span></a><span class="p">,</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh.from_sample" title="MomentRT.TetrahedralMesh.from_sample"><span class="n">MomentRT</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="o">.</span><span class="n">from_sample</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">sample</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.medium.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">mesh_sample</span></a><span class="p">,</span><span class="w">
 </span>    <span class="n">resolution</span><span class="o">=</span><span class="n">mesh_resolution</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
@@ -648,8 +713,8 @@ those values lets the existing spectral sweep reuse geometry within a trial.
 Only melanin fraction varies; all other parameters are assumed known. This
 model fraction is not a direct clinical pigmentation measurement.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="k">def</span><span class="w"> </span><span class="nf">configure_simulation</span><span class="p">(</span><span class="w">
-</span>    <span class="o">*</span><span class="p">,</span> <span class="n">melanin_fraction</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">trial_mesh</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">MomentRT</span><span class="o">.</span><span class="n">TetrahedralMesh</span></a><span class="w">
-</span><span class="p">)</span> <span class="o">-</span><span class="o">&gt;</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Simulation</span></a><span class="p">:</span><span class="w">
+</span>    <span class="o">*</span><span class="p">,</span> <span class="n">melanin_fraction</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">trial_mesh</span><span class="p">:</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">MomentRT</span><span class="o">.</span><span class="n">TetrahedralMesh</span></a><span class="w">
+</span><span class="p">)</span> <span class="o">-</span><span class="o">&gt;</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.simulation.Simulation" title="MomentRT.Simulation"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Simulation</span></a><span class="p">:</span><span class="w">
 </span><span class="w">    </span><span class="sd">&quot;&quot;&quot;Configure a simulation for a dimensionless epidermal melanin fraction.
 
     Parameters
@@ -665,7 +730,7 @@ model fraction is not a direct clinical pigmentation measurement.</p>
         Configuration with the requested epidermal material.
     &quot;&quot;&quot;</span><span class="w">
 </span>    <span class="n">epidermis</span> <span class="o">=</span> <span class="p">[</span><span class="w">
-</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Epidermis" title="MomentRT.Epidermis"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Epidermis</span></a><span class="p">(</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.materials.Epidermis" title="MomentRT.Epidermis"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Epidermis</span></a><span class="p">(</span><span class="w">
 </span>            <span class="n">melanin_fraction</span><span class="o">=</span><span class="n">melanin_fraction</span><span class="p">,</span><span class="w">
 </span>            <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span><span class="w">
 </span>            <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span><span class="w">
@@ -673,7 +738,7 @@ model fraction is not a direct clinical pigmentation measurement.</p>
 </span>        <span class="k">for</span> <span class="n">wavelength</span> <span class="ow">in</span> <span class="n">wavelengths</span><span class="w">
 </span>    <span class="p">]</span><span class="w">
 </span><span class="w">
-</span>    <span class="n">material</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.SpectralMaterial" title="MomentRT.SpectralMaterial"><span class="n">MomentRT</span><span class="o">.</span><span class="n">SpectralMaterial</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">material</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.material.SpectralMaterial" title="MomentRT.SpectralMaterial"><span class="n">MomentRT</span><span class="o">.</span><span class="n">SpectralMaterial</span></a><span class="p">(</span><span class="w">
 </span>        <span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span><span class="w">
 </span>        <span class="n">absorption</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="w">
 </span>            <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">absorption</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">1/mm</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">epidermis</span><span class="p">]</span><span class="w">
@@ -684,23 +749,23 @@ model fraction is not a direct clinical pigmentation measurement.</p>
 </span>        <span class="p">)</span><span class="w">
 </span>        <span class="o">/</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>        <span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span><span class="w">
-</span>        <span class="n">phase_function</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Isotropic" title="MomentRT.Isotropic"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Isotropic</span></a><span class="p">(</span><span class="p">)</span><span class="p">,</span><span class="w">
+</span>        <span class="n">phase_function</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.phase_function.Isotropic" title="MomentRT.Isotropic"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Isotropic</span></a><span class="p">(</span><span class="p">)</span><span class="p">,</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
 </span><span class="w">
-</span>    <span class="n">sample</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">MomentRT</span><span class="o">.</span><span class="n">StructuredMedium</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">sample</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.medium.StructuredMedium" title="MomentRT.StructuredMedium"><span class="n">MomentRT</span><span class="o">.</span><span class="n">StructuredMedium</span></a><span class="p">(</span><span class="w">
 </span>        <span class="n">origin</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>        <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
 </span><span class="w">
-</span>    <span class="n">sample</span><span class="o">.</span><span class="n">add_background</span><span class="p">(</span><span class="n">material</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">background</span></a><span class="p">)</span><span class="w">
+</span>    <span class="n">sample</span><span class="o">.</span><span class="n">add_background</span><span class="p">(</span><span class="n">material</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.material.Material" title="MomentRT.Material"><span class="n">background</span></a><span class="p">)</span><span class="w">
 </span><span class="w">
 </span>    <span class="n">sample</span><span class="o">.</span><span class="n">add_layer</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Epidermis</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span> <span class="n">material</span><span class="o">=</span><span class="n">material</span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span>    <span class="k">return</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Simulation</span></a><span class="p">(</span><span class="w">
+</span>    <span class="k">return</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.simulation.Simulation" title="MomentRT.Simulation"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Simulation</span></a><span class="p">(</span><span class="w">
 </span>        <span class="n">medium</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span><span class="w">
-</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">source</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">source</span></a><span class="p">,</span><span class="w">
-</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a><span class="o">=</span><span class="n">trial_mesh</span><span class="p">,</span><span class="w">
-</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.P1" title="MomentRT.P1"><span class="n">solver</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.P1" title="MomentRT.P1"><span class="n">solver</span></a><span class="p">,</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.source.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">source</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.source.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">source</span></a><span class="p">,</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a><span class="o">=</span><span class="n">trial_mesh</span><span class="p">,</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.transport.P1" title="MomentRT.P1"><span class="n">solver</span></a><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.transport.P1" title="MomentRT.P1"><span class="n">solver</span></a><span class="p">,</span><span class="w">
 </span>        <span class="n">detectors</span><span class="o">=</span><span class="n">detectors</span><span class="p">,</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
 </span></pre></div></div>
@@ -714,13 +779,13 @@ pass the power and footprint-area tolerances. A passing study does not
 establish P1 model accuracy.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">baseline_fraction</span> <span class="o">=</span> <span class="mf">0.01</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">baseline_simulation</span></a> <span class="o">=</span> <span class="n">configure_simulation</span><span class="p">(</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.simulation.Simulation" title="MomentRT.Simulation"><span class="n">baseline_simulation</span></a> <span class="o">=</span> <span class="n">configure_simulation</span><span class="p">(</span><span class="w">
 </span>    <span class="n">melanin_fraction</span><span class="o">=</span><span class="n">baseline_fraction</span><span class="p">,</span><span class="w">
-</span>    <span class="n">trial_mesh</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">trial_mesh</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.MeshConvergence" title="MomentRT.MeshConvergence"><span class="n">study</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.MeshConvergence" title="MomentRT.MeshConvergence"><span class="n">MomentRT</span><span class="o">.</span><span class="n">MeshConvergence</span></a><span class="p">(</span><span class="w">
-</span>    <span class="n">simulation</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">baseline_simulation</span></a><span class="p">,</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.convergence.MeshConvergence" title="MomentRT.MeshConvergence"><span class="n">study</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.convergence.MeshConvergence" title="MomentRT.MeshConvergence"><span class="n">MomentRT</span><span class="o">.</span><span class="n">MeshConvergence</span></a><span class="p">(</span><span class="w">
+</span>    <span class="n">simulation</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.simulation.Simulation" title="MomentRT.Simulation"><span class="n">baseline_simulation</span></a><span class="p">,</span><span class="w">
 </span>    <span class="n">mesh_resolutions</span><span class="o">=</span><span class="p">[</span><span class="w">
 </span>        <span class="mf">0.8</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>        <span class="mf">0.4</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
@@ -733,9 +798,9 @@ establish P1 model accuracy.</p>
 </span>    <span class="n">required_consecutive</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.DetectorConvergenceResult" title="MomentRT.DetectorConvergenceResult"><span class="n">convergence_result</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.MeshConvergence.run" title="MomentRT.MeshConvergence.run"><span class="n">study</span><span class="o">.</span><span class="n">run</span></a><span class="p">(</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.results.DetectorConvergenceResult" title="MomentRT.DetectorConvergenceResult"><span class="n">convergence_result</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.convergence.MeshConvergence.run" title="MomentRT.MeshConvergence.run"><span class="n">study</span><span class="o">.</span><span class="n">run</span></a><span class="p">(</span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="n">convergence_figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.DetectorConvergenceResult.plot" title="MomentRT.DetectorConvergenceResult.plot"><span class="n">convergence_result</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="w">
+</span><span class="n">convergence_figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.results.DetectorConvergenceResult.plot" title="MomentRT.DetectorConvergenceResult.plot"><span class="n">convergence_result</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">power_unit</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">uW</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">area_unit</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">mm^2</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="w">
@@ -748,17 +813,17 @@ establish P1 model accuracy.</p>
 <iframe src="../../_static/gallery/epidermis_change-1.html" title="Detector refinement at 650.0 nm — recommended 0.1 mm" width="100%" height="600" loading="lazy" style="border:0;"></iframe><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Detector mesh convergence at 650.0 nm
          Mesh      Nodes   Time (s)  Source err        near µW    Δ power   Area err         far µW    Δ power   Area err
 -------------------------------------------------------------------------------------------------------------------------
-       0.8 mm        479       0.06      0.93%          6.284          —     2.18%         0.9677          —     6.79%
+       0.8 mm        479       0.05      0.93%          6.284          —     2.18%         0.9677          —     6.79%
   fluence: Negative nodal fluence.
-       0.4 mm      2,086       0.23      0.80%          5.149     22.05%     1.98%         0.8497     13.88%     1.39%
-       0.2 mm     12,462       2.18      0.76%          4.319     19.22%     1.66%         0.9363      9.24%     1.62%
-      0.15 mm     27,861       9.56      0.31%          4.317      0.03%     0.03%         0.9669      3.16%     0.03%
-       0.1 mm     87,318     121.79      0.36%          4.398      1.83%     0.11%         0.9851      1.86%     0.38%
+       0.4 mm      2,086       0.19      0.80%          5.149     22.05%     1.98%         0.8497     13.88%     1.39%
+       0.2 mm     12,462       1.87      0.76%          4.319     19.22%     1.66%         0.9363      9.24%     1.62%
+      0.15 mm     27,861       8.11      0.31%          4.317      0.03%     0.03%         0.9669      3.16%     0.03%
+       0.1 mm     87,318      98.51      0.36%          4.398      1.83%     0.11%         0.9851      1.86%     0.38%
 Converged: True
 Consecutive passing refinements at the fine end: 2 of 2 required.
 Tolerances: power 5.00% relative + 0 µW absolute; footprint area 5.00% relative.
 Recommended mesh: 0.1 mm target resolution.
-Total time: 133.84 s
+Total time: 108.75 s
 </pre></div>
 </div>
 </section>
@@ -771,15 +836,15 @@ gives each detector and wavelength equal relative weight; it is not a noise
 model. Each optimizer evaluation performs a new wavelength sweep.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">true_change</span> <span class="o">=</span> <span class="mf">0.004</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">observed_simulation</span></a> <span class="o">=</span> <span class="n">configure_simulation</span><span class="p">(</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.simulation.Simulation" title="MomentRT.Simulation"><span class="n">observed_simulation</span></a> <span class="o">=</span> <span class="n">configure_simulation</span><span class="p">(</span><span class="w">
 </span>    <span class="n">melanin_fraction</span><span class="o">=</span><span class="n">baseline_fraction</span> <span class="o">+</span> <span class="n">true_change</span><span class="p">,</span><span class="w">
-</span>    <span class="n">trial_mesh</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">trial_mesh</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SpectralSimulationResult" title="MomentRT.SpectralSimulationResult"><span class="n">observed</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.Simulation.sweep" title="MomentRT.Simulation.sweep"><span class="n">observed_simulation</span><span class="o">.</span><span class="n">sweep</span></a><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.results.SpectralSimulationResult" title="MomentRT.SpectralSimulationResult"><span class="n">observed</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.simulation.Simulation.sweep" title="MomentRT.Simulation.sweep"><span class="n">observed_simulation</span><span class="o">.</span><span class="n">sweep</span></a><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="n">observed_power</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="w">
-</span>    <span class="p">[</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-property reference internal" href="../../python_api.html#MomentRT.SpectralSimulationResult.detector_power" title="MomentRT.SpectralSimulationResult.detector_power"><span class="n">observed</span><span class="o">.</span><span class="n">detector_power</span></a><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">W</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">detectors</span><span class="p">]</span><span class="w">
+</span>    <span class="p">[</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-property reference internal" href="../../python_api.html#MomentRT.results.SpectralSimulationResult.detector_power" title="MomentRT.SpectralSimulationResult.detector_power"><span class="n">observed</span><span class="o">.</span><span class="n">detector_power</span></a><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">W</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">detectors</span><span class="p">]</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="w">
@@ -798,7 +863,7 @@ model. Each optimizer evaluation performs a new wavelength sweep.</p>
     &quot;&quot;&quot;</span><span class="w">
 </span>    <span class="n">simulation</span> <span class="o">=</span> <span class="n">configure_simulation</span><span class="p">(</span><span class="w">
 </span>        <span class="n">melanin_fraction</span><span class="o">=</span><span class="n">baseline_fraction</span> <span class="o">+</span> <span class="n">change</span><span class="p">,</span><span class="w">
-</span>        <span class="n">trial_mesh</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
+</span>        <span class="n">trial_mesh</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
 </span><span class="w">
 </span>    <span class="n">predicted</span> <span class="o">=</span> <span class="n">simulation</span><span class="o">.</span><span class="n">sweep</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">)</span><span class="w">
@@ -820,12 +885,12 @@ model. Each optimizer evaluation performs a new wavelength sweep.</p>
 </span><span class="k">if</span> <span class="ow">not</span> <span class="n">fit</span><span class="o">.</span><span class="n">success</span><span class="p">:</span><span class="w">
 </span>    <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">The optimization failed: </span><span class="si">{</span><span class="n">fit</span><span class="o">.</span><span class="n">message</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><span class="n">fitted_simulation</span></a> <span class="o">=</span> <span class="n">configure_simulation</span><span class="p">(</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.simulation.Simulation" title="MomentRT.Simulation"><span class="n">fitted_simulation</span></a> <span class="o">=</span> <span class="n">configure_simulation</span><span class="p">(</span><span class="w">
 </span>    <span class="n">melanin_fraction</span><span class="o">=</span><span class="n">baseline_fraction</span> <span class="o">+</span> <span class="n">fit</span><span class="o">.</span><span class="n">x</span><span class="p">,</span><span class="w">
-</span>    <span class="n">trial_mesh</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">trial_mesh</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">mesh</span></a><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SpectralSimulationResult" title="MomentRT.SpectralSimulationResult"><span class="n">fitted</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.Simulation.sweep" title="MomentRT.Simulation.sweep"><span class="n">fitted_simulation</span><span class="o">.</span><span class="n">sweep</span></a><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">)</span><span class="w">
+</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.results.SpectralSimulationResult" title="MomentRT.SpectralSimulationResult"><span class="n">fitted</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.simulation.Simulation.sweep" title="MomentRT.Simulation.sweep"><span class="n">fitted_simulation</span><span class="o">.</span><span class="n">sweep</span></a><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">)</span><span class="w">
 </span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Baseline melanin fraction: </span><span class="si">{</span><span class="n">baseline_fraction</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
 </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">True melanin fraction change: </span><span class="si">{</span><span class="n">true_change</span><span class="si">:</span><span class="s2">+.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span><span class="w">
@@ -856,7 +921,7 @@ because the simulated observations were generated by exactly the same model.</p>
 </span>    <span class="p">)</span><span class="w">
 </span>    <span class="n">axes</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
 </span>        <span class="n">wavelengths</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span><span class="w">
-</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-property reference internal" href="../../python_api.html#MomentRT.SpectralSimulationResult.detector_power" title="MomentRT.SpectralSimulationResult.detector_power"><span class="n">fitted</span><span class="o">.</span><span class="n">detector_power</span></a><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">uW</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-property reference internal" href="../../python_api.html#MomentRT.results.SpectralSimulationResult.detector_power" title="MomentRT.SpectralSimulationResult.detector_power"><span class="n">fitted</span><span class="o">.</span><span class="n">detector_power</span></a><span class="p">[</span><span class="n">name</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">&quot;</span><span class="s2">uW</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span><span class="w">
 </span>        <span class="s2">&quot;</span><span class="s2">-</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>        <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: fitted</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
@@ -877,22 +942,22 @@ Use the legend to toggle overlays. The coarse mesh and
 sampled source and apertures need convergence checks. P1 can be inaccurate
 near illumination, and real retrieval additionally needs noise, calibration,
 parameter-identifiability, and independent forward-model validation.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Layer" title="MomentRT.Layer"><span class="n">background_layer</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.Layer" title="MomentRT.Layer"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Layer</span></a><span class="p">(</span><span class="w">
+<div class="highlight-Python notranslate"><div class="highlight"><pre><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.geometry.Layer" title="MomentRT.Layer"><span class="n">background_layer</span></a> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class reference internal" href="../../python_api.html#MomentRT.geometry.Layer" title="MomentRT.Layer"><span class="n">MomentRT</span><span class="o">.</span><span class="n">Layer</span></a><span class="p">(</span><span class="w">
 </span>    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">Underlying background</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">depth</span><span class="o">=</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>    <span class="n">thickness</span><span class="o">=</span><span class="mf">2.5</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
-</span>    <span class="n">material</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Material" title="MomentRT.Material"><span class="n">background</span></a><span class="p">,</span><span class="w">
+</span>    <span class="n">material</span><span class="o">=</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.material.Material" title="MomentRT.Material"><span class="n">background</span></a><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span><span class="w">
-</span><span class="n">gallery_system_figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SpectralSimulationResult" title="MomentRT.SpectralSimulationResult"><span class="n">fitted</span></a><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
+</span><span class="n">gallery_system_figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.results.SpectralSimulationResult" title="MomentRT.SpectralSimulationResult"><span class="n">fitted</span></a><span class="o">.</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="w">
 </span>    <span class="n">view</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">volume</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">scale</span><span class="o">=</span><span class="s2">&quot;</span><span class="s2">linear</span><span class="s2">&quot;</span><span class="p">,</span><span class="w">
 </span>    <span class="n">display_resolution</span><span class="o">=</span><span class="mf">0.1</span> <span class="o">*</span> <span class="n">ureg</span><span class="o">.</span><span class="n">mm</span><span class="p">,</span><span class="w">
 </span>    <span class="n">overlays</span><span class="o">=</span><span class="p">[</span><span class="w">
-</span>        <span class="o">*</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-property reference internal" href="../../python_api.html#MomentRT.StructuredMedium.structures" title="MomentRT.StructuredMedium.structures"><span class="n">fitted_simulation</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">structures</span></a><span class="p">,</span><span class="w">
-</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.Layer" title="MomentRT.Layer"><span class="n">background_layer</span></a><span class="p">,</span><span class="w">
-</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">fitted_simulation</span><span class="o">.</span><span class="n">mesh</span></a><span class="p">,</span><span class="w">
-</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">source</span></a><span class="p">,</span><span class="w">
+</span>        <span class="o">*</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-property reference internal" href="../../python_api.html#MomentRT.medium.StructuredMedium.structures" title="MomentRT.StructuredMedium.structures"><span class="n">fitted_simulation</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">structures</span></a><span class="p">,</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.geometry.Layer" title="MomentRT.Layer"><span class="n">background_layer</span></a><span class="p">,</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh" title="MomentRT.TetrahedralMesh"><span class="n">fitted_simulation</span><span class="o">.</span><span class="n">mesh</span></a><span class="p">,</span><span class="w">
+</span>        <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.source.SurfaceSource" title="MomentRT.SurfaceSource"><span class="n">source</span></a><span class="p">,</span><span class="w">
 </span>        <span class="o">*</span><span class="n">detectors</span><span class="o">.</span><span class="n">values</span><span class="p">(</span><span class="p">)</span><span class="p">,</span><span class="w">
 </span>    <span class="p">]</span><span class="p">,</span><span class="w">
 </span>    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="w">
@@ -908,7 +973,7 @@ only useful outside the documentation build.</p>
 </span>    <span class="n">gallery_system_figure</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span>    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">(</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (3 minutes 56.039 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (3 minutes 10.984 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-inverse-problems-epidermis-change-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/d7c5742ce55ef4eb7650949fb8c48732/epidermis_change.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">epidermis_change.ipynb</span></code></a></p>
@@ -934,6 +999,24 @@ only useful outside the documentation build.</p>
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Inverse problems</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="mesh_convergence.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Check detector mesh convergence</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -967,7 +1050,7 @@ only useful outside the documentation build.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/gallery/inverse_problems/epidermis_change.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/gallery/inverse_problems/epidermis_change.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

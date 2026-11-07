@@ -7,7 +7,7 @@ wavelength before calculating a monochromatic field. ``Simulation.sweep``
 repeats that workflow while preserving geometry and instrument configuration.
 
 See the :doc:`spectral detector example
-<gallery/sources_detectors/spectral_detectors>` for a layered phantom, two
+<gallery/spectral/spectral_detectors>` for a layered phantom, two
 contact apertures, collected-power spectra, and a 3D fluence volume.
 
 Supplying a material table
@@ -226,7 +226,7 @@ the two emission forms are mutually exclusive. For example:
    print(f"Photocurrent: {measurement.photocurrent:~P}")
 
 See the :doc:`complete executable example
-<gallery/sources_detectors/broadband_detector>` for the sample, solver, mesh,
+<gallery/spectral/broadband_detector>` for the sample, solver, mesh,
 and spectral plots. Its values are illustrative, not a calibrated instrument.
 
 ``SourceSpectrum`` requires increasing positive wavelengths and a nonnegative

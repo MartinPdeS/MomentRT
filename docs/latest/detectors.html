@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Finite-aperture surface detectors &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Finite-aperture surface detectors &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -588,7 +588,7 @@ not modify the boundary conditions or remove power from the simulation.</p>
 <p>This distinguishes a detector signal from <code class="docutils literal notranslate"><span class="pre">outgoing_power_by_face</span></code>:
 the latter integrates all modeled escaping power across an entire face.
 For a complete runnable configuration and 3D geometry, see the
-<a class="reference internal" href="gallery/sources_detectors/surface_detector.html"><span class="doc">detector example</span></a>.</p>
+<a class="reference internal" href="gallery/sources_and_detectors/surface_detector.html"><span class="doc">detector example</span></a>.</p>
 <section id="defining-a-detector">
 <h2>Defining a detector<a class="headerlink" href="#defining-a-detector" title="Link to this heading">#</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">detector</span> <span class="o">=</span> <span class="n">SurfaceDetector</span><span class="p">(</span>
@@ -749,7 +749,7 @@ model of competing absorbers on the boundary.</p>
 <section id="spectral-measurements">
 <h2>Spectral measurements<a class="headerlink" href="#spectral-measurements" title="Link to this heading">#</a></h2>
 <p>For a spectral sweep, <code class="docutils literal notranslate"><span class="pre">spectrum.detectors[&quot;reflection&quot;]</span></code> returns the
-individual <a class="reference internal" href="python_api.html#MomentRT.DetectorResult" title="MomentRT.DetectorResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">DetectorResult</span></code></a> measurements in the order of
+individual <code class="xref py py-class docutils literal notranslate"><span class="pre">DetectorResult</span></code> measurements in the order of
 <code class="docutils literal notranslate"><span class="pre">spectrum.wavelengths</span></code>. Each provides collected power and both sampled and
 geometric aperture areas. These are independent monochromatic measurements,
 not a broadband integral. <code class="docutils literal notranslate"><span class="pre">spectrum.detector_power[&quot;reflection&quot;]</span></code> remains
@@ -828,7 +828,7 @@ collection axes. <code class="docutils literal notranslate"><span class="pre">fu
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/detectors.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/detectors.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

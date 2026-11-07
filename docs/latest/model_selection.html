@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Choose a transport model &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Choose a transport model &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -570,7 +570,7 @@
                   
   <section id="choose-a-transport-model">
 <h1>Choose a transport model<a class="headerlink" href="#choose-a-transport-model" title="Link to this heading">#</a></h1>
-<p>MomentRT provides steady-state, monochromatic moment approximations. Select
+<p>MomentRT provides monochromatic moment approximations. Select
 the model from the physical domain and desired result.</p>
 <section id="start-with-your-question">
 <h2>Start with your question<a class="headerlink" href="#start-with-your-question" title="Link to this heading">#</a></h2>
@@ -588,6 +588,9 @@ supported boundary conditions are relevant to the question.</p></li>
 to a finite simulation and run a <a class="reference internal" href="convergence.html"><span class="doc">detector convergence study</span></a>. Detector power uses a Lambertian angular approximation;
 per-face escaping power is not an aperture measurement. The model does not
 include external detector optics or specular entry losses.</p></li>
+<li><p><strong>How does a diffuse pulse evolve over time?</strong> Use <code class="docutils literal notranslate"><span class="pre">TransientP1</span></code> with an
+explicit time grid, source profile, and energy speed. See <a class="reference internal" href="time_dependent.html"><span class="doc">Time-dependent P1 and the telegrapher equation</span></a>
+for initial conditions, boundary assumptions, and validation limits.</p></li>
 </ul>
 <p>For any finite solver, refine the mesh and assess source footprint sampling;
 for detector power, assess aperture sampling and power stability as well.
@@ -659,7 +662,7 @@ remove numerical or physical model error.</p>
 </section>
 <section id="independent-references">
 <h2>Independent references<a class="headerlink" href="#independent-references" title="Link to this heading">#</a></h2>
-<p>The <a class="reference internal" href="gallery/transport_models/planar_slab_references.html"><span class="doc">planar slab example</span></a> compares P1 and SP3 finite-element
+<p>The <a class="reference internal" href="gallery/validation/planar_slab_references.html"><span class="doc">planar slab example</span></a> compares P1 and SP3 finite-element
 fields with independently calculated one-dimensional analytical solutions.
 This checks the FEM implementation and spatial discretization for a planar
 homogeneous case. It does not validate the approximations against the full
@@ -732,7 +735,7 @@ are not a direct validation of MomentRT’s finite-element implementation.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/model_selection.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/model_selection.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

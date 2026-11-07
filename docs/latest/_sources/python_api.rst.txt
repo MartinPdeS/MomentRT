@@ -3,201 +3,211 @@ Python class reference
 
 All dimensional arguments require quantities from ``MomentRT.ureg``.
 Array shapes and physical conventions are described for each class.
+Objects are grouped by domain module; top-level convenience imports remain
+available.
 
 Materials and sample geometry
 -----------------------------
 
-.. autoclass:: MomentRT.PhaseFunction
+.. autoclass:: MomentRT.phase_function.PhaseFunction
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.HenyeyGreenstein
+.. autoclass:: MomentRT.phase_function.HenyeyGreenstein
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Isotropic
+.. autoclass:: MomentRT.phase_function.Isotropic
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Rayleigh
+.. autoclass:: MomentRT.phase_function.Rayleigh
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.TabulatedPhaseFunction
+.. autoclass:: MomentRT.phase_function.Tabulated
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Material
+.. autoclass:: MomentRT.material.Material
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.SpectralMaterial
+.. autoclass:: MomentRT.material.SpectralMaterial
    :members:
    :member-order: bysource
 
 Premade materials
 ~~~~~~~~~~~~~~~~~
 
-.. autoclass:: MomentRT.Epidermis
+.. autoclass:: MomentRT.materials.Epidermis
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Dermis
+.. autoclass:: MomentRT.materials.Dermis
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Intralipid
+.. autoclass:: MomentRT.materials.Intralipid
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Water
+.. autoclass:: MomentRT.materials.Water
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.HomogeneousMedium
+.. autoclass:: MomentRT.medium.HomogeneousMedium
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.StructuredMedium
+.. autoclass:: MomentRT.medium.StructuredMedium
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Box
+.. autoclass:: MomentRT.geometry.Box
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Sphere
+.. autoclass:: MomentRT.geometry.Sphere
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Layer
+.. autoclass:: MomentRT.geometry.Layer
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.SampleSection
+.. autoclass:: MomentRT.sections.SampleSection
    :members:
    :member-order: bysource
 
 Sources, detectors, and boundaries
 ----------------------------------
 
-.. autoclass:: MomentRT.SourceSpectrum
+.. autoclass:: MomentRT.source.SourceSpectrum
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.DetectorResponsivity
+.. autoclass:: MomentRT.detector.DetectorResponsivity
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.PointSource
+.. autoclass:: MomentRT.source.PointSource
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.UniformSurfaceSource
+.. autoclass:: MomentRT.source.UniformSurfaceSource
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.SurfaceSource
+.. autoclass:: MomentRT.source.SurfaceSource
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.SurfaceDetector
+.. autoclass:: MomentRT.detector.SurfaceDetector
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.RobinBoundary
+.. autoclass:: MomentRT.boundary.RobinBoundary
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.ReflectingBoundary
+.. autoclass:: MomentRT.boundary.ReflectingBoundary
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Boundaries
+.. autoclass:: MomentRT.boundary.Boundaries
    :members:
    :member-order: bysource
 
 Meshes and transport
 --------------------
 
-.. autoclass:: MomentRT.CartesianMesh
+.. autoclass:: MomentRT.mesh.CartesianMesh
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.TetrahedralMesh
+.. autoclass:: MomentRT.mesh.TetrahedralMesh
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.InfiniteP1
+.. autoclass:: MomentRT.transport.InfiniteP1
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.P1
+.. autoclass:: MomentRT.transport.P1
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.SP3
+.. autoclass:: MomentRT.transport.TransientP1
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.P3
+.. autoclass:: MomentRT.results.TransientResult
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.TransportSolver
+.. autoclass:: MomentRT.transport.SP3
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.Simulation
+.. autoclass:: MomentRT.transport.P3
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.ValidationReport
+.. autoclass:: MomentRT.simulation.TransportSolver
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.simulation.Simulation
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.validation.ValidationReport
    :members:
    :member-order: bysource
 
 Fields and results
 ------------------
 
-.. autoclass:: MomentRT.ScalarField
+.. autoclass:: MomentRT.fields.ScalarField
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.VectorField
+.. autoclass:: MomentRT.fields.VectorField
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.BoundaryField
+.. autoclass:: MomentRT.fields.BoundaryField
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.SimulationResult
+.. autoclass:: MomentRT.results.SimulationResult
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.DetectorResult
+.. autoclass:: MomentRT.results.DetectorResult
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.MeshConvergence
+.. autoclass:: MomentRT.convergence.MeshConvergence
    :members:
 
-.. autoclass:: MomentRT.DetectorConvergenceResult
-   :members:
-   :member-order: bysource
-
-.. autoclass:: MomentRT.SpectralSimulationResult
+.. autoclass:: MomentRT.results.DetectorConvergenceResult
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.BroadbandSimulationResult
+.. autoclass:: MomentRT.results.SpectralSimulationResult
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.BroadbandDetectorResult
+.. autoclass:: MomentRT.results.BroadbandSimulationResult
    :members:
    :member-order: bysource
 
-.. autoclass:: MomentRT.SpectralConvergenceResult
+.. autoclass:: MomentRT.results.BroadbandDetectorResult
+   :members:
+   :member-order: bysource
+
+.. autoclass:: MomentRT.results.SpectralConvergenceResult
    :members:
    :member-order: bysource

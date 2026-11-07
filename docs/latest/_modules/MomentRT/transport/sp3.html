@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.transport.sp3 &#8212; MomentRT 0.10.0 documentation</title>
+    <title>MomentRT.transport.sp3 &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -552,13 +552,15 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TypedUnit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">sparse</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">linalg</span> <span class="k">as</span> <span class="n">sparse_linalg</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">MomentRT.transport.p1</span><span class="w"> </span><span class="kn">import</span> <span class="n">_PreparedDiffusion</span>
 
 
 <div class="viewcode-block" id="SP3">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.SP3">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.transport.SP3">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SP3</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Solve two coupled simplified P3 moments using tetrahedral elements.</span>
 
@@ -636,7 +638,7 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="SP3.solve">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.SP3.solve">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.transport.SP3.solve">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">solve</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -669,7 +671,7 @@
 
 
 
-<span class="k">class</span><span class="w"> </span><span class="nc">_PreparedSP3</span><span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">_PreparedDiffusion</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_PreparedSP3</span><span class="p">(</span><span class="n">_PreparedDiffusion</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Reuse the finite geometry and source quadrature during a sweep."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
@@ -692,7 +694,8 @@
         <span class="n">source</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">,</span>
         <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">,</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span><span class="p">:</span>
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">optical_power</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="s2">"W"</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">"optical_power"</span><span class="p">,</span>

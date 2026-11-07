@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.mesh &#8212; MomentRT 0.10.0 documentation</title>
+    <title>MomentRT.mesh &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -557,13 +557,14 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">uuid4</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">gmsh</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TypedUnit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span><span class="p">,</span> <span class="n">NDArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
 
 
 <div class="viewcode-block" id="CartesianMesh">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.CartesianMesh">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.mesh.CartesianMesh">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">CartesianMesh</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Cartesian node grid for observations or finite-element discretization.</span>
 
@@ -610,11 +611,22 @@
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"shape must contain three integers of at least two."</span><span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"spacing"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"spacing"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span>
+            <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"origin"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"origin"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span>
+        <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 
@@ -681,7 +693,7 @@
         <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolution</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolution</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <div class="viewcode-block" id="CartesianMesh.copy">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.CartesianMesh.copy">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.mesh.CartesianMesh.copy">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Copy the mesh coordinates and requested resolution independently.</span>
 
@@ -703,7 +715,7 @@
 
 
 <div class="viewcode-block" id="CartesianMesh.plot">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.CartesianMesh.plot">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.mesh.CartesianMesh.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span><span class="p">,</span> <span class="n">max_edges</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
@@ -905,7 +917,7 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="CartesianMesh.from_sample">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.CartesianMesh.from_sample">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.mesh.CartesianMesh.from_sample">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_sample</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
@@ -940,7 +952,8 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Supply exactly one of resolution or shape."</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">resolution</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+            <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+                <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
                 <span class="n">value</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
                 <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="s2">"resolution"</span><span class="p">,</span>
@@ -993,7 +1006,7 @@
 
 
 <div class="viewcode-block" id="TetrahedralMesh">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.TetrahedralMesh">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TetrahedralMesh</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Conforming linear tetrahedra filling a finite rectangular sample.</span>
 
@@ -1022,7 +1035,9 @@
 <span class="sd">        tetrahedra : array_like of int</span>
 <span class="sd">            Valid node indices with shape (T, 4); N &gt;= 4 and T &gt;= 1.</span>
 <span class="sd">        """</span>
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">points</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"points"</span><span class="p">)</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">points</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"points"</span>
+        <span class="p">)</span>
 
         <span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
         <span class="n">cells</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">tetrahedra</span><span class="p">)</span>
@@ -1174,7 +1189,7 @@
         <span class="k">return</span> <span class="kc">None</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolution</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">_resolution</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <div class="viewcode-block" id="TetrahedralMesh.copy">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.TetrahedralMesh.copy">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh.copy">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Copy geometry and refinement rules without invoking the mesher.</span>
 
@@ -1246,7 +1261,7 @@
         <span class="k">return</span> <span class="n">faces</span>
 
 <div class="viewcode-block" id="TetrahedralMesh.from_sample">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.TetrahedralMesh.from_sample">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh.from_sample">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_sample</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sample</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">,</span> <span class="n">resolution</span><span class="p">:</span> <span class="n">Quantity</span>
@@ -1287,7 +1302,8 @@
     <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">_validate_resolution</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">resolution</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Validate one physical scalar target size."""</span>
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">"resolution"</span><span class="p">,</span>
@@ -1296,7 +1312,7 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="TetrahedralMesh.refine_region">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.TetrahedralMesh.refine_region">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh.refine_region">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">refine_region</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">resolution</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Regenerate with a smaller target size in a named region; return None.</span>
 
@@ -1323,7 +1339,7 @@
 
 
 <div class="viewcode-block" id="TetrahedralMesh.refine_near">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.TetrahedralMesh.refine_near">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh.refine_near">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">refine_near</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">objects</span><span class="p">:</span> <span class="n">Iterable</span><span class="p">[</span><span class="nb">object</span><span class="p">],</span> <span class="n">resolution</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">distance</span><span class="p">:</span> <span class="n">Quantity</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
@@ -1344,7 +1360,8 @@
 <span class="sd">            Positive scalar length of the fine neighborhood and transition band.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_validate_refinement</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="n">resolution</span><span class="p">)</span>
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">distance</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">"distance"</span><span class="p">,</span>
@@ -1370,7 +1387,7 @@
                         <span class="s2">"refine_near requires circular surface sources or detectors."</span>
                     <span class="p">)</span>
 
-                <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">_validate_face_disk</span><span class="p">(</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">_face_geometry</span><span class="o">.</span><span class="n">validate_face_disk</span><span class="p">(</span>
                     <span class="n">sample</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_sample</span><span class="p">,</span>
                     <span class="n">face</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">face</span><span class="p">,</span>
                     <span class="n">position</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
@@ -1650,7 +1667,7 @@
         <span class="k">return</span> <span class="n">lower</span><span class="p">,</span> <span class="n">size</span>
 
 <div class="viewcode-block" id="TetrahedralMesh.plot">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.TetrahedralMesh.plot">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.mesh.TetrahedralMesh.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span><span class="p">,</span> <span class="n">max_edges</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20000</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
@@ -1766,7 +1783,9 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_interpolate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">values</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Interpolate P1 nodal values using the original tetrahedral connectivity."""</span>
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">points</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"points"</span><span class="p">)</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">points</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"points"</span>
+        <span class="p">)</span>
         <span class="n">queries</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">queries</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">queries</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>

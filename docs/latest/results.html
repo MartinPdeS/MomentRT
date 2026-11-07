@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Results and visualization &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Results and visualization &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -584,7 +584,7 @@
 view of the computed arrays; it does not modify the numerical result.</p>
 <section id="fluence-rate">
 <h2>Fluence rate<a class="headerlink" href="#fluence-rate" title="Link to this heading">#</a></h2>
-<p><code class="docutils literal notranslate"><span class="pre">result.fluence</span></code> is a <a class="reference internal" href="python_api.html#MomentRT.ScalarField" title="MomentRT.ScalarField"><code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarField</span></code></a> of nodal fluence rate
+<p><code class="docutils literal notranslate"><span class="pre">result.fluence</span></code> is a <code class="xref py py-class docutils literal notranslate"><span class="pre">ScalarField</span></code> of nodal fluence rate
 <span class="math notranslate nohighlight">\(\Phi\)</span>, with units of watts per square metre. <code class="docutils literal notranslate"><span class="pre">values</span></code> is a Pint
 quantity shaped like its associated Cartesian mesh. Infinite and finite
 solutions also carry metadata describing the transport model, wavelength, and
@@ -684,12 +684,12 @@ public entry point for composing field figures is <code class="docutils literal 
 <p>Collected-power spectra use wavelength and power axes, so geometric
 overlays belong on a constituent spatial field:
 <code class="docutils literal notranslate"><span class="pre">spectrum.results[2].fluence.plot(overlays=[source,</span> <span class="pre">detector])</span></code>.
-See the <a class="reference internal" href="gallery/sources_detectors/spectral_detectors.html"><span class="doc">spectral detector example</span></a> for both figures.</p>
+See the <a class="reference internal" href="gallery/spectral/spectral_detectors.html"><span class="doc">spectral detector example</span></a> for both figures.</p>
 </section>
 <section id="diffusive-flux">
 <h2>Diffusive flux<a class="headerlink" href="#diffusive-flux" title="Link to this heading">#</a></h2>
 <p>For finite FEM simulations, <code class="docutils literal notranslate"><span class="pre">result.flux</span></code> is an element-centered
-<a class="reference internal" href="python_api.html#MomentRT.VectorField" title="MomentRT.VectorField"><code class="xref py py-class docutils literal notranslate"><span class="pre">VectorField</span></code></a> with units of <span class="math notranslate nohighlight">\(\mathrm{W\,m^{-2}}\)</span>:</p>
+<code class="xref py py-class docutils literal notranslate"><span class="pre">VectorField</span></code> with units of <span class="math notranslate nohighlight">\(\mathrm{W\,m^{-2}}\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\mathbf J_e=-D_e\nabla\Phi\vert_e.\]</div>
 <p>The gradient is constant inside each linear tetrahedron. Values are not
@@ -854,7 +854,7 @@ mesh do not establish transport-model accuracy.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/results.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/results.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

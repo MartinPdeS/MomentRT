@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Examples &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Examples &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -512,34 +512,57 @@
   <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
 <li class="toctree-l1 has-children"><a class="reference internal" href="getting_started/index.html">Getting started</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="getting_started/infinite_diffusion.html">Infinite-medium diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting_started/skin_contact.html">Simulate a contact sensor on layered skin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting_started/structured_sample.html">A heterogeneous layered sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="getting_started/surface_diffusion.html">Surface illumination and FEM diffusion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting_started/uniform_surface_source.html">Uniform illumination on a sample face</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="sources_detectors/index.html">Sources and detectors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="sources_detectors/broadband_detector.html">Integrate a source spectrum and detector response</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources_detectors/detector_convergence.html">Choose a mesh for detector collection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources_detectors/seven_fiber_skin.html">Seven-fiber bundle on a three-layer skin sample</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources_detectors/spectral_detectors.html">Sweep wavelengths with a fixed sensor geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sources_detectors/surface_detector.html">Collect light with finite apertures</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="samples_and_meshes/index.html">Samples and meshes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="samples_and_meshes/cartesian_resolution.html">Create a Cartesian mesh from physical resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="samples_and_meshes/cartesian_shape.html">Create a Cartesian mesh from node counts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="samples_and_meshes/sample_models.html">Build samples with named models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="samples_and_meshes/tetrahedral_global.html">Create a uniform tetrahedral mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="samples_and_meshes/tetrahedral_local.html">Refine a tetrahedral mesh near layers and contacts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="sources_and_detectors/index.html">Sources and detectors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="sources_and_detectors/detector_convergence.html">Choose a mesh for detector collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources_and_detectors/seven_fiber_skin.html">Seven-fiber bundle on a three-layer skin sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources_and_detectors/surface_detector.html">Collect light with finite apertures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sources_and_detectors/uniform_surface_source.html">Uniform illumination on a sample face</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="spectral/index.html">Spectral calculations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="spectral/broadband_detector.html">Integrate a source spectrum and detector response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectral/source_spectra.html">Build analytical source spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectral/sp3_spectral_anisotropy.html">Sweep wavelength-dependent scattering anisotropy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="spectral/spectral_detectors.html">Sweep wavelengths with a fixed sensor geometry</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="transport_models/index.html">Transport models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="transport_models/compare_p3.html">Compare full P3 with SP3 and P1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transport_models/compare_sp3.html">Compare P1 and SP3 transport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transport_models/phase_functions.html">Compare scattering phase functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="transport_models/planar_slab_references.html">Compare P1 and SP3 with independent planar slab references</a></li>
 <li class="toctree-l2"><a class="reference internal" href="transport_models/sp3_layered_anisotropy.html">Use different anisotropies in a layered sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transport_models/transient_p1.html">Follow a diffuse pulse through layered tissue</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="sweeps_convergence/index.html">Sweeps and convergence</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="sweeps_convergence/absorption_sweep.html">How absorption changes fluence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sweeps_convergence/mesh_refinement.html">Check finite-element mesh refinement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sweeps_convergence/reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sweeps_convergence/sensor_validation_cases.html">Compare sensor-validation cases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sweeps_convergence/solver_scaling.html">Benchmark P1, SP3, and P3 solver scaling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="sweeps_convergence/sp3_spectral_anisotropy.html">Sweep wavelength-dependent scattering anisotropy</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="parameter_studies/index.html">Parameter studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="parameter_studies/absorption_sweep.html">How absorption changes fluence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_studies/reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameter_studies/solver_scaling.html">Benchmark P1, SP3, and P3 solver scaling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="validation/index.html">Validation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="validation/mesh_refinement.html">Check finite-element mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation/planar_slab_references.html">Compare P1 and SP3 with independent planar slab references</a></li>
+<li class="toctree-l2"><a class="reference internal" href="validation/sensor_validation_cases.html">Compare sensor-validation cases</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="inverse_problems/index.html">Inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="inverse_problems/epidermis_change.html">Recover an epidermis change</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inverse_problems/mesh_convergence.html">Check detector mesh convergence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inverse_problems/objective_landscape.html">Explore a synthetic objective landscape</a></li>
 </ul>
 </details></li>
 </ul>
@@ -601,16 +624,24 @@
                   
   <section id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h1>
-<p>Browse worked examples, from the analytical infinite-medium solution through
-finite-sample models, instruments, and numerical studies. Each card opens an
-executable example with its complete configuration and generated plots. Input
-values are illustrative.</p>
+<p>Choose a task below to find a complete, executable example. New to MomentRT?
+Start with an analytical calculation, then try a finite sample. The values are
+illustrative; each example describes its physical assumptions and limits.</p>
 <section id="getting-started">
 <h2>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h2>
-<p>Learn the basic workflow, from a point source in an infinite medium to layered
-finite samples and surface illumination.</p>
+<p>Run a first simulation and construct a structured sample.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Fluence in a three-layer skin sample with contact source and detector" class="sd-card-img-top" src="../_images/sphx_glr_skin_contact_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Model a skin contact sensor</div>
+<p class="sd-card-text">Build a layered skin sample, refine a tetrahedral mesh, and solve for fluence.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="getting_started/skin_contact.html"><span class="doc">Simulate a contact sensor on layered skin</span></a></div>
+</div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <img alt="Infinite-medium MomentRT fluence field" class="sd-card-img-top" src="../_images/sphx_glr_infinite_diffusion_thumb.png" />
@@ -621,17 +652,6 @@ Infinite-medium diffusion</div>
 Green function, and explore its 3D fluence field.</p>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="getting_started/infinite_diffusion.html"><span class="doc">Infinite-medium diffusion</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<img alt="Fluence volume in a layered sample with inclusions" class="sd-card-img-top" src="../_images/sphx_glr_structured_sample_thumb.png" />
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Build a heterogeneous sample</div>
-<p class="sd-card-text">Combine layers, spheres, and a box, solve the illuminated sample, and
-explore its 3D fluence volume.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="getting_started/structured_sample.html"><span class="doc">A heterogeneous layered sample</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -646,24 +666,33 @@ with a disk source.</p>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<img alt="Finite-sample fluence under uniform face illumination" class="sd-card-img-top" src="../_images/sphx_glr_uniform_surface_source_thumb.png" />
+<img alt="Fluence volume in a layered sample with inclusions" class="sd-card-img-top" src="../_images/sphx_glr_structured_sample_thumb.png" />
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Uniform face illumination</div>
-<p class="sd-card-text">Use <code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code> to illuminate an entire sample face and
-render the resulting field in 3D.</p>
+Build a heterogeneous sample</div>
+<p class="sd-card-text">Combine layers, spheres, and a box, solve the illuminated sample, and
+explore its 3D fluence volume.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="getting_started/uniform_surface_source.html"><span class="doc">Uniform illumination on a sample face</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="getting_started/structured_sample.html"><span class="doc">A heterogeneous layered sample</span></a></div>
 </div>
 </div>
 </div>
 </section>
-<section id="meshes">
-<h2>Meshes<a class="headerlink" href="#meshes" title="Link to this heading">#</a></h2>
-<p>Create Cartesian and tetrahedral meshes, then inspect their regular spacing,
-global element size, and local refinement.</p>
+<section id="samples-and-meshes">
+<h2>Samples and meshes<a class="headerlink" href="#samples-and-meshes" title="Link to this heading">#</a></h2>
+<p>Use named sample models, then create Cartesian or tetrahedral meshes.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Fluence in an explicitly configured two-layer skin sample" class="sd-card-img-top" src="../_images/sphx_glr_sample_models_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Build samples with named models</div>
+<p class="sd-card-text">Build a two-layer skin sample and a layered phantom from explicit materials.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="samples_and_meshes/sample_models.html"><span class="doc">Build samples with named models</span></a></div>
+</div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <img alt="Regular Cartesian grid shown inside its sample bounds" class="sd-card-img-top" src="../_images/sphx_glr_cartesian_shape_thumb.png" />
@@ -672,7 +701,7 @@ global element size, and local refinement.</p>
 Cartesian mesh from node counts</div>
 <p class="sd-card-text">Set explicit node counts for a regular grid and plot its cell edges.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="meshes/cartesian_shape.html"><span class="doc">Create a Cartesian mesh from node counts</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="samples_and_meshes/cartesian_shape.html"><span class="doc">Create a Cartesian mesh from node counts</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -682,7 +711,7 @@ Cartesian mesh from node counts</div>
 Cartesian mesh from physical resolution</div>
 <p class="sd-card-text">Request spacing in physical units, including anisotropic spacing by axis.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="meshes/cartesian_resolution.html"><span class="doc">Create a Cartesian mesh from physical resolution</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="samples_and_meshes/cartesian_resolution.html"><span class="doc">Create a Cartesian mesh from physical resolution</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -692,7 +721,7 @@ Cartesian mesh from physical resolution</div>
 Uniform tetrahedral mesh</div>
 <p class="sd-card-text">Generate and plot an unstructured tetrahedral mesh at a global target size.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="meshes/tetrahedral_global.html"><span class="doc">Create a uniform tetrahedral mesh</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="samples_and_meshes/tetrahedral_global.html"><span class="doc">Create a uniform tetrahedral mesh</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -702,17 +731,27 @@ Uniform tetrahedral mesh</div>
 Locally refined tetrahedral mesh</div>
 <p class="sd-card-text">Refine a named layer and the neighborhoods around a source and detector.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="meshes/tetrahedral_local.html"><span class="doc">Refine a tetrahedral mesh near layers and contacts</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="samples_and_meshes/tetrahedral_local.html"><span class="doc">Refine a tetrahedral mesh near layers and contacts</span></a></div>
 </div>
 </div>
 </div>
 </section>
 <section id="sources-and-detectors">
 <h2>Sources and detectors<a class="headerlink" href="#sources-and-detectors" title="Link to this heading">#</a></h2>
-<p>Configure source footprints and detector apertures, including spectral
-collection and a multi-fiber contact probe.</p>
+<p>Configure diffuse illumination and contact apertures, and check detector mesh convergence.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Finite-sample fluence under uniform face illumination" class="sd-card-img-top" src="../_images/sphx_glr_uniform_surface_source_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Uniform face illumination</div>
+<p class="sd-card-text">Use <code class="docutils literal notranslate"><span class="pre">UniformSurfaceSource</span></code> to illuminate an entire sample face and
+render the resulting field in 3D.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="sources_and_detectors/uniform_surface_source.html"><span class="doc">Uniform illumination on a sample face</span></a></div>
+</div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <img alt="Finite-sample fluence with source and detector apertures" class="sd-card-img-top" src="../_images/sphx_glr_surface_detector_thumb.png" />
@@ -722,29 +761,7 @@ Collect light with finite apertures</div>
 <p class="sd-card-text">Define detector positions and acceptance cones, inspect the system, and
 calculate reflection and transmission signals.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sources_detectors/surface_detector.html"><span class="doc">Collect light with finite apertures</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<img alt="Monochromatic fluence from a spectral sensor sweep" class="sd-card-img-top" src="../_images/sphx_glr_spectral_detectors_thumb.png" />
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Sweep a spectral sensor</div>
-<p class="sd-card-text">Interpolate material spectra and plot collected power across wavelengths
-with fixed sample and instrument geometry.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sources_detectors/spectral_detectors.html"><span class="doc">Sweep wavelengths with a fixed sensor geometry</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<img alt="Incoming and collected spectral power and detector photocurrent" class="sd-card-img-top" src="../_images/sphx_glr_broadband_detector_thumb.png" />
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Integrate source and detector spectra</div>
-<p class="sd-card-text">Configure the existing source with a power density and the detector with
-responsivity, then integrate optical power and electrical current.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sources_detectors/broadband_detector.html"><span class="doc">Integrate a source spectrum and detector response</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="sources_and_detectors/surface_detector.html"><span class="doc">Collect light with finite apertures</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -755,7 +772,7 @@ Seven-fiber skin probe</div>
 <p class="sd-card-text">Simulate simultaneous illumination from six fibers around a central
 collection fiber in a layered skin model.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sources_detectors/seven_fiber_skin.html"><span class="doc">Seven-fiber bundle on a three-layer skin sample</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="sources_and_detectors/seven_fiber_skin.html"><span class="doc">Seven-fiber bundle on a three-layer skin sample</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -766,17 +783,77 @@ Check detector mesh convergence</div>
 <p class="sd-card-text">Compare detector signals and sampled source and aperture areas over
 successively finer meshes.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sources_detectors/detector_convergence.html"><span class="doc">Choose a mesh for detector collection</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="sources_and_detectors/detector_convergence.html"><span class="doc">Choose a mesh for detector collection</span></a></div>
+</div>
+</div>
+</div>
+</section>
+<section id="spectral-calculations">
+<h2>Spectral calculations<a class="headerlink" href="#spectral-calculations" title="Link to this heading">#</a></h2>
+<p>Sweep wavelength-dependent materials and integrate source spectra and detector responsivity.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Infinite-medium fluence for an analytical source spectrum" class="sd-card-img-top" src="../_images/sphx_glr_source_spectra_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Build analytical source spectra</div>
+<p class="sd-card-text">Compare Gaussian and Lorentzian wavelength profiles and attach one to a source.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="spectral/source_spectra.html"><span class="doc">Build analytical source spectra</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Monochromatic fluence from a spectral sensor sweep" class="sd-card-img-top" src="../_images/sphx_glr_spectral_detectors_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Sweep a spectral sensor</div>
+<p class="sd-card-text">Interpolate material spectra and plot collected power across wavelengths
+with fixed sample and instrument geometry.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="spectral/spectral_detectors.html"><span class="doc">Sweep wavelengths with a fixed sensor geometry</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Incoming and collected spectral power and detector photocurrent" class="sd-card-img-top" src="../_images/sphx_glr_broadband_detector_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Integrate source and detector spectra</div>
+<p class="sd-card-text">Configure the existing source with a power density and the detector with
+responsivity, then integrate optical power and electrical current.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="spectral/broadband_detector.html"><span class="doc">Integrate a source spectrum and detector response</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="SP3 fluence from wavelength-dependent material tables" class="sd-card-img-top" src="../_images/sphx_glr_sp3_spectral_anisotropy_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Sweep spectral anisotropy</div>
+<p class="sd-card-text">Interpolate layer-specific anisotropy and detector power across
+wavelengths.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="spectral/sp3_spectral_anisotropy.html"><span class="doc">Sweep wavelength-dependent scattering anisotropy</span></a></div>
 </div>
 </div>
 </div>
 </section>
 <section id="transport-models">
 <h2>Transport models<a class="headerlink" href="#transport-models" title="Link to this heading">#</a></h2>
-<p>Compare angular approximations and inspect how scattering phase functions and
-anisotropy influence model outputs.</p>
+<p>Compare angular approximations and explore phase functions and layer anisotropy.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Transient P1 fluence in a layered sample with source and detector" class="sd-card-img-top" src="../_images/sphx_glr_transient_p1_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Follow a diffuse pulse through layered tissue</div>
+<p class="sd-card-text">Calculate a pulsed time response and inspect the contact detector trace.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="transport_models/transient_p1.html"><span class="doc">Follow a diffuse pulse through layered tissue</span></a></div>
+</div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <img alt="SP3 fluence volume with contact source and detector" class="sd-card-img-top" src="../_images/sphx_glr_compare_sp3_thumb.png" />
@@ -818,23 +895,12 @@ Assign anisotropy by layer</div>
 </div>
 <a class="sd-stretched-link sd-hide-link-text reference internal" href="transport_models/sp3_layered_anisotropy.html"><span class="doc">Use different anisotropies in a layered sample</span></a></div>
 </div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Compare against planar slab references</div>
-<p class="sd-card-text">Compare P1 diffusion and SP3 FEM profiles with independent closed-form
-and matrix-exponential slab solutions.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="transport_models/planar_slab_references.html"><span class="doc">Compare P1 and SP3 with independent planar slab references</span></a></div>
-</div>
 </div>
 </div>
 </section>
-<section id="sweeps-and-convergence">
-<h2>Sweeps and convergence<a class="headerlink" href="#sweeps-and-convergence" title="Link to this heading">#</a></h2>
-<p>Vary optical properties and wavelength, and assess how numerical resolution
-affects calculated fields and observables.</p>
+<section id="parameter-studies">
+<h2>Parameter studies<a class="headerlink" href="#parameter-studies" title="Link to this heading">#</a></h2>
+<p>Vary optical properties and boundary reflectance, and examine computational scaling.</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
 <div class="sd-col sd-d-flex-row docutils">
@@ -846,40 +912,7 @@ How absorption changes fluence</div>
 <p class="sd-card-text">Compare fluence profiles while holding reduced scattering and source
 configuration fixed.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sweeps_convergence/absorption_sweep.html"><span class="doc">How absorption changes fluence</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<img alt="Finite-sample fluence on the finest mesh" class="sd-card-img-top" src="../_images/sphx_glr_mesh_refinement_thumb.png" />
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Mesh refinement and FEM timings</div>
-<p class="sd-card-text">Compare fluence over three grids and inspect recorded FEM preparation,
-assembly, factorization, and solve timings.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sweeps_convergence/mesh_refinement.html"><span class="doc">Check finite-element mesh refinement</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<img alt="Solve time and peak process memory versus tetrahedron count" class="sd-card-img-top" src="../_images/sphx_glr_solver_scaling_thumb.png" />
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Benchmark P1, SP3, and P3 scaling</div>
-<p class="sd-card-text">Measure solve time and peak process memory across tetrahedral mesh sizes,
-and use the results to decide whether iterative P3 solvers warrant study.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sweeps_convergence/solver_scaling.html"><span class="doc">Benchmark P1, SP3, and P3 solver scaling</span></a></div>
-</div>
-<div class="sd-col sd-d-flex-row docutils">
-<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<img alt="P1, SP3, and P3 detector-power errors across eight sensor cases" class="sd-card-img-top" src="../_images/sphx_glr_sensor_validation_cases_thumb.png" />
-<div class="sd-card-body docutils">
-<div class="sd-card-title sd-font-weight-bold docutils">
-Vary layered sensor validation cases</div>
-<p class="sd-card-text">Explore published comparisons while varying layer thickness, optical
-properties, source size, detector radius, and source-detector separation.</p>
-</div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sweeps_convergence/sensor_validation_cases.html"><span class="doc">Compare sensor-validation cases</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="parameter_studies/absorption_sweep.html"><span class="doc">How absorption changes fluence</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
@@ -890,18 +923,99 @@ Change boundary reflectance</div>
 <p class="sd-card-text">Compare centerline fluence and escaping power as diffuse reflectance
 changes.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sweeps_convergence/reflectance_sweep.html"><span class="doc">Changing the diffuse boundary reflectance</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="parameter_studies/reflectance_sweep.html"><span class="doc">Changing the diffuse boundary reflectance</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
-<img alt="SP3 fluence from wavelength-dependent material tables" class="sd-card-img-top" src="../_images/sphx_glr_sp3_spectral_anisotropy_thumb.png" />
+<img alt="Solve time and peak process memory versus tetrahedron count" class="sd-card-img-top" src="../_images/sphx_glr_solver_scaling_thumb.png" />
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-Sweep spectral anisotropy</div>
-<p class="sd-card-text">Interpolate layer-specific anisotropy and detector power across
-wavelengths.</p>
+Benchmark P1, SP3, and P3 scaling</div>
+<p class="sd-card-text">Measure solve time and peak process memory across tetrahedral mesh sizes,
+and use the results to decide whether iterative P3 solvers warrant study.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="sweeps_convergence/sp3_spectral_anisotropy.html"><span class="doc">Sweep wavelength-dependent scattering anisotropy</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="parameter_studies/solver_scaling.html"><span class="doc">Benchmark P1, SP3, and P3 solver scaling</span></a></div>
+</div>
+</div>
+</div>
+</section>
+<section id="validation">
+<h2>Validation<a class="headerlink" href="#validation" title="Link to this heading">#</a></h2>
+<p>Assess mesh refinement and compare calculations with independent references.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Finite-sample fluence on the finest mesh" class="sd-card-img-top" src="../_images/sphx_glr_mesh_refinement_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Mesh refinement and FEM timings</div>
+<p class="sd-card-text">Compare fluence over three grids and inspect recorded FEM preparation,
+assembly, factorization, and solve timings.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="validation/mesh_refinement.html"><span class="doc">Check finite-element mesh refinement</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Compare against planar slab references</div>
+<p class="sd-card-text">Compare P1 diffusion and SP3 FEM profiles with independent closed-form
+and matrix-exponential slab solutions.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="validation/planar_slab_references.html"><span class="doc">Compare P1 and SP3 with independent planar slab references</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="P1, SP3, and P3 detector-power errors across eight sensor cases" class="sd-card-img-top" src="../_images/sphx_glr_sensor_validation_cases_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Vary layered sensor validation cases</div>
+<p class="sd-card-text">Explore published comparisons while varying layer thickness, optical
+properties, source size, detector radius, and source-detector separation.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="validation/sensor_validation_cases.html"><span class="doc">Compare sensor-validation cases</span></a></div>
+</div>
+</div>
+</div>
+</section>
+<section id="inverse-problems">
+<h2>Inverse problems<a class="headerlink" href="#inverse-problems" title="Link to this heading">#</a></h2>
+<p>Explore synthetic inverse calculations and their numerical and model limitations.</p>
+<div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
+<div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Fluence field in the layered sample used for mesh convergence" class="sd-card-img-top" src="../_images/sphx_glr_mesh_convergence_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Check a mesh before fitting</div>
+<p class="sd-card-text">Check how refinement affects detector powers for a layered sample before
+attempting a synthetic fit.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="inverse_problems/mesh_convergence.html"><span class="doc">Check detector mesh convergence</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Infinite-medium fluence for a synthetic absorption example" class="sd-card-img-top" src="../_images/sphx_glr_objective_landscape_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Explore an objective landscape</div>
+<p class="sd-card-text">Plot the mismatch between synthetic fluence observations and candidate
+absorption values under the same analytical model.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="inverse_problems/objective_landscape.html"><span class="doc">Explore a synthetic objective landscape</span></a></div>
+</div>
+<div class="sd-col sd-d-flex-row docutils">
+<div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
+<img alt="Fluence field in a sample used for a synthetic epidermis fit" class="sd-card-img-top" src="../_images/sphx_glr_epidermis_change_thumb.png" />
+<div class="sd-card-body docutils">
+<div class="sd-card-title sd-font-weight-bold docutils">
+Fit a simulated epidermis change</div>
+<p class="sd-card-text">Recover a model parameter from ideal simulated measurements using SciPy;
+the same forward model generates and fits the data.</p>
+</div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="inverse_problems/epidermis_change.html"><span class="doc">Recover an epidermis change</span></a></div>
 </div>
 </div>
 </div>
@@ -960,10 +1074,13 @@ and hover to inspect the generated MomentRT data.</p>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-started">Getting started</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#meshes">Meshes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#samples-and-meshes">Samples and meshes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sources-and-detectors">Sources and detectors</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spectral-calculations">Spectral calculations</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#transport-models">Transport models</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sweeps-and-convergence">Sweeps and convergence</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#parameter-studies">Parameter studies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validation">Validation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inverse-problems">Inverse problems</a></li>
 </ul>
   </nav></div>
 
@@ -971,7 +1088,7 @@ and hover to inspect the generated MomentRT data.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/gallery/index.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/gallery/index.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

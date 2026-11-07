@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Finite-sample P1 solver &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Finite-sample P1 solver &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -720,7 +720,7 @@ field.</p>
 <p>For instance, with <span class="math notranslate nohighlight">\(R=0.5\)</span>, the boundary law becomes
 <span class="math notranslate nohighlight">\(\mathbf J\cdot\mathbf n=\Phi/6-(4/3)I_{\mathrm{in}}\)</span>. With no
 illumination on that face, the net outward current is one sixth of its local
-fluence rate. The <a class="reference internal" href="gallery/sweeps_convergence/reflectance_sweep.html"><span class="doc">reflectance sweep example</span></a> compares finite-sample fluence and
+fluence rate. The <a class="reference internal" href="gallery/parameter_studies/reflectance_sweep.html"><span class="doc">reflectance sweep example</span></a> compares finite-sample fluence and
 escaping power for <span class="math notranslate nohighlight">\(R=0\)</span>, <span class="math notranslate nohighlight">\(0.5\)</span>, and <span class="math notranslate nohighlight">\(0.9\)</span>.</p>
 <p>The net current <span class="math notranslate nohighlight">\(\mathbf J\cdot\mathbf n\)</span> includes both outgoing and
 incoming directions, so it is not the same as the transmitted power that
@@ -1173,15 +1173,16 @@ errors.</p>
 a fixed location or integrated escaping power on a specified face. Compare
 it across successively refined meshes with the same physical configuration.
 A converged total power can coexist with an unconverged local field.
-The <a class="reference internal" href="gallery/sweeps_convergence/mesh_refinement.html"><span class="doc">mesh-refinement example</span></a> demonstrates this workflow for a
+The <a class="reference internal" href="gallery/validation/mesh_refinement.html"><span class="doc">mesh-refinement example</span></a> demonstrates this workflow for a
 finite diffusion problem.</p>
 </section>
 <section id="limits-of-this-boundary-and-transport-model">
 <h2>Limits of this boundary and transport model<a class="headerlink" href="#limits-of-this-boundary-and-transport-model" title="Link to this heading">#</a></h2>
 <p>Each solve is steady-state and monochromatic. Passive aperture
 <a class="reference internal" href="detectors.html"><span class="doc">Finite-aperture surface detectors</span></a> and <a class="reference internal" href="spectral.html"><span class="doc">Wavelength-dependent materials and sweeps</span></a> sweeps operate on this model.
-It does not model Fresnel reflection from refractive indices, collimated
-illumination, free-space detector optics, time response, or inverse estimation.
+This steady solver does not model Fresnel reflection from refractive indices,
+collimated illumination, free-space detector optics, or inverse estimation.
+For pulsed time response, see <a class="reference internal" href="time_dependent.html"><span class="doc">Time-dependent P1 and the telegrapher equation</span></a>.
 Broadband integration combines independent solves as described in <a class="reference internal" href="spectral.html"><span class="doc">Wavelength-dependent materials and sweeps</span></a>. P1
 diffusion becomes least reliable near the source footprint and sample
 boundaries, in weakly scattering regions, around unresolved interfaces, and
@@ -1257,7 +1258,7 @@ cannot remove those physical and discretization limits.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/finite_element.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/finite_element.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

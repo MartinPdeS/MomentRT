@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Public API reference &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Public API reference &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -584,6 +584,52 @@
 Dimensional values require quantities from <code class="docutils literal notranslate"><span class="pre">MomentRT.ureg</span></code>. See
 <a class="reference internal" href="getting_started.html"><span class="doc">Getting started</span></a> for examples and <a class="reference internal" href="theory.html"><span class="doc">Transport theory and approximations</span></a> and
 <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a> for their physical interpretation.</p>
+<section id="public-namespaces">
+<h2>Public namespaces<a class="headerlink" href="#public-namespaces" title="Link to this heading">#</a></h2>
+<p>The main API groups objects by responsibility. The existing top-level imports
+remain available as convenience aliases.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<colgroup>
+<col style="width: 28.0%" />
+<col style="width: 72.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Namespace</p></th>
+<th class="head"><p>Examples</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MomentRT.material</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Material</span></code>, <code class="docutils literal notranslate"><span class="pre">SpectralMaterial</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MomentRT.materials</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Epidermis</span></code>, <code class="docutils literal notranslate"><span class="pre">Dermis</span></code>, <code class="docutils literal notranslate"><span class="pre">Water</span></code>, <code class="docutils literal notranslate"><span class="pre">Intralipid</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MomentRT.medium</span></code> and <code class="docutils literal notranslate"><span class="pre">MomentRT.geometry</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">StructuredMedium</span></code>, <code class="docutils literal notranslate"><span class="pre">HomogeneousMedium</span></code>, <code class="docutils literal notranslate"><span class="pre">Layer</span></code>, <code class="docutils literal notranslate"><span class="pre">Sphere</span></code>, <code class="docutils literal notranslate"><span class="pre">Box</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MomentRT.source</span></code> and <code class="docutils literal notranslate"><span class="pre">MomentRT.detector</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">SurfaceSource</span></code>, <code class="docutils literal notranslate"><span class="pre">SourceSpectrum</span></code>, <code class="docutils literal notranslate"><span class="pre">SurfaceDetector</span></code>, <code class="docutils literal notranslate"><span class="pre">DetectorResponsivity</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MomentRT.boundary</span></code> and <code class="docutils literal notranslate"><span class="pre">MomentRT.mesh</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Boundaries</span></code>, <code class="docutils literal notranslate"><span class="pre">RobinBoundary</span></code>, <code class="docutils literal notranslate"><span class="pre">TetrahedralMesh</span></code>, <code class="docutils literal notranslate"><span class="pre">CartesianMesh</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MomentRT.transport</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">P1</span></code>, <code class="docutils literal notranslate"><span class="pre">InfiniteP1</span></code>, <code class="docutils literal notranslate"><span class="pre">TransientP1</span></code>, <code class="docutils literal notranslate"><span class="pre">SP3</span></code>, <code class="docutils literal notranslate"><span class="pre">P3</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MomentRT.simulation</span></code> and <code class="docutils literal notranslate"><span class="pre">MomentRT.results</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Simulation</span></code>, <code class="docutils literal notranslate"><span class="pre">SimulationResult</span></code>, <code class="docutils literal notranslate"><span class="pre">TransientResult</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MomentRT.phase_function</span></code> and <code class="docutils literal notranslate"><span class="pre">MomentRT.fields</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">HenyeyGreenstein</span></code>, <code class="docutils literal notranslate"><span class="pre">Rayleigh</span></code>, <code class="docutils literal notranslate"><span class="pre">ScalarField</span></code>, <code class="docutils literal notranslate"><span class="pre">VectorField</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">MomentRT.models</span></code></p></td>
+<td><p>Named builders in <code class="docutils literal notranslate"><span class="pre">skin</span></code>, <code class="docutils literal notranslate"><span class="pre">phantom</span></code>, and <code class="docutils literal notranslate"><span class="pre">spectrum</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
 <section id="materials-and-media">
 <h2>Materials and media<a class="headerlink" href="#materials-and-media" title="Link to this heading">#</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">Material</span></code> requires <code class="docutils literal notranslate"><span class="pre">absorption</span></code>, <code class="docutils literal notranslate"><span class="pre">reduced_scattering</span></code>,
@@ -607,10 +653,10 @@ existing layer.</p>
 insertion order are preserved on the resolved copy. Property sampling and
 display methods accept an explicit <code class="docutils literal notranslate"><span class="pre">wavelength</span></code> for spectral samples.
 See <a class="reference internal" href="spectral.html"><span class="doc">Wavelength-dependent materials and sweeps</span></a>.</p>
-<p>Parameterized materials are available as <code class="docutils literal notranslate"><span class="pre">MomentRT.Intralipid(concentration=,</span>
-<span class="pre">wavelength=,</span> <span class="pre">refractive_index=)</span></code>, <code class="docutils literal notranslate"><span class="pre">MomentRT.Epidermis(melanin_fraction=,</span>
-<span class="pre">wavelength=,</span> <span class="pre">refractive_index=)</span></code>, <code class="docutils literal notranslate"><span class="pre">MomentRT.Dermis(hydration=,</span> <span class="pre">wavelength=,</span>
-<span class="pre">refractive_index=)</span></code>, and <code class="docutils literal notranslate"><span class="pre">MomentRT.Water(wavelength=,</span> <span class="pre">refractive_index=)</span></code>.
+<p>Parameterized materials are available as <code class="docutils literal notranslate"><span class="pre">MomentRT.materials.Intralipid(concentration=,</span>
+<span class="pre">wavelength=,</span> <span class="pre">refractive_index=)</span></code>, <code class="docutils literal notranslate"><span class="pre">MomentRT.materials.Epidermis(melanin_fraction=,</span>
+<span class="pre">wavelength=,</span> <span class="pre">refractive_index=)</span></code>, <code class="docutils literal notranslate"><span class="pre">MomentRT.materials.Dermis(hydration=,</span> <span class="pre">wavelength=,</span>
+<span class="pre">refractive_index=)</span></code>, and <code class="docutils literal notranslate"><span class="pre">MomentRT.materials.Water(wavelength=,</span> <span class="pre">refractive_index=)</span></code>.
 Intralipid concentration is particle volume fraction in percent: 22.7 is
 undiluted 20% stock. Its empirical equation has a wavelength-dependent validity
 limit. The simple skin models put melanin in the epidermis; the dermis model
@@ -840,6 +886,7 @@ See <a class="reference internal" href="spectral.html"><span class="doc">Wavelen
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#public-namespaces">Public namespaces</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#materials-and-media">Materials and media</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sources">Sources</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#detectors">Detectors</a></li>
@@ -853,7 +900,7 @@ See <a class="reference internal" href="spectral.html"><span class="doc">Wavelen
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/api_reference.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/api_reference.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

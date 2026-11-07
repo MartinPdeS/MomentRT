@@ -3,8 +3,7 @@
 Inverse problems
 ================
 
-Explore how simulated detector measurements can constrain changes in sample
-parameters, and examine the assumptions behind their recovery.
+Explore synthetic inverse calculations and their numerical and model limitations.
 
 
 .. raw:: html
@@ -52,6 +51,23 @@ parameters, and examine the assumptions behind their recovery.
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compare candidate absorption coefficients with noiseless fluence values from an infinite-medium P1 calculation. The true and candidate data use the same model; this illustrates an objective function, not recovery accuracy for a real sensor. All values are illustrative.">
+
+.. only:: html
+
+  .. image:: /gallery/inverse_problems/images/thumb/sphx_glr_objective_landscape_thumb.png
+    :alt:
+
+  :doc:`/gallery/inverse_problems/objective_landscape`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Explore a synthetic objective landscape</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -64,6 +80,7 @@ parameters, and examine the assumptions behind their recovery.
 
    /gallery/inverse_problems/epidermis_change
    /gallery/inverse_problems/mesh_convergence
+   /gallery/inverse_problems/objective_landscape
 
 
 

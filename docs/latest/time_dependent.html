@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Time-dependent P1 and the telegrapher equation &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Time-dependent P1 and the telegrapher equation &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -55,7 +55,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -68,7 +68,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -583,9 +583,10 @@ Neglecting the time derivative of current produces the usual time-dependent
 diffusion equation.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>This chapter explains the relation between models. MomentRT currently
-implements steady-state P1 diffusion only. Neither a transient solve,
-frequency-domain modulation, nor a pulse response is available in the API.</p>
+<p><code class="docutils literal notranslate"><span class="pre">TransientP1</span></code> solves the coupled time-dependent P1 equations on finite
+samples. It supports monochromatic surface sources, a sampled pulse, and
+time-resolved contact-detector output. Frequency-domain modulation and a
+time-dependent diffusion solver are not implemented.</p>
 </div>
 <section id="adding-time-to-radiative-transfer">
 <h2>Adding time to radiative transfer<a class="headerlink" href="#adding-time-to-radiative-transfer" title="Link to this heading">#</a></h2>
@@ -724,7 +725,59 @@ intended initial angular field. A transient boundary model must also be
 specified. The partial-current reasoning in <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a> can be
 applied to instantaneous P1 moments, but extending the solver requires a
 consistent treatment of time-dependent sources, interfaces, and boundary
-conditions rather than adding one time derivative to the present matrix.</p>
+conditions rather than adding one time derivative to the steady matrix.</p>
+</section>
+<section id="finite-element-implementation">
+<h2>Finite-element implementation<a class="headerlink" href="#finite-element-implementation" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">TransientP1</span></code> solves the coupled equations above rather than applying the
+homogeneous scalar telegrapher equation across a heterogeneous sample. The
+fluence uses continuous linear tetrahedral nodal basis functions, while the
+three current components are constant within each tetrahedron. Optical
+coefficients are sampled at element centroids; they may vary between elements.
+The discrete current is not smoothed across interfaces. Internal refractive
+indices must match and the energy speed is an explicit uniform input.</p>
+<p>The instantaneous outward P1 partial-current condition on a Robin face is</p>
+<div class="math notranslate nohighlight">
+\[\mathbf J\cdot\mathbf n = \beta\Phi - \frac{2I_\mathrm{in}}{1+R},
+\qquad \beta=\frac{1-R}{2(1+R)}.\]</div>
+<p>Here <span class="math notranslate nohighlight">\(R\)</span> is the supplied diffuse effective reflectance and
+<span class="math notranslate nohighlight">\(I_\mathrm{in}\)</span> is diffuse incoming partial current already coupled into
+the sample. Reflecting faces have zero normal current. The face term is
+inserted in the weak conservation equation at each time step; it is not a
+normal-incidence Fresnel model. Boundary escaping irradiance and contact
+detectors retain the existing Lambertian angular approximation.</p>
+<p>The method starts with zero fluence and current. A dimensionless nonnegative
+<code class="docutils literal notranslate"><span class="pre">power_profile</span></code> multiplies the monochromatic source power at the supplied
+<code class="docutils literal notranslate"><span class="pre">times</span></code> and must start at zero. It is linearly interpolated over each time
+interval. Implicit midpoint time integration advances both P1 moments together;
+the element current can be eliminated locally for each step, leaving one
+sparse nodal solve. The time step may vary. Midpoint is second-order for smooth
+solutions but does not suppress all rapidly oscillating numerical modes; resolve
+the pulse and current-relaxation timescale, and inspect signed results.</p>
+<p>The returned <code class="docutils literal notranslate"><span class="pre">TransientResult</span></code> contains <code class="docutils literal notranslate"><span class="pre">times</span></code> and per-time <code class="docutils literal notranslate"><span class="pre">frames</span></code>
+with nodal fluence, element-centered current, and boundary fields. A simulation
+with named detectors also provides <code class="docutils literal notranslate"><span class="pre">detector_power</span></code> arrays. It reports
+incoming, absorbed, and escaping powers and stored energy at each time; the
+<code class="docutils literal notranslate"><span class="pre">interval_energy_residual</span></code> checks midpoint energy conservation. Negative
+values are not clipped. Storing every frame costs memory proportional to the
+number of time samples and mesh elements.</p>
+<p>For each interval, the reported residual is</p>
+<div class="math notranslate nohighlight">
+\[\frac{U_{n+1}-U_n}{t_{n+1}-t_n}
++\overline{P_\mathrm{abs}}+\overline{P_\mathrm{escape}}
+-\overline{P_\mathrm{in}},
+\qquad U=\int_\Omega \frac{\Phi}{v}\,dV,\]</div>
+<p>where overbars denote endpoint averages. The difference between escaping and
+incoming power is the signed net outward current. Detector-aperture power is
+reported separately and is not part of this whole-boundary energy balance.</p>
+<p>Use the <a class="reference external" href="gallery/transport_models/transient_p1.html">pulsed layered sample example</a> for a complete calculation.
+The solver handles one monochromatic source configuration at a time; spectral
+sweeps, broadband integration, nonzero initial fields, and the steady-state
+detector-convergence helper are not implemented for transient results. Refine
+the mesh, source and detector footprints, and time grid independently. Compare
+against an appropriate transport reference for the intended geometry: energy
+conservation or convergence of the discrete P1 equations alone does not prove
+P1 is accurate for early-time or near-source light transport.</p>
 </section>
 <section id="steady-state-and-modulation">
 <h2>Steady state and modulation<a class="headerlink" href="#steady-state-and-modulation" title="Link to this heading">#</a></h2>
@@ -803,6 +856,7 @@ them.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eliminating-current-without-dropping-its-time-derivative">Eliminating current without dropping its time derivative</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#propagation-speed-and-validity">Propagation speed and validity</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#initial-and-boundary-data">Initial and boundary data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#finite-element-implementation">Finite-element implementation</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#steady-state-and-modulation">Steady state and modulation</a></li>
 </ul>
   </nav></div>
@@ -811,7 +865,7 @@ them.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/time_dependent.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/time_dependent.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

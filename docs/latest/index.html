@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>MomentRT documentation &#8212; MomentRT 0.10.0 documentation</title>
+    <title>MomentRT documentation &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -66,7 +66,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -532,7 +532,7 @@
 medium and a finite-sample P1 solver using linear tetrahedral finite elements.
 The guides explain the equations, boundary model, assumptions, and returned
 fields so that numerical output can be interpreted in context.</p>
-<p><strong>Version:</strong> 0.10.0</p>
+<p><strong>Version:</strong> 0.11.0</p>
 <div class="sd-container-fluid sd-sphinx-override sd-mb-4 docutils">
 <div class="sd-row sd-row-cols-1 sd-row-cols-xs-1 sd-row-cols-sm-2 sd-row-cols-md-2 sd-row-cols-lg-2 sd-g-3 sd-g-xs-3 sd-g-sm-3 sd-g-md-3 sd-g-lg-3 docutils">
 <div class="sd-col sd-d-flex-row docutils">
@@ -593,8 +593,9 @@ Sensor validation</div>
 </div>
 <section id="before-interpreting-a-field">
 <h2>Before interpreting a field<a class="headerlink" href="#before-interpreting-a-field" title="Link to this heading">#</a></h2>
-<p>MomentRT solves steady-state P1 diffusion, SP3, and full P3 moment models,
-not the full radiative transfer equation. Their fields are model predictions;
+<p>MomentRT solves steady-state P1 diffusion, SP3, and full P3, and a
+time-dependent P1 moment model. These are approximations to radiative transfer.
+Their fields are model predictions;
 they are not measurements or automatically validated tissue properties. Read
 the assumptions in <a class="reference internal" href="theory.html"><span class="doc">Transport theory and approximations</span></a>, <a class="reference internal" href="sp3.html"><span class="doc">SP3 transport model</span></a>, <a class="reference internal" href="p3.html"><span class="doc">Full three-dimensional P3 transport</span></a>, and
 <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a> before interpreting fine structure, near-source values,
@@ -650,7 +651,7 @@ or boundary behavior.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/index.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/index.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

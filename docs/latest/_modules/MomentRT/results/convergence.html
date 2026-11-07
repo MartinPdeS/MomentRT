@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.results.convergence &#8212; MomentRT 0.10.0 documentation</title>
+    <title>MomentRT.results.convergence &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -559,7 +559,7 @@
 
 
 <div class="viewcode-block" id="DetectorConvergenceResult">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.DetectorConvergenceResult">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.results.DetectorConvergenceResult">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DetectorConvergenceResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Detector signals and footprint sampling on successively refined meshes.</span>
 
@@ -974,7 +974,7 @@
         <span class="p">]</span>
 
 <div class="viewcode-block" id="DetectorConvergenceResult.assessment">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.DetectorConvergenceResult.assessment">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.results.DetectorConvergenceResult.assessment">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">assessment</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Explain the final convergence decision and any blocking checks.</span>
 
@@ -1078,7 +1078,7 @@
 
 
 <div class="viewcode-block" id="DetectorConvergenceResult.summary">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.DetectorConvergenceResult.summary">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.results.DetectorConvergenceResult.summary">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Describe mesh levels, detector powers, failures, and the assessment.</span>
 
@@ -1127,7 +1127,7 @@
 
 
 <div class="viewcode-block" id="DetectorConvergenceResult.plot">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.DetectorConvergenceResult.plot">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.results.DetectorConvergenceResult.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">power_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mW"</span><span class="p">,</span> <span class="n">area_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm^2"</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>
@@ -1352,7 +1352,7 @@
 
 
 <div class="viewcode-block" id="SpectralConvergenceResult">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.SpectralConvergenceResult">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.results.SpectralConvergenceResult">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SpectralConvergenceResult</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Detector power and photocurrent stability on nested wavelength grids.</span>
 
@@ -1631,7 +1631,7 @@
         <span class="p">]</span>
 
 <div class="viewcode-block" id="SpectralConvergenceResult.summary">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.SpectralConvergenceResult.summary">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.results.SpectralConvergenceResult.summary">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">summary</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Describe wavelength refinement outcomes and the final recommendation.</span>
 
@@ -1663,7 +1663,7 @@
 
 
 <div class="viewcode-block" id="SpectralConvergenceResult.plot">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.SpectralConvergenceResult.plot">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.results.SpectralConvergenceResult.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>

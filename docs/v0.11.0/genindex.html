@@ -1,0 +1,1122 @@
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" data-theme="dark">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; MomentRT 0.11.0 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=75c7c72ae941e8b558d8" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="_static/martinpdes_layout.css?v=a8cc01cd" />
+    <link rel="stylesheet" type="text/css" href="_static/layout.css?v=1307682e" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=75c7c72ae941e8b558d8"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
+
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            true;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="icon" href="_static/favicon.ico"/>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.11.0" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="dark">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation" aria-expanded="false" aria-controls="pst-primary-sidebar-modal">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+    
+    <img src="_static/logo-dark.svg" class="logo__image only-dark" alt="MomentRT deterministic light transport"/>
+    <img src="_static/logo-light.svg" class="logo__image only-light pst-js-only" alt="MomentRT deterministic light transport"/>
+  
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started.html">
+    Start
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="guide.html">
+    Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="model_selection.html">
+    Choose a transport model
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="sensor_validation.html">
+    Sensor validation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/index.html">
+    Examples
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="theory/index.html">
+    Theory
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="reference/index.html">
+    Reference
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/MomentRT" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/MomentRT/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/MomentRT" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="getting_started.html">
+    Start
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="guide.html">
+    Guide
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="model_selection.html">
+    Choose a transport model
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="sensor_validation.html">
+    Sensor validation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/index.html">
+    Examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="theory/index.html">
+    Theory
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="reference/index.html">
+    Reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="contributing.html">
+    Contributing
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/MomentRT" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/MomentRT/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i><span class="visually-hidden">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/MomentRT" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i><span class="visually-hidden">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.materials.Water.absorption_at">absorption_at() (Water class method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.medium.StructuredMedium.add_background">add_background() (StructuredMedium method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.medium.StructuredMedium.add_layer">add_layer() (StructuredMedium method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.medium.StructuredMedium.add_structures">add_structures() (StructuredMedium method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.detector.SurfaceDetector.angular_fraction">angular_fraction (SurfaceDetector property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.results.DetectorConvergenceResult.assessment">assessment() (DetectorConvergenceResult method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.detector.DetectorResponsivity.at">at() (DetectorResponsivity method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.medium.HomogeneousMedium.at">(HomogeneousMedium method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.material.Material.at">(Material method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.material.SpectralMaterial.at">(SpectralMaterial method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.medium.StructuredMedium.at">(StructuredMedium method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.boundary.Boundaries">Boundaries (class in MomentRT.boundary)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.fields.BoundaryField">BoundaryField (class in MomentRT.fields)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.mesh.CartesianMesh.bounds">bounds (CartesianMesh property)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.bounds">(TetrahedralMesh property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.geometry.Box">Box (class in MomentRT.geometry)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.BroadbandDetectorResult">BroadbandDetectorResult (class in MomentRT.results)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.BroadbandSimulationResult">BroadbandSimulationResult (class in MomentRT.results)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.mesh.CartesianMesh">CartesianMesh (class in MomentRT.mesh)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.mesh.CartesianMesh.color">color (CartesianMesh property)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.color">(TetrahedralMesh property)</a>
+</li>
+      </ul></li>
+      <li><a href="python_api.html#MomentRT.geometry.Box.contains">contains() (Box method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.geometry.Layer.contains">(Layer method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.geometry.Sphere.contains">(Sphere method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.results.DetectorConvergenceResult.converged">converged (DetectorConvergenceResult property)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.results.SpectralConvergenceResult.converged">(SpectralConvergenceResult property)</a>
+</li>
+      </ul></li>
+      <li><a href="python_api.html#MomentRT.simulation.Simulation.convergence_study">convergence_study() (Simulation method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.mesh.CartesianMesh.copy">copy() (CartesianMesh method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.copy">(TetrahedralMesh method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.materials.Dermis">Dermis (class in MomentRT.materials)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.BroadbandSimulationResult.detector_power">detector_power (BroadbandSimulationResult property)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.results.SimulationResult.detector_power">(SimulationResult property)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.results.SpectralSimulationResult.detector_power">(SpectralSimulationResult property)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.results.TransientResult.detector_power">(TransientResult property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.results.DetectorConvergenceResult">DetectorConvergenceResult (class in MomentRT.results)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.detector.DetectorResponsivity">DetectorResponsivity (class in MomentRT.detector)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.DetectorResult">DetectorResult (class in MomentRT.results)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.SpectralSimulationResult.detectors">detectors (SpectralSimulationResult property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.materials.Epidermis">Epidermis (class in MomentRT.materials)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.fields.BoundaryField.escaping_power">escaping_power (BoundaryField property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.phase_function.HenyeyGreenstein.evaluate">evaluate() (HenyeyGreenstein method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.phase_function.Isotropic.evaluate">(Isotropic method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.phase_function.PhaseFunction.evaluate">(PhaseFunction method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.phase_function.Rayleigh.evaluate">(Rayleigh method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.phase_function.Tabulated.evaluate">(Tabulated method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.faces">faces (TetrahedralMesh property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.mesh.CartesianMesh.from_sample">from_sample() (CartesianMesh class method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.from_sample">(TetrahedralMesh class method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.detector.SurfaceDetector.full_hemisphere_on_face">full_hemisphere_on_face() (SurfaceDetector class method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.phase_function.HenyeyGreenstein">HenyeyGreenstein (class in MomentRT.phase_function)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.medium.HomogeneousMedium">HomogeneousMedium (class in MomentRT.medium)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.transport.InfiniteP1">InfiniteP1 (class in MomentRT.transport)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.materials.Intralipid">Intralipid (class in MomentRT.materials)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.phase_function.Isotropic">Isotropic (class in MomentRT.phase_function)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.geometry.Layer">Layer (class in MomentRT.geometry)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.boundary.ReflectingBoundary.leakage_coefficient">leakage_coefficient (ReflectingBoundary attribute)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.boundary.RobinBoundary.leakage_coefficient">(RobinBoundary property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.results.SimulationResult.linear_relative_residual">linear_relative_residual (SimulationResult property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.material.Material">Material (class in MomentRT.material)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.medium.StructuredMedium.material_labels">material_labels() (StructuredMedium method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.detector.SurfaceDetector.measure">measure() (SurfaceDetector method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.simulation.Simulation.mesh_convergence">mesh_convergence() (Simulation method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.convergence.MeshConvergence">MeshConvergence (class in MomentRT.convergence)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.SimulationResult.minimum_fluence">minimum_fluence (SimulationResult property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.transport.InfiniteP1.model_notes">model_notes (InfiniteP1 attribute)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.transport.P1.model_notes">(P1 attribute)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.transport.P3.model_notes">(P3 attribute)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.transport.SP3.model_notes">(SP3 attribute)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.transport.TransientP1.model_notes">(TransientP1 attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.phase_function.HenyeyGreenstein.moments">moments() (HenyeyGreenstein method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.phase_function.Isotropic.moments">(Isotropic method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.phase_function.PhaseFunction.moments">(PhaseFunction method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.phase_function.Rayleigh.moments">(Rayleigh method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.phase_function.Tabulated.moments">(Tabulated method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.mesh.CartesianMesh.name">name (CartesianMesh property)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.name">(TetrahedralMesh property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.results.TransientResult.net_outward_power">net_outward_power (TransientResult property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.detector.SurfaceDetector.on_face">on_face() (SurfaceDetector class method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.source.SurfaceSource.on_face">(SurfaceSource class method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.medium.StructuredMedium.optical_fields">optical_fields() (StructuredMedium method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.source.SourceSpectrum.optical_power">optical_power (SourceSpectrum property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.transport.P1">P1 (class in MomentRT.transport)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.transport.P3">P3 (class in MomentRT.transport)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.phase_function.PhaseFunction">PhaseFunction (class in MomentRT.phase_function)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.mesh.CartesianMesh.plot">plot() (CartesianMesh method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.results.DetectorConvergenceResult.plot">(DetectorConvergenceResult method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.detector.DetectorResponsivity.plot">(DetectorResponsivity method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.medium.HomogeneousMedium.plot">(HomogeneousMedium method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.sections.SampleSection.plot">(SampleSection method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.fields.ScalarField.plot">(ScalarField method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.source.SourceSpectrum.plot">(SourceSpectrum method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.results.SpectralConvergenceResult.plot">(SpectralConvergenceResult method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.results.SpectralSimulationResult.plot">(SpectralSimulationResult method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.medium.StructuredMedium.plot">(StructuredMedium method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.plot">(TetrahedralMesh method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.fields.VectorField.plot">(VectorField method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.medium.StructuredMedium.plot_section">plot_section() (StructuredMedium method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.simulation.Simulation.plot_system">plot_system() (Simulation method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.mesh.CartesianMesh.points">points (CartesianMesh property)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.points">(TetrahedralMesh property)</a>
+</li>
+      </ul></li>
+      <li><a href="python_api.html#MomentRT.source.PointSource">PointSource (class in MomentRT.source)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.phase_function.Rayleigh">Rayleigh (class in MomentRT.phase_function)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.DetectorConvergenceResult.recommended_mesh">recommended_mesh (DetectorConvergenceResult property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.DetectorConvergenceResult.recommended_resolution">recommended_resolution (DetectorConvergenceResult property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.DetectorConvergenceResult.recommended_shape">recommended_shape (DetectorConvergenceResult property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.SpectralConvergenceResult.recommended_wavelengths">recommended_wavelengths (SpectralConvergenceResult property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.DetectorConvergenceResult.records">records (DetectorConvergenceResult property)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.results.SpectralConvergenceResult.records">(SpectralConvergenceResult property)</a>
+</li>
+      </ul></li>
+      <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.refine_near">refine_near() (TetrahedralMesh method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.refine_region">refine_region() (TetrahedralMesh method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.boundary.ReflectingBoundary">ReflectingBoundary (class in MomentRT.boundary)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.fields.ScalarField.resample">resample() (ScalarField method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.source.SourceSpectrum.resample">(SourceSpectrum method)</a>
+</li>
+      </ul></li>
+      <li><a href="python_api.html#MomentRT.mesh.CartesianMesh.resolution">resolution (CartesianMesh property)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.resolution">(TetrahedralMesh property)</a>
+</li>
+      </ul></li>
+      <li><a href="python_api.html#MomentRT.boundary.RobinBoundary">RobinBoundary (class in MomentRT.boundary)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.convergence.MeshConvergence.run">run() (MeshConvergence method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.simulation.Simulation.run">(Simulation method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.sections.SampleSection">SampleSection (class in MomentRT.sections)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.fields.ScalarField">ScalarField (class in MomentRT.fields)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.medium.StructuredMedium.section">section() (StructuredMedium method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.shape">shape (TetrahedralMesh property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.simulation.Simulation">Simulation (class in MomentRT.simulation)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.SimulationResult">SimulationResult (class in MomentRT.results)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.transport.InfiniteP1.solve">solve() (InfiniteP1 method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.transport.P1.solve">(P1 method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.transport.P3.solve">(P3 method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.transport.SP3.solve">(SP3 method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.transport.TransientP1.solve">(TransientP1 method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.simulation.TransportSolver.solve">(TransportSolver method)</a>
+</li>
+      </ul></li>
+      <li><a href="python_api.html#MomentRT.boundary.RobinBoundary.source_factor">source_factor (RobinBoundary property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.SimulationResult.source_geometric_area">source_geometric_area (SimulationResult property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.SimulationResult.source_sampled_area">source_sampled_area (SimulationResult property)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.source.SourceSpectrum">SourceSpectrum (class in MomentRT.source)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.transport.SP3">SP3 (class in MomentRT.transport)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.simulation.Simulation.spectral_convergence">spectral_convergence() (Simulation method)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.SpectralConvergenceResult">SpectralConvergenceResult (class in MomentRT.results)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.material.SpectralMaterial">SpectralMaterial (class in MomentRT.material)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.SpectralSimulationResult">SpectralSimulationResult (class in MomentRT.results)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.geometry.Sphere">Sphere (class in MomentRT.geometry)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.medium.StructuredMedium">StructuredMedium (class in MomentRT.medium)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.medium.StructuredMedium.structures">structures (StructuredMedium property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.DetectorConvergenceResult.summary">summary() (DetectorConvergenceResult method)</a>
+
+      <ul>
+        <li><a href="python_api.html#MomentRT.results.SimulationResult.summary">(SimulationResult method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.results.SpectralConvergenceResult.summary">(SpectralConvergenceResult method)</a>
+</li>
+        <li><a href="python_api.html#MomentRT.validation.ValidationReport.summary">(ValidationReport method)</a>
+</li>
+      </ul></li>
+      <li><a href="python_api.html#MomentRT.detector.SurfaceDetector">SurfaceDetector (class in MomentRT.detector)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.source.SurfaceSource">SurfaceSource (class in MomentRT.source)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.simulation.Simulation.sweep">sweep() (Simulation method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.phase_function.Tabulated">Tabulated (class in MomentRT.phase_function)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh.tetrahedra">tetrahedra (TetrahedralMesh property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.mesh.TetrahedralMesh">TetrahedralMesh (class in MomentRT.mesh)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.transport.TransientP1">TransientP1 (class in MomentRT.transport)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.results.TransientResult">TransientResult (class in MomentRT.results)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.simulation.TransportSolver">TransportSolver (class in MomentRT.simulation)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.boundary.Boundaries.uniform">uniform() (Boundaries class method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.source.UniformSurfaceSource">UniformSurfaceSource (class in MomentRT.source)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="V">V</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.validation.ValidationReport.valid">valid (ValidationReport property)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.simulation.Simulation.validate">validate() (Simulation method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.validation.ValidationReport">ValidationReport (class in MomentRT.validation)</a>
+</li>
+      <li><a href="python_api.html#MomentRT.fields.VectorField">VectorField (class in MomentRT.fields)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.materials.Water">Water (class in MomentRT.materials)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="python_api.html#MomentRT.boundary.Boundaries.with_overrides">with_overrides() (Boundaries method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+  </body>
+</html>

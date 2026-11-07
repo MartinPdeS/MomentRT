@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.materials.skin &#8212; MomentRT 0.10.0 documentation</title>
+    <title>MomentRT.materials.skin &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -551,12 +551,13 @@
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TypedUnit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
 
 
 <div class="viewcode-block" id="Epidermis">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.Epidermis">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.materials.Epidermis">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Epidermis</span><span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">Material</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Parameterized epidermal material with melanin-dependent absorption.</span>
 
@@ -612,7 +613,8 @@
             <span class="ow">or</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">melanin_fraction</span> <span class="o">&lt;=</span> <span class="mi">1</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"melanin_fraction must be a unitless fraction in [0, 1]."</span><span class="p">)</span>
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">"wavelength"</span><span class="p">,</span>
@@ -671,7 +673,7 @@
 
 
 <div class="viewcode-block" id="Dermis">
-<a class="viewcode-back" href="../../../python_api.html#MomentRT.Dermis">[docs]</a>
+<a class="viewcode-back" href="../../../python_api.html#MomentRT.materials.Dermis">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Dermis</span><span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">material</span><span class="o">.</span><span class="n">Material</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Parameterized dermal material with hydration-dependent absorption.</span>
 
@@ -727,7 +729,8 @@
             <span class="ow">or</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">hydration</span> <span class="o">&lt;=</span> <span class="mi">1</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"hydration must be a unitless fraction in [0, 1]."</span><span class="p">)</span>
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">"wavelength"</span><span class="p">,</span>

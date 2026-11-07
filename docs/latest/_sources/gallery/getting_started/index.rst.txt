@@ -3,8 +3,8 @@
 Getting started
 ===============
 
-Learn the basic workflow with an analytical infinite-medium example and
-finite samples. Build geometry, configure illumination, and inspect fluence.
+Start with a skin contact sensor, an analytical calculation, or a finite
+sample, then explore structured geometry.
 
 
 .. raw:: html
@@ -32,6 +32,23 @@ finite samples. Build geometry, configure illumination, and inspect fluence.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Infinite-medium diffusion</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Build an illustrative three-layer skin sample, generate a tetrahedral mesh, and calculate diffuse fluence and the power reaching a contact detector. The material coefficients describe one ex vivo dataset near 850 nm, not a universal or patient-specific skin model. P1 and the Lambertian detector model are approximations and require independent validation for the intended sensor.">
+
+.. only:: html
+
+  .. image:: /gallery/getting_started/images/thumb/sphx_glr_skin_contact_thumb.png
+    :alt:
+
+  :doc:`/gallery/getting_started/skin_contact`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Simulate a contact sensor on layered skin</div>
     </div>
 
 
@@ -69,23 +86,6 @@ finite samples. Build geometry, configure illumination, and inspect fluence.
     </div>
 
 
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Illuminate an entire finite sample face with a uniform diffuse partial current, solve the P1 finite-element model, and inspect the three-dimensional fluence field. The input power is already coupled into the sample.">
-
-.. only:: html
-
-  .. image:: /gallery/getting_started/images/thumb/sphx_glr_uniform_surface_source_thumb.png
-    :alt:
-
-  :doc:`/gallery/getting_started/uniform_surface_source`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Uniform illumination on a sample face</div>
-    </div>
-
-
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -97,9 +97,9 @@ finite samples. Build geometry, configure illumination, and inspect fluence.
    :hidden:
 
    /gallery/getting_started/infinite_diffusion
+   /gallery/getting_started/skin_contact
    /gallery/getting_started/structured_sample
    /gallery/getting_started/surface_diffusion
-   /gallery/getting_started/uniform_surface_source
 
 
 

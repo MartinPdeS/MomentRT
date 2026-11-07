@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.detector &#8212; MomentRT 0.10.0 documentation</title>
+    <title>MomentRT.detector &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -554,6 +554,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TypedUnit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">ArrayLike</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">integrate</span>
@@ -565,7 +566,7 @@
 
 
 <div class="viewcode-block" id="DetectorResponsivity">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.DetectorResponsivity">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.detector.DetectorResponsivity">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">DetectorResponsivity</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Tabulated detector responsivity with linear interpolation and no extrapolation.</span>
 
@@ -588,14 +589,19 @@
 <span class="sd">        responsivity : pint.Quantity</span>
 <span class="sd">            Nonnegative electrical responsivity, shape (n,), with A / W units.</span>
 <span class="sd">        """</span>
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"wavelengths"</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"wavelengths"</span><span class="p">,</span>
+            <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">if</span> <span class="n">wavelengths</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavelengths must be a vector of at least two samples."</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavelengths must be strictly increasing."</span><span class="p">)</span>
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">responsivity</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="s2">"A/W"</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">"responsivity"</span><span class="p">,</span>
@@ -606,7 +612,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">responsivity</span> <span class="o">=</span> <span class="n">responsivity</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <div class="viewcode-block" id="DetectorResponsivity.at">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.DetectorResponsivity.at">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.detector.DetectorResponsivity.at">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Quantity</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Interpolate responsivity within the supplied wavelength interval.</span>
 
@@ -625,8 +631,12 @@
 <span class="sd">        ValueError</span>
 <span class="sd">            If any wavelength lies outside the tabulated interval.</span>
 <span class="sd">        """</span>
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"wavelength"</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"wavelength"</span><span class="p">,</span>
+            <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">requested</span> <span class="o">=</span> <span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
         <span class="n">grid</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wavelengths</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"m"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
@@ -649,7 +659,7 @@
 
 
 <div class="viewcode-block" id="DetectorResponsivity.plot">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.DetectorResponsivity.plot">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.detector.DetectorResponsivity.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -696,7 +706,7 @@
 
 
 <div class="viewcode-block" id="SurfaceDetector">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.SurfaceDetector">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.detector.SurfaceDetector">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">SurfaceDetector</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Circular aperture in a sample face with a cone of accepted outgoing rays.</span>
 
@@ -775,15 +785,25 @@
         <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">FACES</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"face must be one of </span><span class="si">{</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">FACES</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">position</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"position"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,)</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">position</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"position"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span>
         <span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"radius"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">radius</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"radius"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">acceptance_angle</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="s2">"radian"</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">"acceptance_angle"</span><span class="p">,</span>
@@ -848,7 +868,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">color</span> <span class="o">=</span> <span class="n">color</span>
 
 <div class="viewcode-block" id="SurfaceDetector.on_face">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.SurfaceDetector.on_face">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.detector.SurfaceDetector.on_face">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">on_face</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
@@ -911,7 +931,7 @@
         <span class="k">elif</span> <span class="n">acceptance_angle</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Supply acceptance or acceptance_angle."</span><span class="p">)</span>
 
-        <span class="n">position</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">_face_position</span><span class="p">(</span>
+        <span class="n">position</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">_face_geometry</span><span class="o">.</span><span class="n">face_position</span><span class="p">(</span>
             <span class="n">sample</span><span class="o">=</span><span class="n">sample</span><span class="p">,</span> <span class="n">face</span><span class="o">=</span><span class="n">face</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="n">coordinates</span>
         <span class="p">)</span>
 
@@ -936,7 +956,7 @@
 
 
 <div class="viewcode-block" id="SurfaceDetector.full_hemisphere_on_face">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.SurfaceDetector.full_hemisphere_on_face">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.detector.SurfaceDetector.full_hemisphere_on_face">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">full_hemisphere_on_face</span><span class="p">(</span>
         <span class="bp">cls</span><span class="p">,</span>
@@ -1140,7 +1160,7 @@
             <span class="n">position</span><span class="p">[</span><span class="n">in_plane</span><span class="p">]</span> <span class="o">+</span> <span class="n">radius</span> <span class="o">&gt;</span> <span class="n">upper</span><span class="p">[</span><span class="n">in_plane</span><span class="p">]</span> <span class="o">+</span> <span class="n">tolerance</span><span class="p">[</span><span class="n">in_plane</span><span class="p">]</span>
         <span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">_disk_bounds_message</span><span class="p">(</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">_face_geometry</span><span class="o">.</span><span class="n">disk_bounds_message</span><span class="p">(</span>
                     <span class="n">face</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">face</span><span class="p">,</span>
                     <span class="n">position</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
                     <span class="n">radius</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span>
@@ -1151,7 +1171,7 @@
             <span class="p">)</span>
 
 <div class="viewcode-block" id="SurfaceDetector.measure">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.SurfaceDetector.measure">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.detector.SurfaceDetector.measure">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">measure</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">result</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">DetectorResult</span><span class="p">:</span>

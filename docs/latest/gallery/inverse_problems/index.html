@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Inverse problems &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Inverse problems &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -62,10 +62,12 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Recover an epidermis change" href="epidermis_change.html" />
+    <link rel="prev" title="Compare sensor-validation cases" href="../validation/sensor_validation_cases.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -179,7 +181,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     Examples
   </a>
@@ -337,10 +339,8 @@
       
       
       
-        
-      
       <dialog id="pst-primary-sidebar-modal" tabindex="-1"></dialog>
-      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -383,7 +383,7 @@
 </li>
 
 
-<li class="nav-item ">
+<li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     Examples
   </a>
@@ -496,6 +496,80 @@
     
   </div>
   
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item pst-sidebar-collapse"><button type="button" id="pst-collapse-sidebar-button" aria-expanded="true" aria-controls="pst-primary-sidebar">
+  <svg class="pst-icon" role="img" aria-hidden="true" focusable="false" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+    <path fill="currentColor" d="M3 15.5C2.36232 15.5 1.74874 15.2564 1.28478 14.8189C0.820828 14.3815 0.541576 13.7832 0.504167 13.1467L0.5 13L0.5 3C0.499965 2.36232 0.743605 1.74874 1.18107 1.28478C1.61854 0.820828 2.21676 0.541576 2.85333 0.504167L3 0.5L13 0.5C13.6377 0.499965 14.2513 0.743605 14.7152 1.18107C15.1792 1.61854 15.4584 2.21676 15.4958 2.85333L15.5 3L15.5 13C15.5 13.6377 15.2564 14.2513 14.8189 14.7152C14.3815 15.1792 13.7832 15.4584 13.1467 15.4958L13 15.5L3 15.5ZM3 13.8333L10.5 13.8333L10.5 2.16667L3 2.16667C2.79589 2.16669 2.59889 2.24163 2.44636 2.37726C2.29383 2.5129 2.19638 2.69979 2.1725 2.9025L2.16667 3L2.16667 13C2.16669 13.2041 2.24163 13.4011 2.37726 13.5536C2.5129 13.7062 2.69979 13.8036 2.9025 13.8275L3 13.8333ZM6.65583 10.325L6.5775 10.2558L4.91083 8.58917C4.76735 8.44567 4.68116 8.25476 4.66843 8.05223C4.65569 7.84971 4.71729 7.6495 4.84167 7.48917L4.91083 7.41083L6.5775 5.74417C6.72747 5.59471 6.9287 5.50794 7.14032 5.50148C7.35194 5.49502 7.55809 5.56935 7.7169 5.70937C7.8757 5.8494 7.97525 6.04463 7.99533 6.25539C8.01541 6.46616 7.95451 6.67667 7.825 6.84417L7.75583 6.9225L6.67917 8L7.75583 9.0775C7.89931 9.22099 7.98551 9.41191 7.99824 9.61443C8.01097 9.81695 7.94938 10.0172 7.825 10.1775L7.75583 10.2558C7.61234 10.3993 7.42142 10.4855 7.2189 10.4982C7.01638 10.511 6.81617 10.4494 6.65583 10.325Z"/>
+  </svg>
+  <span class="pst-collapse-sidebar-label">Collapse Sidebar</span>
+  <span class="pst-expand-sidebar-label">Expand Sidebar</span>
+</button></div>
+        <div class="sidebar-primary-item">
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 has-children"><a class="reference internal" href="../getting_started/index.html">Getting started</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/infinite_diffusion.html">Infinite-medium diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/skin_contact.html">Simulate a contact sensor on layered skin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/structured_sample.html">A heterogeneous layered sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting_started/surface_diffusion.html">Surface illumination and FEM diffusion</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../samples_and_meshes/index.html">Samples and meshes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/cartesian_resolution.html">Create a Cartesian mesh from physical resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/cartesian_shape.html">Create a Cartesian mesh from node counts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/sample_models.html">Build samples with named models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/tetrahedral_global.html">Create a uniform tetrahedral mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/tetrahedral_local.html">Refine a tetrahedral mesh near layers and contacts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../sources_and_detectors/index.html">Sources and detectors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/detector_convergence.html">Choose a mesh for detector collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/seven_fiber_skin.html">Seven-fiber bundle on a three-layer skin sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/surface_detector.html">Collect light with finite apertures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/uniform_surface_source.html">Uniform illumination on a sample face</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../spectral/index.html">Spectral calculations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/broadband_detector.html">Integrate a source spectrum and detector response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/source_spectra.html">Build analytical source spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/sp3_spectral_anisotropy.html">Sweep wavelength-dependent scattering anisotropy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/spectral_detectors.html">Sweep wavelengths with a fixed sensor geometry</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../transport_models/index.html">Transport models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/compare_p3.html">Compare full P3 with SP3 and P1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/compare_sp3.html">Compare P1 and SP3 transport</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/phase_functions.html">Compare scattering phase functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/sp3_layered_anisotropy.html">Use different anisotropies in a layered sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/transient_p1.html">Follow a diffuse pulse through layered tissue</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../parameter_studies/index.html">Parameter studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../parameter_studies/absorption_sweep.html">How absorption changes fluence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parameter_studies/reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parameter_studies/solver_scaling.html">Benchmark P1, SP3, and P3 solver scaling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../validation/index.html">Validation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../validation/mesh_refinement.html">Check finite-element mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/planar_slab_references.html">Compare P1 and SP3 with independent planar slab references</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/sensor_validation_cases.html">Compare sensor-validation cases</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a aria-current="page" class="current reference internal" href="#">Inverse problems</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="epidermis_change.html">Recover an epidermis change</a></li>
+<li class="toctree-l2"><a class="reference internal" href="mesh_convergence.html">Check detector mesh convergence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="objective_landscape.html">Explore a synthetic objective landscape</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
   
   <div class="sidebar-primary-items__end sidebar-primary__section">
       <div class="sidebar-primary-item">
@@ -531,6 +605,9 @@
         <i class="fa-solid fa-house"></i>
       </a>
     </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Examples</a></li>
+    
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Inverse problems</span></li>
   </ul>
 </nav>
@@ -550,14 +627,16 @@
                   
   <section id="inverse-problems">
 <h1>Inverse problems<a class="headerlink" href="#inverse-problems" title="Link to this heading">#</a></h1>
-<p>Explore how simulated detector measurements can constrain changes in sample
-parameters, and examine the assumptions behind their recovery.</p>
+<p>Explore synthetic inverse calculations and their numerical and model limitations.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Fit a change in the epidermis preset&#x27;s melanin fraction to noiseless, simulated multispectral detector powers. The same P1 model generates and fits the data, so this example checks the workflow under ideal assumptions; it does not establish recovery accuracy for real skin or a particular instrument."><img alt="" src="../../_images/sphx_glr_epidermis_change_thumb.png" />
 <p><a class="reference internal" href="epidermis_change.html"><span class="doc">Recover an epidermis change</span></a></p>
   <div class="sphx-glr-thumbnail-title">Recover an epidermis change</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Study how refining a tetrahedral mesh changes detector powers for a layered sample at one wavelength. This is a numerical check to perform before an inverse fit; it does not establish the accuracy of the P1 model for skin."><img alt="" src="../../_images/sphx_glr_mesh_convergence_thumb.png" />
 <p><a class="reference internal" href="mesh_convergence.html"><span class="doc">Check detector mesh convergence</span></a></p>
   <div class="sphx-glr-thumbnail-title">Check detector mesh convergence</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Compare candidate absorption coefficients with noiseless fluence values from an infinite-medium P1 calculation. The true and candidate data use the same model; this illustrates an objective function, not recovery accuracy for a real sensor. All values are illustrative."><img alt="" src="../../_images/sphx_glr_objective_landscape_thumb.png" />
+<p><a class="reference internal" href="objective_landscape.html"><span class="doc">Explore a synthetic objective landscape</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Explore a synthetic objective landscape</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -573,6 +652,24 @@ parameters, and examine the assumptions behind their recovery.</p>
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="../validation/sensor_validation_cases.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Compare sensor-validation cases</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="epidermis_change.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Recover an epidermis change</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -588,7 +685,7 @@ parameters, and examine the assumptions behind their recovery.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/gallery/inverse_problems/index.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/gallery/inverse_problems/index.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

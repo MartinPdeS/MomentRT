@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.simulation &#8212; MomentRT 0.10.0 documentation</title>
+    <title>MomentRT.simulation &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -555,12 +555,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Protocol</span><span class="p">,</span> <span class="n">cast</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TypedUnit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
 
 
 <div class="viewcode-block" id="TransportSolver">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.TransportSolver">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.simulation.TransportSolver">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">TransportSolver</span><span class="p">(</span><span class="n">Protocol</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Structural interface for solvers accepted by :class:`Simulation`.</span>
 
@@ -569,14 +570,18 @@
 <span class="sd">    """</span>
 
 <div class="viewcode-block" id="TransportSolver.solve">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.TransportSolver.solve">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.simulation.TransportSolver.solve">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">solve</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
         <span class="n">medium</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">source</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
         <span class="n">mesh</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">CartesianMesh</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">mesh</span><span class="o">.</span><span class="n">TetrahedralMesh</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">ScalarField</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span>
+        <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span>
+        <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">TransientResult</span>
+        <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">ScalarField</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Solve the transport problem on a mesh supported by the implementation.</span>
 
 <span class="sd">        Parameters</span>
@@ -591,7 +596,7 @@
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        SimulationResult or ScalarField</span>
+<span class="sd">        SimulationResult, TransientResult, or ScalarField</span>
 <span class="sd">            Transport solution, or a fluence field wrapped by Simulation.run.</span>
 <span class="sd">        """</span>
         <span class="o">...</span></div>
@@ -600,7 +605,7 @@
 
 
 <div class="viewcode-block" id="Simulation">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.simulation.Simulation">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Simulation</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Compose physical geometry, illumination, a transport solver, and detectors.</span>
 
@@ -694,7 +699,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span> <span class="o">=</span> <span class="n">detectors</span>
 
 <div class="viewcode-block" id="Simulation.validate">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.validate">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.simulation.Simulation.validate">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">validation</span><span class="o">.</span><span class="n">ValidationReport</span><span class="p">:</span>
@@ -715,13 +720,19 @@
 <span class="sd">            transport or establish mesh convergence.</span>
 <span class="sd">        """</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reference_simulation</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
+            <span class="n">report</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reference_simulation</span><span class="p">()</span><span class="o">.</span><span class="n">validate</span><span class="p">(</span>
                 <span class="n">wavelengths</span><span class="o">=</span><span class="p">(</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span><span class="o">.</span><span class="n">wavelengths</span>
                     <span class="k">if</span> <span class="n">wavelengths</span> <span class="ow">is</span> <span class="kc">None</span>
                     <span class="k">else</span> <span class="n">wavelengths</span>
                 <span class="p">)</span>
             <span class="p">)</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">transient_p1</span><span class="o">.</span><span class="n">TransientP1</span><span class="p">):</span>
+                <span class="n">report</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="o">*</span><span class="n">report</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span>
+                    <span class="s2">"TransientP1 requires a monochromatic source."</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">report</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_validate_configuration</span><span class="p">(</span><span class="n">wavelengths</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">)</span></div>
 
 
@@ -753,6 +764,7 @@
                 <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">diffusion</span><span class="o">.</span><span class="n">Diffusion</span><span class="p">,</span>
                 <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">sp3</span><span class="o">.</span><span class="n">SP3</span><span class="p">,</span>
                 <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">p3</span><span class="o">.</span><span class="n">P3</span><span class="p">,</span>
+                <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">transient_p1</span><span class="o">.</span><span class="n">TransientP1</span><span class="p">,</span>
             <span class="p">),</span>
         <span class="p">)</span>
 
@@ -760,7 +772,7 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">finite</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">infinite</span><span class="p">:</span>
             <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="s2">"Preflight validation supports Diffusion, SP3, P3, and InfiniteDiffusion solvers."</span>
+                <span class="s2">"Preflight validation supports Diffusion, SP3, P3, TransientP1, and InfiniteDiffusion solvers."</span>
             <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">finite</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">):</span>
@@ -791,7 +803,8 @@
         <span class="p">):</span>
             <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">unit</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"wavelength"</span><span class="p">,</span> <span class="s2">"m"</span><span class="p">),</span> <span class="p">(</span><span class="s2">"optical_power"</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">)):</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+                    <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+                        <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
                         <span class="n">value</span><span class="o">=</span><span class="nb">getattr</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">name</span><span class="p">),</span>
                         <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span>
                         <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
@@ -808,8 +821,12 @@
                 <span class="n">selected_wavelengths</span> <span class="o">=</span> <span class="p">[</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-                    <span class="n">value</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"wavelengths"</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+                <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+                    <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+                    <span class="n">value</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span>
+                    <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+                    <span class="n">name</span><span class="o">=</span><span class="s2">"wavelengths"</span><span class="p">,</span>
+                    <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                 <span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">wavelengths</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">):</span>
@@ -982,7 +999,7 @@
                                 <span class="s2">"Source position must lie on its configured face."</span>
                             <span class="p">)</span>
 
-                        <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">_validate_face_disk</span><span class="p">(</span>
+                        <span class="n">MomentRT</span><span class="o">.</span><span class="n">_face_geometry</span><span class="o">.</span><span class="n">validate_face_disk</span><span class="p">(</span>
                             <span class="n">sample</span><span class="o">=</span><span class="n">medium</span><span class="p">,</span>
                             <span class="n">face</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">face</span><span class="p">,</span>
                             <span class="n">position</span><span class="o">=</span><span class="n">member</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
@@ -1011,7 +1028,7 @@
                             <span class="s2">"Source position must lie on its configured face."</span>
                         <span class="p">)</span>
 
-                    <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">_validate_face_disk</span><span class="p">(</span>
+                    <span class="n">MomentRT</span><span class="o">.</span><span class="n">_face_geometry</span><span class="o">.</span><span class="n">validate_face_disk</span><span class="p">(</span>
                         <span class="n">sample</span><span class="o">=</span><span class="n">medium</span><span class="p">,</span>
                         <span class="n">face</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">face</span><span class="p">,</span>
                         <span class="n">position</span><span class="o">=</span><span class="n">source</span><span class="o">.</span><span class="n">position</span><span class="p">,</span>
@@ -1023,17 +1040,13 @@
                     <span class="n">errors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Source: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="n">mesh_valid</span><span class="p">:</span>
-                <span class="n">geometry</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">_MeshGeometry</span><span class="p">(</span><span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">)</span>
+                <span class="n">geometry</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">FiniteElementGeometry</span><span class="p">(</span><span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">source_valid</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span>
                     <span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span>
                 <span class="p">):</span>
                     <span class="k">try</span><span class="p">:</span>
-                        <span class="n">quadrature</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">weights</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">quadrature</span><span class="p">[</span><span class="n">source</span><span class="o">.</span><span class="n">face</span><span class="p">]</span>
-
-                        <span class="n">_</span><span class="p">,</span> <span class="n">sampled</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fem</span><span class="o">.</span><span class="n">source_irradiance</span><span class="p">(</span>
-                            <span class="n">quadrature</span><span class="o">=</span><span class="n">quadrature</span><span class="p">,</span> <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="n">source</span>
-                        <span class="p">)</span>
+                        <span class="n">_</span><span class="p">,</span> <span class="n">sampled</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">source_irradiance</span><span class="p">(</span><span class="n">source</span><span class="o">=</span><span class="n">source</span><span class="p">)</span>
 
                         <span class="n">source_area</span> <span class="o">=</span> <span class="n">sampled</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span>
 
@@ -1120,20 +1133,48 @@
         <span class="p">)</span>
 
 <div class="viewcode-block" id="Simulation.run">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.run">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.simulation.Simulation.run">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span> <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">BroadbandSimulationResult</span><span class="p">:</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span>
+        <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span>
+        <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">BroadbandSimulationResult</span>
+        <span class="o">|</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">TransientResult</span>
+    <span class="p">):</span>
 <span class="w">        </span><span class="sd">"""Solve the configured transport problem and evaluate all named detectors.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        SimulationResult or BroadbandSimulationResult</span>
+<span class="sd">        SimulationResult, BroadbandSimulationResult, or TransientResult</span>
 <span class="sd">            Monochromatic fields and measurements, or broadband detector spectra,</span>
 <span class="sd">            trapezoidal optical and electrical integrals, and reference solves.</span>
 <span class="sd">            Broadband integration uses exactly the source spectrum's grid and</span>
 <span class="sd">            endpoints; refine that grid to assess spectral quadrature error.</span>
 <span class="sd">        """</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">transient_p1</span><span class="o">.</span><span class="n">TransientP1</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"TransientP1 requires a finite StructuredMedium."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">UniformSurfaceSource</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"TransientP1 requires a surface source."</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"TransientP1 requires a monochromatic source."</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">detector</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">detector</span><span class="o">.</span><span class="n">responsivity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">detector</span><span class="o">.</span><span class="n">responsivity</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="n">wavelength</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">wavelength</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">solve</span><span class="p">(</span>
+                <span class="n">medium</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="p">,</span>
+                <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span>
+                <span class="n">mesh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">frames</span><span class="p">:</span>
+                <span class="n">frame</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                    <span class="p">{</span>
+                        <span class="n">name</span><span class="p">:</span> <span class="n">detector</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">result</span><span class="o">=</span><span class="n">frame</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">detector</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">detectors</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                    <span class="p">}</span>
+                <span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">started</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
@@ -1172,6 +1213,8 @@
             <span class="n">medium</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">medium</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="p">,</span> <span class="n">mesh</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mesh</span>
         <span class="p">)</span>
 
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solution</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">TransientResult</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"Transient solvers must be run through Simulation.run()."</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">solution</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span><span class="p">):</span>
             <span class="n">solution</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SimulationResult</span><span class="p">(</span><span class="n">fluence</span><span class="o">=</span><span class="n">solution</span><span class="p">)</span>
 
@@ -1185,7 +1228,7 @@
         <span class="k">return</span> <span class="n">solution</span>
 
 <div class="viewcode-block" id="Simulation.sweep">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.sweep">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.simulation.Simulation.sweep">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">sweep</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">wavelengths</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">,</span> <span class="n">optical_power</span><span class="p">:</span> <span class="n">Quantity</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">SpectralSimulationResult</span><span class="p">:</span>
@@ -1220,21 +1263,32 @@
 
         <span class="n">started</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
 
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">transient_p1</span><span class="o">.</span><span class="n">TransientP1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"TransientP1 does not support wavelength sweeps."</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="s2">"sweep uses independent monochromatic powers; use run() for a source spectrum."</span>
             <span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"wavelengths"</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">wavelengths</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"wavelengths"</span><span class="p">,</span>
+            <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">wavelengths</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">wavelengths</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"wavelengths must be a nonempty vector."</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">optical_power</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-                <span class="n">value</span><span class="o">=</span><span class="n">optical_power</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"W"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"optical_power"</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+                <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">optical_power</span><span class="p">,</span>
+                <span class="n">unit</span><span class="o">=</span><span class="s2">"W"</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">"optical_power"</span><span class="p">,</span>
+                <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
 
             <span class="k">if</span> <span class="n">optical_power</span><span class="o">.</span><span class="n">shape</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">((),</span> <span class="n">wavelengths</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
@@ -1319,7 +1373,7 @@
 
 
 <div class="viewcode-block" id="Simulation.mesh_convergence">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.mesh_convergence">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.simulation.Simulation.mesh_convergence">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">mesh_convergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -1372,6 +1426,11 @@
 <span class="sd">            only when the final refinement sequence meets all requested criteria.</span>
 <span class="sd">        """</span>
 
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">solver</span><span class="p">,</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">transport</span><span class="o">.</span><span class="n">transient_p1</span><span class="o">.</span><span class="n">TransientP1</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">"mesh_convergence currently supports steady-state detector results only."</span>
+            <span class="p">)</span>
+
         <span class="k">return</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">convergence</span><span class="o">.</span><span class="n">_DetectorConvergenceStudy</span><span class="p">(</span><span class="n">simulation</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
             <span class="n">mesh_shapes</span><span class="o">=</span><span class="n">mesh_shapes</span><span class="p">,</span>
             <span class="n">mesh_resolutions</span><span class="o">=</span><span class="n">mesh_resolutions</span><span class="p">,</span>
@@ -1388,7 +1447,7 @@
     <span class="n">convergence_study</span> <span class="o">=</span> <span class="n">mesh_convergence</span>
 
 <div class="viewcode-block" id="Simulation.spectral_convergence">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.spectral_convergence">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.simulation.Simulation.spectral_convergence">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">spectral_convergence</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -1447,7 +1506,7 @@
 
 
 <div class="viewcode-block" id="Simulation.plot_system">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.Simulation.plot_system">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.simulation.Simulation.plot_system">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_system</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>

@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.fields &#8212; MomentRT 0.10.0 documentation</title>
+    <title>MomentRT.fields &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -554,12 +554,13 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Mapping</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TypedUnit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
 
 
 <div class="viewcode-block" id="ScalarField">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.ScalarField">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.fields.ScalarField">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">ScalarField</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Unit-bearing scalar samples at Cartesian or unstructured mesh nodes.</span>
 
@@ -617,7 +618,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">metadata</span> <span class="ow">or</span> <span class="p">{})</span>
 
 <div class="viewcode-block" id="ScalarField.resample">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.ScalarField.resample">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.fields.ScalarField.resample">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">resample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">resolution</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">ScalarField</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Interpolate a tetrahedral nodal field onto a Cartesian display grid.</span>
 
@@ -661,7 +662,7 @@
 
 
 <div class="viewcode-block" id="ScalarField.plot">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.ScalarField.plot">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.fields.ScalarField.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -758,7 +759,7 @@
 
 
 <div class="viewcode-block" id="BoundaryField">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.BoundaryField">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.fields.BoundaryField">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">BoundaryField</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Snapshot of escaping irradiance at boundary triangle quadrature points.</span>
 
@@ -822,12 +823,15 @@
         <span class="k">if</span> <span class="n">face</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">FACES</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"face must be one of </span><span class="si">{</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">boundary</span><span class="o">.</span><span class="n">FACES</span><span class="si">}</span><span class="s2">."</span><span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"positions"</span><span class="p">)</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"positions"</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">positions</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"positions must have a trailing axis of length three."</span><span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">area_weights</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="s2">"m^2"</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">"area_weights"</span><span class="p">,</span>
@@ -835,23 +839,38 @@
             <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">escaping_irradiance</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="s2">"W/m^2"</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">"escaping_irradiance"</span><span class="p">,</span>
             <span class="n">shape</span><span class="o">=</span><span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
         <span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">sample_origin</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"sample_origin"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,)</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">sample_origin</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"sample_origin"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span>
         <span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"sample_size"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">sample_size</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"sample_size"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span>
+            <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"wavelength"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"wavelength"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">face</span> <span class="o">=</span> <span class="n">face</span>
@@ -883,7 +902,7 @@
 
 
 <div class="viewcode-block" id="VectorField">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.VectorField">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.fields.VectorField">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">VectorField</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Element-centered vectors, without smoothing across material interfaces.</span>
 
@@ -912,7 +931,9 @@
 <span class="sd">            Nonempty name identifying this object.</span>
 <span class="sd">        """</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"positions"</span><span class="p">)</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">positions</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"positions"</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">positions</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">positions</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"positions must have shape (N, 3)."</span><span class="p">)</span>
@@ -933,7 +954,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
 <div class="viewcode-block" id="VectorField.plot">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.VectorField.plot">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.fields.VectorField.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">max_vectors</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">500</span><span class="p">,</span> <span class="n">length_unit</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"mm"</span><span class="p">,</span> <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">plotting</span><span class="o">.</span><span class="n">Figure</span><span class="p">:</span>

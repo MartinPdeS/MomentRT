@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.convergence &#8212; MomentRT 0.10.0 documentation</title>
+    <title>MomentRT.convergence &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -556,6 +556,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">cast</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TypedUnit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
 
@@ -563,7 +564,7 @@
 
 
 <div class="viewcode-block" id="MeshConvergence">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.MeshConvergence">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.convergence.MeshConvergence">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">MeshConvergence</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Configure a detector-power mesh-refinement study at one wavelength.</span>
 
@@ -658,7 +659,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">progress</span> <span class="o">=</span> <span class="n">progress</span>
 
 <div class="viewcode-block" id="MeshConvergence.run">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.MeshConvergence.run">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.convergence.MeshConvergence.run">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">DetectorConvergenceResult</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Run the mesh study with the current simulation configuration.</span>
 
@@ -738,7 +739,8 @@
             <span class="p">(</span><span class="s2">"power_atol"</span><span class="p">,</span> <span class="n">power_atol</span><span class="p">,</span> <span class="s2">"W"</span><span class="p">),</span>
             <span class="p">(</span><span class="s2">"photocurrent_atol"</span><span class="p">,</span> <span class="n">photocurrent_atol</span><span class="p">,</span> <span class="s2">"A"</span><span class="p">),</span>
         <span class="p">):</span>
-            <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+            <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+                <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
                 <span class="n">value</span><span class="o">=</span><span class="n">absolute_tolerance</span><span class="p">,</span>
                 <span class="n">unit</span><span class="o">=</span><span class="n">unit</span><span class="p">,</span>
                 <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
@@ -782,8 +784,12 @@
         <span class="n">fixed_knots</span> <span class="o">=</span> <span class="n">fixed_knots</span><span class="p">[(</span><span class="n">fixed_knots</span> <span class="o">&gt;=</span> <span class="n">lower</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">fixed_knots</span> <span class="o">&lt;=</span> <span class="n">upper</span><span class="p">)]</span>
         <span class="n">grids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">requested</span> <span class="ow">in</span> <span class="n">wavelength_grids</span><span class="p">:</span>
-            <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-                <span class="n">value</span><span class="o">=</span><span class="n">requested</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"wavelength grid"</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+            <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+                <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+                <span class="n">value</span><span class="o">=</span><span class="n">requested</span><span class="p">,</span>
+                <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+                <span class="n">name</span><span class="o">=</span><span class="s2">"wavelength grid"</span><span class="p">,</span>
+                <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
             <span class="p">)</span>
             <span class="k">if</span> <span class="n">requested</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">requested</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -984,8 +990,13 @@
         <span class="k">if</span> <span class="n">power_atol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">power_atol</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">watt</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">power_atol</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"W"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"power_atol"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(),</span> <span class="n">nonnegative</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">power_atol</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"W"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"power_atol"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(),</span>
+            <span class="n">nonnegative</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">simulation</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">spectrum</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -1061,7 +1072,8 @@
                     <span class="n">resolution</span><span class="o">=</span><span class="n">contact_resolution</span>
                 <span class="p">)</span>
 
-                <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+                <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+                    <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
                     <span class="n">value</span><span class="o">=</span><span class="n">contact_distance</span><span class="p">,</span>
                     <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
                     <span class="n">name</span><span class="o">=</span><span class="s2">"contact_distance"</span><span class="p">,</span>

@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.medium &#8212; MomentRT 0.10.0 documentation</title>
+    <title>MomentRT.medium &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -53,7 +53,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -554,13 +554,14 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">collections.abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterable</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">cast</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">TypedUnit</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">numpy.typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NDArray</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pint</span><span class="w"> </span><span class="kn">import</span> <span class="n">Quantity</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
 
 
 <div class="viewcode-block" id="HomogeneousMedium">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.HomogeneousMedium">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.HomogeneousMedium">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">HomogeneousMedium</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Uniform optical material in an unbounded physical medium.</span>
 
@@ -586,7 +587,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">material</span> <span class="o">=</span> <span class="n">material</span>
 
 <div class="viewcode-block" id="HomogeneousMedium.at">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.HomogeneousMedium.at">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.HomogeneousMedium.at">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">HomogeneousMedium</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Resolve optical coefficients at a positive vacuum wavelength.</span>
 
@@ -605,7 +606,7 @@
 
 
 <div class="viewcode-block" id="HomogeneousMedium.plot">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.HomogeneousMedium.plot">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.HomogeneousMedium.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -643,7 +644,7 @@
 
 
 <div class="viewcode-block" id="StructuredMedium">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.StructuredMedium">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.StructuredMedium">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">StructuredMedium</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Finite sample with an explicit background and ordered material regions.</span>
 
@@ -671,10 +672,21 @@
 <span class="sd">            Positive full Cartesian extents, shape (3,), with length units.</span>
 <span class="sd">        """</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"origin"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,))</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"origin"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span>
+        <span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
-            <span class="n">value</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"size"</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span> <span class="n">positive</span><span class="o">=</span><span class="kc">True</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
+            <span class="n">value</span><span class="o">=</span><span class="n">size</span><span class="p">,</span>
+            <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"size"</span><span class="p">,</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,),</span>
+            <span class="n">positive</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -707,7 +719,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_structures</span>
 
 <div class="viewcode-block" id="StructuredMedium.add_background">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.StructuredMedium.add_background">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.StructuredMedium.add_background">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_background</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -730,7 +742,7 @@
 
 
 <div class="viewcode-block" id="StructuredMedium.at">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.StructuredMedium.at">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.StructuredMedium.at">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">at</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">wavelength</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">medium</span><span class="o">.</span><span class="n">StructuredMedium</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Resolve all materials on a geometry-preserving monochromatic copy.</span>
 
@@ -801,7 +813,7 @@
         <span class="k">return</span> <span class="bp">self</span>
 
 <div class="viewcode-block" id="StructuredMedium.add_structures">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.StructuredMedium.add_structures">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.StructuredMedium.add_structures">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_structures</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="n">structures</span><span class="p">:</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">Box</span>
@@ -873,7 +885,7 @@
 
 
 <div class="viewcode-block" id="StructuredMedium.material_labels">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.StructuredMedium.material_labels">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.StructuredMedium.material_labels">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">material_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="n">Quantity</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">NDArray</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">]:</span>
 <span class="w">        </span><span class="sd">"""Return 0 for background and 1..N for ordered structures.</span>
 
@@ -897,7 +909,9 @@
 <span class="sd">            query lies outside the finite sample.</span>
 <span class="sd">        """</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">points</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"points"</span><span class="p">)</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">points</span><span class="p">,</span> <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s2">"points"</span>
+        <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">points</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">points</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"points must have a trailing axis of length three."</span><span class="p">)</span>
@@ -923,7 +937,7 @@
 
 
 <div class="viewcode-block" id="StructuredMedium.optical_fields">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.StructuredMedium.optical_fields">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.StructuredMedium.optical_fields">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">optical_fields</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -984,7 +998,7 @@
 
 
 <div class="viewcode-block" id="StructuredMedium.plot">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.StructuredMedium.plot">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.StructuredMedium.plot">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -1044,7 +1058,7 @@
 
 
 <div class="viewcode-block" id="StructuredMedium.add_layer">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.StructuredMedium.add_layer">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.StructuredMedium.add_layer">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">add_layer</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -1080,7 +1094,8 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">clip_to_sample</span><span class="p">,</span> <span class="p">(</span><span class="nb">bool</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">bool_</span><span class="p">)):</span>
             <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s2">"clip_to_sample must be a boolean."</span><span class="p">)</span>
 
-        <span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">validate_units</span><span class="p">(</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
+            <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
             <span class="n">value</span><span class="o">=</span><span class="n">thickness</span><span class="p">,</span>
             <span class="n">unit</span><span class="o">=</span><span class="s2">"m"</span><span class="p">,</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">"thickness"</span><span class="p">,</span>
@@ -1116,7 +1131,7 @@
 
 
 <div class="viewcode-block" id="StructuredMedium.section">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.StructuredMedium.section">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.StructuredMedium.section">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">section</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>
@@ -1161,7 +1176,7 @@
 
 
 <div class="viewcode-block" id="StructuredMedium.plot_section">
-<a class="viewcode-back" href="../../python_api.html#MomentRT.StructuredMedium.plot_section">[docs]</a>
+<a class="viewcode-back" href="../../python_api.html#MomentRT.medium.StructuredMedium.plot_section">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">plot_section</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="o">*</span><span class="p">,</span>

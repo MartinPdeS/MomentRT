@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Getting started &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Getting started &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -569,7 +569,7 @@
 <h1>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h1>
 <p>This page takes a calculation from optical properties to a plotted field.
 MomentRT separates the sample, source, observation mesh, and transport model,
-then combines them in a <a class="reference internal" href="python_api.html#MomentRT.Simulation" title="MomentRT.Simulation"><code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code></a>.</p>
+then combines them in a <code class="xref py py-class docutils literal notranslate"><span class="pre">Simulation</span></code>.</p>
 <section id="install">
 <h2>Install<a class="headerlink" href="#install" title="Link to this heading">#</a></h2>
 <p>For numerical calculations and interactive Plotly figures, install the
@@ -587,15 +587,15 @@ build the docs:</p>
 </section>
 <section id="choose-the-physical-model-first">
 <h2>Choose the physical model first<a class="headerlink" href="#choose-the-physical-model-first" title="Link to this heading">#</a></h2>
-<p>Use <a class="reference internal" href="python_api.html#MomentRT.InfiniteP1" title="MomentRT.InfiniteP1"><code class="xref py py-class docutils literal notranslate"><span class="pre">InfiniteP1</span></code></a> for a homogeneous, unbounded medium
+<p>Use <code class="xref py py-class docutils literal notranslate"><span class="pre">InfiniteP1</span></code> for a homogeneous, unbounded medium
 with an embedded isotropic point source. Its Cartesian grid only selects where
 the analytical field is evaluated; the grid edges are not physical boundaries.</p>
-<p>Use <a class="reference internal" href="python_api.html#MomentRT.P1" title="MomentRT.P1"><code class="xref py py-class docutils literal notranslate"><span class="pre">P1</span></code></a> for a finite <a class="reference internal" href="python_api.html#MomentRT.StructuredMedium" title="MomentRT.StructuredMedium"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructuredMedium</span></code></a>
+<p>Use <code class="xref py py-class docutils literal notranslate"><span class="pre">P1</span></code> for a finite <code class="xref py py-class docutils literal notranslate"><span class="pre">StructuredMedium</span></code>
 illuminated on one of its faces. This model solves the steady P1 diffusion
 equation with linear tetrahedral finite elements and explicitly configured
 conditions on all six faces. It currently requires a common refractive index
 throughout the sample.</p>
-<p>For finite samples, <a class="reference internal" href="python_api.html#MomentRT.SP3" title="MomentRT.SP3"><code class="xref py py-class docutils literal notranslate"><span class="pre">SP3</span></code></a> and <a class="reference internal" href="python_api.html#MomentRT.P3" title="MomentRT.P3"><code class="xref py py-class docutils literal notranslate"><span class="pre">P3</span></code></a> provide
+<p>For finite samples, <code class="xref py py-class docutils literal notranslate"><span class="pre">SP3</span></code> and <code class="xref py py-class docutils literal notranslate"><span class="pre">P3</span></code> provide
 higher-order moment approximations with different boundary and phase-function
 requirements. See <a class="reference internal" href="theory.html"><span class="doc">Transport theory and approximations</span></a>, <a class="reference internal" href="sp3.html"><span class="doc">SP3 transport model</span></a>, and <a class="reference internal" href="p3.html"><span class="doc">Full three-dimensional P3 transport</span></a> for their model
 limits, and <a class="reference internal" href="finite_element.html"><span class="doc">Finite-sample P1 solver</span></a> for the P1 finite-domain formulation.</p>
@@ -763,7 +763,7 @@ the <a class="reference internal" href="gallery/index.html"><span class="doc">fi
 </section>
 <section id="explore-fields-and-diagnostics">
 <h2>Explore fields and diagnostics<a class="headerlink" href="#explore-fields-and-diagnostics" title="Link to this heading">#</a></h2>
-<p>The returned <a class="reference internal" href="python_api.html#MomentRT.SimulationResult" title="MomentRT.SimulationResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationResult</span></code></a> exposes the nodal fluence,
+<p>The returned <code class="xref py py-class docutils literal notranslate"><span class="pre">SimulationResult</span></code> exposes the nodal fluence,
 optional element-centered diffusive flux, energy accounting, per-face escaping
 power, and solver diagnostics. For finite samples, inspect incoming,
 absorbed, and escaping power together. A small residual checks numerical
@@ -836,7 +836,7 @@ opacity slider. Use <code class="docutils literal notranslate"><span class="pre"
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/getting_started.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/getting_started.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

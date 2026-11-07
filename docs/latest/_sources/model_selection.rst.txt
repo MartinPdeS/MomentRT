@@ -1,7 +1,7 @@
 Choose a transport model
 ========================
 
-MomentRT provides steady-state, monochromatic moment approximations. Select
+MomentRT provides monochromatic moment approximations. Select
 the model from the physical domain and desired result.
 
 Start with your question
@@ -21,6 +21,9 @@ Start with your question
   <convergence>`. Detector power uses a Lambertian angular approximation;
   per-face escaping power is not an aperture measurement. The model does not
   include external detector optics or specular entry losses.
+* **How does a diffuse pulse evolve over time?** Use ``TransientP1`` with an
+  explicit time grid, source profile, and energy speed. See :doc:`time_dependent`
+  for initial conditions, boundary assumptions, and validation limits.
 
 For any finite solver, refine the mesh and assess source footprint sampling;
 for detector power, assess aperture sampling and power stability as well.
@@ -85,7 +88,7 @@ Independent references
 ----------------------
 
 The :doc:`planar slab example
-<gallery/transport_models/planar_slab_references>` compares P1 and SP3 finite-element
+<gallery/validation/planar_slab_references>` compares P1 and SP3 finite-element
 fields with independently calculated one-dimensional analytical solutions.
 This checks the FEM implementation and spatial discretization for a planar
 homogeneous case. It does not validate the approximations against the full

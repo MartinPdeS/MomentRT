@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Getting started &#8212; MomentRT 0.10.0 documentation</title>
+    <title>Getting started &#8212; MomentRT 0.11.0 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=7e54ce6f"></script>
+    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.10.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.10.0" />
+  <meta name="docsearch:version" content="0.11.0" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -512,34 +512,57 @@
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active has-children"><a aria-current="page" class="current reference internal" href="#">Getting started</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="infinite_diffusion.html">Infinite-medium diffusion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skin_contact.html">Simulate a contact sensor on layered skin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structured_sample.html">A heterogeneous layered sample</a></li>
 <li class="toctree-l2"><a class="reference internal" href="surface_diffusion.html">Surface illumination and FEM diffusion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="uniform_surface_source.html">Uniform illumination on a sample face</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../sources_detectors/index.html">Sources and detectors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../sources_detectors/broadband_detector.html">Integrate a source spectrum and detector response</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../sources_detectors/detector_convergence.html">Choose a mesh for detector collection</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../sources_detectors/seven_fiber_skin.html">Seven-fiber bundle on a three-layer skin sample</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../sources_detectors/spectral_detectors.html">Sweep wavelengths with a fixed sensor geometry</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../sources_detectors/surface_detector.html">Collect light with finite apertures</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../samples_and_meshes/index.html">Samples and meshes</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/cartesian_resolution.html">Create a Cartesian mesh from physical resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/cartesian_shape.html">Create a Cartesian mesh from node counts</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/sample_models.html">Build samples with named models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/tetrahedral_global.html">Create a uniform tetrahedral mesh</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../samples_and_meshes/tetrahedral_local.html">Refine a tetrahedral mesh near layers and contacts</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../sources_and_detectors/index.html">Sources and detectors</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/detector_convergence.html">Choose a mesh for detector collection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/seven_fiber_skin.html">Seven-fiber bundle on a three-layer skin sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/surface_detector.html">Collect light with finite apertures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../sources_and_detectors/uniform_surface_source.html">Uniform illumination on a sample face</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../spectral/index.html">Spectral calculations</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/broadband_detector.html">Integrate a source spectrum and detector response</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/source_spectra.html">Build analytical source spectra</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/sp3_spectral_anisotropy.html">Sweep wavelength-dependent scattering anisotropy</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../spectral/spectral_detectors.html">Sweep wavelengths with a fixed sensor geometry</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../transport_models/index.html">Transport models</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../transport_models/compare_p3.html">Compare full P3 with SP3 and P1</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport_models/compare_sp3.html">Compare P1 and SP3 transport</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport_models/phase_functions.html">Compare scattering phase functions</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../transport_models/planar_slab_references.html">Compare P1 and SP3 with independent planar slab references</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../transport_models/sp3_layered_anisotropy.html">Use different anisotropies in a layered sample</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../transport_models/transient_p1.html">Follow a diffuse pulse through layered tissue</a></li>
 </ul>
 </details></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="../sweeps_convergence/index.html">Sweeps and convergence</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../sweeps_convergence/absorption_sweep.html">How absorption changes fluence</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../sweeps_convergence/mesh_refinement.html">Check finite-element mesh refinement</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../sweeps_convergence/reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../sweeps_convergence/sensor_validation_cases.html">Compare sensor-validation cases</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../sweeps_convergence/solver_scaling.html">Benchmark P1, SP3, and P3 solver scaling</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../sweeps_convergence/sp3_spectral_anisotropy.html">Sweep wavelength-dependent scattering anisotropy</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../parameter_studies/index.html">Parameter studies</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../parameter_studies/absorption_sweep.html">How absorption changes fluence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parameter_studies/reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../parameter_studies/solver_scaling.html">Benchmark P1, SP3, and P3 solver scaling</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../validation/index.html">Validation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../validation/mesh_refinement.html">Check finite-element mesh refinement</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/planar_slab_references.html">Compare P1 and SP3 with independent planar slab references</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../validation/sensor_validation_cases.html">Compare sensor-validation cases</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../inverse_problems/index.html">Inverse problems</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../inverse_problems/epidermis_change.html">Recover an epidermis change</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../inverse_problems/mesh_convergence.html">Check detector mesh convergence</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../inverse_problems/objective_landscape.html">Explore a synthetic objective landscape</a></li>
 </ul>
 </details></li>
 </ul>
@@ -604,20 +627,20 @@
                   
   <section id="getting-started">
 <h1>Getting started<a class="headerlink" href="#getting-started" title="Link to this heading">#</a></h1>
-<p>Learn the basic workflow with an analytical infinite-medium example and
-finite samples. Build geometry, configure illumination, and inspect fluence.</p>
+<p>Start with a skin contact sensor, an analytical calculation, or a finite
+sample, then explore structured geometry.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="All physical values are illustrative. The plotted box is an observation window, not a tissue boundary. Optical properties apply at 970 nm."><img alt="" src="../../_images/sphx_glr_infinite_diffusion_thumb.png" />
 <p><a class="reference internal" href="infinite_diffusion.html"><span class="doc">Infinite-medium diffusion</span></a></p>
   <div class="sphx-glr-thumbnail-title">Infinite-medium diffusion</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Build an illustrative three-layer skin sample, generate a tetrahedral mesh, and calculate diffuse fluence and the power reaching a contact detector. The material coefficients describe one ex vivo dataset near 850 nm, not a universal or patient-specific skin model. P1 and the Lambertian detector model are approximations and require independent validation for the intended sensor."><img alt="" src="../../_images/sphx_glr_skin_contact_thumb.png" />
+<p><a class="reference internal" href="skin_contact.html"><span class="doc">Simulate a contact sensor on layered skin</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Simulate a contact sensor on layered skin</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Build a synthetic optical phantom with three layers, two spherical inclusions, and a box-shaped heterogeneity. Its materials are illustrative and assumed at one wavelength. Positive z points into the sample. Then illuminate the sample and inspect the finite-sample P1 fluence volume."><img alt="" src="../../_images/sphx_glr_structured_sample_thumb.png" />
 <p><a class="reference internal" href="structured_sample.html"><span class="doc">A heterogeneous layered sample</span></a></p>
   <div class="sphx-glr-thumbnail-title">A heterogeneous layered sample</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Illustrative single-wavelength properties. Effective reflectance is supplied explicitly, not inferred from refractive index. All internal refractive indices are equal: refracting internal interfaces are outside this solver&#x27;s scope."><img alt="" src="../../_images/sphx_glr_surface_diffusion_thumb.png" />
 <p><a class="reference internal" href="surface_diffusion.html"><span class="doc">Surface illumination and FEM diffusion</span></a></p>
   <div class="sphx-glr-thumbnail-title">Surface illumination and FEM diffusion</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Illuminate an entire finite sample face with a uniform diffuse partial current, solve the P1 finite-element model, and inspect the three-dimensional fluence field. The input power is already coupled into the sample."><img alt="" src="../../_images/sphx_glr_uniform_surface_source_thumb.png" />
-<p><a class="reference internal" href="uniform_surface_source.html"><span class="doc">Uniform illumination on a sample face</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Uniform illumination on a sample face</div>
 </div></div><div class="toctree-wrapper compound">
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -666,7 +689,7 @@ finite samples. Build geometry, configure illumination, and inspect fluence.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.10.0/docs/source/gallery/getting_started/index.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/gallery/getting_started/index.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

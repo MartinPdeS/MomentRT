@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:11.269** total execution time for 3 files **from gallery/parameter_studies**:
+**00:14.653** total execution time for 3 files **from gallery/parameter_studies**:
 
 .. container::
 
@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_parameter_studies_solver_scaling.py` (``solver_scaling.py``)
-     - 00:10.818
+     - 00:14.032
      - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_reflectance_sweep.py` (``reflectance_sweep.py``)
-     - 00:00.300
+     - 00:00.408
      - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_absorption_sweep.py` (``absorption_sweep.py``)
-     - 00:00.151
+     - 00:00.213
      - 0.0

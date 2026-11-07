@@ -188,12 +188,12 @@ establishes spatial convergence or P1 accuracy near the source.
 
  .. code-block:: none
 
-    Collected power: 12.429363580972788 µW
+    Collected power: 12.429363580972796 µW
     Sampled source area: 1.991106326872481 mm²
     Geometric source area: 2.0106192982974678 mm²
     Sampled detector area: 1.991106326872481 mm²
     Geometric detector area: 2.0106192982974678 mm²
-    Minimum nodal fluence: 0.013488124855907169 W/m²
+    Minimum nodal fluence: 0.013488124855907186 W/m²
 
 
 
@@ -201,7 +201,7 @@ establishes spatial convergence or P1 accuracy near the source.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.024 seconds)
+   **Total running time of the script:** (0 minutes 1.378 seconds)
 
 
 .. _sphx_glr_download_gallery_getting_started_skin_contact.py:

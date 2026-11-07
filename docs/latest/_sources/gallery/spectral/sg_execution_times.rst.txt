@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:03.161** total execution time for 4 files **from gallery/spectral**:
+**00:04.486** total execution time for 4 files **from gallery/spectral**:
 
 .. container::
 
@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_spectral_broadband_detector.py` (``broadband_detector.py``)
-     - 00:01.967
+     - 00:02.941
      - 0.0
    * - :ref:`sphx_glr_gallery_spectral_sp3_spectral_anisotropy.py` (``sp3_spectral_anisotropy.py``)
-     - 00:00.720
+     - 00:00.907
      - 0.0
    * - :ref:`sphx_glr_gallery_spectral_spectral_detectors.py` (``spectral_detectors.py``)
-     - 00:00.330
+     - 00:00.429
      - 0.0
    * - :ref:`sphx_glr_gallery_spectral_source_spectra.py` (``source_spectra.py``)
-     - 00:00.143
+     - 00:00.210
      - 0.0

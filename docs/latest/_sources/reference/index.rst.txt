@@ -31,6 +31,12 @@ objects, and see the project's current development scope.
 
       Scalar angular scattering models, normalized moments, and tabulated data.
 
+   .. grid-item-card:: Contributing
+      :link: ../contributing
+      :link-type: doc
+
+      Find guidance for contributing to MomentRT.
+
 .. toctree::
    :maxdepth: 1
    :hidden:
@@ -39,3 +45,4 @@ objects, and see the project's current development scope.
    API reference <../api_reference>
    Scattering phase functions <../phase_functions>
    Roadmap <../roadmap>
+   Contributing <../contributing>

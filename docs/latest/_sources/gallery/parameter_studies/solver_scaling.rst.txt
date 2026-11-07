@@ -104,15 +104,15 @@ still showing how the six-field P3 system begins to cost more than P1/SP3.
 
  .. code-block:: none
 
-     P1 |    166 tetrahedra | solve 0.0061 s | peak process RSS 217.3 MiB
-     P1 |    812 tetrahedra | solve 0.0083 s | peak process RSS 219.0 MiB
-     P1 |   1767 tetrahedra | solve 0.0118 s | peak process RSS 220.4 MiB
-    SP3 |    166 tetrahedra | solve 0.0069 s | peak process RSS 217.9 MiB
-    SP3 |    812 tetrahedra | solve 0.0110 s | peak process RSS 220.0 MiB
-    SP3 |   1767 tetrahedra | solve 0.0176 s | peak process RSS 222.7 MiB
-     P3 |    166 tetrahedra | solve 0.0281 s | peak process RSS 219.6 MiB
-     P3 |    812 tetrahedra | solve 0.0757 s | peak process RSS 228.1 MiB
-     P3 |   1767 tetrahedra | solve 0.1797 s | peak process RSS 243.9 MiB
+     P1 |    166 tetrahedra | solve 0.0091 s | peak process RSS 217.2 MiB
+     P1 |    812 tetrahedra | solve 0.0120 s | peak process RSS 218.7 MiB
+     P1 |   1767 tetrahedra | solve 0.0159 s | peak process RSS 220.3 MiB
+    SP3 |    166 tetrahedra | solve 0.0142 s | peak process RSS 217.6 MiB
+    SP3 |    812 tetrahedra | solve 0.0153 s | peak process RSS 219.6 MiB
+    SP3 |   1767 tetrahedra | solve 0.0229 s | peak process RSS 222.3 MiB
+     P3 |    166 tetrahedra | solve 0.0451 s | peak process RSS 219.1 MiB
+     P3 |    812 tetrahedra | solve 0.1036 s | peak process RSS 227.9 MiB
+     P3 |   1767 tetrahedra | solve 0.2593 s | peak process RSS 245.7 MiB
 
 
 
@@ -218,7 +218,7 @@ and total memory; a lower memory estimate alone is not enough.
 
  .. code-block:: none
 
-    At 1,767 tetrahedra, P3 took 15.3× the P1 solve time in this run.
+    At 1,767 tetrahedra, P3 took 16.3× the P1 solve time in this run.
 
 
 
@@ -226,7 +226,7 @@ and total memory; a lower memory estimate alone is not enough.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 10.818 seconds)
+   **Total running time of the script:** (0 minutes 14.032 seconds)
 
 
 .. _sphx_glr_download_gallery_parameter_studies_solver_scaling.py:

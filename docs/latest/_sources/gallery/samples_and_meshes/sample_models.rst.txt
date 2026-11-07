@@ -213,7 +213,7 @@ validity of P1 at the relevant distances, require separate checks.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.146 seconds)
+   **Total running time of the script:** (0 minutes 0.133 seconds)
 
 
 .. _sphx_glr_download_gallery_samples_and_meshes_sample_models.py:

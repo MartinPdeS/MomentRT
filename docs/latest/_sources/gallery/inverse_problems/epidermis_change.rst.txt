@@ -262,17 +262,17 @@ establish P1 model accuracy.
     Detector mesh convergence at 650.0 nm
              Mesh      Nodes   Time (s)  Source err        near µW    Δ power   Area err         far µW    Δ power   Area err
     -------------------------------------------------------------------------------------------------------------------------
-           0.8 mm        479       0.05      0.93%          6.284          —     2.18%         0.9677          —     6.79%
+           0.8 mm        479       0.06      0.93%          6.284          —     2.18%         0.9677          —     6.79%
       fluence: Negative nodal fluence.
-           0.4 mm      2,086       0.19      0.80%          5.149     22.05%     1.98%         0.8497     13.88%     1.39%
-           0.2 mm     12,462       1.87      0.76%          4.319     19.22%     1.66%         0.9363      9.24%     1.62%
-          0.15 mm     27,861       8.11      0.31%          4.317      0.03%     0.03%         0.9669      3.16%     0.03%
-           0.1 mm     87,318      98.51      0.36%          4.398      1.83%     0.11%         0.9851      1.86%     0.38%
+           0.4 mm      2,086       0.24      0.80%          5.149     22.05%     1.98%         0.8497     13.88%     1.39%
+           0.2 mm     12,462       2.25      0.76%          4.319     19.22%     1.66%         0.9363      9.24%     1.62%
+          0.15 mm     27,861       9.61      0.31%          4.317      0.03%     0.03%         0.9669      3.16%     0.03%
+           0.1 mm     87,318     117.09      0.36%          4.398      1.83%     0.11%         0.9851      1.86%     0.38%
     Converged: True
     Consecutive passing refinements at the fine end: 2 of 2 required.
     Tolerances: power 5.00% relative + 0 µW absolute; footprint area 5.00% relative.
     Recommended mesh: 0.1 mm target resolution.
-    Total time: 108.75 s
+    Total time: 129.26 s
 
 
 
@@ -494,7 +494,7 @@ only useful outside the documentation build.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (3 minutes 10.984 seconds)
+   **Total running time of the script:** (3 minutes 49.961 seconds)
 
 
 .. _sphx_glr_download_gallery_inverse_problems_epidermis_change.py:

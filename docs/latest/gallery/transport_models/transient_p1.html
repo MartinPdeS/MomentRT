@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Follow a diffuse pulse through layered tissue &#8212; MomentRT 0.11.0 documentation</title>
+    <title>Follow a diffuse pulse through layered tissue &#8212; MomentRT 0.11.1 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
+    <script src="../../_static/documentation_options.js?v=b3db6a4d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.11.0" />
+  <meta name="docsearch:version" content="0.11.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -167,57 +167,26 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../model_selection.html">
-    Choose a transport model
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../sensor_validation.html">
-    Sensor validation
-  </a>
-</li>
-
-
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     Examples
   </a>
 </li>
 
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../theory/index.html">
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../theory/index.html">
     Theory
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../reference/index.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../reference/index.html">
     Reference
   </a>
 </li>
 
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../contributing.html">
-    Contributing
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -369,20 +338,6 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../model_selection.html">
-    Choose a transport model
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../sensor_validation.html">
-    Sensor validation
-  </a>
-</li>
-
-
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     Examples
@@ -400,13 +355,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../reference/index.html">
     Reference
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../contributing.html">
-    Contributing
   </a>
 </li>
 
@@ -750,7 +698,7 @@ energy residuals use the midpoint rule and are only a conservation diagnostic.</
 </span>    <span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Maximum midpoint energy residual: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.results.TransientResult" title="MomentRT.TransientResult"><span class="n">result</span></a><span class="o">.</span><span class="n">interval_energy_residual</span><span class="p">)</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'</span><span class="s1">W</span><span class="s1">'</span><span class="p">)</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">&quot;</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<img src="../../_images/sphx_glr_transient_p1_001.png" srcset="../../_images/sphx_glr_transient_p1_001.png" alt="transient p1" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Maximum midpoint energy residual: 3.686287386450715×10⁻¹⁸ W
+<img src="../../_images/sphx_glr_transient_p1_001.png" srcset="../../_images/sphx_glr_transient_p1_001.png" alt="transient p1" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Maximum midpoint energy residual: 2.3310346708438345×10⁻¹⁸ W
 </pre></div>
 </div>
 </section>
@@ -773,7 +721,7 @@ reference before interpreting early-time or near-source predictions.</p>
 </span>    <span class="n">title</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="s2">Transient P1 fluence at </span><span class="si">{</span><span class="n">times</span><span class="p">[</span><span class="n">peak_index</span><span class="p">]</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">&quot;</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<iframe src="../../_static/gallery/transient_p1-1.html" title="Transient P1 fluence at 15.0 ps" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.717 seconds)</p>
+<iframe src="../../_static/gallery/transient_p1-1.html" title="Transient P1 fluence at 15.0 ps" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.103 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-transport-models-transient-p1-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/d6291955276b3be83169c40754f41f6c/transient_p1.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">transient_p1.ipynb</span></code></a></p>
@@ -847,7 +795,7 @@ reference before interpreting early-time or near-source predictions.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/gallery/transport_models/transient_p1.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.1/docs/source/gallery/transport_models/transient_p1.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

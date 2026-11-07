@@ -209,8 +209,8 @@ quadrature on the stated grid, over its endpoints without extrapolation.
  .. code-block:: none
 
     Incoming optical power: 312.2816362777524 µW
-    Collected optical power: 11.638661057773822 µW
-    Photocurrent: 5.897252415371464 µA
+    Collected optical power: 11.638661057773824 µW
+    Photocurrent: 5.897252415371465 µA
     Geometry preparations: 1
     Sampled detector area: 1.518538481375306 mm²
     Geometric detector area: 1.5393804002589984 mm²
@@ -305,7 +305,7 @@ by default. Inspect its actual grids and failures before using a recommendation.
  .. code-block:: none
 
     Level 0: 31 wavelengths; meets tolerances: False; errors: {'fluence': 'Negative nodal fluence in a reference solve.'}
-      sensor: collected power 1.1638661057773823×10⁻⁵ W; relative change nan; photocurrent 5.897252415371464×10⁻⁶ A; relative change nan
+      sensor: collected power 1.1638661057773824×10⁻⁵ W; relative change nan; photocurrent 5.897252415371465×10⁻⁶ A; relative change nan
     Level 1: 61 wavelengths; meets tolerances: False; errors: {'fluence': 'Negative nodal fluence in a reference solve.'}
       sensor: collected power 1.1638688668153448×10⁻⁵ W; relative change 2.37e-06; photocurrent 5.896978713011571×10⁻⁶ A; relative change 4.64e-05
     Level 2: 121 wavelengths; meets tolerances: False; errors: {'fluence': 'Negative nodal fluence in a reference solve.'}
@@ -319,7 +319,7 @@ by default. Inspect its actual grids and failures before using a recommendation.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.967 seconds)
+   **Total running time of the script:** (0 minutes 2.941 seconds)
 
 
 .. _sphx_glr_download_gallery_spectral_broadband_detector.py:

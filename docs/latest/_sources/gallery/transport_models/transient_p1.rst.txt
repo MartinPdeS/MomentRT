@@ -198,7 +198,7 @@ energy residuals use the midpoint rule and are only a conservation diagnostic.
 
  .. code-block:: none
 
-    Maximum midpoint energy residual: 3.686287386450715×10⁻¹⁸ W
+    Maximum midpoint energy residual: 2.3310346708438345×10⁻¹⁸ W
 
 
 
@@ -243,7 +243,7 @@ reference before interpreting early-time or near-source predictions.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.717 seconds)
+   **Total running time of the script:** (0 minutes 1.103 seconds)
 
 
 .. _sphx_glr_download_gallery_transport_models_transient_p1.py:

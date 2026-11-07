@@ -68,6 +68,12 @@ see the :doc:`time-dependent P1 solver <time_dependent>`.
 
       Compare collected power, aperture sampling, and source area under refinement.
 
+   .. grid-item-card:: Sensor validation
+      :link: sensor_validation
+      :link-type: doc
+
+      Compare detector power against an independent photon reference.
+
 .. note::
 
    P1, SP3, and P3 are approximations to transport. No model infers boundary
@@ -83,6 +89,7 @@ see the :doc:`time-dependent P1 solver <time_dependent>`.
 
    Meshes and local refinement <meshes>
    Choose a transport model <model_selection>
+   Sensor validation <sensor_validation>
    Finite-aperture detectors <detectors>
    SP3 transport <sp3>
    Full P3 transport <p3>

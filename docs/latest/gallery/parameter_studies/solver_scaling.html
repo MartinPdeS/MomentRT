@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Benchmark P1, SP3, and P3 solver scaling &#8212; MomentRT 0.11.0 documentation</title>
+    <title>Benchmark P1, SP3, and P3 solver scaling &#8212; MomentRT 0.11.1 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=1a9b1e2b"></script>
+    <script src="../../_static/documentation_options.js?v=b3db6a4d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.11.0" />
+  <meta name="docsearch:version" content="0.11.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -167,57 +167,26 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../model_selection.html">
-    Choose a transport model
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../sensor_validation.html">
-    Sensor validation
-  </a>
-</li>
-
-
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     Examples
   </a>
 </li>
 
-            <li class="nav-item dropdown">
-                <button class="btn dropdown-toggle nav-item" type="button"
-                data-bs-toggle="dropdown" aria-expanded="false"
-                aria-controls="pst-nav-more-links">
-                    More
-                </button>
-                <ul id="pst-nav-more-links" class="dropdown-menu">
-                    
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../theory/index.html">
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../theory/index.html">
     Theory
   </a>
 </li>
 
 
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../reference/index.html">
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../reference/index.html">
     Reference
   </a>
 </li>
 
-
-<li class=" ">
-  <a class="nav-link dropdown-item nav-internal" href="../../contributing.html">
-    Contributing
-  </a>
-</li>
-
-                </ul>
-            </li>
-            
   </ul>
 </nav></div>
       
@@ -369,20 +338,6 @@
 </li>
 
 
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../model_selection.html">
-    Choose a transport model
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../sensor_validation.html">
-    Sensor validation
-  </a>
-</li>
-
-
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="../index.html">
     Examples
@@ -400,13 +355,6 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="../../reference/index.html">
     Reference
-  </a>
-</li>
-
-
-<li class="nav-item ">
-  <a class="nav-link nav-internal" href="../../contributing.html">
-    Contributing
   </a>
 </li>
 
@@ -690,15 +638,15 @@ still showing how the six-field P3 system begins to cost more than P1/SP3.</p>
 </span>        <span class="sa">f</span><span class="s2">&quot;</span><span class="s2">peak process RSS </span><span class="si">{</span><span class="n">memory_mib</span><span class="si">}</span><span class="s2">&quot;</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span> P1 |    166 tetrahedra | solve 0.0061 s | peak process RSS 217.3 MiB
- P1 |    812 tetrahedra | solve 0.0083 s | peak process RSS 219.0 MiB
- P1 |   1767 tetrahedra | solve 0.0118 s | peak process RSS 220.4 MiB
-SP3 |    166 tetrahedra | solve 0.0069 s | peak process RSS 217.9 MiB
-SP3 |    812 tetrahedra | solve 0.0110 s | peak process RSS 220.0 MiB
-SP3 |   1767 tetrahedra | solve 0.0176 s | peak process RSS 222.7 MiB
- P3 |    166 tetrahedra | solve 0.0281 s | peak process RSS 219.6 MiB
- P3 |    812 tetrahedra | solve 0.0757 s | peak process RSS 228.1 MiB
- P3 |   1767 tetrahedra | solve 0.1797 s | peak process RSS 243.9 MiB
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span> P1 |    166 tetrahedra | solve 0.0091 s | peak process RSS 217.2 MiB
+ P1 |    812 tetrahedra | solve 0.0120 s | peak process RSS 218.7 MiB
+ P1 |   1767 tetrahedra | solve 0.0159 s | peak process RSS 220.3 MiB
+SP3 |    166 tetrahedra | solve 0.0142 s | peak process RSS 217.6 MiB
+SP3 |    812 tetrahedra | solve 0.0153 s | peak process RSS 219.6 MiB
+SP3 |   1767 tetrahedra | solve 0.0229 s | peak process RSS 222.3 MiB
+ P3 |    166 tetrahedra | solve 0.0451 s | peak process RSS 219.1 MiB
+ P3 |    812 tetrahedra | solve 0.1036 s | peak process RSS 227.9 MiB
+ P3 |   1767 tetrahedra | solve 0.2593 s | peak process RSS 245.7 MiB
 </pre></div>
 </div>
 </section>
@@ -769,10 +717,10 @@ and total memory; a lower memory estimate alone is not enough.</p>
 </span>    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p3_time</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">p1_time</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">× the P1 solve time in this run.</span><span class="s2">&quot;</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>At 1,767 tetrahedra, P3 took 15.3× the P1 solve time in this run.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>At 1,767 tetrahedra, P3 took 16.3× the P1 solve time in this run.
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 10.818 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 14.032 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-parameter-studies-solver-scaling-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/6652754aef1265b177acf996f2314495/solver_scaling.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">solver_scaling.ipynb</span></code></a></p>
@@ -845,7 +793,7 @@ and total memory; a lower memory estimate alone is not enough.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.0/docs/source/gallery/parameter_studies/solver_scaling.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.1/docs/source/gallery/parameter_studies/solver_scaling.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

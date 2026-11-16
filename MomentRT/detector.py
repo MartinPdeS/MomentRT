@@ -254,8 +254,11 @@ class SurfaceDetector:
         if acceptance_angle.to("radian").magnitude > np.pi / 2:
             raise ValueError("acceptance_angle must be at most 90 degrees.")
 
-        if isinstance(collection_axis, MomentRT.units.ureg.Quantity):
-            raise TypeError("collection_axis must be a plain dimensionless vector.")
+        TypedUnit.validate_annotation(
+            collection_axis,
+            annotation=TypedUnit.NoUnit[TypedUnit.Vector[3], TypedUnit.Finite],
+            name="collection_axis",
+        )
 
         direction = np.asarray(collection_axis)
 

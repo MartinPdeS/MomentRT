@@ -84,7 +84,7 @@ def test_configuration_validation():
     with pytest.raises(ValueError, match="plain number"):
         RobinBoundary(effective_reflectance=1)
 
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError, match="radius"):
         SurfaceSource(
             face="z_min",
             position=np.zeros(3) * ureg.mm,

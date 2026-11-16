@@ -70,8 +70,11 @@ class Material:
             If values have units, a boolean or nonnumeric dtype, the wrong
             shape, nonfinite entries, or values outside (-1, 1).
         """
-        if isinstance(value, (MomentRT.units.ureg.Quantity, bool, np.bool_)):
-            raise ValueError("anisotropy must contain plain numbers in (-1, 1).")
+        TypedUnit.validate_annotation(
+            value,
+            annotation=TypedUnit.NoUnit[TypedUnit.Finite],
+            name="anisotropy",
+        )
 
         values = np.asarray(value)
 
@@ -132,13 +135,13 @@ class Material:
             positive=True,
         )
 
-        if (
-            isinstance(refractive_index, MomentRT.units.ureg.Quantity)
-            or not np.isscalar(refractive_index)
-            or not np.isfinite(refractive_index)
-            or refractive_index <= 0
-        ):
-            raise ValueError("refractive_index must be a positive, unitless number.")
+        TypedUnit.validate_annotation(
+            refractive_index,
+            annotation=TypedUnit.NoUnit[
+                TypedUnit.Scalar, TypedUnit.Finite, TypedUnit.Positive
+            ],
+            name="refractive_index",
+        )
 
         self.absorption = absorption
 
@@ -339,8 +342,11 @@ class SpectralMaterial:
             positive=True,
         )
 
-        if isinstance(refractive_index, (MomentRT.units.ureg.Quantity, bool)):
-            raise ValueError("refractive_index must contain positive plain numbers.")
+        TypedUnit.validate_annotation(
+            refractive_index,
+            annotation=TypedUnit.NoUnit[TypedUnit.Finite, TypedUnit.Positive],
+            name="refractive_index",
+        )
 
         indices = np.asarray(refractive_index)
 

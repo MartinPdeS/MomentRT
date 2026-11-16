@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 import numpy as np
+import TypedUnit
 from numpy.typing import ArrayLike, NDArray
 import MomentRT
 from MomentRT.phase_function.base import PhaseFunction, _cosines
@@ -37,8 +38,11 @@ class Tabulated(PhaseFunction):
         """
         grid = _cosines(cosine=cosine)
 
-        if isinstance(values, MomentRT.units.ureg.Quantity):
-            raise TypeError("values must be plain relative densities.")
+        TypedUnit.validate_annotation(
+            values,
+            annotation=TypedUnit.NoUnit[TypedUnit.Finite],
+            name="values",
+        )
 
         density = np.asarray(values)
 

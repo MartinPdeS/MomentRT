@@ -55,12 +55,13 @@ class Epidermis(MomentRT.material.Material):
         refractive_index : float
             Positive dimensionless refractive index.
         """
-        if (
-            isinstance(melanin_fraction, (MomentRT.ureg.Quantity, bool))
-            or not np.isscalar(melanin_fraction)
-            or not np.isfinite(melanin_fraction)
-            or not 0 <= melanin_fraction <= 1
-        ):
+        TypedUnit.validate_annotation(
+            melanin_fraction,
+            annotation=TypedUnit.NoUnit[TypedUnit.Scalar, TypedUnit.Finite],
+            name="melanin_fraction",
+        )
+
+        if not 0 <= melanin_fraction <= 1:
             raise ValueError("melanin_fraction must be a unitless fraction in [0, 1].")
         TypedUnit.validate_quantity(
             registry=MomentRT.units.ureg,
@@ -73,12 +74,13 @@ class Epidermis(MomentRT.material.Material):
         if not 400 * MomentRT.ureg.nm <= wavelength.to("nm") <= 1000 * MomentRT.ureg.nm:
             raise ValueError("The skin models support wavelengths from 400 to 1000 nm.")
 
-        if (
-            isinstance(refractive_index, (MomentRT.ureg.Quantity, bool))
-            or not np.isscalar(refractive_index)
-            or not np.isfinite(refractive_index)
-            or refractive_index <= 0
-        ):
+        TypedUnit.validate_annotation(
+            refractive_index,
+            annotation=TypedUnit.NoUnit[TypedUnit.Scalar, TypedUnit.Finite],
+            name="refractive_index",
+        )
+
+        if refractive_index <= 0:
             raise ValueError("refractive_index must be a positive, unitless number.")
 
         wavelength_nm_value = float(wavelength.to("nm").magnitude)
@@ -168,12 +170,13 @@ class Dermis(MomentRT.material.Material):
         refractive_index : float
             Positive dimensionless refractive index.
         """
-        if (
-            isinstance(hydration, (MomentRT.ureg.Quantity, bool))
-            or not np.isscalar(hydration)
-            or not np.isfinite(hydration)
-            or not 0 <= hydration <= 1
-        ):
+        TypedUnit.validate_annotation(
+            hydration,
+            annotation=TypedUnit.NoUnit[TypedUnit.Scalar, TypedUnit.Finite],
+            name="hydration",
+        )
+
+        if not 0 <= hydration <= 1:
             raise ValueError("hydration must be a unitless fraction in [0, 1].")
         TypedUnit.validate_quantity(
             registry=MomentRT.units.ureg,
@@ -186,12 +189,13 @@ class Dermis(MomentRT.material.Material):
         if not 400 * MomentRT.ureg.nm <= wavelength.to("nm") <= 1000 * MomentRT.ureg.nm:
             raise ValueError("The skin models support wavelengths from 400 to 1000 nm.")
 
-        if (
-            isinstance(refractive_index, (MomentRT.ureg.Quantity, bool))
-            or not np.isscalar(refractive_index)
-            or not np.isfinite(refractive_index)
-            or refractive_index <= 0
-        ):
+        TypedUnit.validate_annotation(
+            refractive_index,
+            annotation=TypedUnit.NoUnit[TypedUnit.Scalar, TypedUnit.Finite],
+            name="refractive_index",
+        )
+
+        if refractive_index <= 0:
             raise ValueError("refractive_index must be a positive, unitless number.")
 
         water_absorption = MomentRT.materials.liquids.Water.absorption_at(

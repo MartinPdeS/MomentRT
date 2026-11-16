@@ -4,8 +4,7 @@ from __future__ import annotations
 import copy
 from collections.abc import Iterator, Mapping
 from typing import Literal
-import numpy as np
-import MomentRT
+import TypedUnit
 
 Face = Literal["x_min", "x_max", "y_min", "y_max", "z_min", "z_max"]
 
@@ -40,12 +39,13 @@ class RobinBoundary:
 
         value = effective_reflectance
 
-        if (
-            isinstance(value, (MomentRT.units.ureg.Quantity, bool))
-            or not np.isscalar(value)
-            or not np.isfinite(value)
-            or not 0 <= value < 1
-        ):
+        TypedUnit.validate_annotation(
+            value,
+            annotation=TypedUnit.NoUnit[TypedUnit.Scalar, TypedUnit.Finite],
+            name="effective_reflectance",
+        )
+
+        if not 0 <= value < 1:
             raise ValueError("effective_reflectance must be a plain number in [0, 1).")
 
         self.effective_reflectance = value

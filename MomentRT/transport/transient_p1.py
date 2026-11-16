@@ -85,8 +85,11 @@ class TransientP1:
         values = times.to("s").magnitude
         if values[0] != 0 or np.any(np.diff(values) <= 0):
             raise ValueError("times must start at zero and strictly increase.")
-        if isinstance(power_profile, Quantity):
-            raise TypeError("power_profile must contain plain dimensionless numbers.")
+        TypedUnit.validate_annotation(
+            power_profile,
+            annotation=TypedUnit.NoUnit[TypedUnit.Finite],
+            name="power_profile",
+        )
         profile = np.asarray(power_profile)
         if (
             profile.dtype.kind not in "iuf"

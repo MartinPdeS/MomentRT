@@ -101,12 +101,13 @@ class Water(MomentRT.material.Material):
 
         wavelength_nm_value = float(wavelength.to("nm").magnitude)
 
-        if (
-            isinstance(refractive_index, (MomentRT.ureg.Quantity, bool))
-            or not np.isscalar(refractive_index)
-            or not np.isfinite(refractive_index)
-            or refractive_index <= 0
-        ):
+        TypedUnit.validate_annotation(
+            refractive_index,
+            annotation=TypedUnit.NoUnit[TypedUnit.Scalar, TypedUnit.Finite],
+            name="refractive_index",
+        )
+
+        if refractive_index <= 0:
             raise ValueError("refractive_index must be a positive, unitless number.")
 
         reduced_scattering_per_meter = 3.4123664e8 * wavelength_nm_value ** (-4.1537676)
@@ -181,20 +182,22 @@ class Intralipid(MomentRT.material.Material):
         refractive_index : float
             Positive dimensionless refractive index of the mixture.
         """
-        if (
-            isinstance(concentration, (MomentRT.ureg.Quantity, bool))
-            or not np.isscalar(concentration)
-            or not np.isfinite(concentration)
-            or not 0.227 <= concentration <= 22.7
-        ):
+        TypedUnit.validate_annotation(
+            concentration,
+            annotation=TypedUnit.NoUnit[TypedUnit.Scalar, TypedUnit.Finite],
+            name="concentration",
+        )
+
+        if not 0.227 <= concentration <= 22.7:
             raise ValueError("concentration must be a percentage in [0.227, 22.7].")
 
-        if (
-            isinstance(refractive_index, (MomentRT.ureg.Quantity, bool))
-            or not np.isscalar(refractive_index)
-            or not np.isfinite(refractive_index)
-            or refractive_index <= 0
-        ):
+        TypedUnit.validate_annotation(
+            refractive_index,
+            annotation=TypedUnit.NoUnit[TypedUnit.Scalar, TypedUnit.Finite],
+            name="refractive_index",
+        )
+
+        if refractive_index <= 0:
             raise ValueError("refractive_index must be a positive, unitless number.")
 
         TypedUnit.validate_quantity(

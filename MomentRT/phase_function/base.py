@@ -3,14 +3,17 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 import numpy as np
+import TypedUnit
 from numpy.typing import ArrayLike, NDArray
-import MomentRT
 
 
 def _cosines(*, cosine: ArrayLike) -> NDArray[np.float64]:
     """Validate the dimensionless cosines of scattering angles."""
-    if isinstance(cosine, MomentRT.units.ureg.Quantity):
-        raise TypeError("cosine must contain plain dimensionless numbers.")
+    TypedUnit.validate_annotation(
+        cosine,
+        annotation=TypedUnit.NoUnit[TypedUnit.Finite],
+        name="cosine",
+    )
 
     values = np.asarray(cosine)
 

@@ -1,61 +1,26 @@
-"""Physical units shared by all MomentRT objects."""
+"""TypedUnit registry and validation API shared by MomentRT objects.
+
+``validate_units`` is a compatibility alias for TypedUnit's direct quantity
+validator with the shared registry already selected. It preserves supplied
+quantities and their units; conversions remain explicit at numerical boundaries.
+"""
 
 from __future__ import annotations
+from functools import partial
 import TypedUnit
 from pint import Quantity, UnitRegistry
 
-ureg: UnitRegistry = UnitRegistry()
+ureg: UnitRegistry = TypedUnit.ureg
+validate_quantity = TypedUnit.validate_quantity
+validate_annotation = TypedUnit.validate_annotation
+unit_validator = TypedUnit.unit_validator
+validate_units = partial(TypedUnit.validate_quantity, registry=ureg)
 
-
-def validate_units(
-    *,
-    value: Quantity,
-    unit: str,
-    name: str,
-    shape: tuple[int, ...] | None = None,
-    positive: bool = False,
-    nonnegative: bool = False,
-) -> None:
-    """Validate registry, dimensional compatibility, finiteness, shape, and sign.
-
-    Parameters
-    ----------
-    value : pint.Quantity
-        Quantity to validate without changing or replacing it.
-    unit : str
-        Required compatible physical unit.
-    name : str
-        Parameter label used in validation error messages.
-    shape : tuple of int or None, optional
-        Required magnitude shape. None leaves shape unrestricted; ()
-        requires a scalar.
-        Default is None.
-    positive : bool, optional
-        Require every magnitude to be strictly positive.
-        Default is False.
-    nonnegative : bool, optional
-        Require every magnitude to be nonnegative.
-        Default is False.
-
-    Raises
-    ------
-    TypeError
-        If value is not a quantity from MomentRT.ureg.
-    pint.DimensionalityError
-        If the supplied units are incompatible with unit.
-    ValueError
-        If magnitudes are nonfinite or violate the requested shape or sign.
-    """
-
-    if not isinstance(value, ureg.Quantity):
-        raise TypeError(f"{name} must carry units from MomentRT.ureg.")
-
-    TypedUnit.validate_quantity(
-        value=value,
-        unit=unit,
-        name=name,
-        registry=ureg,
-        shape=shape,
-        positive=positive,
-        nonnegative=nonnegative,
-    )
+__all__ = [
+    "ureg",
+    "Quantity",
+    "unit_validator",
+    "validate_annotation",
+    "validate_quantity",
+    "validate_units",
+]

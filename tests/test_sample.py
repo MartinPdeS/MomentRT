@@ -129,7 +129,7 @@ def test_geometry_validation_and_atomic_addition():
     with pytest.raises(ValueError, match="Duplicate"):
         sample.add_structures(box)
 
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError, match="center"):
         Sphere(
             name="bad",
             center=np.zeros(3),
@@ -324,7 +324,7 @@ def test_section_plots_and_validation():
 
     assert property_figure.data[0].zsmooth is False
 
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError, match="position"):
         sample.section(normal="y", position=1)
 
     with pytest.raises(ValueError, match="normal"):

@@ -2,7 +2,6 @@
 
 import numpy as np
 import pytest
-from pint import DimensionalityError
 import MomentRT
 
 
@@ -64,14 +63,14 @@ def test_resolution_fits_sample_with_bounded_spacing(
 @pytest.mark.parametrize(
     "resolution, exception",
     [
-        (0.3, TypeError),
+        (0.3, ValueError),
         (0 * MomentRT.ureg.mm, ValueError),
         (-1 * MomentRT.ureg.mm, ValueError),
         (np.nan * MomentRT.ureg.mm, ValueError),
         (np.inf * MomentRT.ureg.mm, ValueError),
         ((1, 2) * MomentRT.ureg.mm, ValueError),
         (np.ones((1, 3)) * MomentRT.ureg.mm, ValueError),
-        (1 * MomentRT.ureg.second, DimensionalityError),
+        (1 * MomentRT.ureg.second, ValueError),
     ],
 )
 def test_invalid_resolution(sample, resolution, exception):

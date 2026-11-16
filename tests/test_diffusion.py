@@ -70,7 +70,7 @@ def test_diffusion_energy_and_radial_symmetry():
 
 
 def test_explicit_units_and_singularity():
-    with pytest.raises(TypeError):
+    with pytest.raises(ValueError, match="absorption"):
         Material(
             phase_function=MomentRT.phase_function.HenyeyGreenstein(),
             absorption=0.02,

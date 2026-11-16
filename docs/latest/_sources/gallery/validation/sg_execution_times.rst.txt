@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.258** total execution time for 3 files **from gallery/validation**:
+**00:00.788** total execution time for 3 files **from gallery/validation**:
 
 .. container::
 
@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_validation_mesh_refinement.py` (``mesh_refinement.py``)
-     - 00:00.542
+     - 00:00.362
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_sensor_validation_cases.py` (``sensor_validation_cases.py``)
-     - 00:00.489
+     - 00:00.286
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_planar_slab_references.py` (``planar_slab_references.py``)
-     - 00:00.228
+     - 00:00.141
      - 0.0

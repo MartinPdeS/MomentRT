@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MomentRT.materials.skin &#8212; MomentRT 0.11.1 documentation</title>
+    <title>MomentRT.materials.skin &#8212; MomentRT 0.12.0 documentation</title>
   
   
   
@@ -33,7 +33,7 @@
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="../../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="../../../_static/default.css" />
     <link rel="stylesheet" type="text/css" href="../../../_static/martinpdes_layout.css?v=a8cc01cd" />
     <link rel="stylesheet" type="text/css" href="../../../_static/layout.css?v=1307682e" />
@@ -44,16 +44,16 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../../_static/documentation_options.js?v=b3db6a4d"></script>
+    <script src="../../../_static/documentation_options.js?v=b7cb6ee7"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/sg-tags.js?v=d80f6fa4"></script>
-    <script src="../../../_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="../../../_static/design-tabs.js?v=fcb327ea"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/MomentRT/materials/skin';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -64,7 +64,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.11.1" />
+  <meta name="docsearch:version" content="0.12.0" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -554,12 +554,13 @@
 <span class="sd">        refractive_index : float</span>
 <span class="sd">            Positive dimensionless refractive index.</span>
 <span class="sd">        """</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="nb">isinstance</span><span class="p">(</span><span class="n">melanin_fraction</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span> <span class="nb">bool</span><span class="p">))</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">melanin_fraction</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">melanin_fraction</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">melanin_fraction</span> <span class="o">&lt;=</span> <span class="mi">1</span>
-        <span class="p">):</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_annotation</span><span class="p">(</span>
+            <span class="n">melanin_fraction</span><span class="p">,</span>
+            <span class="n">annotation</span><span class="o">=</span><span class="n">TypedUnit</span><span class="o">.</span><span class="n">NoUnit</span><span class="p">[</span><span class="n">TypedUnit</span><span class="o">.</span><span class="n">Scalar</span><span class="p">,</span> <span class="n">TypedUnit</span><span class="o">.</span><span class="n">Finite</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"melanin_fraction"</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">melanin_fraction</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"melanin_fraction must be a unitless fraction in [0, 1]."</span><span class="p">)</span>
         <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
             <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
@@ -572,12 +573,13 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="mi">400</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">nm</span> <span class="o">&lt;=</span> <span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nm"</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">nm</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The skin models support wavelengths from 400 to 1000 nm."</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="nb">isinstance</span><span class="p">(</span><span class="n">refractive_index</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span> <span class="nb">bool</span><span class="p">))</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">refractive_index</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">refractive_index</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="n">refractive_index</span> <span class="o">&lt;=</span> <span class="mi">0</span>
-        <span class="p">):</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_annotation</span><span class="p">(</span>
+            <span class="n">refractive_index</span><span class="p">,</span>
+            <span class="n">annotation</span><span class="o">=</span><span class="n">TypedUnit</span><span class="o">.</span><span class="n">NoUnit</span><span class="p">[</span><span class="n">TypedUnit</span><span class="o">.</span><span class="n">Scalar</span><span class="p">,</span> <span class="n">TypedUnit</span><span class="o">.</span><span class="n">Finite</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"refractive_index"</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">refractive_index</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"refractive_index must be a positive, unitless number."</span><span class="p">)</span>
 
         <span class="n">wavelength_nm_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nm"</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
@@ -670,12 +672,13 @@
 <span class="sd">        refractive_index : float</span>
 <span class="sd">            Positive dimensionless refractive index.</span>
 <span class="sd">        """</span>
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="nb">isinstance</span><span class="p">(</span><span class="n">hydration</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span> <span class="nb">bool</span><span class="p">))</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">hydration</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">hydration</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">hydration</span> <span class="o">&lt;=</span> <span class="mi">1</span>
-        <span class="p">):</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_annotation</span><span class="p">(</span>
+            <span class="n">hydration</span><span class="p">,</span>
+            <span class="n">annotation</span><span class="o">=</span><span class="n">TypedUnit</span><span class="o">.</span><span class="n">NoUnit</span><span class="p">[</span><span class="n">TypedUnit</span><span class="o">.</span><span class="n">Scalar</span><span class="p">,</span> <span class="n">TypedUnit</span><span class="o">.</span><span class="n">Finite</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"hydration"</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">hydration</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"hydration must be a unitless fraction in [0, 1]."</span><span class="p">)</span>
         <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_quantity</span><span class="p">(</span>
             <span class="n">registry</span><span class="o">=</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">units</span><span class="o">.</span><span class="n">ureg</span><span class="p">,</span>
@@ -688,12 +691,13 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="mi">400</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">nm</span> <span class="o">&lt;=</span> <span class="n">wavelength</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s2">"nm"</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">nm</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"The skin models support wavelengths from 400 to 1000 nm."</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="p">(</span>
-            <span class="nb">isinstance</span><span class="p">(</span><span class="n">refractive_index</span><span class="p">,</span> <span class="p">(</span><span class="n">MomentRT</span><span class="o">.</span><span class="n">ureg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">,</span> <span class="nb">bool</span><span class="p">))</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isscalar</span><span class="p">(</span><span class="n">refractive_index</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">refractive_index</span><span class="p">)</span>
-            <span class="ow">or</span> <span class="n">refractive_index</span> <span class="o">&lt;=</span> <span class="mi">0</span>
-        <span class="p">):</span>
+        <span class="n">TypedUnit</span><span class="o">.</span><span class="n">validate_annotation</span><span class="p">(</span>
+            <span class="n">refractive_index</span><span class="p">,</span>
+            <span class="n">annotation</span><span class="o">=</span><span class="n">TypedUnit</span><span class="o">.</span><span class="n">NoUnit</span><span class="p">[</span><span class="n">TypedUnit</span><span class="o">.</span><span class="n">Scalar</span><span class="p">,</span> <span class="n">TypedUnit</span><span class="o">.</span><span class="n">Finite</span><span class="p">],</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">"refractive_index"</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">refractive_index</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"refractive_index must be a positive, unitless number."</span><span class="p">)</span>
 
         <span class="n">water_absorption</span> <span class="o">=</span> <span class="n">MomentRT</span><span class="o">.</span><span class="n">materials</span><span class="o">.</span><span class="n">liquids</span><span class="o">.</span><span class="n">Water</span><span class="o">.</span><span class="n">absorption_at</span><span class="p">(</span>

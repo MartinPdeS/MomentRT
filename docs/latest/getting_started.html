@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Getting started &#8212; MomentRT 0.11.1 documentation</title>
+    <title>Getting started &#8212; MomentRT 0.12.0 documentation</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=6a604523" />
     <link rel="stylesheet" type="text/css" href="_static/default.css" />
     <link rel="stylesheet" type="text/css" href="_static/martinpdes_layout.css?v=a8cc01cd" />
     <link rel="stylesheet" type="text/css" href="_static/layout.css?v=1307682e" />
@@ -45,16 +45,16 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="_static/documentation_options.js?v=b3db6a4d"></script>
+    <script src="_static/documentation_options.js?v=b7cb6ee7"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
-    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script data-sd-tabs-storage-prefix="sphinx-design-tab-id-" src="_static/design-tabs.js?v=fcb327ea"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'getting_started';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.11.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.11.1" />
+  <meta name="docsearch:version" content="0.12.0" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -554,6 +554,19 @@ limits, and <a class="reference internal" href="finite_element.html"><span class
 scattering have units of inverse length; sample geometry, source positions,
 wavelengths, and optical power carry their corresponding units. Refractive
 index is a plain dimensionless number.</p>
+<p>MomentRT shares TypedUnit’s <code class="docutils literal notranslate"><span class="pre">ureg</span></code> registry. TypedUnit validates supplied
+quantities before conversion, preserving compatible units such as millimeters.
+Dimensional inputs require explicit quantities from this shared registry.
+Optical indices, anisotropy, effective reflectance, and dimensionless profiles
+use TypedUnit’s <code class="docutils literal notranslate"><span class="pre">NoUnit</span></code> contracts: even dimensionless Pint quantities are
+rejected. Shape and value markers such as <code class="docutils literal notranslate"><span class="pre">Scalar</span></code>, <code class="docutils literal notranslate"><span class="pre">Vector[3]</span></code>, <code class="docutils literal notranslate"><span class="pre">Finite</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">Positive</span></code> cover generic checks; MomentRT retains physical bounds,
+normalization, table alignment, and other model-specific checks.</p>
+<p><code class="docutils literal notranslate"><span class="pre">MomentRT.units</span></code> exposes <code class="docutils literal notranslate"><span class="pre">validate_annotation</span></code>, <code class="docutils literal notranslate"><span class="pre">validate_quantity</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">unit_validator</span></code> from TypedUnit. The legacy <code class="docutils literal notranslate"><span class="pre">validate_units</span></code> name remains a
+registry-bound alias of <code class="docutils literal notranslate"><span class="pre">validate_quantity</span></code>. Validation failures follow
+TypedUnit’s <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> convention. Conversion with <code class="docutils literal notranslate"><span class="pre">.to(...)</span></code> and
+extraction of magnitudes happen explicitly after validation.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">MomentRT</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MomentRT</span><span class="w"> </span><span class="kn">import</span> <span class="n">Material</span><span class="p">,</span> <span class="n">ureg</span>
 
@@ -784,7 +797,7 @@ opacity slider. Use <code class="docutils literal notranslate"><span class="pre"
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.11.1/docs/source/getting_started.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.12.0/docs/source/getting_started.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

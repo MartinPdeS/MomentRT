@@ -51,6 +51,21 @@ scattering have units of inverse length; sample geometry, source positions,
 wavelengths, and optical power carry their corresponding units. Refractive
 index is a plain dimensionless number.
 
+MomentRT shares TypedUnit's ``ureg`` registry. TypedUnit validates supplied
+quantities before conversion, preserving compatible units such as millimeters.
+Dimensional inputs require explicit quantities from this shared registry.
+Optical indices, anisotropy, effective reflectance, and dimensionless profiles
+use TypedUnit's ``NoUnit`` contracts: even dimensionless Pint quantities are
+rejected. Shape and value markers such as ``Scalar``, ``Vector[3]``, ``Finite``,
+and ``Positive`` cover generic checks; MomentRT retains physical bounds,
+normalization, table alignment, and other model-specific checks.
+
+``MomentRT.units`` exposes ``validate_annotation``, ``validate_quantity``, and
+``unit_validator`` from TypedUnit. The legacy ``validate_units`` name remains a
+registry-bound alias of ``validate_quantity``. Validation failures follow
+TypedUnit's ``ValueError`` convention. Conversion with ``.to(...)`` and
+extraction of magnitudes happen explicitly after validation.
+
 .. code-block:: python
 
    import MomentRT

@@ -6,6 +6,17 @@ The compatibility and deprecation policy is in [CONTRIBUTING.rst](CONTRIBUTING.r
 
 ## [Unreleased]
 
+### Added
+
+- Executable two-fiber reflectance study on three-layer skin, comparing
+  collected power across source-detector separations and dermal absorption
+  levels, with mesh-refinement diagnostics and an interactive gallery preview.
+
+### Changed
+
+- Clarify package descriptions and discovery keywords across Python, Conda,
+  citation, and archive metadata.
+
 ## [0.12.0] - 2026-11-16
 
 ## [0.11.1] - 2026-11-07

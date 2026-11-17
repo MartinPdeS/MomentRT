@@ -111,3 +111,25 @@ At the finest mesh, the small-source and small-detector cases sample about 87%
 of their corresponding geometric footprint areas. Treat those particular
 results as under-resolved; refine the contact mesh before interpreting their
 model errors as transport-approximation error.
+
+Explore a two-fiber absorption study
+------------------------------------
+
+The :doc:`two-fiber skin example
+<gallery/parameter_studies/skin_fiber_separation>` keeps one illumination
+fiber fixed and moves a collection fiber from 0.8 to 4 mm away. It compares
+baseline dermal absorption with 3x and 10x absorption while preserving the
+other layers, scattering, source power, and collection geometry. The 10x
+case makes the middle layer more absorbing than either adjacent layer.
+
+In this illustrative P1 study, the 10x case retains about 76% of the baseline
+signal at 0.8 mm but only 1.5% at 4 mm. The largest collected-power change
+across the final mesh refinement is about 2.4%, and the largest sampled
+source/aperture area error on the finest mesh is below 1%. This supports
+exploring separation-dependent absorption contrast within this model; it
+does not establish transport accuracy or unique depth sensitivity. The
+example includes both meshes on the power plot and reports all three mesh
+levels, energy residuals, and minimum fluence, including a negative nodal
+value on the coarsest high-absorption mesh. Further refinement, larger-domain
+checks, and an independent transport reference are needed for quantitative
+probe design.

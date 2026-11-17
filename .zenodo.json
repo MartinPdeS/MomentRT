@@ -1,6 +1,6 @@
 {
   "title": "MomentRT: deterministic light transport using angular-moment methods",
-  "description": "MomentRT is a Python package for deterministic light transport using angular-moment methods. It includes finite-element diffusion through structured media and tools for visualizing optical fields.",
+  "description": "MomentRT is a Python library for deterministic light transport in scattering media. It provides analytical diffusion and finite-element P1, SP3, and P3 models, with tools for optical fields, contact detectors, and energy-balance diagnostics.",
   "creators": [
     {
       "name": "Poinsinet de Sivry-Houle, Martin"
@@ -13,9 +13,14 @@
   "keywords": [
     "radiative transfer",
     "light transport",
-    "diffusion",
+    "scattering media",
+    "biomedical optics",
+    "tissue optics",
+    "diffusion approximation",
+    "spherical harmonics",
     "finite element method",
-    "tissue optics"
+    "optical simulation",
+    "contact sensors"
   ],
   "publication_date": "2026-11-16"
 }

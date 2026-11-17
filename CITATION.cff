@@ -7,13 +7,19 @@ authors:
   - family-names: "Poinsinet de Sivry-Houle"
     given-names: "Martin"
 abstract: >
-  MomentRT is a Python package for deterministic light transport using
-  angular-moment methods. It includes finite-element diffusion through
-  structured media and tools for visualizing optical fields.
+  MomentRT is a Python library for deterministic light transport in
+  scattering media. It provides analytical diffusion and finite-element P1,
+  SP3, and P3 models, with tools for optical fields, contact detectors, and
+  energy-balance diagnostics.
 license: "MIT"
 keywords:
   - radiative transfer
   - light transport
-  - diffusion
-  - finite element method
+  - scattering media
+  - biomedical optics
   - tissue optics
+  - diffusion approximation
+  - spherical harmonics
+  - finite element method
+  - optical simulation
+  - contact sensors

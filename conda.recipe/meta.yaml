@@ -48,10 +48,11 @@ test:
 about:
   license: MIT
   license_file: LICENSE
-  summary: "Deterministic light transport using angular-moment methods."
+  summary: "Python tools for deterministic light transport in scattering media using diffusion and spherical-harmonic finite-element models."
   description: >-
-    MomentRT models light transport using angular-moment methods, including
-    finite-element diffusion through structured media.
+    MomentRT models deterministic light transport in scattering media with
+    analytical diffusion and finite-element P1, SP3, and P3 models. It includes
+    optical-field visualization, contact detectors, and energy diagnostics.
 
 extra:
   recipe-maintainers:

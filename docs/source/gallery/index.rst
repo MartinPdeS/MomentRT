@@ -235,7 +235,8 @@ Compare angular approximations and explore phase functions and layer anisotropy.
 Parameter studies
 -----------------
 
-Vary optical properties and boundary reflectance, and examine computational scaling.
+Vary optical properties, fiber separation, and boundary reflectance, and
+examine computational scaling.
 
 .. grid:: 1 2 2 2
    :gutter: 3
@@ -257,6 +258,15 @@ Vary optical properties and boundary reflectance, and examine computational scal
 
       Compare centerline fluence and escaping power as diffuse reflectance
       changes.
+
+   .. grid-item-card:: Two-fiber reflectance and dermal absorption
+      :link: parameter_studies/skin_fiber_separation
+      :link-type: doc
+      :img-top: parameter_studies/images/thumb/sphx_glr_skin_fiber_separation_thumb.png
+      :img-alt: Three-layer skin with one illumination fiber and collection positions along the surface
+
+      Move a collection fiber away from one illumination fiber and compare
+      collected power as absorption increases in the middle skin layer.
 
    .. grid-item-card:: Benchmark P1, SP3, and P3 scaling
       :link: parameter_studies/solver_scaling

@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Two-fiber reflectance and dermal absorption &#8212; MomentRT 0.12.1 documentation</title>
+    <title>Two-fiber reflectance and dermal absorption &#8212; MomentRT 0.12.2 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=1e8b1a81"></script>
+    <script src="../../_static/documentation_options.js?v=3e3a806a"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -62,12 +62,12 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Benchmark P1, SP3, and P3 solver scaling" href="solver_scaling.html" />
-    <link rel="prev" title="Changing the diffuse boundary reflectance" href="reflectance_sweep.html" />
+    <link rel="next" title="Which skin layer changes the fiber signal?" href="skin_layer_sensitivity.html" />
+    <link rel="prev" title="How dermis thickness changes a two-fiber scan" href="skin_dermis_thickness.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.12.1" />
+  <meta name="docsearch:version" content="0.12.2" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -498,7 +498,9 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Parameter studies</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="absorption_sweep.html">How absorption changes fluence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skin_dermis_thickness.html">How dermis thickness changes a two-fiber scan</a></li>
 <li class="toctree-l2 current active"><a aria-current="page" class="current reference internal" href="#">Two-fiber reflectance and dermal absorption</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skin_layer_sensitivity.html">Which skin layer changes the fiber signal?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="solver_scaling.html">Benchmark P1, SP3, and P3 solver scaling</a></li>
 </ul>
 </details></li>
@@ -743,15 +745,15 @@ source power, aperture radius, or angular acceptance.</p>
 </span>            <span class="sa">f</span><span class="s2">&quot;</span><span class="s2">minimum fluence = </span><span class="si">{</span><a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-class sphx-glr-backref-instance reference internal" href="../../python_api.html#MomentRT.results.SimulationResult" title="MomentRT.SimulationResult"><span class="n">result</span></a><span class="o">.</span><span class="n">fluence</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">'</span><span class="s1">W/m^2</span><span class="s1">'</span><span class="p">)</span><span class="si">:</span><span class="s2">~P</span><span class="si">}</span><span class="s2">&quot;</span><span class="w">
 </span>        <span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mesh 1, dermal absorption 0.055 1/mm: 66567 tetrahedra, energy residual / input = -6.51e-16, minimum fluence = 0.00019216384890993497 W/m²
-Mesh 1, dermal absorption 0.165 1/mm: 66567 tetrahedra, energy residual / input = 8.67e-16, minimum fluence = 3.834208949550389×10⁻⁵ W/m²
-Mesh 1, dermal absorption 0.55 1/mm: 66567 tetrahedra, energy residual / input = 1.30e-15, minimum fluence = -0.00014262926747394308 W/m²
-Mesh 2, dermal absorption 0.055 1/mm: 185030 tetrahedra, energy residual / input = 3.58e-15, minimum fluence = 0.00023214791383783048 W/m²
-Mesh 2, dermal absorption 0.165 1/mm: 185030 tetrahedra, energy residual / input = 2.93e-15, minimum fluence = 4.771892524420297×10⁻⁵ W/m²
-Mesh 2, dermal absorption 0.55 1/mm: 185030 tetrahedra, energy residual / input = 2.39e-15, minimum fluence = 5.93918733159886×10⁻⁷ W/m²
-Mesh 3, dermal absorption 0.055 1/mm: 369812 tetrahedra, energy residual / input = 5.75e-15, minimum fluence = 0.00024393400551073183 W/m²
-Mesh 3, dermal absorption 0.165 1/mm: 369812 tetrahedra, energy residual / input = 5.75e-15, minimum fluence = 5.2148601660035835×10⁻⁵ W/m²
-Mesh 3, dermal absorption 0.55 1/mm: 369812 tetrahedra, energy residual / input = 4.12e-15, minimum fluence = 9.390573640814808×10⁻⁷ W/m²
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Mesh 1, dermal absorption 0.055 1/mm: 66567 tetrahedra, energy residual / input = -4.34e-16, minimum fluence = 0.00019216384890993502 W/m²
+Mesh 1, dermal absorption 0.165 1/mm: 66567 tetrahedra, energy residual / input = 9.76e-16, minimum fluence = 3.834208949550386×10⁻⁵ W/m²
+Mesh 1, dermal absorption 0.55 1/mm: 66567 tetrahedra, energy residual / input = 1.30e-15, minimum fluence = -0.0001426292674739433 W/m²
+Mesh 2, dermal absorption 0.055 1/mm: 185030 tetrahedra, energy residual / input = 3.36e-15, minimum fluence = 0.00023214791383783007 W/m²
+Mesh 2, dermal absorption 0.165 1/mm: 185030 tetrahedra, energy residual / input = 2.82e-15, minimum fluence = 4.77189252442029×10⁻⁵ W/m²
+Mesh 2, dermal absorption 0.55 1/mm: 185030 tetrahedra, energy residual / input = 2.17e-15, minimum fluence = 5.939187331598859×10⁻⁷ W/m²
+Mesh 3, dermal absorption 0.055 1/mm: 369812 tetrahedra, energy residual / input = 6.07e-15, minimum fluence = 0.0002439340055107318 W/m²
+Mesh 3, dermal absorption 0.165 1/mm: 369812 tetrahedra, energy residual / input = 5.96e-15, minimum fluence = 5.214860166003577×10⁻⁵ W/m²
+Mesh 3, dermal absorption 0.55 1/mm: 369812 tetrahedra, energy residual / input = 4.45e-15, minimum fluence = 9.390573640814809×10⁻⁷ W/m²
 </pre></div>
 </div>
 </section>
@@ -877,7 +879,7 @@ preserves any negative nodal artifacts reported in the diagnostics above.</p>
 </span>    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<iframe src="../../_static/gallery/skin_fiber_separation-1.html" title="Fluence rate — volume (linear scale) — interpolated display" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 58.266 seconds)</p>
+<iframe src="../../_static/gallery/skin_fiber_separation-1.html" title="Fluence rate — volume (linear scale) — interpolated display" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (1 minutes 24.481 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-parameter-studies-skin-fiber-separation-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/aabbcc10c0ea3b4d5267b5e4f7d9c2ce/skin_fiber_separation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">skin_fiber_separation.ipynb</span></code></a></p>
@@ -904,20 +906,20 @@ preserves any negative nodal artifacts reported in the diagnostics above.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="reflectance_sweep.html"
+       href="skin_dermis_thickness.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Changing the diffuse boundary reflectance</p>
+        <p class="prev-next-title">How dermis thickness changes a two-fiber scan</p>
       </div>
     </a>
     <a class="right-next"
-       href="solver_scaling.html"
+       href="skin_layer_sensitivity.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Benchmark P1, SP3, and P3 solver scaling</p>
+        <p class="prev-next-title">Which skin layer changes the fiber signal?</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -953,7 +955,7 @@ preserves any negative nodal artifacts reported in the diagnostics above.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.12.1/docs/source/gallery/parameter_studies/skin_fiber_separation.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.12.2/docs/source/gallery/parameter_studies/skin_fiber_separation.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

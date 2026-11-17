@@ -6,6 +6,8 @@ Parameter studies
 Vary optical properties, fiber separation, and boundary reflectance, and
 examine solver scaling. The two-fiber skin study compares collected power
 against source-detector distance while increasing absorption in the dermis.
+Follow-on studies compare absorption changes in each anatomical layer and
+vary dermis thickness with the outer sample and contact probe held fixed.
 
 
 .. raw:: html
@@ -55,6 +57,23 @@ against source-detector distance while increasing absorption in the dermis.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Keep the outer sample and contact probe fixed while varying dermis thickness from 0.5 to 2.5 mm. Use an absorbing dermis with 3x the preset absorption to explore how layer extent changes the collected signal. These geometries and optical coefficients are illustrative, not a model of a diagnosed skin condition.">
+
+.. only:: html
+
+  .. image:: /gallery/parameter_studies/images/thumb/sphx_glr_skin_dermis_thickness_thumb.png
+    :alt:
+
+  :doc:`/gallery/parameter_studies/skin_dermis_thickness`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">How dermis thickness changes a two-fiber scan</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Keep one illumination fiber fixed on three-layer skin and move a collection fiber along the surface. Compare the collected power at 850 nm for baseline, 3x, and 10x dermal absorption, leaving all other optical properties unchanged. The last case makes the middle layer more absorbing than either adjacent layer. These absorption multipliers are a sensitivity experiment, not tissue diagnoses.">
 
 .. only:: html
@@ -67,6 +86,23 @@ against source-detector distance while increasing absorption in the dermis.
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Two-fiber reflectance and dermal absorption</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Add the SAME absorption increment to epidermis, dermis, or hypodermis, one layer at a time, and compare a two-fiber distance scan with the unmodified sample. This tests whether a signal change depends on where the extra absorption occurs, rather than only its magnitude. It is a forward sensitivity experiment, not a method for identifying an unknown absorber uniquely.">
+
+.. only:: html
+
+  .. image:: /gallery/parameter_studies/images/thumb/sphx_glr_skin_layer_sensitivity_thumb.png
+    :alt:
+
+  :doc:`/gallery/parameter_studies/skin_layer_sensitivity`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Which skin layer changes the fiber signal?</div>
     </div>
 
 
@@ -99,7 +135,9 @@ against source-detector distance while increasing absorption in the dermis.
 
    /gallery/parameter_studies/absorption_sweep
    /gallery/parameter_studies/reflectance_sweep
+   /gallery/parameter_studies/skin_dermis_thickness
    /gallery/parameter_studies/skin_fiber_separation
+   /gallery/parameter_studies/skin_layer_sensitivity
    /gallery/parameter_studies/solver_scaling
 
 

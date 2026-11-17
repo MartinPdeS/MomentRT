@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:07.026** total execution time for 4 files **from gallery/parameter_studies**:
+**04:33.107** total execution time for 6 files **from gallery/parameter_studies**:
 
 .. container::
 
@@ -32,15 +32,21 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_gallery_parameter_studies_skin_dermis_thickness.py` (``skin_dermis_thickness.py``)
+     - 01:50.038
+     - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_skin_fiber_separation.py` (``skin_fiber_separation.py``)
-     - 00:58.266
+     - 01:24.481
+     - 0.0
+   * - :ref:`sphx_glr_gallery_parameter_studies_skin_layer_sensitivity.py` (``skin_layer_sensitivity.py``)
+     - 01:05.665
      - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_solver_scaling.py` (``solver_scaling.py``)
-     - 00:08.411
+     - 00:12.302
      - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_reflectance_sweep.py` (``reflectance_sweep.py``)
-     - 00:00.230
+     - 00:00.406
      - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_absorption_sweep.py` (``absorption_sweep.py``)
-     - 00:00.119
+     - 00:00.215
      - 0.0

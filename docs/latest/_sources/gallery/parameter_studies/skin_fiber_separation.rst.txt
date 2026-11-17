@@ -224,15 +224,15 @@ source power, aperture radius, or angular acceptance.
 
  .. code-block:: none
 
-    Mesh 1, dermal absorption 0.055 1/mm: 66567 tetrahedra, energy residual / input = -6.51e-16, minimum fluence = 0.00019216384890993497 W/m²
-    Mesh 1, dermal absorption 0.165 1/mm: 66567 tetrahedra, energy residual / input = 8.67e-16, minimum fluence = 3.834208949550389×10⁻⁵ W/m²
-    Mesh 1, dermal absorption 0.55 1/mm: 66567 tetrahedra, energy residual / input = 1.30e-15, minimum fluence = -0.00014262926747394308 W/m²
-    Mesh 2, dermal absorption 0.055 1/mm: 185030 tetrahedra, energy residual / input = 3.58e-15, minimum fluence = 0.00023214791383783048 W/m²
-    Mesh 2, dermal absorption 0.165 1/mm: 185030 tetrahedra, energy residual / input = 2.93e-15, minimum fluence = 4.771892524420297×10⁻⁵ W/m²
-    Mesh 2, dermal absorption 0.55 1/mm: 185030 tetrahedra, energy residual / input = 2.39e-15, minimum fluence = 5.93918733159886×10⁻⁷ W/m²
-    Mesh 3, dermal absorption 0.055 1/mm: 369812 tetrahedra, energy residual / input = 5.75e-15, minimum fluence = 0.00024393400551073183 W/m²
-    Mesh 3, dermal absorption 0.165 1/mm: 369812 tetrahedra, energy residual / input = 5.75e-15, minimum fluence = 5.2148601660035835×10⁻⁵ W/m²
-    Mesh 3, dermal absorption 0.55 1/mm: 369812 tetrahedra, energy residual / input = 4.12e-15, minimum fluence = 9.390573640814808×10⁻⁷ W/m²
+    Mesh 1, dermal absorption 0.055 1/mm: 66567 tetrahedra, energy residual / input = -4.34e-16, minimum fluence = 0.00019216384890993502 W/m²
+    Mesh 1, dermal absorption 0.165 1/mm: 66567 tetrahedra, energy residual / input = 9.76e-16, minimum fluence = 3.834208949550386×10⁻⁵ W/m²
+    Mesh 1, dermal absorption 0.55 1/mm: 66567 tetrahedra, energy residual / input = 1.30e-15, minimum fluence = -0.0001426292674739433 W/m²
+    Mesh 2, dermal absorption 0.055 1/mm: 185030 tetrahedra, energy residual / input = 3.36e-15, minimum fluence = 0.00023214791383783007 W/m²
+    Mesh 2, dermal absorption 0.165 1/mm: 185030 tetrahedra, energy residual / input = 2.82e-15, minimum fluence = 4.77189252442029×10⁻⁵ W/m²
+    Mesh 2, dermal absorption 0.55 1/mm: 185030 tetrahedra, energy residual / input = 2.17e-15, minimum fluence = 5.939187331598859×10⁻⁷ W/m²
+    Mesh 3, dermal absorption 0.055 1/mm: 369812 tetrahedra, energy residual / input = 6.07e-15, minimum fluence = 0.0002439340055107318 W/m²
+    Mesh 3, dermal absorption 0.165 1/mm: 369812 tetrahedra, energy residual / input = 5.96e-15, minimum fluence = 5.214860166003577×10⁻⁵ W/m²
+    Mesh 3, dermal absorption 0.55 1/mm: 369812 tetrahedra, energy residual / input = 4.45e-15, minimum fluence = 9.390573640814809×10⁻⁷ W/m²
 
 
 
@@ -419,7 +419,7 @@ preserves any negative nodal artifacts reported in the diagnostics above.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 58.266 seconds)
+   **Total running time of the script:** (1 minutes 24.481 seconds)
 
 
 .. _sphx_glr_download_gallery_parameter_studies_skin_fiber_separation.py:

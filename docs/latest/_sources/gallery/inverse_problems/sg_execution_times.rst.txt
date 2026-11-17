@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**03:38.347** total execution time for 3 files **from gallery/inverse_problems**:
+**06:00.675** total execution time for 3 files **from gallery/inverse_problems**:
 
 .. container::
 
@@ -33,11 +33,11 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_inverse_problems_epidermis_change.py` (``epidermis_change.py``)
-     - 02:16.841
+     - 03:47.963
      - 0.0
    * - :ref:`sphx_glr_gallery_inverse_problems_mesh_convergence.py` (``mesh_convergence.py``)
-     - 01:21.405
+     - 02:12.511
      - 0.0
    * - :ref:`sphx_glr_gallery_inverse_problems_objective_landscape.py` (``objective_landscape.py``)
-     - 00:00.101
+     - 00:00.201
      - 0.0

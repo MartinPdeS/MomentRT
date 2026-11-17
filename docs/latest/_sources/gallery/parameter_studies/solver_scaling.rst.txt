@@ -104,15 +104,15 @@ still showing how the six-field P3 system begins to cost more than P1/SP3.
 
  .. code-block:: none
 
-     P1 |    166 tetrahedra | solve 0.0062 s | peak process RSS 215.1 MiB
-     P1 |    812 tetrahedra | solve 0.0088 s | peak process RSS 216.8 MiB
-     P1 |   1767 tetrahedra | solve 0.0125 s | peak process RSS 218.3 MiB
-    SP3 |    166 tetrahedra | solve 0.0068 s | peak process RSS 215.7 MiB
-    SP3 |    812 tetrahedra | solve 0.0115 s | peak process RSS 218.1 MiB
-    SP3 |   1767 tetrahedra | solve 0.0187 s | peak process RSS 220.5 MiB
-     P3 |    166 tetrahedra | solve 0.0304 s | peak process RSS 217.8 MiB
-     P3 |    812 tetrahedra | solve 0.0709 s | peak process RSS 225.9 MiB
-     P3 |   1767 tetrahedra | solve 0.1498 s | peak process RSS 241.9 MiB
+     P1 |    166 tetrahedra | solve 0.0119 s | peak process RSS 215.1 MiB
+     P1 |    812 tetrahedra | solve 0.0161 s | peak process RSS 216.5 MiB
+     P1 |   1767 tetrahedra | solve 0.0158 s | peak process RSS 218.2 MiB
+    SP3 |    166 tetrahedra | solve 0.0139 s | peak process RSS 215.7 MiB
+    SP3 |    812 tetrahedra | solve 0.0199 s | peak process RSS 217.9 MiB
+    SP3 |   1767 tetrahedra | solve 0.0224 s | peak process RSS 219.8 MiB
+     P3 |    166 tetrahedra | solve 0.0553 s | peak process RSS 217.5 MiB
+     P3 |    812 tetrahedra | solve 0.1082 s | peak process RSS 226.0 MiB
+     P3 |   1767 tetrahedra | solve 0.2577 s | peak process RSS 243.9 MiB
 
 
 
@@ -218,7 +218,7 @@ and total memory; a lower memory estimate alone is not enough.
 
  .. code-block:: none
 
-    At 1,767 tetrahedra, P3 took 12.0× the P1 solve time in this run.
+    At 1,767 tetrahedra, P3 took 16.3× the P1 solve time in this run.
 
 
 
@@ -226,7 +226,7 @@ and total memory; a lower memory estimate alone is not enough.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.411 seconds)
+   **Total running time of the script:** (0 minutes 12.302 seconds)
 
 
 .. _sphx_glr_download_gallery_parameter_studies_solver_scaling.py:

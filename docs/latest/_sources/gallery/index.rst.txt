@@ -268,6 +268,24 @@ examine computational scaling.
       Move a collection fiber away from one illumination fiber and compare
       collected power as absorption increases in the middle skin layer.
 
+   .. grid-item-card:: Which skin layer changes the fiber signal?
+      :link: parameter_studies/skin_layer_sensitivity
+      :link-type: doc
+      :img-top: parameter_studies/images/thumb/sphx_glr_skin_layer_sensitivity_thumb.png
+      :img-alt: Three-layer skin with a scanning collection fiber and increased hypodermal absorption
+
+      Compare equal absorption increments in epidermis, dermis, and hypodermis
+      to explore how each layer changes the distance response.
+
+   .. grid-item-card:: How dermis thickness changes a two-fiber scan
+      :link: parameter_studies/skin_dermis_thickness
+      :link-type: doc
+      :img-top: parameter_studies/images/thumb/sphx_glr_skin_dermis_thickness_thumb.png
+      :img-alt: Fiber contacts on skin with an extended absorbing dermis
+
+      Move the dermis-hypodermis interface while keeping the outer sample and
+      probe fixed, and compare collected power with a 1.5 mm dermis.
+
    .. grid-item-card:: Benchmark P1, SP3, and P3 scaling
       :link: parameter_studies/solver_scaling
       :link-type: doc

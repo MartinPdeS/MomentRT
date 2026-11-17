@@ -133,3 +133,27 @@ levels, energy residuals, and minimum fluence, including a negative nodal
 value on the coarsest high-absorption mesh. Further refinement, larger-domain
 checks, and an independent transport reference are needed for quantitative
 probe design.
+
+Two follow-on examples separate other model choices: :doc:`layer-specific
+absorption <gallery/parameter_studies/skin_layer_sensitivity>` applies the
+same absorption increment to one anatomical layer at a time, while
+:doc:`dermis thickness <gallery/parameter_studies/skin_dermis_thickness>`
+moves the lower dermal interface at fixed optical coefficients. Both compare
+coarse and fine meshes across the collection-distance scan. They are forward
+sensitivity studies, not validated methods for identifying a tissue layer or
+estimating its thickness.
+
+For the layer-specific study, adding 0.10 inverse mm to epidermis or dermis
+reduces the signal by about 7% at 0.8 mm in both cases. At 4 mm the reductions
+are about 10% and 62%, respectively; the corresponding hypodermal reduction
+is about 25%. The largest power change on mesh refinement is about 4.5%.
+These forward predictions illustrate distance-dependent contrast without
+establishing unique recovery of the absorbing layer.
+
+In the thickness example, the 0.5 mm dermis gives about 2.6 times the 1.5 mm
+reference signal at 4 mm separation, while the 2.5 mm dermis gives about 0.77
+times that signal. The largest power change between its two meshes is about
+5%. The much smaller differences at 0.8 mm are not resolved well enough to
+support a thickness trend. These comparisons share a dermal absorption of
+0.165 inverse mm and a fixed outer sample; changing thickness also replaces
+one scattering material with another.

@@ -6,6 +6,12 @@ The compatibility and deprecation policy is in [CONTRIBUTING.rst](CONTRIBUTING.r
 
 ## [Unreleased]
 
+### Added
+
+- Two biomedical contact-fiber studies comparing layer-specific absorption
+  changes and dermis thickness across source-detector distance, with
+  mesh-sensitivity diagnostics and gallery cards.
+
 ## [0.12.1] - 2026-11-17
 
 ### Added

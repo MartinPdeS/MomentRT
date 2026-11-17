@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Changing the diffuse boundary reflectance &#8212; MomentRT 0.12.0 documentation</title>
+    <title>Changing the diffuse boundary reflectance &#8212; MomentRT 0.12.1 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=b7cb6ee7"></script>
+    <script src="../../_static/documentation_options.js?v=1e8b1a81"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -62,12 +62,12 @@
     <link rel="icon" href="../../_static/favicon.ico"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Benchmark P1, SP3, and P3 solver scaling" href="solver_scaling.html" />
+    <link rel="next" title="Two-fiber reflectance and dermal absorption" href="skin_fiber_separation.html" />
     <link rel="prev" title="How absorption changes fluence" href="absorption_sweep.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.12.0" />
+  <meta name="docsearch:version" content="0.12.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -498,6 +498,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Parameter studies</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="absorption_sweep.html">How absorption changes fluence</a></li>
 <li class="toctree-l2 current active"><a aria-current="page" class="current reference internal" href="#">Changing the diffuse boundary reflectance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skin_fiber_separation.html">Two-fiber reflectance and dermal absorption</a></li>
 <li class="toctree-l2"><a class="reference internal" href="solver_scaling.html">Benchmark P1, SP3, and P3 solver scaling</a></li>
 </ul>
 </details></li>
@@ -744,7 +745,7 @@ R = 0.9: incoming = 1 milliwatt, escaping = 0.4101 milliwatt
 <p>This view shows the configured geometry and instrument footprints.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span class="n">gallery_system_figure</span> <span class="o">=</span> <a class="sphx-glr-backref-module-MomentRT sphx-glr-backref-type-py-method reference internal" href="../../python_api.html#MomentRT.simulation.Simulation.plot_system" title="MomentRT.Simulation.plot_system"><span class="n">simulation</span><span class="o">.</span><span class="n">plot_system</span></a><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<iframe src="../../_static/gallery/reflectance_sweep-2.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.271 seconds)</p>
+<iframe src="../../_static/gallery/reflectance_sweep-2.html" title="Sample geometry" width="100%" height="600" loading="lazy" style="border:0;"></iframe><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.230 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-parameter-studies-reflectance-sweep-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/15254fc4119ef782f15f6ee21c8bf576/reflectance_sweep.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">reflectance_sweep.ipynb</span></code></a></p>
@@ -780,11 +781,11 @@ R = 0.9: incoming = 1 milliwatt, escaping = 0.4101 milliwatt
       </div>
     </a>
     <a class="right-next"
-       href="solver_scaling.html"
+       href="skin_fiber_separation.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Benchmark P1, SP3, and P3 solver scaling</p>
+        <p class="prev-next-title">Two-fiber reflectance and dermal absorption</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -820,7 +821,7 @@ R = 0.9: incoming = 1 milliwatt, escaping = 0.4101 milliwatt
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.12.0/docs/source/gallery/parameter_studies/reflectance_sweep.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.12.1/docs/source/gallery/parameter_studies/reflectance_sweep.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

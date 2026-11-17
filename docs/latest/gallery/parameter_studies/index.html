@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Parameter studies &#8212; MomentRT 0.12.0 documentation</title>
+    <title>Parameter studies &#8212; MomentRT 0.12.1 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=b7cb6ee7"></script>
+    <script src="../../_static/documentation_options.js?v=1e8b1a81"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -67,7 +67,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.12.0" />
+  <meta name="docsearch:version" content="0.12.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -498,6 +498,7 @@
 <li class="toctree-l1 current active has-children"><a aria-current="page" class="current reference internal" href="#">Parameter studies</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="absorption_sweep.html">How absorption changes fluence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skin_fiber_separation.html">Two-fiber reflectance and dermal absorption</a></li>
 <li class="toctree-l2"><a class="reference internal" href="solver_scaling.html">Benchmark P1, SP3, and P3 solver scaling</a></li>
 </ul>
 </details></li>
@@ -575,13 +576,18 @@
                   
   <section id="parameter-studies">
 <h1>Parameter studies<a class="headerlink" href="#parameter-studies" title="Link to this heading">#</a></h1>
-<p>Vary optical properties and boundary reflectance, and examine solver scaling.</p>
+<p>Vary optical properties, fiber separation, and boundary reflectance, and
+examine solver scaling. The two-fiber skin study compares collected power
+against source-detector distance while increasing absorption in the dermis.</p>
 <div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Compare analytical P1 fields with the same source and scattering but three absorption coefficients. Higher absorption shortens the distance over which fluence reaches a given value. Inputs are illustrative."><img alt="" src="../../_images/sphx_glr_absorption_sweep_thumb.png" />
 <p><a class="reference internal" href="absorption_sweep.html"><span class="doc">How absorption changes fluence</span></a></p>
   <div class="sphx-glr-thumbnail-title">How absorption changes fluence</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Solve the same illuminated slab with three effective diffuse reflectances. The centerline fluence increases as less diffuse current escapes through the sample boundary. The parameter is not a Fresnel reflectance. Inputs are illustrative."><img alt="" src="../../_images/sphx_glr_reflectance_sweep_thumb.png" />
 <p><a class="reference internal" href="reflectance_sweep.html"><span class="doc">Changing the diffuse boundary reflectance</span></a></p>
   <div class="sphx-glr-thumbnail-title">Changing the diffuse boundary reflectance</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Keep one illumination fiber fixed on three-layer skin and move a collection fiber along the surface. Compare the collected power at 850 nm for baseline, 3x, and 10x dermal absorption, leaving all other optical properties unchanged. The last case makes the middle layer more absorbing than either adjacent layer. These absorption multipliers are a sensitivity experiment, not tissue diagnoses."><img alt="" src="../../_images/sphx_glr_skin_fiber_separation_thumb.png" />
+<p><a class="reference internal" href="skin_fiber_separation.html"><span class="doc">Two-fiber reflectance and dermal absorption</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Two-fiber reflectance and dermal absorption</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Measure solve time and peak process memory for three finite-element models on successively finer tetrahedral meshes. Each case runs in a fresh process so its peak resident memory is measured independently. These small illustrative benchmarks show where P3 may justify testing iterative solvers; they do not establish that an iterative method or preconditioner will be faster or more reliable."><img alt="" src="../../_images/sphx_glr_solver_scaling_thumb.png" />
 <p><a class="reference internal" href="solver_scaling.html"><span class="doc">Benchmark P1, SP3, and P3 solver scaling</span></a></p>
   <div class="sphx-glr-thumbnail-title">Benchmark P1, SP3, and P3 solver scaling</div>
@@ -633,7 +639,7 @@
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.12.0/docs/source/gallery/parameter_studies/index.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.12.1/docs/source/gallery/parameter_studies/index.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

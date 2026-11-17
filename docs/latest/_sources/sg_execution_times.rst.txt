@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**05:28.124** total execution time for 31 files **from all galleries**:
+**04:56.528** total execution time for 32 files **from all galleries**:
 
 .. container::
 
@@ -33,95 +33,98 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_inverse_problems_epidermis_change.py` (``../examples/inverse_problems/epidermis_change.py``)
-     - 03:12.864
+     - 02:16.841
      - 0.0
    * - :ref:`sphx_glr_gallery_inverse_problems_mesh_convergence.py` (``../examples/inverse_problems/mesh_convergence.py``)
-     - 01:53.264
+     - 01:21.405
+     - 0.0
+   * - :ref:`sphx_glr_gallery_parameter_studies_skin_fiber_separation.py` (``../examples/parameter_studies/skin_fiber_separation.py``)
+     - 00:58.266
      - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_solver_scaling.py` (``../examples/parameter_studies/solver_scaling.py``)
-     - 00:08.363
+     - 00:08.411
      - 0.0
    * - :ref:`sphx_glr_gallery_spectral_broadband_detector.py` (``../examples/spectral/broadband_detector.py``)
-     - 00:01.904
+     - 00:01.568
      - 0.0
    * - :ref:`sphx_glr_gallery_transport_models_compare_p3.py` (``../examples/transport_models/compare_p3.py``)
-     - 00:01.580
+     - 00:01.247
      - 0.0
    * - :ref:`sphx_glr_gallery_getting_started_infinite_diffusion.py` (``../examples/getting_started/infinite_diffusion.py``)
-     - 00:01.182
+     - 00:01.085
      - 0.0
    * - :ref:`sphx_glr_gallery_sources_and_detectors_seven_fiber_skin.py` (``../examples/sources_and_detectors/seven_fiber_skin.py``)
-     - 00:01.012
+     - 00:00.872
      - 0.0
    * - :ref:`sphx_glr_gallery_getting_started_skin_contact.py` (``../examples/getting_started/skin_contact.py``)
-     - 00:00.939
-     - 0.0
-   * - :ref:`sphx_glr_gallery_sources_and_detectors_detector_convergence.py` (``../examples/sources_and_detectors/detector_convergence.py``)
-     - 00:00.782
+     - 00:00.872
      - 0.0
    * - :ref:`sphx_glr_gallery_getting_started_surface_diffusion.py` (``../examples/getting_started/surface_diffusion.py``)
-     - 00:00.781
+     - 00:00.692
      - 0.0
    * - :ref:`sphx_glr_gallery_getting_started_structured_sample.py` (``../examples/getting_started/structured_sample.py``)
-     - 00:00.758
+     - 00:00.656
+     - 0.0
+   * - :ref:`sphx_glr_gallery_sources_and_detectors_detector_convergence.py` (``../examples/sources_and_detectors/detector_convergence.py``)
+     - 00:00.626
      - 0.0
    * - :ref:`sphx_glr_gallery_spectral_sp3_spectral_anisotropy.py` (``../examples/spectral/sp3_spectral_anisotropy.py``)
-     - 00:00.696
+     - 00:00.561
      - 0.0
    * - :ref:`sphx_glr_gallery_transport_models_transient_p1.py` (``../examples/transport_models/transient_p1.py``)
-     - 00:00.674
-     - 0.0
-   * - :ref:`sphx_glr_gallery_validation_mesh_refinement.py` (``../examples/validation/mesh_refinement.py``)
-     - 00:00.362
+     - 00:00.555
      - 0.0
    * - :ref:`sphx_glr_gallery_sources_and_detectors_uniform_surface_source.py` (``../examples/sources_and_detectors/uniform_surface_source.py``)
-     - 00:00.358
+     - 00:00.315
+     - 0.0
+   * - :ref:`sphx_glr_gallery_validation_mesh_refinement.py` (``../examples/validation/mesh_refinement.py``)
+     - 00:00.303
      - 0.0
    * - :ref:`sphx_glr_gallery_samples_and_meshes_tetrahedral_local.py` (``../examples/samples_and_meshes/tetrahedral_local.py``)
-     - 00:00.327
+     - 00:00.289
      - 0.0
    * - :ref:`sphx_glr_gallery_spectral_spectral_detectors.py` (``../examples/spectral/spectral_detectors.py``)
-     - 00:00.312
+     - 00:00.265
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_sensor_validation_cases.py` (``../examples/validation/sensor_validation_cases.py``)
-     - 00:00.286
+     - 00:00.250
      - 0.0
    * - :ref:`sphx_glr_gallery_transport_models_sp3_layered_anisotropy.py` (``../examples/transport_models/sp3_layered_anisotropy.py``)
-     - 00:00.275
+     - 00:00.233
      - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_reflectance_sweep.py` (``../examples/parameter_studies/reflectance_sweep.py``)
-     - 00:00.271
+     - 00:00.230
      - 0.0
    * - :ref:`sphx_glr_gallery_sources_and_detectors_surface_detector.py` (``../examples/sources_and_detectors/surface_detector.py``)
-     - 00:00.164
-     - 0.0
-   * - :ref:`sphx_glr_gallery_transport_models_compare_sp3.py` (``../examples/transport_models/compare_sp3.py``)
-     - 00:00.160
+     - 00:00.139
      - 0.0
    * - :ref:`sphx_glr_gallery_validation_planar_slab_references.py` (``../examples/validation/planar_slab_references.py``)
-     - 00:00.141
+     - 00:00.133
      - 0.0
-   * - :ref:`sphx_glr_gallery_transport_models_phase_functions.py` (``../examples/transport_models/phase_functions.py``)
-     - 00:00.135
+   * - :ref:`sphx_glr_gallery_transport_models_compare_sp3.py` (``../examples/transport_models/compare_sp3.py``)
+     - 00:00.133
      - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_absorption_sweep.py` (``../examples/parameter_studies/absorption_sweep.py``)
-     - 00:00.134
+     - 00:00.119
+     - 0.0
+   * - :ref:`sphx_glr_gallery_transport_models_phase_functions.py` (``../examples/transport_models/phase_functions.py``)
+     - 00:00.117
      - 0.0
    * - :ref:`sphx_glr_gallery_spectral_source_spectra.py` (``../examples/spectral/source_spectra.py``)
-     - 00:00.128
+     - 00:00.111
      - 0.0
    * - :ref:`sphx_glr_gallery_inverse_problems_objective_landscape.py` (``../examples/inverse_problems/objective_landscape.py``)
-     - 00:00.123
+     - 00:00.101
      - 0.0
    * - :ref:`sphx_glr_gallery_samples_and_meshes_sample_models.py` (``../examples/samples_and_meshes/sample_models.py``)
-     - 00:00.095
+     - 00:00.083
      - 0.0
    * - :ref:`sphx_glr_gallery_samples_and_meshes_tetrahedral_global.py` (``../examples/samples_and_meshes/tetrahedral_global.py``)
      - 00:00.023
      - 0.0
-   * - :ref:`sphx_glr_gallery_samples_and_meshes_cartesian_resolution.py` (``../examples/samples_and_meshes/cartesian_resolution.py``)
-     - 00:00.016
-     - 0.0
    * - :ref:`sphx_glr_gallery_samples_and_meshes_cartesian_shape.py` (``../examples/samples_and_meshes/cartesian_shape.py``)
+     - 00:00.015
+     - 0.0
+   * - :ref:`sphx_glr_gallery_samples_and_meshes_cartesian_resolution.py` (``../examples/samples_and_meshes/cartesian_resolution.py``)
      - 00:00.015
      - 0.0

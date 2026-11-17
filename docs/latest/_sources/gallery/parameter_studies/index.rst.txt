@@ -3,7 +3,9 @@
 Parameter studies
 =================
 
-Vary optical properties and boundary reflectance, and examine solver scaling.
+Vary optical properties, fiber separation, and boundary reflectance, and
+examine solver scaling. The two-fiber skin study compares collected power
+against source-detector distance while increasing absorption in the dermis.
 
 
 .. raw:: html
@@ -53,6 +55,23 @@ Vary optical properties and boundary reflectance, and examine solver scaling.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Keep one illumination fiber fixed on three-layer skin and move a collection fiber along the surface. Compare the collected power at 850 nm for baseline, 3x, and 10x dermal absorption, leaving all other optical properties unchanged. The last case makes the middle layer more absorbing than either adjacent layer. These absorption multipliers are a sensitivity experiment, not tissue diagnoses.">
+
+.. only:: html
+
+  .. image:: /gallery/parameter_studies/images/thumb/sphx_glr_skin_fiber_separation_thumb.png
+    :alt:
+
+  :doc:`/gallery/parameter_studies/skin_fiber_separation`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Two-fiber reflectance and dermal absorption</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Measure solve time and peak process memory for three finite-element models on successively finer tetrahedral meshes. Each case runs in a fresh process so its peak resident memory is measured independently. These small illustrative benchmarks show where P3 may justify testing iterative solvers; they do not establish that an iterative method or preconditioner will be faster or more reliable.">
 
 .. only:: html
@@ -80,6 +99,7 @@ Vary optical properties and boundary reflectance, and examine solver scaling.
 
    /gallery/parameter_studies/absorption_sweep
    /gallery/parameter_studies/reflectance_sweep
+   /gallery/parameter_studies/skin_fiber_separation
    /gallery/parameter_studies/solver_scaling
 
 

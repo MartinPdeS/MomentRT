@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:08.768** total execution time for 3 files **from gallery/parameter_studies**:
+**01:07.026** total execution time for 4 files **from gallery/parameter_studies**:
 
 .. container::
 
@@ -32,12 +32,15 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
+   * - :ref:`sphx_glr_gallery_parameter_studies_skin_fiber_separation.py` (``skin_fiber_separation.py``)
+     - 00:58.266
+     - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_solver_scaling.py` (``solver_scaling.py``)
-     - 00:08.363
+     - 00:08.411
      - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_reflectance_sweep.py` (``reflectance_sweep.py``)
-     - 00:00.271
+     - 00:00.230
      - 0.0
    * - :ref:`sphx_glr_gallery_parameter_studies_absorption_sweep.py` (``absorption_sweep.py``)
-     - 00:00.134
+     - 00:00.119
      - 0.0

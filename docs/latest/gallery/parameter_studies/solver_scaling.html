@@ -7,7 +7,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Benchmark P1, SP3, and P3 solver scaling &#8212; MomentRT 0.12.0 documentation</title>
+    <title>Benchmark P1, SP3, and P3 solver scaling &#8212; MomentRT 0.12.1 documentation</title>
   
   
   
@@ -45,7 +45,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../../_static/documentation_options.js?v=b7cb6ee7"></script>
+    <script src="../../_static/documentation_options.js?v=1e8b1a81"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
@@ -54,7 +54,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.24.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/MomentRT/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '0.12.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
@@ -63,11 +63,11 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Validation" href="../validation/index.html" />
-    <link rel="prev" title="Changing the diffuse boundary reflectance" href="reflectance_sweep.html" />
+    <link rel="prev" title="Two-fiber reflectance and dermal absorption" href="skin_fiber_separation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.12.0" />
+  <meta name="docsearch:version" content="0.12.1" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -498,6 +498,7 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Parameter studies</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="absorption_sweep.html">How absorption changes fluence</a></li>
 <li class="toctree-l2"><a class="reference internal" href="reflectance_sweep.html">Changing the diffuse boundary reflectance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="skin_fiber_separation.html">Two-fiber reflectance and dermal absorption</a></li>
 <li class="toctree-l2 current active"><a aria-current="page" class="current reference internal" href="#">Benchmark P1, SP3, and P3 solver scaling</a></li>
 </ul>
 </details></li>
@@ -638,15 +639,15 @@ still showing how the six-field P3 system begins to cost more than P1/SP3.</p>
 </span>        <span class="sa">f</span><span class="s2">&quot;</span><span class="s2">peak process RSS </span><span class="si">{</span><span class="n">memory_mib</span><span class="si">}</span><span class="s2">&quot;</span><span class="w">
 </span>    <span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span> P1 |    166 tetrahedra | solve 0.0069 s | peak process RSS 215.8 MiB
- P1 |    812 tetrahedra | solve 0.0098 s | peak process RSS 217.2 MiB
- P1 |   1767 tetrahedra | solve 0.0140 s | peak process RSS 218.7 MiB
-SP3 |    166 tetrahedra | solve 0.0076 s | peak process RSS 216.0 MiB
-SP3 |    812 tetrahedra | solve 0.0159 s | peak process RSS 218.0 MiB
-SP3 |   1767 tetrahedra | solve 0.0204 s | peak process RSS 220.5 MiB
- P3 |    166 tetrahedra | solve 0.0340 s | peak process RSS 218.2 MiB
- P3 |    812 tetrahedra | solve 0.0789 s | peak process RSS 226.1 MiB
- P3 |   1767 tetrahedra | solve 0.1798 s | peak process RSS 242.3 MiB
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span> P1 |    166 tetrahedra | solve 0.0062 s | peak process RSS 215.1 MiB
+ P1 |    812 tetrahedra | solve 0.0088 s | peak process RSS 216.8 MiB
+ P1 |   1767 tetrahedra | solve 0.0125 s | peak process RSS 218.3 MiB
+SP3 |    166 tetrahedra | solve 0.0068 s | peak process RSS 215.7 MiB
+SP3 |    812 tetrahedra | solve 0.0115 s | peak process RSS 218.1 MiB
+SP3 |   1767 tetrahedra | solve 0.0187 s | peak process RSS 220.5 MiB
+ P3 |    166 tetrahedra | solve 0.0304 s | peak process RSS 217.8 MiB
+ P3 |    812 tetrahedra | solve 0.0709 s | peak process RSS 225.9 MiB
+ P3 |   1767 tetrahedra | solve 0.1498 s | peak process RSS 241.9 MiB
 </pre></div>
 </div>
 </section>
@@ -717,10 +718,10 @@ and total memory; a lower memory estimate alone is not enough.</p>
 </span>    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">p3_time</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">p1_time</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">× the P1 solve time in this run.</span><span class="s2">&quot;</span><span class="w">
 </span><span class="p">)</span><span class="w">
 </span></pre></div></div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>At 1,767 tetrahedra, P3 took 12.8× the P1 solve time in this run.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>At 1,767 tetrahedra, P3 took 12.0× the P1 solve time in this run.
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.363 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 8.411 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-parameter-studies-solver-scaling-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/6652754aef1265b177acf996f2314495/solver_scaling.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">solver_scaling.ipynb</span></code></a></p>
@@ -747,12 +748,12 @@ and total memory; a lower memory estimate alone is not enough.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="reflectance_sweep.html"
+       href="skin_fiber_separation.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Changing the diffuse boundary reflectance</p>
+        <p class="prev-next-title">Two-fiber reflectance and dermal absorption</p>
       </div>
     </a>
     <a class="right-next"
@@ -793,7 +794,7 @@ and total memory; a lower memory estimate alone is not enough.</p>
 
   
   <div class="tocsection editthispage">
-    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.12.0/docs/source/gallery/parameter_studies/solver_scaling.rst">
+    <a href="https://github.com/MartinPdeS/MomentRT/edit/v0.12.1/docs/source/gallery/parameter_studies/solver_scaling.rst">
       <i class="fa-solid fa-pencil"></i>
       
       

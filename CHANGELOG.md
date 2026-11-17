@@ -6,6 +6,8 @@ The compatibility and deprecation policy is in [CONTRIBUTING.rst](CONTRIBUTING.r
 
 ## [Unreleased]
 
+## [0.12.1] - 2026-11-17
+
 ### Added
 
 - Executable two-fiber reflectance study on three-layer skin, comparing
@@ -114,7 +116,8 @@ The compatibility and deprecation policy is in [CONTRIBUTING.rst](CONTRIBUTING.r
 - An initial layered-sensor Monte Carlo comparison and published reference
   report. Its reference data are superseded by the correction under Unreleased.
 
-[Unreleased]: https://github.com/MartinPdeS/MomentRT/compare/v0.12.0...HEAD
+[Unreleased]: https://github.com/MartinPdeS/MomentRT/compare/v0.12.1...HEAD
+[0.12.1]: https://github.com/MartinPdeS/MomentRT/releases/tag/v0.12.1
 [0.12.0]: https://github.com/MartinPdeS/MomentRT/releases/tag/v0.12.0
 [0.11.1]: https://github.com/MartinPdeS/MomentRT/releases/tag/v0.11.1
 [0.11.0]: https://github.com/MartinPdeS/MomentRT/releases/tag/v0.11.0

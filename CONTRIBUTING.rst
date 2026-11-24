@@ -49,8 +49,8 @@ annotation/docstring validation. Their direct equivalents are:
    .venv/bin/python -m mypy MomentRT
    .venv/bin/python tools/check_docstrings.py
 
-Tests under ``tests/analytical`` compare against mathematical or independent
-references. ``tests/numerical`` covers discretization, geometry, and workflow
+Tests under ``tests/physics`` and ``tests/reference`` compare against mathematical or independent
+references. ``tests/numerics`` covers discretization, geometry, and workflow
 behavior; ``tests/packaging`` checks metadata. Select focused checks during
 development, then run the appropriate broader checks before submitting.
 

@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 def test_sweep_benchmark_reports_measurements():
-    script = Path(__file__).resolve().parents[1] / "tools/benchmark_sweeps.py"
+    script = Path(__file__).resolve().parents[2] / "tools/benchmark_sweeps.py"
 
     completed = subprocess.run(
         [
@@ -39,7 +39,7 @@ def test_sweep_benchmark_reports_measurements():
 
 
 def test_tetrahedral_scaling_benchmark_reports_solver_measurements():
-    script = Path(__file__).resolve().parents[1] / "tools/benchmark_scaling.py"
+    script = Path(__file__).resolve().parents[2] / "tools/benchmark_scaling.py"
 
     completed = subprocess.run(
         [

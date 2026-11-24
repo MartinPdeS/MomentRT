@@ -6,7 +6,7 @@ import plotly.graph_objects as plotly
 
 
 def test_explicit_preview_is_not_replaced_by_a_later_figure(tmp_path):
-    path = Path(__file__).resolve().parents[1] / "docs/source/gallery_config.py"
+    path = Path(__file__).resolve().parents[2] / "docs/source/gallery_config.py"
 
     spec = importlib.util.spec_from_file_location("gallery_config", path)
 

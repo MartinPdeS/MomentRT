@@ -53,7 +53,7 @@ MomentRT is a Python package for deterministic light transport using angular-mom
 
 ## Verification
 
-- Reuse `.venv`. Choose checks appropriate to the change; run `make typecheck docstring-check PYTHON=.venv/bin/python` for annotation/docstring changes and focused validation for minor changes and `make check PYTHON=.venv/bin/python` when broader code changes warrant it. Run `git diff --check` when applicable. Tests live under `tests/`, including `analytical/` and `numerical/`.
+- Reuse `.venv`. Choose checks appropriate to the change; run `make typecheck docstring-check PYTHON=.venv/bin/python` for annotation/docstring changes and focused validation for minor changes and `make check PYTHON=.venv/bin/python` when broader code changes warrant it. Run `git diff --check` when applicable. Tests live under `tests/`, organized by API, physics, numerics, reference and packaging behavior.
 - For numerical or physical changes, add meaningful independent references and validation: test units, boundary/source conventions, energy accounting, mesh and source resolution, and convergence as applicable. Energy balance alone does not validate a transport approximation.
 - For documentation or packaging changes, run the relevant build or metadata checks when the change warrants them: `make docs PYTHON=.venv/bin/python`, `make package-check PYTHON=.venv/bin/python`, or `make release-check PYTHON=.venv/bin/python`. Inspect generated gallery output when examples or the scraper change.
 - For visualization changes, check the rendered interactive figures in a real browser in addition to relevant automated tests. Verify coordinates, labels, units, and interaction without requiring visualization dependencies for core imports.

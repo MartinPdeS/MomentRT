@@ -99,3 +99,6 @@ no-lines-before = ["standard-library", "third-party", "first-party", "local-fold
 python_version = "3.11"
 ignore_missing_imports = true
 disallow_untyped_defs = true
+
+[dependency-groups]
+readme = ["martinpdes-maintenance @ git+https://github.com/MartinPdeS/MartinPdeS-maintenance.git@1f47c0ca92f8d6fd7440190aa16c7bea662cd26d"]

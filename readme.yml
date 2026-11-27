@@ -1,0 +1,16 @@
+introduction: |-
+  Model diffuse fluence in scattering materials and the power collected by a contact
+  sensor. The layered-skin example uses coefficients from one ex vivo dataset near 850
+  nm. Its P1 and detector approximations need independent validation for each intended
+  sensor.
+
+  See the `usage guide <https://github.com/MartinPdeS/MomentRT/blob/HEAD/USAGE.rst>`__ for further examples and implementation details.
+quickstart:
+  title: Model a contact sensor on layered skin
+  source: docs/examples/getting_started/skin_contact.py
+  figure:
+    path: docs/images/readme-skin-fluence.png
+    caption: Simulated fluence in the layered-skin contact-sensor model.
+sections:
+- title: Citation
+  content: Cite the version used in your calculations with the `software citation metadata <https://github.com/MartinPdeS/MomentRT/blob/HEAD/CITATION.cff>`__.

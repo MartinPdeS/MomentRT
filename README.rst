@@ -1,103 +1,93 @@
-|logo|
+MomentRT
+========
+
+.. image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/HEAD/docs/images/logo.svg
+   :alt: MomentRT logo
+   :width: 100%
 
 .. list-table::
+   :width: 100%
    :widths: 35 65
    :header-rows: 1
 
    * - Badge
      - Status
    * - Python versions
-     - |python|
+     - |mps-python|
    * - Documentation
-     - |docs|
+     - |mps-docs|
    * - Tests
-     - |tests|
-   * - Coverage workflow
-     - |coverage|
-   * - PyPI package
-     - |pypi|
-   * - PyPI downloads
-     - |pypi_downloads|
-   * - Anaconda package
-     - |anaconda|
-   * - Anaconda downloads
-     - |anaconda_downloads|
-   * - Latest Anaconda release
-     - |anaconda_date|
+     - |mps-ci| |mps-coverage|
+   * - PyPI
+     - |mps-pypi| |mps-downloads|
+   * - Conda
+     - |mps-conda| |mps-conda-downloads| |mps-conda-release|
 
-MomentRT
-========
+Python tools for deterministic light transport in scattering media using diffusion and spherical-harmonic finite-element models.
 
-**MomentRT** is a Python library for deterministic light transport in
-scattering media. It is designed for biomedical optics workflows such as
-exploring how layered skin, diffuse illumination, and a contact detector
-influence the light reaching a sensor.
+Model diffuse fluence in scattering materials and the power collected by a contact
+sensor. The layered-skin example uses coefficients from one ex vivo dataset near 850
+nm. Its P1 and detector approximations need independent validation for each intended
+sensor.
 
-Define the tissue, source, detector, boundary conditions, mesh, and transport
-model as separate objects. MomentRT solves for unit-bearing optical fields and
-reports detector power and energy-balance diagnostics. Its general-purpose
-transport API also supports nonbiological media and instruments.
+See the `usage guide <https://github.com/MartinPdeS/MomentRT/blob/HEAD/USAGE.rst>`__ for further examples and implementation details.
 
-.. figure:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/images/readme-skin-fluence.png
-   :width: 850
-   :align: center
-   :alt: Three-dimensional calculated fluence in a layered skin sample with a surface source and detector.
+Installation
+------------
 
-   A P1 finite-element solution for an illustrative three-layer skin sample.
-   The colored volume shows fluence interpolated from the nodal solution onto
-   a display grid. `Explore
-   the interactive example <https://martinpdes.github.io/MomentRT/docs/latest/gallery/getting_started/skin_contact.html>`_.
-
-What you can model
-------------------
-
-* **Tissue and phantoms:** finite layered samples with inclusions, named skin
-  models, and user-supplied monochromatic or wavelength-dependent materials.
-* **Contact instruments:** diffuse disk or full-face illumination and circular
-  detector apertures with explicit orientation and angular acceptance.
-* **Light transport:** analytical infinite-medium P1 and finite-sample P1,
-  SP3, and full three-dimensional P3 angular-moment models.
-* **Time-resolved transport:** coupled transient P1 fluence and current for
-  explicit diffuse pulse profiles, with time-resolved contact-detector power.
-* **Spectral response:** monochromatic sweeps, source spectra, and linear
-  detector responsivity for broadband optical power and photocurrent.
-* **Inspection and verification:** interactive 3D fields, sample sections,
-  sampled footprint areas, energy diagnostics, and detector mesh studies.
-
-Install
--------
+Requires Python ``>=3.11``.
 
 .. code-block:: console
 
-   python -m pip install MomentRT
+   $ python -m pip install MomentRT
 
-Or install from conda:
+Install from the ``martinpdes`` Conda channel:
 
 .. code-block:: console
 
-   conda install -c martinpdes -c conda-forge momentrt
+   $ conda install -c martinpdes momentrt
 
-Skin contact-sensor example
----------------------------
+For an editable source installation:
 
-This complete example constructs a finite skin sample and a source and detector
-on its upper face, refines a tetrahedral mesh around the contacts, and solves
-with P1. The preset contains coefficients near **850 nm** interpolated from
-one ex vivo skin dataset; its dimensions and optical properties are
-illustrative rather than patient-specific.
+.. code-block:: console
+
+   $ git clone https://github.com/MartinPdeS/MomentRT.git
+   $ cd MomentRT
+   $ python -m pip install -e .
+
+Model a contact sensor on layered skin
+--------------------------------------
 
 .. code-block:: python
 
+   """
+   Simulate a contact sensor on layered skin
+   =========================================
+
+   Build an illustrative three-layer skin sample, generate a tetrahedral mesh,
+   and calculate diffuse fluence and the power reaching a contact detector. The
+   material coefficients describe one ex vivo dataset near 850 nm, not a
+   universal or patient-specific skin model. P1 and the Lambertian detector model
+   are approximations and require independent validation for the intended sensor.
+   """
+
+   # sphinx_gallery_thumbnail_path = '_static/images/gallery_systems/skin_contact.png'
    import MomentRT
    from MomentRT.models.skin import ShimojoThreeLayer850nm
 
    ureg = MomentRT.ureg
 
+   # %%
+   # Build the sample and contact sensor
+   # -----------------------------------
+   # The preset uses 0.2 mm epidermis, 1.5 mm dermis, and a hypodermis background.
+   # This 4 mm sample clips the requested hypodermis layer to 2.3 mm. Source
+   # optical power is diffuse power already coupled into the tissue.
+
    sample = ShimojoThreeLayer850nm(
        origin=(-3, -3, 0) * ureg.mm,
        size=(6, 6, 4) * ureg.mm,
    )
-
    source = MomentRT.source.SurfaceSource.on_face(
        sample=sample,
        face="z_min",
@@ -106,7 +96,6 @@ illustrative rather than patient-specific.
        wavelength=850 * ureg.nm,
        optical_power=1 * ureg.mW,
    )
-
    detector = MomentRT.detector.SurfaceDetector.on_face(
        sample=sample,
        face="z_min",
@@ -115,6 +104,13 @@ illustrative rather than patient-specific.
        orientation="outward_normal",
        acceptance_angle=90 * ureg.degree,
    )
+
+   # %%
+   # Generate and inspect the mesh
+   # -----------------------------
+   # Refine near the contacts to sample their circular footprints. The plot
+   # displays a subset of tetrahedral edges, not every element. Resolution and
+   # source/detector sampling need a separate mesh-convergence study.
 
    mesh = MomentRT.mesh.TetrahedralMesh.from_sample(
        sample=sample,
@@ -125,7 +121,6 @@ illustrative rather than patient-specific.
        resolution=0.2 * ureg.mm,
        distance=0.3 * ureg.mm,
    )
-
    solver = MomentRT.transport.P1(
        boundaries=MomentRT.boundary.Boundaries.uniform(
            condition=MomentRT.boundary.RobinBoundary(effective_reflectance=0),
@@ -139,9 +134,20 @@ illustrative rather than patient-specific.
        detectors={"contact": detector},
    )
 
+   system_figure = simulation.plot_system(show=False)
+   mesh_figure = mesh.plot(max_edges=4000, show=False)
+   print(f"Tetrahedra: {len(mesh.tetrahedra)}")
+
+   # %%
+   # Solve and inspect the results
+   # -----------------------------
+   # The detector integrates sampled escaping irradiance over its aperture using
+   # a Lambertian angular model. The displayed volume is interpolated from nodal
+   # FEM fluence onto a separate grid. Neither visualization nor energy balance
+   # establishes spatial convergence or P1 accuracy near the source.
+
    result = simulation.run()
    measurement = result.detectors["contact"]
-
    print(f"Collected power: {measurement.collected_power.to('uW'):~P}")
    print(f"Sampled source area: {result.source_sampled_area.to('mm^2'):~P}")
    print(f"Geometric source area: {result.source_geometric_area.to('mm^2'):~P}")
@@ -149,9 +155,7 @@ illustrative rather than patient-specific.
    print(f"Geometric detector area: {measurement.geometric_area.to('mm^2'):~P}")
    print(f"Minimum nodal fluence: {result.fluence.values.min().to('W/m^2'):~P}")
 
-   system_figure = simulation.plot_system(show=False)
-   mesh_figure = mesh.plot(max_edges=4000, show=False)
-   fluence_figure = result.fluence.plot(
+   gallery_system_figure = result.fluence.plot(
        view="volume",
        scale="log",
        display_resolution=0.3 * ureg.mm,
@@ -159,119 +163,70 @@ illustrative rather than patient-specific.
        overlays=[source, detector],
        show=False,
    )
-   fluence_figure.show()
 
-The figure objects are Plotly figures; call ``.show()`` on any of them to
-rotate, zoom, and inspect values interactively. The complete `executable
-example <https://martinpdes.github.io/MomentRT/docs/latest/gallery/getting_started/skin_contact.html>`_
-includes the same configuration and generated figures.
+.. figure:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/HEAD/docs/images/readme-skin-fluence.png
 
-.. figure:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/images/readme-skin-system.png
-   :width: 720
-   :align: center
-   :alt: Three-dimensional skin sample with surface source and detector.
+   Simulated fluence in the layered-skin contact-sensor model.
 
-   The skin construction and contact footprints. Positive z points into the
-   sample. Transparent layer surfaces show the construction geometry.
+Documentation
+-------------
 
-.. figure:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/images/readme-skin-mesh.png
-   :width: 720
-   :align: center
-   :alt: Tetrahedral mesh of the skin sample with refinement near the surface contacts.
+Use the `MomentRT documentation <https://martinpdes.github.io/MomentRT/docs/latest/>`__ to work through
+examples and look up the inputs and return values of individual functions.
 
-   Tetrahedral mesh refined near the source and detector. Only a subset of
-   edges is displayed; the solve uses the full mesh.
+Citation
+--------
 
-Interpreting the result
------------------------
+Cite the version used in your calculations with the `software citation metadata <https://github.com/MartinPdeS/MomentRT/blob/HEAD/CITATION.cff>`__.
 
-* **Skin properties:** the preset uses a shared refractive index and fixed
-  coefficients interpolated to 850 nm from Shimojo et al. (2020),
-  doi:10.1117/1.JBO.25.4.045002. Individual skin properties, blood content,
-  and optical behavior vary. Use explicit or spectral materials when needed.
-* **Source and boundaries:** surface-source power is diffuse power already
-  coupled into the sample. The model does not simulate collimated LED
-  propagation or specular entry losses. Robin effective reflectance is a
-  supplied diffuse partial-current coefficient, not a Fresnel value inferred
-  from refractive index. Finite solvers currently reject internal index jumps.
-* **Detector:** the circular aperture integrates escaping irradiance using a
-  Lambertian angular approximation. It is not a Fresnel-resolved radiance or
-  a simulation of external detector optics.
-* **Accuracy:** P1, SP3, and P3 are distinct approximations to transport, not
-  full radiative transfer. Check mesh and source/detector footprint convergence,
-  and compare the intended geometry against an independent transport reference
-  or measurements. Energy balance and footprint-area agreement alone do not
-  establish physical accuracy, especially near illumination. Negative nodal
-  values can occur as numerical artifacts; they are reported, not clipped.
+Contributing
+------------
 
-The `scientific guide <https://martinpdes.github.io/MomentRT/docs/latest/theory.html>`_
-explains the equations and limitations, and the `detector convergence guide
-<https://martinpdes.github.io/MomentRT/docs/latest/convergence.html>`_ shows how
-to examine mesh refinement.
+Bug reports, worked examples, and documentation corrections are welcome.
+To set up a development checkout and run the tests, follow the `contributing guide <https://github.com/MartinPdeS/MomentRT/blob/HEAD/CONTRIBUTING.rst>`__.
 
-Explore further
----------------
+Contact
+-------
 
-* `Example gallery <https://martinpdes.github.io/MomentRT/docs/latest/gallery/index.html>`_:
-  sample construction, meshes, contact sensors, spectral calculations, and
-  comparisons of transport models.
-* `Seven-fiber skin probe <https://martinpdes.github.io/MomentRT/docs/latest/gallery/sources_and_detectors/seven_fiber_skin.html>`_:
-  six illumination fibers and one collection aperture on layered skin.
-* `Spectral modeling <https://martinpdes.github.io/MomentRT/docs/latest/spectral.html>`_:
-  spectral materials, source power density, detector responsivity, and
-  wavelength-integration convergence.
-* `Model selection <https://martinpdes.github.io/MomentRT/docs/latest/model_selection.html>`_:
-  choose between the available approximations and review their limits.
+For questions, contact `Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com?subject=MomentRT>`__.
 
-Development and citation
-------------------------
+License
+-------
 
-To work on the package or build the executable documentation locally:
+MomentRT is licensed under `MIT <https://github.com/MartinPdeS/MomentRT/blob/HEAD/LICENSE>`__.
 
-.. code-block:: console
+.. |mps-python| image:: https://img.shields.io/pypi/pyversions/momentrt.svg
+   :alt: Supported Python versions
+   :target: https://pypi.org/project/momentrt/
 
-   git clone https://github.com/MartinPdeS/MomentRT.git
-   cd MomentRT
-   python3 -m venv .venv
-   .venv/bin/python -m pip install -e ".[testing,documentation,dev,release]"
-   make check typecheck docstring-check PYTHON=.venv/bin/python
-   make docs PYTHON=.venv/bin/python
+.. |mps-pypi| image:: https://img.shields.io/pypi/v/momentrt.svg
+   :alt: PyPI version
+   :target: https://pypi.org/project/momentrt/
 
-See the `contributor guide <https://github.com/MartinPdeS/MomentRT/blob/master/CONTRIBUTING.rst>`_
-and `changelog <https://github.com/MartinPdeS/MomentRT/blob/master/CHANGELOG.md>`_.
-MomentRT is distributed under the MIT license. If you use it in research,
-cite the version recorded in `CITATION.cff
-<https://github.com/MartinPdeS/MomentRT/blob/master/CITATION.cff>`_.
+.. |mps-downloads| image:: https://img.shields.io/pypi/dm/momentrt.svg
+   :alt: Monthly PyPI downloads
+   :target: https://pypistats.org/packages/momentrt
 
-.. |logo| image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/master/docs/images/logo.svg
-   :alt: MomentRT — light transport through a finite element volume.
-   :width: 800
+.. |mps-docs| image:: https://github.com/MartinPdeS/MomentRT/actions/workflows/deploy_documentation.yml/badge.svg
+   :alt: Documentation
    :target: https://martinpdes.github.io/MomentRT/docs/latest/
 
-.. |python| image:: https://img.shields.io/pypi/pyversions/MomentRT.svg
-   :alt: Python versions
-   :target: https://pypi.org/project/MomentRT/
-.. |docs| image:: https://github.com/MartinPdeS/MomentRT/actions/workflows/deploy_documentation.yml/badge.svg?branch=master
-   :alt: Documentation build status
-   :target: https://martinpdes.github.io/MomentRT/
-.. |tests| image:: https://github.com/MartinPdeS/MomentRT/actions/workflows/tests.yml/badge.svg?branch=master
-   :alt: Test workflow status
+.. |mps-ci| image:: https://github.com/MartinPdeS/MomentRT/actions/workflows/tests.yml/badge.svg
+   :alt: Tests
    :target: https://github.com/MartinPdeS/MomentRT/actions/workflows/tests.yml
-.. |coverage| image:: https://github.com/MartinPdeS/MomentRT/actions/workflows/deploy_coverage.yml/badge.svg?branch=master
-   :alt: Coverage workflow status
-   :target: https://github.com/MartinPdeS/MomentRT/actions/workflows/deploy_coverage.yml
-.. |pypi| image:: https://img.shields.io/pypi/v/MomentRT.svg
-   :alt: PyPI version
-   :target: https://pypi.org/project/MomentRT/
-.. |pypi_downloads| image:: https://img.shields.io/pypi/dm/MomentRT.svg
-   :alt: Monthly PyPI downloads
-   :target: https://pypi.org/project/MomentRT/
-.. |anaconda| image:: https://anaconda.org/martinpdes/momentrt/badges/version.svg
+
+.. |mps-coverage| image:: https://raw.githubusercontent.com/MartinPdeS/MomentRT/python-coverage-comment-action-data/badge.svg
+   :alt: Test coverage
+   :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/MomentRT/blob/python-coverage-comment-action-data/htmlcov/index.html
+
+.. |mps-conda| image:: https://anaconda.org/martinpdes/momentrt/badges/version.svg
    :alt: Anaconda version
    :target: https://anaconda.org/martinpdes/momentrt
-.. |anaconda_downloads| image:: https://anaconda.org/martinpdes/momentrt/badges/downloads.svg
+
+.. |mps-conda-downloads| image:: https://anaconda.org/martinpdes/momentrt/badges/downloads.svg
    :alt: Anaconda downloads
    :target: https://anaconda.org/martinpdes/momentrt
-.. |anaconda_date| image:: https://anaconda.org/martinpdes/momentrt/badges/latest_release_relative_date.svg
-   :alt: Latest Anaconda release date
+
+.. |mps-conda-release| image:: https://anaconda.org/martinpdes/momentrt/badges/latest_release_relative_date.svg
+   :alt: Latest Anaconda release
    :target: https://anaconda.org/martinpdes/momentrt

@@ -160,3 +160,14 @@ version and records the actual release date.
 also push the commit and tag and trigger publication. Run those publishing
 commands only when a release is explicitly intended, then check the publishing
 workflow and package artifacts.
+
+Updating the README
+-------------------
+
+Edit ``readme.yml`` and run the following commands from the repository root. Commit the generated README with its inputs.
+
+.. code-block:: sh
+
+   python -m pip install --group readme
+   make readme PYTHON=python
+   mps-maintenance readme --check
